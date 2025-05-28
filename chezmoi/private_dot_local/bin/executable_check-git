@@ -1,0 +1,57 @@
+#!/bin/bash
+#       _               _               _ _
+#   ___| |__   ___  ___| | __      __ _(_) |_
+#  / __| '_ \ / _ \/ __| |/ /____ / _` | | __|
+# | (__| | | |  __/ (__|   <_____| (_| | | |_
+#  \___|_| |_|\___|\___|_|\_\     \__, |_|\__|
+#                                 |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# Check all local repos for local and remote changes.
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+source ~/.local/bin/get-repo-list
+
+ORANGE='\033[38;2;255;158;23m'
+BLUE='\033[38;2;73;136;252m'
+PURPLE='\033[38;2;150;85;166m'
+GREEN='\033[38;2;125;235;103m'
+NC='\033[0m'
+
+for repo in ${lst_repos[@]}; do
+
+    # We go from repo to repo because we cannot run git commands from outside.
+    # The update is necessary to get the changes.
+    cd $repo
+    git remote update &> /dev/null
+
+    # Splitting the path by '/' to keep only the last bit, this gives a more readable display at the end.
+    path_repo=(${repo//\// })
+    repo_dir=${path_repo[${#path_repo[@]} - 1]}
+
+    # The `clean` variable is initialised with a value of 0 and incremented depending of the repos status.
+    # Local changes -> +1
+    # Remote changes -> +2
+    # This gives four different possible states for the repo.
+    clean=0
+    status=$(git status)
+
+    if ! (git status|grep -q "working tree clean"); then clean=$((clean+1)); fi;
+    if (git status|grep -q "Your branch is behind"); then clean=$((clean+2)); fi;
+
+    case "$clean" in
+
+        0) echo -e "Repo ${PURPLE}$repo_dir${NC} is ${GREEN}up to date${NC}."
+            ;;
+        1) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${BLUE}local${NC} changes."
+            ;;
+        2) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${ORANGE}remote${NC} changes."
+            ;;
+        3) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${BLUE}local${NC} and ${ORANGE}remote${NC} changes."
+        ;;
+        *) echo "🍞 Something went really wrong."
+        ;;
+
+    esac
+
+done

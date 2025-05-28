@@ -1,0 +1,92 @@
+/*
+ *           _                         _
+ * __      _| | ___   __ _  ___  _   _| |_
+ * \ \ /\ / / |/ _ \ / _` |/ _ \| | | | __|
+ *  \ V  V /| | (_) | (_| | (_) | |_| | |_
+ *   \_/\_/ |_|\___/ \__, |\___/ \__,_|\__|
+ *                   |___/
+ *
+ * ----------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+/*
+ * Import Pywal colors
+ * --------------------------------------------------------------------------------------
+ */
+@import '../../.cache/wal/colors-wlogout.css';
+
+/*
+ * General
+ * --------------------------------------------------------------------------------------
+ */
+
+* {
+    all: unset;
+    background-image: none;
+    transition: 20ms;
+    box-shadow: none;
+}
+
+window {
+    background: url("../../.cache/wallpaper/blurred_wallpaper.png");
+    background-size: cover;
+}
+
+button {
+    color: #000000;
+    font-family: "MesloLGS NF";
+    font-weight: bold;
+    font-size: 28px;
+    background-color: rgba(210, 210, 210, 0.7);
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15%;
+
+    box-shadow: 0 10px 14px 0 rgba(0, 0, 0, 0.4), 0 10px 25px 0 rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease-in-out;
+    border-width: 0;
+}
+
+button:focus {
+    background-color: @colorbtn2;
+}
+
+button:hover {
+    background-color: @colorbtn1;
+}
+
+button:active {
+    background-color: @colorbtn3;
+}
+
+
+/*
+ * Buttons
+ * --------------------------------------------------------------------------------------
+ */
+
+#lock {
+    margin:50px 0 0 300px;
+    border-radius: 80px 0 0 0;
+    background-image: image(url("icons/lock-light.png"));
+}
+
+#logout {
+    margin: 0 0 50px 300px;
+    border-radius: 0 0 0 80px;
+    background-image: image(url("icons/logout-light.png"));
+}
+
+#shutdown {
+    margin: 50px 300px 0 0;
+    border-radius: 0 80px 0 0;
+    background-image: image(url("icons/shutdown-light.png"));
+}
+
+#reboot {
+    margin: 0 300px 50px 0;
+    border-radius: 0 0 80px 0;
+    background-image: image(url("icons/reboot-light.png"));
+}
+

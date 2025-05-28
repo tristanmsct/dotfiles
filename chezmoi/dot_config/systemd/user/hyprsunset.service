@@ -1,0 +1,9 @@
+[Unit]
+Description=Hyprsunset Temperature Adjustment Service
+
+[Service]
+Type=oneshot
+ExecStart=/home/tristan/.config/hypr/scripts/hyprsunset/hyprsunset-timer.sh
+
+[Install]
+WantedBy=default.target

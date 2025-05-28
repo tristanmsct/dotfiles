@@ -1,0 +1,342 @@
+//  __  __           _       _
+// |  \/  | ___   __| |_   _| | ___  ___
+// | |\/| |/ _ \ / _` | | | | |/ _ \/ __|
+// | |  | | (_) | (_| | |_| | |  __/\__ \
+// |_|  |_|\___/ \__,_|\__,_|_|\___||___/
+//
+
+{
+    // Left Modules -----------------------------------------------------------------------------------------------------------------------
+
+    // Application Launcher -------------------------------------------------------------
+    "custom/appmenu": {
+        "format": "<span size='x-large'>󰣇</span>",
+        "on-click": "~/.config/nwg-panel/menu-start.sh",
+        "on-click-right": "sleep 0.2;pkill rofi || rofi -show drun -replace",
+        "on-click-middle": "~/.config/hypr/scripts/menus/keybindings.sh",
+        "tooltip-format": "<span line_height='1.5'>Left: Open the application launcher</span>\n<span line_height='1.5'>Middle: Open Rofi application launcher</span>\n<span line_height='1.5'>Right: Show all keybindings</span>"
+        // "tooltip": false
+    },
+
+    // Group Quicklinks -----------------------------------------------------------------
+    "group/quicklinks": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/filemanager",
+            "custom/browser",
+            "custom/terminal",
+            "custom/editor",
+            "custom/typora"
+         ]
+    },
+
+
+    "custom/filemanager": {
+        "format": "<span size='x-large'></span>",
+        "on-click": "nautilus",
+        "tooltip-format": "Open File Manager - Nautilus"
+        // "tooltip": false
+    },
+
+    "custom/browser": {
+        "format": "<span size='x-large'></span>",
+        "on-click": "~/.config/hypr/settings/browser.sh",
+        "tooltip-format": "Open Web Browser - Brave"
+        // "tooltip": false
+    },
+
+     "custom/terminal": {
+        "format": "<span size='x-large'></span>",
+        "on-click": "~/.config/hypr/settings/terminal.sh",
+        "tooltip-format": "Open Terminal - Kitty"
+        // "tooltip": false
+    },
+
+    "custom/editor": {
+        "format": "<span size='x-large'></span>",
+        "on-click": "subl",
+        "tooltip-format": "Open Text Editor - Sublime"
+        // "tooltip": false
+    },
+
+    "custom/typora": {
+        "format": " <span size='x-large'>󰊄</span> ",
+        "on-click": "typora",
+        "tooltip-format": "Open Note Application - Typora"
+        // "tooltip": false
+    },
+
+    // Workspaces -----------------------------------------------------------------------
+    // Workspaces are handled directly in the config file because the workspace widget is not the same
+    // on each screen.
+
+    // Taskbar --------------------------------------------------------------------------
+    "wlr/taskbar": {
+        "format": "{icon}",
+        // "icon-theme": "${i_theme}",
+        "all-outputs": true,
+        "icon-size": 24,
+        "spacing": 0,
+        "tooltip-format": "{name} - {title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "on-click-right": "fullscreen",
+        // "ignore-list": ["kitty"],
+        // To add steam game icons to waybar, their ID need to be mapped to their name.
+        // Check Arch guide in the icon section for more info.
+        "app_ids-mapping": {
+          "firefoxdeveloperedition": "firefox-developer-edition",
+          "steam_app_1996010": "Crow Country",
+          "steam_app_294100": "RimWorld by Ludeon Studios",
+          "steam_app_2239150": "Thronefall",
+          "FTL.amd64": "FTL: Faster Than Light"
+        },
+        "rewrite": {
+          "Firefox Web Browser": "Firefox"
+        }
+    },
+
+    // Center Modules ---------------------------------------------------------------------------------------------------------------------
+
+    // Clock
+    "clock": {
+        "format": "{:%H:%M - %a %d}",
+        "on-click": "gnome-calendar",
+        "tooltip": false
+    },
+
+    // Right Modules ----------------------------------------------------------------------------------------------------------------------
+
+    // Group Misc -----------------------------------------------------------------------
+    "group/misc": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-misc",
+            "transition-right-to-left": false
+        },
+        "modules": [
+            "custom/misc",
+            "custom/theme_switch",
+            "idle_inhibitor",
+            "custom/cliphist",
+            "custom/hyprsunset",
+            "custom/gamemode"
+        ]
+    },
+
+    // Simple arrow for the drawer
+    "custom/misc": {
+        "format": "",
+        "tooltip": false
+    },
+
+    // Light Dark themes swith
+    "custom/theme_switch": {
+        "format": " <span size='large'>󰔎</span> ",
+        "on-click": "sleep 0.1 && ~/.config/hypr/scripts/theming/switch-theme.sh",
+        "tooltip-format":
+            "Switch between light and dark theme"
+    },
+
+    // Idle Inhibitor
+    "idle_inhibitor": {
+        "format": "<span size='large'>{icon}</span>",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰾪"
+        },
+        "tooltip-format-activated": "Deactivate Caffeine",
+        "tooltip-format-deactivated": "Activate Caffeine"
+    },
+
+    // Cliphist
+    "custom/cliphist": {
+        "format": " <span size='large'>󰅍</span> ",
+        "on-click": "sleep 0.1 && ~/.config/hypr/scripts/menus/cliphist.sh",
+        "on-click-right": "sleep 0.1 && ~/.config/hypr/scripts/menus/cliphist.sh delete",
+        "on-click-middle": "sleep 0.1 && ~/.config/hypr/scripts/menus/cliphist.sh wipe",
+        "tooltip-format":
+            "Clipboard Manager\nLeft click: open cliphist\nRight click: delete entry from cliphist\nMiddle click: wipe cliphist"
+    },
+
+    // Hyprshade
+    "custom/hyprsunset": {
+        "format": " <span size='large'>󱄤</span> ",
+        "tooltip-format": "Toggle Hyprsunset",
+        "on-click": "sleep 0.5; ~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
+        "on-click-middle": "sleep 0.5; ~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
+        "on-click-right": "sleep 0.5; ~/.config/hypr/scripts/menus/hyprsunset.sh temperature-setter",
+        "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
+        "return-type": "json",
+        "signal": 8
+    },
+
+    // Game mode
+    "custom/gamemode": {
+        "format": " <span size='x-large'>󰊗</span> ",
+        "tooltip-format": "Toggle Game Mode",
+        "on-click": "sleep 0.5; ~/.config/hypr/scripts/game-mode/activate.sh"
+    },
+
+    // Cava -----------------------------------------------------------------------------
+
+    "cava": {
+        "framerate": 30,
+        "autosens": 1,
+        "hide_on_silence": true,
+        "sleep_timer": 2,
+        "bars": 12,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "method": "pulse",
+        "source": "auto",
+        "stereo": true,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": true,
+        "waves": true,
+        "noise_reduction": 0.4,
+        "input_delay": 2,
+        "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+        "actions": {
+           "on-click-right": "mode"
+        }
+    },
+
+    // Group Devices --------------------------------------------------------------------
+    "group/devices": {
+        "orientation": "horizontal",
+        "modules": [
+            "pulseaudio",
+            "bluetooth",
+            "backlight",
+            "network",
+            "battery"
+        ]
+    },
+
+    "group/devices-secondary": {
+        "orientation": "horizontal",
+        "modules": [
+            "pulseaudio",
+            "bluetooth",
+            "network"
+        ]
+    },
+
+    // Pulseaudio
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}%",
+        "format-bluetooth-muted": "{icon} ",
+        "format-muted": "{format_source} ",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "󱡒",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "󰄜",
+            "car": "",
+            "default": ""
+        },
+        "on-click": "pavucontrol",
+        "on-click-middle": "~/.config/hypr/scripts/media/toggle-sound.sh",
+        "on-click-right": "~/.config/hypr/scripts/media/audio-helper.sh"
+    },
+
+    "bluetooth": {
+        "format": " ø",
+        "format-disabled": "", // an empty format will hide the module
+        "format-connected": " {num_connections}",
+        "on-click": "blueman-manager",
+        "on-click-right": "blueman-manager",
+        "tooltip-format": " {device_alias} ",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": " {device_alias}"
+    },
+
+    "backlight": {
+        "format": " <span size='large'>{icon}</span> {percent}% ",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "tooltip": false,
+        "min-brightness": 20,
+        "scroll-step": 5,
+        "on-click": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
+        "on-click-right": "brightnessctl set $(($(brightnessctl max) * 20 / 100))"
+    },
+
+    "network": {
+        "format": "{ifname}",
+        "format-wifi": "<span size='large'>󰤨</span> {signalStrength}%",
+        "format-ethernet": "<span size='large'>󱘖</span> Wired",
+        "format-linked": "<span size='large'>󱘖</span> {ifname} (No IP)",
+        "format-disconnected": " Disconnected",
+        "tooltip-format": "{ifname}",
+        "tooltip-format-wifi": " {essid} |  {bandwidthUpBytes} |  {bandwidthDownBytes}",
+        "tooltip-format-ethernet": "󱘖 {ifname} |  {bandwidthUpBytes} |  {bandwidthDownBytes}",
+        "tooltip-format-disconnected": "Disconnected",
+        "interval": 5,
+        "max-length": 50,
+        "on-click": "~/.config/hypr/settings/networkmanager.sh",
+        "on-click-right": "nm-connection-editor"
+    },
+
+    // Battery
+    "battery": {
+        "states": {
+            "warning": 20,
+            "low": 10,
+            "critical": 5
+        },
+        "format": " <span size='small'>{icon}</span> {capacity}% ",
+        "format-charging": "<span size='large'>󰂅</span> {capacity}%",
+        "format-plugged": "<span size='large'>󰂅</span> {capacity}%",
+        "format-alt": "{icon}  {time}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "on-update": "~/.config/hypr/scripts/system/battery-monitor.sh"
+    },
+
+    // Group System ---------------------------------------------------------------------
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/vpnstatus",
+            "custom/updates",
+            "custom/power"
+        ]
+    },
+
+    "group/system-secondary": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/vpnstatus",
+            "custom/power"
+        ]
+    },
+
+    // VPN
+    "custom/vpnstatus": {
+        "exec": "~/.config/hypr/scripts/vpn/get-status.sh",
+        "on-click": "~/.config/hypr/scripts/menus/vpn.sh",
+        "interval": 5,
+        "return-type": "json"
+    },
+
+    "custom/updates": {
+        "exec": "~/.config/hypr/scripts/system/updates.sh",
+        "restart-interval": 60,
+        "return-type": "json",
+        "escape": true,
+        "on-click": "~/.config/hypr/scripts/system/updates.sh up",
+        "tooltip": true,
+        "markup": true
+    },
+
+    "custom/power": {
+        "format": "<span size='large'></span>",
+        "on-click": "wlogout -b 2",
+        "tooltip-format": "<span> Power Menu</span>"
+    }
+}

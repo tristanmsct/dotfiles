@@ -1,0 +1,15 @@
+#    _               _
+#   | |__   __ _ ___| |__  _ __ ___
+#   | '_ \ / _` / __| '_ \| '__/ __|
+#  _| |_) | (_| \__ \ | | | | | (__
+# (_)_.__/ \__,_|___/_| |_|_|  \___|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+export SHELLDIR="$HOME/.config/shell"
+
+source "$SHELLDIR/xdg_config"
+source "$SHELLDIR/python"
+source "$BASHDIR/customization"
+source "$SHELLDIR/aliases"
+source "$SHELLDIR/autostart"

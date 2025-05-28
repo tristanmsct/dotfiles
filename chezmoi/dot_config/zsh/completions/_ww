@@ -1,0 +1,12 @@
+#compdef ww
+
+local -a options
+options=(
+  '--files:DEPTH - Look for files up to a specified depth (0 for current dir)'
+  '--min-size:SIZE_UNIT - pecify a minimum size filter (K, M, G). Includes all larger units'
+  '--here:Give the size of the current directory'
+  '--exclude-hidden:Exclude hidden files or directories'
+  '--help:Display the help message for this function'
+)
+
+_describe 'values' options

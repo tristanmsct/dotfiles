@@ -1,0 +1,60 @@
+#!/bin/bash
+#              _
+#  _ __  _   _| | _____
+# | '_ \| | | | |/ / _ \
+# | | | | |_| |   <  __/
+# |_| |_|\__,_|_|\_\___|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# Nuke files using shred. DANGEROUS.
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+sudo chown -R wbck5927:wbck5927 $1
+sudo chmod -R +w $1
+
+# Progress bar function, to run in parallel from the deletion.
+progress_bar() {
+
+	# Saving the initial size of the dir to compute a ratio over time.
+	dir_size_init=$(du -s $1|awk '{print $1}')
+
+	echo -ne "Shreding $1 directory\n"
+	while kill -0 $2 2>/dev/null;
+	do
+		# Dir size updated, the human readable version is also stored for display purposes.
+		dir_size=$(du -s $1|awk '{print $1}')
+		dir_size_h=$(du -hs $1|awk '{print $1}')
+
+		ratio=$(bc <<< "scale=2;(100*(1-$dir_size/$dir_size_init))/1")
+		ratio=$(bc <<< "scale=0;$ratio/2")
+
+		# ratiob=$(bc <<< "50-$ratio")
+
+		[[ $ratio != 0 ]] && progress_filler=$(printf '#%.0s' $(seq 1 $ratio)) || progress_filler=''
+		[[ $ratio != 50 ]] && progress_buffer=$(printf ' %.0s' $(seq 1 $(bc <<< "50-$ratio"))) || progress_buffer=''
+
+		echo -ne "> [$progress_filler$progress_buffer] \t $dir_size_h remaining       \r"
+
+		sleep 0.2
+	done
+}
+
+if [[ -d $1 ]]; then
+	# Start the find command and fork it, then get the pid to be able to stop the progress bar.
+	find $1 -type f -exec shred -zu {} \; &
+	find_pid=$!
+
+	# Progress bar started, will stop automatically when the process is done.
+	progress_bar $1 $find_pid
+
+	wait $find_pid
+
+	# We can then remove the remaining dictionary.
+	rm -r $1
+	echo -ne "> [$(printf '#%.0s' {1..50})] \t $1 directory shredded !\n"
+elif [[ -f $1 ]]; then
+    shred -zu $1
+else
+    echo "$1 is not valid"
+    exit 1
+fi

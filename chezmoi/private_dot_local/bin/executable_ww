@@ -1,0 +1,104 @@
+#!/bin/bash
+#               _       _     _                   _       _
+# __      _____(_) __ _| |__ | |_  __      ____ _| |_ ___| |__   ___ _ __
+# \ \ /\ / / _ \ |/ _` | '_ \| __| \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|
+#  \ V  V /  __/ | (_| | | | | |_   \ V  V / (_| | || (__| | | |  __/ |
+#   \_/\_/ \___|_|\__, |_| |_|\__|   \_/\_/ \__,_|\__\___|_| |_|\___|_|
+#                 |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# Wrapper for du to get size of directories and files.
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# Weight Watcher script
+
+# Get the script name.
+script_name=$(basename "$0")
+
+# Message to be displayed as help.
+show_help() {
+    echo "Usage: $script_name [-f | --files DEPTH] [-m | --min-size SIZE_UNIT] [-h | --here] [-e | --exclude-hidden] [--help]"
+    echo "Weight Watcher, get the size of directories."
+    echo
+    echo "Options:"
+    echo "  -f, --files DEPTH           Look for files up to a specified depth (0 for current dir)."
+    echo "  -m, --min-size SIZE_UNIT    Specify a minimum size filter (K, M, G). Includes all larger units."
+    echo "  -h, --here                  Give the size of the current directory."
+    echo "  -e, --exclude-hidden        Exclude hidden files or directories."
+    echo "  --help                      Display this help message."
+    exit 0
+}
+
+
+# Initialize variables.
+base_search="* .*"  # Default search pattern.
+exclude_hidden_flag=""  # Flag for excluding hidden files
+filter=""
+files_depth=0       # Default: 0 for directories; overridden by -f.
+files_mode=false
+here_only=false
+
+# Parse options.
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -m|--min-size)
+            case "$2" in
+                K) filter="[KMG]" ;; # K, M, G.
+                M) filter="[MG]" ;;  # M, G.
+                G) filter="G" ;;     # Only G.
+                *) echo "$script_name: Invalid size filter '$2'. Use K, M, or G."; exit 1 ;;
+            esac
+            shift 2
+            ;;
+        -f|--files)
+            files_mode=true
+            if [[ -n $2 && $2 =~ ^[0-9]+$ ]]; then
+                files_depth="$2"
+                shift
+            else
+                files_depth=1  # Default depth if no number provided.
+            fi
+            shift
+            ;;
+        -h|--here)
+            here_only=true
+            shift
+            ;;
+        -e|--exclude-hidden)
+            base_search="*"   # Don't search hidden files/directories.
+            exclude_hidden_flag="-not -path '*/.*'"  # `find` exclusion flag.
+            shift
+            ;;
+        --help)
+            show_help
+            ;;
+        *)
+            echo "$script_name: Unknown option '$1'. Use --help for usage."; exit 1 ;;
+    esac
+done
+
+# Check for hidden files or dirs presence and set flags accordingly.
+if ! ls -d .*/ > /dev/null 2>&1; then
+    base_search="*"
+fi
+if ! find . -type f -name ".*" > /dev/null 2>&1; then
+    exclude_hidden_flag="-not -path '*/.*'"
+fi
+
+# Construct the command based on options.
+if $here_only; then
+    # Show current directory size.
+    sudo du -hs . | sort -h
+elif $files_mode; then
+    # File mode: Use `find` with depth and optional size filter, including exclusion for hidden files.
+    cmd="find . -maxdepth $files_depth -type f $exclude_hidden_flag -exec du -h {} +"
+    [[ -n $filter ]] && cmd+=" | awk '\$1 ~ /$filter\$/'"
+    cmd+="| sort -h"
+    eval "$cmd"
+else
+    # Directory mode: List directories with size and optional size filter.
+    cmd="sudo du -hs $base_search"
+    [[ -n $filter ]] && cmd+=" | awk '\$1 ~ /$filter\$/'"
+    cmd+="| sort -h"
+    eval "$cmd"
+fi

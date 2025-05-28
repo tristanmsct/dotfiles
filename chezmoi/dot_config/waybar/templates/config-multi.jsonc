@@ -1,0 +1,121 @@
+[{
+    // Header
+    "layer": "top",
+    "output": "eDP-1",
+    "position": "top",
+    "mod": "dock",
+    "height": 35,
+    "margin-top": 4,
+    "margin-bottom": 4,
+    "margin-left": 0,
+    "margin-right": 0,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "reload_style_on_change": true,
+
+    // Load Modules
+    "include": ["~/.config/waybar/modules.jsonc"],
+
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch workspace -1",
+        "on-scroll-down": "hyprctl dispatch workspace +1",
+        "all-outputs": true,
+        "active-only": false,
+        "on-click": "activate",
+        "ignore-workspaces": ["4", "5", "6"],
+        "persistent-workspaces": {
+            "*": [1, 2, 3]
+        }
+    },
+
+    // Left Segment
+    "modules-left": [
+        "custom/appmenu",
+        "group/apps-quicklinks-padding",
+        "group/quicklinks",
+        "group/quicklinks-workspaces-padding",
+        "hyprland/workspaces",
+        "group/workspaces-taskbar-padding",
+        "wlr/taskbar",
+        "group/r-taskbar"
+    ],
+
+    // Center Segment
+    "modules-center": [
+        "group/l-clock",
+        "clock",
+        "group/r-clock"
+    ],
+
+    // Right Segment
+    "modules-right": [
+        "group/l-misc",
+        "group/misc",
+        "group/misc-devices-padding",
+        // "cava",
+        "group/devices",
+        "group/devices-system-padding",
+        "group/system"
+    ]
+},
+{
+    // Header
+    "layer": "top",
+    "output": ["DP-1", "DP-2", "DP-3"],
+    "position": "top",
+    "mod": "dock",
+    "height": 35,
+    "margin-top": 4,
+    "margin-bottom": 4,
+    "margin-left": 0,
+    "margin-right": 0,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+
+    // Load Modules
+    "include": ["~/.config/waybar/modules.jsonc"],
+
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch workspace -1",
+        "on-scroll-down": "hyprctl dispatch workspace +1",
+        "all-outputs": true,
+        "active-only": false,
+        "on-click": "activate",
+        "ignore-workspaces": ["1", "2", "3"],
+        "persistent-workspaces": {
+            "*": [4, 5, 6]
+        }
+    },
+
+    // Left Segment
+    "modules-left": [
+        "custom/appmenu",
+        "group/apps-quicklinks-padding",
+        "group/quicklinks",
+        "group/quicklinks-workspaces-padding",
+        "hyprland/workspaces",
+        "group/workspaces-taskbar-padding",
+        "wlr/taskbar",
+        "group/r-taskbar"
+    ],
+
+    // Center Segment
+    "modules-center": [
+        "group/l-clock",
+        "clock",
+        "group/r-clock"
+    ],
+
+    // Right Segment
+    "modules-right": [
+        "group/l-misc",
+        "group/misc",
+        "group/misc-devices-padding",
+        // "cava",
+        "group/devices-secondary",
+        "group/devices-system-padding",
+        "group/system-secondary"
+    ]
+}]

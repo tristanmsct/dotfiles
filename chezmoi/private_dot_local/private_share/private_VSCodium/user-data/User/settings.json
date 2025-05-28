@@ -1,0 +1,32 @@
+{
+    "workbench.colorTheme": "Monokai",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "editor.fontFamily": "MesloLGS NF",
+    "editor.tokenColorCustomizations": {
+        "[Monokai]": {
+          "textMateRules": [
+            {
+              "name": "[CUSTOM COMMENT COLOR]",
+              "scope": "comment",
+              "settings": {
+                "foreground": "#00FFFF"
+              }
+            }
+          ]
+        }
+    },
+    "editor.rulers": [
+        {
+            "column": 89,
+            "color": "#CECECE"
+        },
+        {
+            "column": 139,
+            "color": "#00ffff"
+        },
+    ],
+    "files.trimTrailingWhitespace": true,
+    "flake8.args": [
+      "--max-line=139"
+    ]
+}

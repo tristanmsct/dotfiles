@@ -1,0 +1,112 @@
+#        _ _
+#   __ _| (_) __ _ ___  ___  ___
+#  / _` | | |/ _` / __|/ _ \/ __|
+# | (_| | | | (_| \__ \  __/\__ \
+#  \__,_|_|_|\__,_|___/\___||___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------------------
+# General
+# ---------------------------------------------------------------------------------------
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias ff='fastfetch'
+alias ls='eza -a --icons=always'
+alias ll='eza -al --icons=always'
+alias la="ls -lahF ${colorflag}"
+alias lt='eza -a --tree --level=1 --icons=always'
+alias shutdown='systemctl poweroff'
+alias wifi='nmtui'
+
+if [ -n "$ZSH_VERSION" ]; then
+    alias l="ll"
+elif [ -n "$BASH_VERSION" ]; then
+	alias l="la"
+fi
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Enable aliases to be sudo’ed.
+alias sudo='sudo '
+
+# ---------------------------------------------------------------------------------------
+# Kitty
+# ---------------------------------------------------------------------------------------
+alias icat="kitten icat"
+
+# ---------------------------------------------------------------------------------------
+# System
+# ---------------------------------------------------------------------------------------
+alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
+
+# ---------------------------------------------------------------------------------------
+# Qtile
+# ---------------------------------------------------------------------------------------
+alias res1='xrandr --output DisplayPort-0 --mode 2560x1440 --rate 120'
+alias res2='xrandr --output DisplayPort-0 --mode 1920x1080 --rate 120'
+alias setkb='setxkbmap de;echo "Keyboard set back to de."'
+
+# ---------------------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------------------
+alias sba='source .venv/bin/activate'
+alias poetry='nice poetry'
+
+# ---------------------------------------------------------------------------------------
+# Docker
+# ---------------------------------------------------------------------------------------
+alias dstart='sudo systemctl start docker containerd'
+alias dc='docker compose'
+alias dcu='docker compose up'
+alias dcd='docker compose down'
+alias dcr='docker compose restart'
+alias dki='docker kill'
+alias dps='docker container ls'
+alias dcl='docker compose logs -f'
+alias dpsf="docker ps --format 'table {{.Image}}\t{{.Names}}\t{{.Status}}'"
+alias dstats='docker stats --no-stream'
+alias dcstats='docker compose stats --no-stream'
+
+
+# ---------------------------------------------------------------------------------------
+# Git
+# ---------------------------------------------------------------------------------------
+alias gcm='git commit -am'
+alias gco='git checkout'
+
+if [ -n "$BASH_VERSION" ]; then
+	source /usr/share/bash-completion/completions/git
+	__git_complete gco _git_checkout
+fi
+
+alias gdi='git diff'
+alias gst='git status'
+alias glo='git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+alias gma='git checkout main'
+
+# ---------------------------------------------------------------------------------------
+# Kubernetes
+# ---------------------------------------------------------------------------------------
+alias ke='kubectl get events --sort-by='\''.lastTimestamp'\'''
+alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster --region europe-west9 --project ino-it-s-kroko-ppr'
+
+# ---------------------------------------------------------------------------------------
+# Proton application
+# ---------------------------------------------------------------------------------------
+# This block is important because opening a chromium based or proton app without the appropriate flags.
+# will create a tone of cache and user data in ~/.config.
+alias brave="~/.config/hypr/settings/browser.sh"
+alias typora="~/.config/hypr/settings/typora.sh"
+alias feishin="~/.config/hypr/settings/feishin.sh"
+alias slack="~/.config/hypr/settings/slack.sh"
+alias codium="~/.config/hypr/settings/codium.sh"
+alias vscodium="~/.config/hypr/settings/codium.sh"
+alias nextcloud="~/.config/hypr/settings/nextcloud.sh"
+
+# ---------------------------------------------------------------------------------------
+# QT Applications
+# ---------------------------------------------------------------------------------------
+# These script are about starting the app with the right cursor.
+alias vlc="~/.config/hypr/settings/vlc.sh"

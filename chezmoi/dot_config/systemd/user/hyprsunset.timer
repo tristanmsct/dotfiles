@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Hyprsunset Temperature Adjustment every minute
+Requires=hyprsunset.service
+
+[Timer]
+Unit=hyprsunset.service
+#OnCalendar=*:*:00
+OnCalendar=*:0/10
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

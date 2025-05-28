@@ -1,0 +1,74 @@
+#          _                      _                  _           _   _
+#  _______| |__     ___ _   _ ___| |_ ___  _ __ ___ (_)___  __ _| |_(_) ___  _ __
+# |_  / __| '_ \   / __| | | / __| __/ _ \| '_ ` _ \| / __|/ _` | __| |/ _ \| '_ \
+#  / /\__ \ | | | | (__| |_| \__ \ || (_) | | | | | | \__ \ (_| | |_| | (_) | | | |
+# /___|___/_| |_|  \___|\__,_|___/\__\___/|_| |_| |_|_|___/\__,_|\__|_|\___/|_| |_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# -----------------------------------------------------
+# oh-myzsh plugins
+# -----------------------------------------------------
+plugins=(
+    git
+    sudo
+    web-search
+    archlinux
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    fast-syntax-highlighting
+    copyfile
+    copybuffer
+    dirhistory
+)
+
+# Set-up oh-my-zsh
+source $ZSH/oh-my-zsh.sh
+
+fpath=(~/.config/zsh/completions $fpath)
+autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+
+# -----------------------------------------------------
+# Set-up FZF key bindings (CTRL R for fuzzy history finder)
+# -----------------------------------------------------
+source <(fzf --zsh)
+
+# zsh history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+# -----------------------------------------------------
+# Prompt
+# -----------------------------------------------------
+# Don't start oh-my-posh on TTY, because we load a simple prompt.
+if [[ $(tty) == *"pts"* ]]; then
+    eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/zen.toml)"
+fi
+
+# Shipped Theme
+# eval "$(oh-my-posh init zsh --config /usr/share/oh-my-posh/themes/agnoster.omp.json)"
+
+# -----------------------------------------------------
+# Custom Scripts
+# -----------------------------------------------------
+export PATH="$HOME/.local/bin:$PATH"
+
+# -----------------------------------------------------
+# Tools
+# -----------------------------------------------------
+[[ -s /usr/share/autojump/autojump.zsh ]] && . /usr/share/autojump/autojump.zsh
+eval $(thefuck --alias)
+eval "$(ssh-agent)" &>/dev/null
+
+# -----------------------------------------------------
+# Terminal Keybinds
+# -----------------------------------------------------
+#bindkey "^?" backward-kill-word
+bindkey "^?" backward-delete-char    # Backspace deletes a single character
+bindkey "^W" backward-kill-word     # Ctrl + W (or remapped Ctrl + Backspace) deletes a word
+
+# -----------------------------------------------------
+# Completion Scripts
+# -----------------------------------------------------
+[[ ! -f $ZDOTDIR/task_completion.zsh ]] || source $ZDOTDIR/task_completion.zsh

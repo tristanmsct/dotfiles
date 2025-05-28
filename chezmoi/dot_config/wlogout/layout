@@ -1,0 +1,24 @@
+{
+    "label" : "lock",
+    "action" : "~/.config/hypr/scripts/system/power.sh lock",
+    "text" : "  Lock  ",
+    "keybind" : "l"
+}
+{
+    "label" : "logout",
+    "action" : "~/.config/hypr/scripts/system/power.sh exit",
+    "text" : "  Exit  ",
+    "keybind" : "e"
+}
+{
+    "label" : "shutdown",
+    "action" : "~/.config/hypr/scripts/system/power.sh shutdown",
+    "text" : "Shutdown",
+    "keybind" : "s"
+}
+{
+    "label" : "reboot",
+    "action" : "~/.config/hypr/scripts/system/power.sh reboot",
+    "text" : " Reboot ",
+    "keybind" : "r"
+}

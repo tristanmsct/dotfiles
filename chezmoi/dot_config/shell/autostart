@@ -1,0 +1,22 @@
+#              _            _             _
+#   __ _ _   _| |_ ___  ___| |_ __ _ _ __| |_
+#  / _` | | | | __/ _ \/ __| __/ _` | '__| __|
+# | (_| | |_| | || (_) \__ \ || (_| | |  | |_
+#  \__,_|\__,_|\__\___/|___/\__\__,_|_|   \__|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+if [[ $(tty) == *"pts"* ]]; then
+    # Get terminal dimensions.
+    width=$(tput cols)
+    height=$(tput lines)
+
+    # Use a different template based on size.
+    if (( width >= 110 && height >= 40 )); then
+        fastfetch
+    elif (( width >= 85 && height >= 20 )); then
+        fastfetch -c $HOME/.config/fastfetch/config_small.jsonc
+    fi
+else
+    echo "Start Hyprland with command Hyprland"
+fi
