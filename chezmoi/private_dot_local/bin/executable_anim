@@ -1,0 +1,56 @@
+#!/bin/bash
+#              _
+#   __ _ _ __ (_)_ __ ___
+#  / _` | '_ \| | '_ ` _ \
+# | (_| | | | | | | | | | |
+#  \__,_|_| |_|_|_| |_| |_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# Wrapper for common terminal animations.
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+
+script_name=$(basename "$0")
+
+
+show_help() {
+    echo "Usage: $script_name [cava] [aqua] [matrix] [bonsai] [-h | --help]"
+    echo "A simple wrapper for terminal animations."
+    echo
+    echo "Options:"
+    echo "  cava                 Starts cava audio visualiser."
+    echo "  aqua                 Starts asciiquarium."
+    echo "  matrix               Starts cmatrix with potential optionnal parameters."
+    echo "  bonsai               Starts bonsai.sh with potential optionnal parameters."
+    echo "  -h, --help           Display this help message."
+    exit 0
+}
+
+
+if [[ -z $1 ]]; then
+    choice=$(gum choose "cava" "aqua" "matrix" "bonsai")
+else
+    choice=$1
+fi
+
+
+case $choice in
+    cava)
+        cava
+        ;;
+    aqua)
+        asciiquarium
+        ;;
+    matrix)
+        cmatrix -s ${@:2}
+        ;;
+    bonsai)
+        bonsai.sh -li ${@:2}
+        ;;
+    -h|--help)
+        show_help
+        ;;
+    *)
+        echo "Unknown command."
+        ;;
+esac
