@@ -20,8 +20,8 @@
 
     - name: Install git package
       pacman:
-        name: 
-          - git 
+        name:
+          - git
           - kitty
           - nautilus
         state: present
