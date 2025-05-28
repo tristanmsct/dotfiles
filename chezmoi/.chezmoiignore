@@ -4,6 +4,7 @@
 .config/gtk-3.0/settings.ini
 .config/xsettingsd/xsettingsd.conf
 .config/waypaper/config.ini
+.config/wlogout/style.css
 .config/qt6ct/qt6ct.conf
 .config/qt6ct/style-colors.conf
 .config/hypr/conf/windows.conf
