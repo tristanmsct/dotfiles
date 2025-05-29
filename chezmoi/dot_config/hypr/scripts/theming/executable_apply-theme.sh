@@ -203,6 +203,7 @@ fi
 # Clock overlay
 # ---------------------------------------------------------------------------------------
 
-if [ pgrep -f isthataclock.py ]; then
+if pgrep -f "isthataclock.py" > /dev/null; then
+    dunstify "hello"
     pkill -USR1 -f isthataclock.py
 fi
