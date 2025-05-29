@@ -18,9 +18,6 @@ import subprocess
 import sys
 import time
 
-# Global variable
-color = "#FFFFFF"
-
 CAVA_CONFIG_FILE = "~/.config/cava/config_mini"
 
 
@@ -83,9 +80,6 @@ def main():
     # Register signal handlers for clean exit.
     signal.signal(signal.SIGINT, handle_exit)
     signal.signal(signal.SIGTERM, handle_exit)
-
-    # Get color from cava config file.
-    # color = get_cava_color()
 
     # Hide cursor.
     print("\033[?25l", end="")

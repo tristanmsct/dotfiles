@@ -198,3 +198,11 @@ if pgrep -f "kitty.*kitten.*panel.*cava" > /dev/null; then
     pkill -SIGUSR1 cava
     pkill -USR1 -f song_display.py
 fi
+
+# ---------------------------------------------------------------------------------------
+# Clock overlay
+# ---------------------------------------------------------------------------------------
+
+if [ pgrep -f isthataclock.py ]; then
+    pkill -USR1 -f isthataclock.py
+fi
