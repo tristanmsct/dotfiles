@@ -44,7 +44,7 @@
     // Center Segment
     "modules-center": [
         "group/l-clock",
-        "clock",
+        "group/center",
         "group/r-clock"
     ],
 
@@ -104,7 +104,7 @@
     // Center Segment
     "modules-center": [
         "group/l-clock",
-        "clock",
+        "group/center-secondary",
         "group/r-clock"
     ],
 
@@ -116,6 +116,6 @@
         // "cava",
         "group/devices-secondary",
         "group/devices-system-padding",
-        "group/system-secondary"
+        "group/system"
     ]
 }]

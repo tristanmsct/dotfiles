@@ -34,7 +34,7 @@
 @define-color bg-quicklinks @segment-light;
 @define-color bg-workspaces @segment-dark;
 @define-color bg-taskbar @segment-light;
-@define-color bg-clock @segment-dark;
+@define-color bg-center @segment-dark;
 @define-color bg-misc @segment-light;
 @define-color bg-devices @segment-dark;
 @define-color bg-system @segment-light;
@@ -133,11 +133,6 @@ tooltip {
     padding-bottom: 0;
     border-bottom: 2px solid @accent-color;
     transition: ease-in-out 0.2s;
-}
-
-#custom-appmenu.active {
-    background-color: red;
-    color: yellow;
 }
 
 #apps-quicklinks-padding {
@@ -292,20 +287,29 @@ tooltip {
  * --------------------------------------------------------------------------------------
  */
 
+#center {
+    background: @bg-center;
+}
+
+#center-secondary {
+    background: @bg-center;
+}
+
 #l-clock {
     border-left: 18px solid transparent;
     border-bottom: 35px solid @bg-border-dark;
 }
 
 #clock {
-    background: @bg-clock;
     color: @clock;
     font-size: 14px;
-    padding: 2px 10px 0px 10px;
+    padding: 2px 10px 2px 10px;
 }
 
 #clock:hover {
+    padding-bottom: 0px;
     color: @accent-color;
+    border-bottom: 2px solid @accent-color;
     transition: ease-in-out 0.2s;
 }
 
@@ -456,6 +460,17 @@ tooltip {
     background: @bg-system;
 }
 
+#custom-power {
+    padding-bottom: 2px;
+}
+
+#custom-power:hover {
+    padding-bottom: 0px;
+    color: @accent-color;
+    border-bottom: 2px solid @accent-color;
+    transition: ease-in-out 0.2s;
+}
+
 /*
  *   ___  _   _
  *  / _ \| |_| |__   ___ _ __
@@ -489,27 +504,11 @@ tooltip {
     padding: 0px;
  }
 
- /* #custom-vpnstatus, #custom-vpnstatus.on, #custom-vpnstatus.connected {
-    background-color: @segment-dark;
-    font-size: 16px;
-    color: white;
-    border-radius: 15px;
-    padding: 2px 10px 0px 10px;
-    margin: 5px 15px 5px 0px;
-    opacity:0.8;
-}
-
-#custom-vpnstatus.off {
-    background-color: transparent;
-    padding: 0px;
-    margin: 0px;
-} */
-
-#custom-vpnstatus, #custom-updates, #custom-power {
+#custom-vpnstatus, #custom-updates {
     padding-bottom: 2px;
 }
 
-#custom-vpnstatus:hover, #custom-updates:hover, #custom-power:hover {
+#custom-vpnstatus:hover, #custom-updates:hover {
     padding-bottom: 0px;
     color: @accent-color;
     border-bottom: 2px solid @accent-color;

@@ -98,11 +98,49 @@
 
     // Center Modules ---------------------------------------------------------------------------------------------------------------------
 
+    // Center group ---------------------------------------------------------------------
+    "group/center": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock",
+            "custom/vpnstatus",
+            "custom/updates"
+        ]
+    },
+
+    "group/center-secondary": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock"
+        ]
+    },
+
     // Clock
     "clock": {
         "format": "{:%H:%M - %a %d}",
         "on-click": "gnome-calendar",
         "tooltip": false
+    },
+
+    // VPN
+    "custom/vpnstatus": {
+        "format": "<span size='medium'>{}</span>",
+        "exec": "~/.config/hypr/scripts/vpn/get-status.sh",
+        "on-click": "~/.config/hypr/scripts/menus/vpn.sh",
+        "interval": 5,
+        "return-type": "json"
+    },
+
+    // Updater
+    "custom/updates": {
+        "format": "<span size='medium'>{}</span>",
+        "exec": "~/.config/hypr/scripts/system/updates.sh",
+        "restart-interval": 60,
+        "return-type": "json",
+        "escape": true,
+        "on-click": "~/.config/hypr/scripts/system/updates.sh up",
+        "tooltip": true,
+        // "markup": true
     },
 
     // Right Modules ----------------------------------------------------------------------------------------------------------------------
@@ -263,7 +301,8 @@
         "tooltip": false,
         "min-brightness": 20,
         "scroll-step": 5,
-        "on-click": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
+        "on-click": "~/.config/hypr/settings/eww/brightness-slider.sh",
+        "on-click-middle": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
         "on-click-right": "brightnessctl set $(($(brightnessctl max) * 20 / 100))"
     },
 
@@ -293,7 +332,7 @@
         "format": " <span size='small'>{icon}</span> {capacity}% ",
         "format-charging": "<span size='large'>󰂅</span> {capacity}%",
         "format-plugged": "<span size='large'>󰂅</span> {capacity}%",
-        "format-alt": "{icon}  {time}",
+        // "format-alt": "{icon}  {time}",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "on-update": "~/.config/hypr/scripts/system/battery-monitor.sh"
     },
@@ -302,36 +341,8 @@
     "group/system": {
         "orientation": "horizontal",
         "modules": [
-            "custom/vpnstatus",
-            "custom/updates",
             "custom/power"
         ]
-    },
-
-    "group/system-secondary": {
-        "orientation": "horizontal",
-        "modules": [
-            "custom/vpnstatus",
-            "custom/power"
-        ]
-    },
-
-    // VPN
-    "custom/vpnstatus": {
-        "exec": "~/.config/hypr/scripts/vpn/get-status.sh",
-        "on-click": "~/.config/hypr/scripts/menus/vpn.sh",
-        "interval": 5,
-        "return-type": "json"
-    },
-
-    "custom/updates": {
-        "exec": "~/.config/hypr/scripts/system/updates.sh",
-        "restart-interval": 60,
-        "return-type": "json",
-        "escape": true,
-        "on-click": "~/.config/hypr/scripts/system/updates.sh up",
-        "tooltip": true,
-        "markup": true
     },
 
     "custom/power": {

@@ -89,10 +89,10 @@ else
 fi
 
 # ---------------------------------------------------------------------------------------
-# Applying theme to common css files for Rofi, NWG and Dunst
+# Applying theme to common css files for Rofi, NWG, Dunst and EWW
 # ---------------------------------------------------------------------------------------
 
-# Applying main colors to style sheets for several items.
+# ROFI.
 cp $HOME/.config/hypr/settings/templates/common.rasi.tpl $HOME/.config/hypr/settings/style/common.rasi
 sed -i "s/<MAIN COLOR>/@color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.rasi"
 sed -i "s/<MAIN COLOR TRANSPARENT>/@color$COLOR_NB-tr/g" "$HOME/.config/hypr/settings/style/common.rasi"
@@ -105,6 +105,7 @@ else
     sed -i "s/<BG COLOR>/rgba(230, 230, 230, 0.2)/g" "$HOME/.config/hypr/settings/style/common.rasi"
 fi
 
+# NWG, Dunst, hyprland windows.
 cp $HOME/.config/hypr/settings/templates/common.css.tpl $HOME/.config/hypr/settings/style/common.css
 sed -i "s/<MAIN COLOR>/@color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.css"
 
@@ -125,6 +126,19 @@ cp $HOME/.config/dunst/dunstrc.tpl $HOME/.config/dunst/dunstrc
 sed -i "s/<COLOR_FRAME>/$WAL_COLOR/" "$HOME/.config/dunst/dunstrc"
 pkill dunst
 dunstctl reload
+
+# EWW.
+cp $HOME/.config/hypr/settings/templates/common.scss.tpl $HOME/.config/hypr/settings/style/common.scss
+sed -i "s/<MAIN COLOR>/\$color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.scss"
+if [ $theme_type = "dark" ]; then
+    sed -i "s/<TEXT COLOR>/#eeeeee/g" "$HOME/.config/hypr/settings/style/common.scss"
+    sed -i "s/<BG COLOR>/rgba(0, 0, 0, 0.4)/g" "$HOME/.config/hypr/settings/style/common.scss"
+else
+    sed -i "s/<TEXT COLOR>/#000000/g" "$HOME/.config/hypr/settings/style/common.scss"
+    sed -i "s/<BG COLOR>/rgba(230, 230, 230, 0.4)/g" "$HOME/.config/hypr/settings/style/common.scss"
+fi
+
+eww reload
 
 # ---------------------------------------------------------------------------------------
 # Reload Waybar style

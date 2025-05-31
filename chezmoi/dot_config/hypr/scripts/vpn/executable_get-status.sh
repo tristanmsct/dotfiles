@@ -13,7 +13,7 @@ STATUS=$(cat $HOME/.cache/vpnstatus)
 
 # Generate JSON based on the status.
 if [[ "$STATUS" != "VPN Down" ]]; then
-    echo "{\"text\": \" 󰒄 VPN \", \"tooltip\": \"$STATUS\", \"alt\": \"connected\"}"
+    echo "{\"text\": \" 󰒄  \", \"tooltip\": \"$STATUS\", \"alt\": \"connected\"}"
 else
     echo "{\"text\": \"\", \"alt\": \"off\"}"
 fi

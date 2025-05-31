@@ -10,5 +10,12 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 
 
 - [ ] Create ansible playbook for the installation.
-- [ ] Try Astal or EWW to create modules.
+- [ ] Create EWW widgets
+    - [ ] Brigness + hyprsunset
+    - [X] Brightness slider
+    - [ ] Sound slider
+    - [ ] Screenshot
+    - [ ] Monitor settings
+    - [ ] Colors & themes
+    - [ ] Vpn
 - [ ] Brave : meets screen share looks weirds (probably wayland issue).
