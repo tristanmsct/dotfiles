@@ -16,7 +16,8 @@
 
 (defpoll sunset-value :interval "200ms"
   :initial "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' )"
-  "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' )")
+  "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' )"
+)
 
 ;; Widget Definition
 (defwidget brigntness-menu-control []
@@ -76,8 +77,11 @@
         (button
           :class {hyprsunset-active == "true" ? "control-button-a" : "control-button"}
           ; :onclick "notify-send 'Button Clicked!' 'Slider value: ${current-value}  Brightness value ${brightness-value}'; eww close mywidget"
-          :onclick "hyprctl hyprsunset temperature 6500"
+          ; :onclick "hyprctl hyprsunset temperature 6500"
           ; :onclick "dunstify ${hyprsunset-active}"
+          ; :onclick "dunstify ${sunset-value}"
+          :onclick "~/.config/eww/brightness/scripts/menu-hyprsunset-button.sh"
+          :onrightclick "~/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh 6500"
           :tooltip "Click to show current slider value"
           "Hyprsunset"
         )
@@ -97,7 +101,17 @@
             :timeout 1000
             :value sunset-value
             ;; :onchange "eww update current-value={} && notify-send 'Slider Changed' 'New value: {}'"
-            :onchange {hyprsunset-active == "true" ? "hyprctl hyprsunset temperature {}" : ""}
+            ; :onchange {hyprsunset-active == "true" ? "hyprctl hyprsunset temperature {}" : ""}
+            ; :onchage "~/.config/eww/brightness/scripts/menu-hyprsunset-button.sh {}"
+
+            ; :value brightness-slider-value
+            ; :onchange "~/.config/eww/brightness/scripts/set-brightness.sh {}"
+
+
+            ; :value brightness-slider-value
+            ; :onchange "~/.config/eww/brightness/scripts/set-brightness.sh {}"
+            :onchange "~/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh {}"
+
             :tooltip "Drag to change value (1000 - 20000)"
           )
         )
@@ -105,7 +119,7 @@
     )
     (box
       :orientation "h"
-      :space-evenly false
+      :space-evenly true
       :spacing 15
 
       ;; Button
