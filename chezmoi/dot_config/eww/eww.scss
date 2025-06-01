@@ -1,0 +1,18 @@
+* {
+  all: unset;
+}
+
+@import "/home/tristan/.config/hypr/settings/style/common.scss";
+
+tooltip {
+  background-color: #14171c;
+  color: #b8bfe5;
+  font-family: Inconsolata SemiCondensed Medium;
+  font-weight: Bold;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+@import "brightness/menu.scss";
+@import "brightness/slider.scss";
+@import "sound/slider.scss";

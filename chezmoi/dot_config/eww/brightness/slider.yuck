@@ -1,0 +1,64 @@
+(defwidget closer [window]
+  (eventbox :onclick "eww close ${window} && eww close ${window}-closer")
+)
+
+(defpoll brightness-slider-value
+  :interval "200ms"
+  :initial "$(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
+  "echo $(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
+)
+
+;; Widget Definition
+(defwidget brightness-slider-control []
+  (box
+    :class "brightness-slider-widget"
+    :halign "center"
+    :valign "center"
+
+    ;; Slider
+    (box
+      :halign "fill"
+      :hexpand true
+      (eventbox
+        :cursor "pointer"
+        (scale
+          :class "brightness-slider"
+          :min 0
+          :max 101
+          :timeout 1000
+          :value brightness-slider-value
+          :onchange "~/.config/eww/brightness/scripts/set_brightness.sh {}"
+          :tooltip "Drag to change value (20-100)"
+        )
+      )
+    )
+
+  )
+)
+
+;; Brightness window closer
+; This is a overlay invisible window over the entire screen that catches clicks and closes both windows when clicked.
+(defwindow brightness-slider-window-closer
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%")
+  :stacking "fg"
+  :focusable false
+  (closer :window "brightness-slider-window")
+)
+
+;; Window Definition
+(defwindow brightness-slider-window
+  :monitor 0
+  :geometry (geometry
+    :x "120"
+    :y "-5"
+    :width "300px"
+    :anchor "top right"
+  )
+  :stacking "fg"
+  :wm-ignore false
+  :resizable false
+  (box
+    (brightness-slider-control)
+  )
+)

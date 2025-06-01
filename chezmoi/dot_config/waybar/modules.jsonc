@@ -279,8 +279,8 @@
             "car": "",
             "default": ""
         },
-        "on-click": "pavucontrol",
-        "on-click-middle": "~/.config/hypr/scripts/media/toggle-sound.sh",
+        "on-click": "~/.config/hypr/settings/eww/sound-slider.sh",
+        "on-click-middle": "pavucontrol",
         "on-click-right": "~/.config/hypr/scripts/media/audio-helper.sh"
     },
 

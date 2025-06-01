@@ -1,0 +1,123 @@
+;; Variables
+(defvar current-value 50) ; Static variable that won't auto-update
+; (defvar brightness-value 50) ; Static variable that won't auto-update
+(defvar button-text "Click Me")
+
+; (defpoll brightness-value :interval "100ms" :initial 50
+;   "cat /tmp/eww_brightness 2>/dev/null || echo 50")
+
+(defpoll brightness-value :interval "200ms"
+  :initial "$(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
+  "echo $(( $(brightnessctl g) * 100 / $(brightnessctl m) ))")
+
+;; Widget Definition
+(defwidget simple-control []
+  (box
+    :class "simple-widget"
+    :orientation "h"
+    :space-evenly false
+    :spacing 15
+    :halign "center"
+    :valign "center"
+
+    ;; A label
+    (label
+      :text "hello"
+    )
+
+    ;; Button
+    (eventbox
+      :cursor "pointer"
+      (button
+        :class "control-button"
+        :onclick "notify-send 'Button Clicked!' 'Slider value: ${current-value}  Brightness value ${brightness-value}'; eww close mywidget"
+        :tooltip "Click to show current slider value"
+        button-text
+      )
+    )
+
+    ;; Slider
+    (box
+      :class "slider-container"
+      :halign "fill"
+      :hexpand true
+      (eventbox
+        :cursor "pointer"
+        (scale
+          :class "control-slider"
+          :min 0
+          :max 100
+          :timeout 1000
+          :value current-value
+          ;; :onchange "eww update current-value={} && notify-send 'Slider Changed' 'New value: {}'"
+          :onchange "eww update current-value={}"
+          :tooltip "Drag to change value (0-100)"
+        )
+      )
+    )
+  )
+)
+
+;; Widget Definition
+(defwidget simple-text []
+  (box
+    :class "simple-box"
+    :orientation "h"
+    :space-evenly false
+    :spacing 15
+    :halign "center"
+    :valign "center"
+
+    ;; Simple label
+    (label
+      :text "Brightness slider"
+    )
+
+    ;; Slider
+    (box
+      :class "slider-container"
+      :halign "fill"
+      :hexpand true
+      (eventbox
+        :cursor "pointer"
+        (scale
+          :class "control-slider"
+          :min 0
+          :max 101
+          :timeout 1000
+          :value brightness-value
+          ;; :onchange "eww update current-value={} && notify-send 'Slider Changed' 'New value: {}'"
+          ; :onchange "new_val={}; [ $new_val -lt 10 ] && new_val=10; eww update brightness-value=$new_val"
+          :onchange "~/.config/eww/brightness/scripts/set_brightness.sh {}"
+          ; :onchange "new_val={}; [ $new_val -lt 10 ] && new_val=10; eww update brightness-value=$new_val brightness-display=$new_val"
+
+          :tooltip "Drag to change value (0-100)"
+        )
+      )
+    )
+
+  )
+)
+
+;; Window Definition
+(defwindow mywidget
+  :monitor 0
+  :orientation "v"
+  :geometry (geometry
+    :x "0"
+    :y "0"
+    :width "300px"
+    ;; :height "150px"
+    :anchor "center"
+  )
+  :stacking "fg"
+  :wm-ignore false
+  :resizable false
+  (box
+    :orientation "v"
+    :spacing 0
+    (label :text "Brightness Menu" :xalign 0.1)
+    (simple-control)
+    (simple-text)
+  )
+)

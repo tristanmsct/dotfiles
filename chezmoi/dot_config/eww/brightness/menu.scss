@@ -1,0 +1,42 @@
+/* Main widget container */
+.simple-widget {
+  background-color: rgba(30, 30, 30, 0.3);
+  border: 3px solid #404040;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 5px;
+}
+
+.simple-box {
+  background-color: rgba(30, 30, 30, 0.3);
+  border: 3px solid #404040;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 5px;
+}
+
+/* Button styling */
+.control-button {
+  background-color: #404040;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.control-button:hover {
+  background-color: #505050;
+}
+
+.control-button:active {
+  background-color: #303030;
+}
+
+/* Slider container */
+.slider-container {
+  min-width: 200px;
+  padding-left: 10px;
+}

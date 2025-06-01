@@ -301,7 +301,6 @@ tooltip {
 }
 
 #clock {
-    color: @clock;
     font-size: 14px;
     padding: 2px 10px 2px 10px;
 }

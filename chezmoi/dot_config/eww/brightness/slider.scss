@@ -1,0 +1,37 @@
+/* Main widget container */
+.brightness-slider-widget {
+  background-color: $background-theme;
+  border: 2px solid $accent-color;
+
+  border-radius: 15px;
+  padding: 10px;
+  margin: 3px;
+}
+
+/* Slider (scale) styling */
+.brightness-slider {
+  min-height: 20px;
+  min-width: 200px;
+  margin-right: 10px;
+
+  trough {
+    background-color: #404040;
+    border-radius: 10px;
+    min-height: 5px;
+    border: none;
+  }
+
+  highlight {
+    background-color: $accent-color;
+    border-radius: 10px;
+    border: none;
+  }
+
+  slider {
+    background-color: $accent-color;
+    border-radius: 50%;
+    min-height: 16px;
+    min-width: 16px;
+    margin: -5px 0px -5px 0px;
+  }
+}

@@ -1,0 +1,48 @@
+/* Main widget container */
+.sound-slider-widget {
+  background-color: $background-theme;
+  border: 2px solid $accent-color;
+
+  border-radius: 15px;
+  padding: 10px;
+  margin: 3px;
+}
+
+.mute-button {
+  background-color: $accent-color;
+  color: $foreground;
+
+  min-height: 30px;
+  min-width: 50px;
+  padding: 0px;
+  margin: 0px;
+  border-radius: 15px;
+}
+
+/* Slider (scale) styling */
+.sound-slider {
+  min-height: 20px;
+  min-width: 200px;
+  margin-right: 10px;
+
+  trough {
+    background-color: #404040;
+    border-radius: 10px;
+    min-height: 5px;
+    border: none;
+  }
+
+  highlight {
+    background-color: $accent-color;
+    border-radius: 10px;
+    border: none;
+  }
+
+  slider {
+    background-color: $accent-color;
+    border-radius: 50%;
+    min-height: 16px;
+    min-width: 16px;
+    margin: -5px 0px -5px 0px;
+  }
+}

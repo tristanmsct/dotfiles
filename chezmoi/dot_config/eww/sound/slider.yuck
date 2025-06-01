@@ -1,0 +1,80 @@
+(defpoll sound-icon
+  :interval "100ms"
+  :initial ""
+  "cat /tmp/eww_sound_icon 2>/dev/null || echo "
+)
+
+(defpoll sound-slider-value
+  :interval "200ms"
+  :initial "amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%'"
+  "amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%'"
+)
+
+(defwindow sound-slider-window-closer
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%")
+  :stacking "fg"
+  :focusable false
+  (closer :window "sound-slider-window")
+)
+
+;; Widget Definition
+(defwidget sound-slider-control []
+  (box
+    :class "sound-slider-widget"
+    :orientation "h"
+    :space-evenly false
+    :spacing 15
+    :halign "center"
+    :valign "center"
+
+    ;; Button
+    (eventbox
+      :cursor "pointer"
+      (button
+        :class "mute-button"
+        :onclick "~/.config/eww/sound/scripts/set_sound.sh mute"
+
+        :tooltip "Click to show current slider value"
+        sound-icon
+      )
+    )
+
+    ;; Slider
+    (box
+      :halign "fill"
+      :hexpand true
+      (eventbox
+        :cursor "pointer"
+        (scale
+          :class "sound-slider"
+          :min 0
+          :max 101
+          :timeout 1000
+          :value sound-slider-value
+          :onchange "~/.config/eww/sound/scripts/set_sound.sh {}"
+
+          :tooltip "Drag to change value (0-100)"
+        )
+      )
+    )
+
+  )
+)
+
+;; Window Definition
+(defwindow sound-slider-window
+  :monitor 0
+  :geometry (geometry
+    :x "250"
+    :y "-5"
+    :width "300px"
+    :anchor "top right"
+  )
+  :stacking "fg"
+  :wm-ignore false
+  :resizable false
+  (box
+    (sound-slider-control)
+  )
+)

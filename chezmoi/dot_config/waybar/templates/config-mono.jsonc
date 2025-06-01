@@ -43,7 +43,7 @@
     // Center Segment
     "modules-center": [
         "group/l-clock",
-        "clock",
+        "group/center",
         "group/r-clock"
     ],
 

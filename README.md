@@ -13,7 +13,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 - [ ] Create EWW widgets
     - [ ] Brigness + hyprsunset
     - [X] Brightness slider
-    - [ ] Sound slider
+    - [X] Sound slider
     - [ ] Screenshot
     - [ ] Monitor settings
     - [ ] Colors & themes
