@@ -18,6 +18,14 @@
   (closer :window "sound-slider-window")
 )
 
+(defwindow sound-slider-window-secondary-closer
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%")
+  :stacking "fg"
+  :focusable false
+  (closer :window "sound-slider-window-secondary")
+)
+
 ;; Widget Definition
 (defwidget sound-slider-control []
   (box
@@ -66,8 +74,25 @@
 (defwindow sound-slider-window
   :monitor 0
   :geometry (geometry
-    :x "250"
-    :y "-5"
+    :x "250px"
+    :y "-5px"
+    :width "300px"
+    :anchor "top right"
+  )
+  :stacking "fg"
+  :wm-ignore false
+  :resizable false
+  (box
+    (sound-slider-control)
+  )
+)
+
+; I lost my sanity tring to put `:x` in a variable, that just seems impossible.
+(defwindow sound-slider-window-secondary
+  :monitor 0
+  :geometry (geometry
+    :x "100"
+    :y "-5px"
     :width "300px"
     :anchor "top right"
   )
