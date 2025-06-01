@@ -1,10 +1,17 @@
 /* Main widget container */
-.simple-widget {
-  background-color: rgba(30, 30, 30, 0.3);
-  border: 3px solid #404040;
-  border-radius: 15px;
-  padding: 15px;
-  margin: 5px;
+.brightness-menu-widget {
+  background-color: $background-theme;
+  border: 2px solid $accent-color;
+
+  border-radius: 15px 25px;
+  padding: 10px;
+  margin: 3px;
+}
+
+.birghtness-menu-title {
+  font-size: 20;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .simple-box {
@@ -13,6 +20,12 @@
   border-radius: 15px;
   padding: 15px;
   margin: 5px;
+}
+
+.hello {
+  min-width: 100px;
+  padding: 10px;
+  margin: 10px;
 }
 
 /* Button styling */
@@ -25,6 +38,10 @@
   font-size: 14px;
   font-weight: bold;
   transition: background-color 0.2s ease;
+
+  padding: 10px;
+  margin: 10px;
+  min-width: 100px;
 }
 
 .control-button:hover {
