@@ -41,7 +41,7 @@
       :cursor "pointer"
       (button
         :class "mute-button"
-        :onclick "~/.config/eww/sound/scripts/set_sound.sh mute"
+        :onclick "~/.config/eww/sound/scripts/set-sound.sh mute"
 
         :tooltip "Click to show current slider value"
         sound-icon
@@ -60,7 +60,7 @@
           :max 101
           :timeout 1000
           :value sound-slider-value
-          :onchange "~/.config/eww/sound/scripts/set_sound.sh {}"
+          :onchange "~/.config/eww/sound/scripts/set-sound.sh {}"
 
           :tooltip "Drag to change value (0-100)"
         )

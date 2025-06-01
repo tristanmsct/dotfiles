@@ -27,7 +27,7 @@
           :max 101
           :timeout 1000
           :value brightness-slider-value
-          :onchange "~/.config/eww/brightness/scripts/set_brightness.sh {}"
+          :onchange "~/.config/eww/brightness/scripts/set-brightness.sh {}"
           :tooltip "Drag to change value (20-100)"
         )
       )

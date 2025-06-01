@@ -2,20 +2,21 @@
 (defvar current-value 50) ; Static variable that won't auto-update
 (defvar button-text "Click Me")
 
-; (defvar button-active true)
-(defpoll button-active
+(defvar button-active true)
+(defpoll hyprsunset-active
   :interval "1s"
-  :initial true
-  "cat /tmp/eww_xpos")
+  :initial "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.filter_on' )"
+  "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.filter_on' )"
+)
 (defvar foo 10)
 
 (defpoll brightness-value :interval "200ms"
-  :initial "$(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
+  :initial  "echo $(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
   "echo $(( $(brightnessctl g) * 100 / $(brightnessctl m) ))")
 
 (defpoll sunset-value :interval "200ms"
-  :initial "$(hyprctl hyprsunset temperature)"
-  "echo $(hyprctl hyprsunset temperature)")
+  :initial "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' )"
+  "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' )")
 
 ;; Widget Definition
 (defwidget brigntness-menu-control []
@@ -41,7 +42,7 @@
 
       (label
         :class "hello"
-        :text "Brightnes"
+        :text "Brightness"
       )
 
       ;; Slider
@@ -57,7 +58,7 @@
             :max 101
             :timeout 1000
             :value brightness-slider-value
-            :onchange "~/.config/eww/brightness/scripts/set_brightness.sh {}"
+            :onchange "~/.config/eww/brightness/scripts/set-brightness.sh {}"
             :tooltip "Drag to change value (20-100)"
           )
         )
@@ -73,10 +74,10 @@
       (eventbox
         :cursor "pointer"
         (button
-          :class "control-button"
+          :class {hyprsunset-active == "true" ? "control-button-a" : "control-button"}
           ; :onclick "notify-send 'Button Clicked!' 'Slider value: ${current-value}  Brightness value ${brightness-value}'; eww close mywidget"
           :onclick "hyprctl hyprsunset temperature 6500"
-          ; :onclick "dunstify ${button-active}"
+          ; :onclick "dunstify ${hyprsunset-active}"
           :tooltip "Click to show current slider value"
           "Hyprsunset"
         )
@@ -96,8 +97,8 @@
             :timeout 1000
             :value sunset-value
             ;; :onchange "eww update current-value={} && notify-send 'Slider Changed' 'New value: {}'"
-            :onchange "hyprctl hyprsunset temperature {}"
-            :tooltip "Drag to change value (0-100)"
+            :onchange {hyprsunset-active == "true" ? "hyprctl hyprsunset temperature {}" : ""}
+            :tooltip "Drag to change value (1000 - 20000)"
           )
         )
       )
