@@ -72,3 +72,4 @@ bindkey "^W" backward-kill-word     # Ctrl + W (or remapped Ctrl + Backspace) de
 # Completion Scripts
 # -----------------------------------------------------
 [[ ! -f $ZDOTDIR/task_completion.zsh ]] || source $ZDOTDIR/task_completion.zsh
+[[ ! -f $ZDOTDIR/eww_completions.zsh ]] || source $ZDOTDIR/eww_completions.zsh
