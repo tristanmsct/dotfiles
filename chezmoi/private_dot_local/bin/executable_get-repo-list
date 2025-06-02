@@ -12,8 +12,7 @@
 # Paths need to be absolute, the ~ notation does not work.
 
 # Main repo, config files and such. The space is important at the end there.
-lst_repos=("$HOME/Documents/archdots "
-    "$HOME/.local/share/dotfiles")
+lst_repos=("$HOME/.local/share/dotfiles ")
 
 # The main hub for repos.
 base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
