@@ -61,7 +61,7 @@
 
     "custom/typora": {
         "format": " <span size='x-large'>󰊄</span> ",
-        "on-click": "typora",
+        "on-click": "~/.config/hypr/settings/typora.sh",
         "tooltip-format": "Open Note Application - Typora"
         // "tooltip": false
     },
