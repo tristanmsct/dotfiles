@@ -10,10 +10,5 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 
 
 - [ ] Create ansible playbook for the installation.
-- [ ] Create EWW widgets
-    - [X] Brightness slider
-    - [X] Sound slider
-    - [ ] Brigness + hyprsunset
-    - [ ] Colors, saturation & themes
-- [ ] Improve rofi monitor menu, add a mirror mode
+- [ ] Create Colors, saturation & themes EWW widgets
 - [ ] Brave : meets screen share looks weirds (probably wayland issue).

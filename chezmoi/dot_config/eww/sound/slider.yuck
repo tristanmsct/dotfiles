@@ -1,3 +1,10 @@
+;                            _       _ _     _                              __ _                       _   _
+;  ___  ___  _   _ _ __   __| |  ___| (_) __| | ___ _ __    ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
+; / __|/ _ \| | | | '_ \ / _` | / __| | |/ _` |/ _ \ '__|  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
+; \__ \ (_) | |_| | | | | (_| | \__ \ | | (_| |  __/ |    | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
+; |___/\___/ \__,_|_| |_|\__,_| |___/_|_|\__,_|\___|_|     \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
+;                                                                                |___/
+
 (defpoll sound-icon
   :interval "100ms"
   :initial ""
@@ -6,8 +13,8 @@
 
 (defpoll sound-slider-value
   :interval "200ms"
-  :initial "amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%'"
-  "amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%'"
+  :initial "echo $(( $(amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%') / 5 ))"
+  "echo $(( $(amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%') / 5 ))"
 )
 
 (defwindow sound-slider-window-closer
@@ -57,10 +64,10 @@
         (scale
           :class "sound-slider"
           :min 0
-          :max 101
+          :max 21
           :timeout 1000
           :value sound-slider-value
-          :onchange "~/.config/eww/sound/scripts/set-sound.sh {}"
+          :onchange "~/.config/eww/sound/scripts/set-sound.sh $(( {} * 5 ))"
 
           :tooltip "Drag to change value (0-100)"
         )
@@ -91,7 +98,7 @@
 (defwindow sound-slider-window-secondary
   :monitor 0
   :geometry (geometry
-    :x "100"
+    :x "100px"
     :y "-5px"
     :width "300px"
     :anchor "top right"

@@ -1,3 +1,10 @@
+//                                            _             _         _
+//   _____      ____      __  _ __ ___   __ _(_)_ __    ___| |_ _   _| | ___
+//  / _ \ \ /\ / /\ \ /\ / / | '_ ` _ \ / _` | | '_ \  / __| __| | | | |/ _ \
+// |  __/\ V  V /  \ V  V /  | | | | | | (_| | | | | | \__ \ |_| |_| | |  __/
+//  \___| \_/\_/    \_/\_/   |_| |_| |_|\__,_|_|_| |_| |___/\__|\__, |_|\___|
+//                                                              |___/
+
 * {
   all: unset;
 }
@@ -5,12 +12,13 @@
 @import "/home/tristan/.config/hypr/settings/style/common.scss";
 
 tooltip {
-  background-color: #14171c;
-  color: #b8bfe5;
-  font-family: Inconsolata SemiCondensed Medium;
+  background-color: $background-theme;
+  color: $foreground;
+  font-family: MesloLGS NF medium;
   font-weight: Bold;
   font-size: 1rem;
-  border-radius: 10px;
+  border-radius: 15px;
+  padding: 30px;
 }
 
 @import "brightness/menu.scss";

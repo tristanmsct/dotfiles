@@ -204,7 +204,7 @@
         "tooltip-format": "Toggle Hyprsunset",
         "on-click": "sleep 0.5; ~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
         "on-click-middle": "sleep 0.5; ~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
-        "on-click-right": "sleep 0.5; ~/.config/hypr/scripts/menus/hyprsunset.sh temperature-setter",
+        "on-click-right": "sleep 0.5; ~/.config/hypr/settings/eww/brightness-menu.sh",
         "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
         "return-type": "json",
         "signal": 8
@@ -277,7 +277,7 @@
             "phone": "",
             "portable": "󰄜",
             "car": "",
-            "default": ""
+            "default": "󰌢"
         },
         "on-click": "~/.config/hypr/settings/eww/sound-slider.sh",
         "on-click-middle": "pavucontrol",
@@ -303,7 +303,7 @@
         "scroll-step": 5,
         "on-click": "~/.config/hypr/settings/eww/brightness-slider.sh",
         "on-click-middle": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
-        "on-click-right": "brightnessctl set $(($(brightnessctl max) * 20 / 100))"
+        "on-click-right": "sleep 0.5; ~/.config/hypr/settings/eww/brightness-menu.sh"
     },
 
     "network": {
@@ -330,8 +330,8 @@
             "critical": 5
         },
         "format": " <span size='small'>{icon}</span> {capacity}% ",
-        "format-charging": "<span size='large'>󰂅</span> {capacity}%",
-        "format-plugged": "<span size='large'>󰂅</span> {capacity}%",
+        "format-charging": " <span size='large'>󰂅</span> {capacity}%",
+        "format-plugged": " <span size='large'>󰂅</span> {capacity}%",
         // "format-alt": "{icon}  {time}",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
         "on-update": "~/.config/hypr/scripts/system/battery-monitor.sh"

@@ -12,13 +12,19 @@ source $HOME/.config/hypr/scripts/monitors/monitor-helpers.sh
 default="Default"
 auto_detect="Auto Detect"
 external="External Only"
+mirror="Mirror Main Screen"
 
 monitor_cmd() {
-    rofi -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l 3 -p "Choose a monitor setup"
+    rofi -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l $1 -p "Choose a monitor setup"
 }
 
 monitor_menu() {
-    echo -e "$default\n$auto_detect\n$external" | monitor_cmd
+    monitor_count=$(hyprctl monitors -j | jq length)
+    if [[ $monitor_count -ge 2 ]]; then
+        echo -e "$default\n$auto_detect\n$external\n$mirror" | monitor_cmd 4
+    else
+        echo -e "$default\n$auto_detect" | monitor_cmd 2
+    fi
 }
 
 selected_setup="$(monitor_menu)"
@@ -48,6 +54,9 @@ case $selected_setup in
             dunstify "Cannot disable the main monitor: need at least another one."
             exit 1
         fi
+        ;;
+    $mirror)
+        sed -i 's/^monitor=DP-[0-9].*/&,mirror,eDP-1/' "$MONITOR_FILE"
         ;;
     *)
         echo "Unknown command."

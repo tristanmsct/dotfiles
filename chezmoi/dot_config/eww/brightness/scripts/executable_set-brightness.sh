@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
+#  _          _       _     _                             _ _     _
+# | |__  _ __(_) __ _| |__ | |_ _ __   ___  ___ ___   ___| (_) __| | ___ _ __
+# | '_ \| '__| |/ _` | '_ \| __| '_ \ / _ \/ __/ __| / __| | |/ _` |/ _ \ '__|
+# | |_) | |  | | (_| | | | | |_| | | |  __/\__ \__ \ \__ \ | | (_| |  __/ |
+# |_.__/|_|  |_|\__, |_| |_|\__|_| |_|\___||___/___/ |___/_|_|\__,_|\___|_|
+#               |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
 new_val=$1
 
-# Cap the value at 10
+# Cap the value at 20
 [ $new_val -lt 20 ] && new_val=20
 
-# Store the actual value in a temp file
-# echo $new_val > /tmp/eww_brightness
-
 brightnessctl set $(($(brightnessctl max) * $new_val / 100))
-
-# Apply the brightness change (replace with your actual brightness command)
-# brightnessctl set ${new_val}%
