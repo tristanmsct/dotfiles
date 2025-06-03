@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#           _        _           _                  _
+#  ___  ___| |_     | |__   ___ | |_       ___ ___ | | ___  _ __ ___
+# / __|/ _ \ __|____| '_ \ / _ \| __|____ / __/ _ \| |/ _ \| '__/ __|
+# \__ \  __/ ||_____| | | | (_) | ||_____| (_| (_) | | (_) | |  \__ \
+# |___/\___|\__|    |_| |_|\___/ \__|     \___\___/|_|\___/|_|  |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+COLOR=$(echo $1 | awk -F'#' '{print "#" $2}' | cut -c 1-7)
+COLOR_NB=$(echo $1 | grep -o "^[0-9]")
+
+$HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB &
+
+# Accent colors are stored in a cache files to set them up again at restart.
+echo -e "$COLOR\n$COLOR_NB" > $HOME/.cache/accent-color
+
+eww close theme-menu-window-closer
+eww close theme-menu-window

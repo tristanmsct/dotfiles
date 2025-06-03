@@ -1,0 +1,133 @@
+;  _   _                                                                         __ _                       _   _
+; | |_| |__   ___ _ __ ___   ___   _ __ ___   ___ _ __  _   _    ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
+; | __| '_ \ / _ \ '_ ` _ \ / _ \ | '_ ` _ \ / _ \ '_ \| | | |  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
+; | |_| | | |  __/ | | | | |  __/ | | | | | |  __/ | | | |_| | | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
+;  \__|_| |_|\___|_| |_| |_|\___| |_| |_| |_|\___|_| |_|\__,_|  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
+;                                                                                     |___/
+;
+; -----------------------------------------------------------------------------------------------------------------------------------------
+
+(defpoll pywal-colors
+  :interval "2s"
+  :initial "~/.config/eww/themes/scripts/spit-hot-colors.sh"
+  "~/.config/eww/themes/scripts/spit-hot-colors.sh"
+)
+
+(defvar saturation-value 0.5)
+
+;; Widget Definition
+(defwidget theme-menu-control []
+  (box
+    :class "theme-menu-widget"
+    :orientation "v"
+    :width 450
+    :space-evenly false
+    :spacing 15
+    :halign "center"
+    :valign "center"
+
+    ;; Menu title
+    (label
+      :class "theme-menu-title"
+      :xalign 0.1
+      :text "Theme menu"
+    )
+
+    ;; List of accent colors from pywal
+    (box
+      :orientation "v"
+      (for entry in pywal-colors
+        (eventbox
+          :cursor "pointer"
+          (button
+            :class "color-item"
+            :onclick "~/.config/eww/themes/scripts/set-hot-colors.sh '${entry}'"
+            :tooltip "Click to select a color theme"
+            (label :markup "${entry}")
+          )
+        )
+      )
+    )
+
+    ;; Saturation menu
+    (box
+      :orientation "h"
+      :space-evenly false
+      :spacing 15
+
+      ;; Hyprsunset toggle button
+      (eventbox
+        :cursor "pointer"
+        (button
+          :class "control-button"
+          :onclick "~/.config/eww/themes/scripts/saturate.sh ${saturation-value}"
+          :tooltip "Click to apply chosen saturation"
+          "Saturate"
+        )
+      )
+
+      ;; hyprsunset slider
+      (box
+        :class "slider-container"
+        :halign "fill"
+        :hexpand true
+        (eventbox
+          :cursor "pointer"
+          (scale
+            :class  "brightness-slider"
+            :min 0
+            :max 2
+            :round-digits 2
+            :timeout 1000
+            :value saturation-value
+            :onchange "eww update saturation-value={}"
+            :tooltip "Drag to change value (0 - 1)"
+          )
+        )
+      )
+    )
+
+    ;; Dark and light theme switcher
+    (eventbox
+      :cursor "pointer"
+      (button
+        :class "control-button-active"
+        :onclick "~/.config/eww/themes/scripts/switch-theme.sh"
+        :tooltip "Click to switch between dark and light theme"
+        (label :markup "Dark / Light Theme")
+      )
+    )
+
+  )
+)
+
+;; Theme window closer
+; This is a overlay invisible window over the entire screen that catches clicks and closes both windows when clicked.
+(defwindow theme-menu-window-closer
+  :monitor 0
+  :geometry (geometry :width "100%" :height "100%")
+  :stacking "fg"
+  :focusable false
+  (closer :window "theme-menu-window")
+)
+
+;; Window Definition
+(defwindow theme-menu-window
+  :monitor 0
+  :orientation "v"
+  :geometry (geometry
+    :x "0"
+    :y "0"
+    :width "400px"
+    :height "150px"
+    :anchor "center"
+  )
+  :stacking "fg"
+  :wm-ignore false
+  :resizable false
+  (box
+    :orientation "v"
+    :spacing 0
+    (theme-menu-control)
+  )
+)

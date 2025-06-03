@@ -1,0 +1,48 @@
+//  _   _                                                            _         _
+// | |_| |__   ___ _ __ ___   ___   _ __ ___   ___ _ __  _   _   ___| |_ _   _| | ___
+// | __| '_ \ / _ \ '_ ` _ \ / _ \ | '_ ` _ \ / _ \ '_ \| | | | / __| __| | | | |/ _ \
+// | |_| | | |  __/ | | | | |  __/ | | | | | |  __/ | | | |_| | \__ \ |_| |_| | |  __/
+//  \__|_| |_|\___|_| |_| |_|\___| |_| |_| |_|\___|_| |_|\__,_| |___/\__|\__, |_|\___|
+//                                                                       |___/
+//
+// ----------------------------------------------------------------------------------------------------------------------------------------
+
+/* Main widget container */
+.theme-menu-widget {
+  background-color: $background-theme;
+  border: 2px solid $accent-color;
+
+  border-radius: 15px 25px;
+  padding: 10px 20px 10px 20px;
+  margin: 3px;
+}
+
+.theme-menu-title {
+  color: $foreground-theme;
+  font-size: 20;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.color-item {
+  background-color: $background-theme;
+  color: #ffffff;
+  border: none;
+  border-radius: 15px 25px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+
+  padding: 10px;
+  margin: 5px 0px;
+  min-width: 100px;
+
+  &:hover {
+    background-color: #505050;
+  }
+
+  &:active {
+    background-color: #303030;
+  }
+}

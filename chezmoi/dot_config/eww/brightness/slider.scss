@@ -41,4 +41,14 @@
     min-width: 16px;
     margin: -5px 0px -5px 0px;
   }
+
+  &:hover {
+    highlight {
+      background-color: $highlight-color;
+    }
+
+    slider {
+      background-color: $highlight-color;
+    }
+  }
 }

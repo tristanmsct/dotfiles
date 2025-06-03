@@ -133,7 +133,7 @@
 
     // Updater
     "custom/updates": {
-        "format": "<span size='medium'>{}</span>",
+        // "format": "<span size='medium'>{}</span>",
         "exec": "~/.config/hypr/scripts/system/updates.sh",
         "restart-interval": 60,
         "return-type": "json",

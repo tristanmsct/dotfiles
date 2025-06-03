@@ -139,7 +139,7 @@
             :onclick "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh"
             :onrightclick "~/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh 6500"
             :tooltip "Click to toogle hyprsunset manually"
-            "Hyprsunset"
+            "Hyprsdunset"
           )
         )
 
@@ -151,7 +151,11 @@
           (eventbox
             :cursor "pointer"
             (scale
-              :class "brightness-slider"
+              :class  {
+                        sunset-value < 130 ? "hyprsunset-slider-hot" :
+                        sunset-value == 130 ? "hyprsunset-slider" :
+                        "hyprsunset-slider-cold"
+                      }
               :min 20
               :max 400
               :timeout 1000

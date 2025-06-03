@@ -20,7 +20,7 @@ read icons_color theme_color _ <<< $(python $HOME/.config/hypr/scripts/theming/c
 COLOR_NB_INC=$((COLOR_NB + 1))
 WAL_COLOR=$(sed -n "${COLOR_NB_INC}p" $HOME/.cache/wal/colors)
 
-read saturated_color <<< $(python $HOME/.config/hypr/scripts/theming/increase_saturation.py -c $WAL_COLOR -t rgba)
+read saturated_color <<< $(python $HOME/.config/hypr/scripts/theming/increase_saturation.py -c $WAL_COLOR -t rgba -s 0.2)
 
 theme_type="dark"
 if [ -f $HOME/.cache/theme-light-dark ]; then
@@ -108,6 +108,7 @@ fi
 # NWG, Dunst, hyprland windows.
 cp $HOME/.config/hypr/settings/templates/common.css.tpl $HOME/.config/hypr/settings/style/common.css
 sed -i "s/<MAIN COLOR>/@color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.css"
+sed -i "s/<SATURATED COLOR>/$saturated_color/g" "$HOME/.config/hypr/settings/style/common.css"
 
 if [ $theme_type = "dark" ]; then
     sed -i "s/<TEXT COLOR>/#eeeeee/g" "$HOME/.config/hypr/settings/style/common.css"
@@ -130,6 +131,8 @@ dunstctl reload
 # EWW.
 cp $HOME/.config/hypr/settings/templates/common.scss.tpl $HOME/.config/hypr/settings/style/common.scss
 sed -i "s/<MAIN COLOR>/\$color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.scss"
+sed -i "s/<SATURATED COLOR>/$saturated_color/g" "$HOME/.config/hypr/settings/style/common.scss"
+
 if [ $theme_type = "dark" ]; then
     sed -i "s/<TEXT COLOR>/#eeeeee/g" "$HOME/.config/hypr/settings/style/common.scss"
     sed -i "s/<BG COLOR>/rgba(0, 0, 0, 0.4)/g" "$HOME/.config/hypr/settings/style/common.scss"
@@ -144,32 +147,7 @@ eww reload
 # Reload Waybar style
 # ---------------------------------------------------------------------------------------
 
-# No need to restart waybar, the reload_style_on_change can be used in its config file.
-# pkill waybar
-# $HOME/.config/hypr/scripts/waybar/launch.sh
-
-cp $HOME/.config/waybar/templates/style.css.tpl $HOME/.config/waybar/style.css
-sed -i "s/<MAIN COLOR>/@color$COLOR_NB/g" "$HOME/.config/waybar/style.css"
-
-if [ $theme_type = "dark" ]; then
-    sed -i "s/segment-dark rgba(160, 160, 160, 0.7)/segment-dark rgba(0, 0, 0, 0.7)/g" "$HOME/.config/waybar/style.css"
-    sed -i "s/segment-light rgba(160, 160, 160, 0.4)/segment-light rgba(0, 0, 0, 0.4)/g" "$HOME/.config/waybar/style.css"
-    sed -i "s/border-overlay rgba(160, 160, 160, 0.5)/border-overlay rgba(0, 0, 0, 0.5)/g" "$HOME/.config/waybar/style.css"
-
-    sed -i "s/workspace_bg rgba(210, 210, 210, 0.6)/workspace_bg rgba(0, 0, 0, 0.6)/g" "$HOME/.config/waybar/style.css"
-    sed -i "s/workspace_fg @background/workspace_fg @foreground/g" "$HOME/.config/waybar/style.css"
-
-    sed -i "s/color: <TEXT COLOR>;/color: @foreground;/g" "$HOME/.config/waybar/style.css"
-else
-    sed -i "s/segment-dark rgba(0, 0, 0, 0.7)/segment-dark rgba(160, 160, 160, 0.7)/g" "$HOME/.config/waybar/style.css"
-    sed -i "s/segment-light rgba(0, 0, 0, 0.4)/segment-light rgba(160, 160, 160, 0.4)/g" "$HOME/.config/waybar/style.css"
-    sed -i "s/border-overlay rgba(0, 0, 0, 0.5)/border-overlay rgba(160, 160, 160, 0.5)/g" "$HOME/.config/waybar/style.css"
-
-    sed -i "s/workspace_bg rgba(0, 0, 0, 0.6)/workspace_bg rgba(210, 210, 210, 0.6)/g" "$HOME/.config/waybar/style.css"
-    sed -i "s/workspace_fg @foreground/workspace_fg @background/g" "$HOME/.config/waybar/style.css"
-
-    sed -i "s/color: <TEXT COLOR>;/color: @background;/g" "$HOME/.config/waybar/style.css"
-fi
+# This section is not used anymore.
 
 # ---------------------------------------------------------------------------------------
 # SDDM

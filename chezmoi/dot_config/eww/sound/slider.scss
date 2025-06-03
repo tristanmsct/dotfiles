@@ -24,6 +24,14 @@
   padding: 0px;
   margin: 0px;
   border-radius: 15px;
+
+  &:hover {
+    background-color: $highlight-color;
+  }
+
+  &:active {
+    background-color: $accent-color;
+  }
 }
 
 /* Slider (scale) styling */
@@ -51,5 +59,15 @@
     min-height: 16px;
     min-width: 16px;
     margin: -5px 0px -5px 0px;
+  }
+
+  &:hover {
+    highlight {
+      background-color: $highlight-color;
+    }
+
+    slider {
+      background-color: $highlight-color;
+    }
   }
 }

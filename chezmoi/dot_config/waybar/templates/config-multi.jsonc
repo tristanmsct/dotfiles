@@ -32,30 +32,20 @@
     // Left Segment
     "modules-left": [
         "custom/appmenu",
-        "group/apps-quicklinks-padding",
         "group/quicklinks",
-        "group/quicklinks-workspaces-padding",
         "hyprland/workspaces",
-        "group/workspaces-taskbar-padding",
         "wlr/taskbar",
-        "group/r-taskbar"
     ],
 
     // Center Segment
     "modules-center": [
-        "group/l-clock",
         "group/center",
-        "group/r-clock"
     ],
 
     // Right Segment
     "modules-right": [
-        "group/l-misc",
         "group/misc",
-        "group/misc-devices-padding",
-        // "cava",
         "group/devices",
-        "group/devices-system-padding",
         "group/system"
     ]
 },
@@ -92,30 +82,20 @@
     // Left Segment
     "modules-left": [
         "custom/appmenu",
-        "group/apps-quicklinks-padding",
         "group/quicklinks",
-        "group/quicklinks-workspaces-padding",
         "hyprland/workspaces",
-        "group/workspaces-taskbar-padding",
         "wlr/taskbar",
-        "group/r-taskbar"
     ],
 
     // Center Segment
     "modules-center": [
-        "group/l-clock",
         "group/center-secondary",
-        "group/r-clock"
     ],
 
     // Right Segment
     "modules-right": [
-        "group/l-misc",
         "group/misc",
-        "group/misc-devices-padding",
-        // "cava",
         "group/devices-secondary",
-        "group/devices-system-padding",
         "group/system"
     ]
 }]

@@ -8,3 +8,4 @@
 (include "brightness/menu.yuck")
 (include "brightness/slider.yuck")
 (include "sound/slider.yuck")
+(include "themes/menu.yuck")

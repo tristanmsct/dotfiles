@@ -50,6 +50,14 @@
   padding: 10px;
   margin: 5px 0px;
   min-width: 100px;
+
+  &:hover {
+    background-color: $highlight-color;
+  }
+
+  &:active {
+    background-color: $accent-color;
+  }
 }
 
 .control-button {
@@ -74,4 +82,89 @@
     background-color: #303030;
   }
 
+}
+
+.hyprsunset-slider {
+  min-height: 20px;
+  min-width: 200px;
+  margin-right: 10px;
+
+  trough {
+    background-color: #404040;
+    border-radius: 10px;
+    min-height: 5px;
+    border: none;
+  }
+
+  highlight {
+    background-color: #404040;
+    border-radius: 10px;
+    border: none;
+  }
+
+  slider {
+    background-color: $accent-color;
+    border-radius: 50%;
+    min-height: 16px;
+    min-width: 16px;
+    margin: -5px 0px -5px 0px;
+
+    &:hover {
+      background-color: $highlight-color;
+    }
+  }
+}
+
+.hyprsunset-slider-hot {
+  min-height: 20px;
+  min-width: 200px;
+  margin-right: 10px;
+
+  trough {
+    background-color: #d43f35;
+    border-radius: 10px;
+    min-height: 5px;
+    border: none;
+  }
+
+  highlight {
+    background-color: #404040;
+    border-radius: 10px;
+    border: none;
+  }
+
+  slider {
+    background-color: #d43f35;
+    border-radius: 50%;
+    min-height: 16px;
+    min-width: 16px;
+    margin: -5px 0px -5px 0px;
+  }
+}
+
+.hyprsunset-slider-cold {
+  min-height: 20px;
+  min-width: 200px;
+  margin-right: 10px;
+
+  trough {
+    background-color: #404040;
+    border-radius: 10px;
+    min-height: 5px;
+    border: none;
+  }
+
+  highlight {
+    background-color: #4094ed;
+    border-radius: 10px;
+    border: none;
+  }
+
+  slider {
+    background-color: #4094ed;
+    border-radius: 50%;
+    min-height: 16px;
+    min-width: 16px;
+    margin: -5px 0px -5px 0px;
+  }
 }
