@@ -139,7 +139,7 @@
             :onclick "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh"
             :onrightclick "~/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh 6500"
             :tooltip "Click to toogle hyprsunset manually"
-            "Hyprsdunset"
+            "Hyprsunset"
           )
         )
 

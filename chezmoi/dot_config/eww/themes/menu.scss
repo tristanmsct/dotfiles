@@ -24,9 +24,13 @@
   margin-bottom: 5px;
 }
 
+.color-chooser {
+  min-height: 400px;
+}
+
 .color-item {
   background-color: $background-theme;
-  color: #ffffff;
+  color: $foreground-theme;
   border: none;
   border-radius: 15px 25px;
   padding: 10px 20px;

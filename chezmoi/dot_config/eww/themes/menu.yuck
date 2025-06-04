@@ -35,7 +35,9 @@
 
     ;; List of accent colors from pywal
     (box
+      :class "color-chooser"
       :orientation "v"
+
       (for entry in pywal-colors
         (eventbox
           :cursor "pointer"

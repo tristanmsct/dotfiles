@@ -241,7 +241,7 @@ tooltip {
 
 #center, #center-secondary {
     background: @background-theme;
-    border-radius: 25px 25px 15px 15px;
+    border-radius: 15px 15px 25px 25px;
     border: 2px solid @accent-color;
 }
 
@@ -386,9 +386,9 @@ tooltip {
  * VPN
  * ----------------------------------------------------- */
 
- #custom-updates.noupdate {
+ /* #custom-updates.noupdate {
     color: transparent;
- }
+ } */
 
 #custom-vpnstatus:hover, #custom-updates:hover {
     color: @accent-color;
