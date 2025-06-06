@@ -11,7 +11,7 @@
  * ----------------------------------------------------------------------------------------------------------------------------------------
  */
 
-@import "~/.config/hypr/settings/style/common.rasi"
+@import "~/.cache/wal/colors-rofi-pywal"
 
 configuration {
     font:                           "Fira Sans 11";

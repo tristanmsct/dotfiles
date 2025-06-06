@@ -13,6 +13,8 @@
 # The script can run with or without arguments. Without arguments, the first color in the theme will be used unless it is too grey.
 # See python script for more details.
 
+source $HOME/.config/hypr/scripts/theming/pywal-enhance.sh
+
 COLOR=${1:-"DEFAULT"}
 COLOR_NB=${2:-"1"}
 read icons_color theme_color _ <<< $(python $HOME/.config/hypr/scripts/theming/convert_colors.py -c $COLOR -d)
@@ -75,79 +77,8 @@ done
 
 gio set "$HOME/Media" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder_color_default_pictures.svg"
 
-# Forces nautilus to reload its theme, otherwise the icon are changed but not orchis theme.
+# Forces nautilus to reload its theme, otherwise the icon are changed but not orchis themé&e.
 pkill -f nautilus
-
-# ---------------------------------------------------------------------------------------
-# Theming the cursor
-# ---------------------------------------------------------------------------------------
-
-if [ $theme_type = "dark" ]; then
-    hyprctl setcursor Vimix-white-cursors 40
-else
-    hyprctl setcursor Vimix-cursors 40
-fi
-
-# ---------------------------------------------------------------------------------------
-# Applying theme to common css files for Rofi, NWG, Dunst and EWW
-# ---------------------------------------------------------------------------------------
-
-# ROFI.
-cp $HOME/.config/hypr/settings/templates/common.rasi.tpl $HOME/.config/hypr/settings/style/common.rasi
-sed -i "s/<MAIN COLOR>/@color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.rasi"
-sed -i "s/<MAIN COLOR TRANSPARENT>/@color$COLOR_NB-tr/g" "$HOME/.config/hypr/settings/style/common.rasi"
-
-if [ $theme_type = "dark" ]; then
-    sed -i "s/<TEXT COLOR>/#eeeeee/g" "$HOME/.config/hypr/settings/style/common.rasi"
-    sed -i "s/<BG COLOR>/rgba(0, 0, 0, 0.4)/g" "$HOME/.config/hypr/settings/style/common.rasi"
-else
-    sed -i "s/<TEXT COLOR>/#000000/g" "$HOME/.config/hypr/settings/style/common.rasi"
-    sed -i "s/<BG COLOR>/rgba(230, 230, 230, 0.2)/g" "$HOME/.config/hypr/settings/style/common.rasi"
-fi
-
-# NWG, Dunst, hyprland windows.
-cp $HOME/.config/hypr/settings/templates/common.css.tpl $HOME/.config/hypr/settings/style/common.css
-sed -i "s/<MAIN COLOR>/@color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.css"
-sed -i "s/<SATURATED COLOR>/$saturated_color/g" "$HOME/.config/hypr/settings/style/common.css"
-
-if [ $theme_type = "dark" ]; then
-    sed -i "s/<TEXT COLOR>/#eeeeee/g" "$HOME/.config/hypr/settings/style/common.css"
-    sed -i "s/<BG COLOR>/rgba(0, 0, 0, 0.4)/g" "$HOME/.config/hypr/settings/style/common.css"
-else
-    sed -i "s/<TEXT COLOR>/#000000/g" "$HOME/.config/hypr/settings/style/common.css"
-    sed -i "s/<BG COLOR>/rgba(230, 230, 230, 0.4)/g" "$HOME/.config/hypr/settings/style/common.css"
-fi
-
-# Can't use a tmp file as intermediary here, it causes a nasty error message.
-sed -i -E 's/\$color[0-9]/\$color'"$COLOR_NB"'/g' "$HOME/.config/hypr/conf/windows.conf"
-sed -i -E 's/\$colort[0-9]/\$colort'"$COLOR_NB"'/g' "$HOME/.config/hypr/conf/windows.conf"
-hyprctl reload
-
-cp $HOME/.config/dunst/dunstrc.tpl $HOME/.config/dunst/dunstrc
-sed -i "s/<COLOR_FRAME>/$WAL_COLOR/" "$HOME/.config/dunst/dunstrc"
-pkill dunst
-dunstctl reload
-
-# EWW.
-cp $HOME/.config/hypr/settings/templates/common.scss.tpl $HOME/.config/hypr/settings/style/common.scss
-sed -i "s/<MAIN COLOR>/\$color$COLOR_NB/g" "$HOME/.config/hypr/settings/style/common.scss"
-sed -i "s/<SATURATED COLOR>/$saturated_color/g" "$HOME/.config/hypr/settings/style/common.scss"
-
-if [ $theme_type = "dark" ]; then
-    sed -i "s/<TEXT COLOR>/#eeeeee/g" "$HOME/.config/hypr/settings/style/common.scss"
-    sed -i "s/<BG COLOR>/rgba(0, 0, 0, 0.4)/g" "$HOME/.config/hypr/settings/style/common.scss"
-else
-    sed -i "s/<TEXT COLOR>/#000000/g" "$HOME/.config/hypr/settings/style/common.scss"
-    sed -i "s/<BG COLOR>/rgba(230, 230, 230, 0.4)/g" "$HOME/.config/hypr/settings/style/common.scss"
-fi
-
-eww reload
-
-# ---------------------------------------------------------------------------------------
-# Reload Waybar style
-# ---------------------------------------------------------------------------------------
-
-# This section is not used anymore.
 
 # ---------------------------------------------------------------------------------------
 # SDDM
@@ -157,18 +88,22 @@ WALLPAPER=$(cat $HOME/.cache/wallpaper/current_wallpaper)
 $HOME/.config/hypr/scripts/theming/sddm.sh $WALLPAPER $WAL_COLOR
 
 # ---------------------------------------------------------------------------------------
-# wLogout
+# Enhancing pywal themes and applying dark and light variant
 # ---------------------------------------------------------------------------------------
 
-if [ $theme_type = "dark" ]; then
-    sed -i "s/color: #000000;/color: #FFFFFF;/" $HOME/.config/wlogout/style.css
-    sed -i "s/background-color: rgba(210, 210, 210, 0.7);/background-color: rgba(12, 12, 12, 0.7);/" $HOME/.config/wlogout/style.css
-    sed -i "s/-light.png/-dark.png/" $HOME/.config/wlogout/style.css
-else
-    sed -i "s/color: #FFFFFF;/color: #000000;/" $HOME/.config/wlogout/style.css
-    sed -i "s/background-color: rgba(12, 12, 12, 0.7);/background-color: rgba(210, 210, 210, 0.7);/" $HOME/.config/wlogout/style.css
-    sed -i "s/-dark.png/-light.png/" $HOME/.config/wlogout/style.css
-fi
+enhance_templates
+
+hyprctl reload
+eww reload
+
+# ---------------------------------------------------------------------------------------
+# Dunst
+# ---------------------------------------------------------------------------------------
+
+cp $HOME/.config/dunst/dunstrc.tpl $HOME/.config/dunst/dunstrc
+sed -i "s/<COLOR_FRAME>/$WAL_COLOR/" "$HOME/.config/dunst/dunstrc"
+pkill dunst
+dunstctl reload
 
 # ---------------------------------------------------------------------------------------
 # Cava
@@ -196,6 +131,5 @@ fi
 # ---------------------------------------------------------------------------------------
 
 if pgrep -f "isthataclock.py" > /dev/null; then
-    dunstify "hello"
     pkill -USR1 -f isthataclock.py
 fi

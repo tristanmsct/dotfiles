@@ -35,9 +35,11 @@ bar_width = 3
 ; foreground = <COLOR>
 gradient = 1
 gradient_count = 2
-; gradient_color_1 = <COLOR1>
 gradient_color_1 = <COLOR>
 gradient_color_2 = '#ffffff'
+
+; Not used, kept just in case.
+; gradient_color_1 = <COLOR1>
 ; gradient_color_2 = <COLOR2>
 ; gradient_color_3 = <COLOR3>
 ; gradient_color_4 = <COLOR4>

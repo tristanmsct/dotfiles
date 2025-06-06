@@ -7,8 +7,8 @@
 
 (defpoll sound-icon
   :interval "100ms"
-  :initial " "
-  "cat /tmp/eww_sound_icon 2>/dev/null || echo  "
+  :initial "~/.config/eww/sound/scripts/get-icon.sh"
+  "~/.config/eww/sound/scripts/get-icon.sh"
 )
 
 (defpoll sound-slider-value

@@ -20,7 +20,7 @@
  * --------------------------------------------------------------------------------------
  */
 
-@import '../hypr/settings/style/common.css';
+@import '../../.cache/wal/colors-waybar.css';
 
 /* workspace text colors */
 @define-color act_wrk_fg rgba(0, 0, 0, 1);
