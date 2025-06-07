@@ -12,7 +12,7 @@
     "custom/appmenu": {
         "format": "<span size='x-large'>󰣇</span>",
         "on-click": "~/.config/nwg-panel/menu-start.sh",
-        "on-click-right": "sleep 0.2;pkill rofi || rofi -show drun -replace",
+        "on-click-right": "pkill rofi || rofi -show drun -replace",
         "on-click-middle": "~/.config/hypr/scripts/menus/keybindings.sh",
         "tooltip-format": "<span line_height='1.5'>Left: Open the application launcher</span>\n<span line_height='1.5'>Middle: Open Rofi application launcher</span>\n<span line_height='1.5'>Right: Show all keybindings</span>"
         // "tooltip": false
@@ -173,7 +173,8 @@
     // Light Dark themes swith
     "custom/theme_switch": {
         "format": " <span size='large'>󰔎</span> ",
-        "on-click": "sleep 0.1 && ~/.config/hypr/scripts/theming/switch-theme.sh",
+        "on-click": "~/.config/hypr/scripts/theming/switch-theme.sh",
+        "on-click-right": "~/.config/hypr/settings/eww/theme-menu.sh",
         "tooltip-format":
             "Switch between light and dark theme"
     },
@@ -192,9 +193,9 @@
     // Cliphist
     "custom/cliphist": {
         "format": " <span size='large'>󰅍</span> ",
-        "on-click": "sleep 0.1 && ~/.config/hypr/scripts/menus/cliphist.sh",
-        "on-click-right": "sleep 0.1 && ~/.config/hypr/scripts/menus/cliphist.sh delete",
-        "on-click-middle": "sleep 0.1 && ~/.config/hypr/scripts/menus/cliphist.sh wipe",
+        "on-click": "~/.config/hypr/scripts/menus/cliphist.sh",
+        "on-click-right": "~/.config/hypr/scripts/menus/cliphist.sh delete",
+        "on-click-middle": "~/.config/hypr/scripts/menus/cliphist.sh wipe",
         "tooltip-format":
             "Clipboard Manager\nLeft click: open cliphist\nRight click: delete entry from cliphist\nMiddle click: wipe cliphist"
     },
@@ -203,9 +204,9 @@
     "custom/hyprsunset": {
         "format": " <span size='large'>󱄤</span> ",
         "tooltip-format": "Toggle Hyprsunset",
-        "on-click": "sleep 0.5; ~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
-        "on-click-middle": "sleep 0.5; ~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
-        "on-click-right": "sleep 0.5; ~/.config/hypr/settings/eww/brightness-menu.sh",
+        "on-click": "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
+        "on-click-middle": "~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
+        "on-click-right": "~/.config/hypr/settings/eww/brightness-menu.sh",
         "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
         "return-type": "json",
         "signal": 8
@@ -215,7 +216,7 @@
     "custom/gamemode": {
         "format": " <span size='x-large'>󰊗</span> ",
         "tooltip-format": "Toggle Game Mode",
-        "on-click": "sleep 0.5; ~/.config/hypr/scripts/game-mode/activate.sh"
+        "on-click": "~/.config/hypr/scripts/game-mode/activate.sh"
     },
 
     // Cava -----------------------------------------------------------------------------
@@ -304,7 +305,7 @@
         "scroll-step": 5,
         "on-click": "~/.config/hypr/settings/eww/brightness-slider.sh",
         "on-click-middle": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
-        "on-click-right": "sleep 0.5; ~/.config/hypr/settings/eww/brightness-menu.sh"
+        "on-click-right": "~/.config/hypr/settings/eww/brightness-menu.sh"
     },
 
     "network": {
