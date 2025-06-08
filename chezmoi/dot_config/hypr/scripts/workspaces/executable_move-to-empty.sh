@@ -21,8 +21,9 @@
 active_window_address=$(hyprctl activewindow -j | jq -r '.address')
 active_window_workspace=$(hyprctl activewindow -j | jq -r '.workspace.id')
 
-# Works for two monitors, might not for 3.
-starting_count=$(($active_window_workspace > 3 ? 4 : 1))
+# Each monitor has a set of 3 workpaces.
+workspace_set=$(( ($active_window_workspace - 1) / 3 ))
+starting_count=$(( 3 * $workspace_set + 1 ))
 
 # Going through each workspace id (its number in the list starting from 1), until an id is not in the list.
 # If all ids are in order without a gap we ge for one more.
