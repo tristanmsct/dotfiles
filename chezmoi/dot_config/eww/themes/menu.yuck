@@ -13,6 +13,18 @@
   "~/.config/eww/themes/scripts/spit-hot-colors.sh"
 )
 
+(defpoll borders-on
+  :interval "2s"
+  :initial "if (grep -q 'border_size = 0' ~/.config/hypr/conf/windows.conf); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q 'border_size = 0' ~/.config/hypr/conf/windows.conf); then echo 'false'; else echo 'true'; fi"
+)
+
+(defpoll borders-decorations-on
+  :interval "2s"
+  :initial "if (grep -q 'border: 0px' /home/tristan/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q 'border: 0px' /home/tristan/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+)
+
 (defvar saturation-value 0.5)
 
 ;; Widget Definition
@@ -49,6 +61,36 @@
           )
         )
       )
+    )
+
+    ;; Border menu
+    (box
+      :orientation "h"
+      :space-evenly true
+      :spacing 15
+
+      ;; Global borders
+      (eventbox
+        :cursor "pointer"
+        (button
+          :class {borders-on == "true" ? "control-button-active" : "control-button"}
+          :onclick "dunstify ${borders-on}"
+          :tooltip "Enable / disable borders on main windows"
+          "Main borders"
+        )
+      )
+
+      ;; Decoration borders
+      (eventbox
+        :cursor "pointer"
+        (button
+          :class {borders-decorations-on == "true" ? "control-button-active" : "control-button"}
+          :onclick "dunstify ${borders-decorations-on}"
+          :tooltip "Enable / disable borders on decorations"
+          "Decorations borders"
+        )
+      )
+
     )
 
     ;; Saturation menu

@@ -44,37 +44,36 @@
  */
 
 * {
-    font-family: "MesloLGS NF";
-    font-weight: bold;
-    font-size: 16px;
     min-height: 20px;
 }
 
 window#waybar {
     background: rgba(0, 0, 0, 0);
     color: @foreground-theme;
+    font-family: "MesloLGS NF";
+    font-weight: bold;
+    font-size: 16px;
 }
 
 tooltip {
     background: @background-theme;
-    color: @foreground-theme;
-    font-size: 14px;
-    border-radius: 7px;
-    border-width: 0px;
+    border-radius: 25px 15px;
+    border: 2px solid @accent-color;
 }
 
-/* inactiv widget modules */
-#cpu, #memory, #mpris, #custom-spotify, #custom-mode, #custom-gpuinfo, #custom-ddcutil,
-/* group "system" widgets */
-#custom-updates, #custom-power, #custom-copyq, #custom-mako,
-/* group "devices" widgets */
-#bluetooth, #pulseaudio, #wireplumber, #network, #custom-ddc_brightness, #custom-screenrecorder,
-/* group "misc" widgets */
-#custom-screenrecorder, #custom-misc, #idle_inhibitor,
+tooltip label {
+    font-size: 14px;
+    padding: 5px;
+}
+
 /* group "quicklinks" widgets */
 #custom-filemanager, #custom-browser, #custom-terminal, #custom-editor, #custom-obsidian,
-/* groups + custom-appmenu */
-#custom-appmenu, #quicklinks, #window, #misc, #devices, #devices-secondary, #system, #system-secondary {
+/* group "misc" widgets */
+#custom-misc, #idle_inhibitor,
+/* group "devices" widgets */
+#devices, #devices-secondary, #bluetooth, #pulseaudio, #network,
+/* group "system" widgets */
+#system, #system-secondary, #custom-updates, #custom-power {
     padding: 0px 10px;
 }
 
@@ -95,13 +94,11 @@ tooltip {
 
 #custom-appmenu {
     background: @background-theme;
-    padding-bottom: 2px;
     border-radius: 25px 15px;
     border: 2px solid @accent-color;
 }
 
 #custom-appmenu:hover {
-    border: 2px solid @accent-color;
     color: @accent-color;
     transition: ease-in-out 0.2s;
 }
@@ -119,11 +116,6 @@ tooltip {
 #quicklinks {
     background: @background-theme;
     border-radius: 25px 15px;
-    border: 2px solid @accent-color;
-    /* padding: 10px; */
-}
-
-#quicklinks:hover {
     border: 2px solid @accent-color;
 }
 
@@ -147,23 +139,18 @@ tooltip {
     background: @background-theme;
     border-radius: 25px 15px;
     border: 2px solid @accent-color;
-    padding: 2px 13;
-}
-
-#workspaces:hover {
-    border: 2px solid @accent-color;
+    padding: 2px 13px;
 }
 
 /* ALL workspace buttons (Focused + Unfocused) */
 #workspaces button:hover {
-    background-color: rgba(200, 255, 200, 0.2);
+    background-color: rgba(160, 160, 160, 0.2);
 }
 
 /* Only focused workspace*/
 #workspaces button.active {
     color: @act_wrk_fg;
     background: @accent-color;
-    border: none;
     border-radius: 10px 5px;
     padding: 1px 2px;
     margin: 2px 4px;
@@ -198,10 +185,6 @@ tooltip {
 #taskbar {
     background: @background-theme;
     border-radius: 25px 15px;
-    border: 2px solid @accent-color;
-}
-
-#taskbar:hover {
     border: 2px solid @accent-color;
 }
 
@@ -242,10 +225,6 @@ tooltip {
 #center, #center-secondary {
     background: @background-theme;
     border-radius: 15px 15px 25px 25px;
-    border: 2px solid @accent-color;
-}
-
-#center:hover, #center-secondary:hover {
     border: 2px solid @accent-color;
 }
 

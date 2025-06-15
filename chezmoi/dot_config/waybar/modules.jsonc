@@ -313,7 +313,7 @@
         "format-wifi": "<span size='large'>󰤨</span> {signalStrength}%",
         "format-ethernet": "<span size='large'>󱘖</span> Wired",
         "format-linked": "<span size='large'>󱘖</span> {ifname} (No IP)",
-        "format-disconnected": " Disconnected",
+        "format-disconnected": " Off",
         "tooltip-format": "{ifname}",
         "tooltip-format-wifi": " {essid} |  {bandwidthUpBytes} |  {bandwidthDownBytes}",
         "tooltip-format-ethernet": "󱘖 {ifname} |  {bandwidthUpBytes} |  {bandwidthDownBytes}",
