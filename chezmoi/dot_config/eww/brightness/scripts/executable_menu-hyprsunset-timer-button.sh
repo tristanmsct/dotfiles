@@ -11,7 +11,7 @@ CONFIG_FILE=$HOME/.config/hypr/conf/hyprsunset.json
 autotimer_state=$(jq '.auto_timer' $CONFIG_FILE)
 
 if [[ $autotimer_state = "true" ]]; then
-    # When turning of the auto timer, we restore the last known config.
+    # When turning off the auto timer, we restore the last known config.
     # It is a bit redundant because manual hyprsunset should have priority.
     jq '.auto_timer = false' $CONFIG_FILE | sponge $CONFIG_FILE
     $HOME/.config/hypr/scripts/hyprsunset/hyprsunset.sh restore
