@@ -8,9 +8,7 @@ window {
     background-color: @background-theme;
     border-radius: 10px;
 
-    border-style: solid;
-    border-width: 2px;
-    border-color: @accent-color;
+    border: 2px solid @accent-color;
 }
 
 /* search entry */
