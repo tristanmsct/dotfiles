@@ -160,7 +160,9 @@
             "idle_inhibitor",
             "custom/cliphist",
             "custom/hyprsunset",
-            "custom/gamemode"
+            "custom/gamemode",
+            "custom/printer",
+            "custom/docker"
         ]
     },
 
@@ -217,6 +219,26 @@
         "format": " <span size='x-large'>󰊗</span> ",
         "tooltip-format": "Toggle Game Mode",
         "on-click": "~/.config/hypr/scripts/game-mode/activate.sh"
+    },
+
+    // Printer
+    "custom/printer": {
+        "format": " <span size='x-large'>󰐪</span> ",
+        "tooltip-format": "Toggle cups service",
+        "on-click": "~/.config/hypr/scripts/system/cups-toggle.sh",
+        "exec": "~/.config/hypr/scripts/system/cups-toggle.sh status",
+        "return-type": "json",
+        "signal": 8
+    },
+
+    // Docker
+    "custom/docker": {
+        "format": " <span size='x-large'></span> ",
+        "tooltip-format": "Toggle docker service",
+        "on-click": "~/.config/hypr/scripts/system/docker-toggle.sh",
+        "exec": "~/.config/hypr/scripts/system/docker-toggle.sh status",
+        "return-type": "json",
+        "signal": 8
     },
 
     // Cava -----------------------------------------------------------------------------

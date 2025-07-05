@@ -1,4 +1,4 @@
-{
+[{
     // Header
     "layer": "top",
     "output": "eDP-1",
@@ -23,8 +23,9 @@
         "all-outputs": true,
         "active-only": false,
         "on-click": "activate",
+        "ignore-workspaces": ["4", "5", "6"],
         "persistent-workspaces": {
-            "*": [1, 2, 3, 4]
+            "*": [1, 2, 3]
         }
     },
 
@@ -33,12 +34,12 @@
         "custom/appmenu",
         "group/quicklinks",
         "hyprland/workspaces",
-        "wlr/taskbar"
+        "wlr/taskbar",
     ],
 
     // Center Segment
     "modules-center": [
-        "group/center"
+        "group/center",
     ],
 
     // Right Segment
@@ -47,4 +48,54 @@
         "group/devices",
         "group/system"
     ]
-}
+},
+{
+    // Header
+    "layer": "top",
+    "output": ["DP-1", "DP-2", "DP-3"],
+    "position": "top",
+    "mod": "dock",
+    "height": 35,
+    "margin-top": 4,
+    "margin-bottom": 4,
+    "margin-left": 0,
+    "margin-right": 0,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+
+    // Load Modules
+    "include": ["~/.config/waybar/modules.jsonc"],
+
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch workspace -1",
+        "on-scroll-down": "hyprctl dispatch workspace +1",
+        "all-outputs": true,
+        "active-only": false,
+        "on-click": "activate",
+        "ignore-workspaces": ["1", "2", "3"],
+        "persistent-workspaces": {
+            "*": [4, 5, 6]
+        }
+    },
+
+    // Left Segment
+    "modules-left": [
+        "custom/appmenu",
+        "group/quicklinks",
+        "hyprland/workspaces",
+        "wlr/taskbar",
+    ],
+
+    // Center Segment
+    "modules-center": [
+        "group/center-secondary",
+    ],
+
+    // Right Segment
+    "modules-right": [
+        "group/misc",
+        "group/devices-secondary",
+        "group/system"
+    ]
+}]
