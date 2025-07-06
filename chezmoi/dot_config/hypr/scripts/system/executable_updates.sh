@@ -21,11 +21,11 @@ if [[ $# -eq 0 ]] ; then
     # Compute available updates and return a json for the waybar module.
     # -----------------------------------------------------------------------------------
 
-    if ! updates_arch=$(checkupdates 2> /dev/null | wc -l ); then
+    if ! updates_arch=$(timeout 10 checkupdates 2> /dev/null | wc -l ); then
         updates_arch=0
     fi
 
-    if ! updates_aur=$($aur_helper -Qu --aur --quiet | wc -l); then
+    if ! updates_aur=$(timeout 10 $aur_helper -Qu --aur --quiet | wc -l); then
         updates_aur=0
     fi
 

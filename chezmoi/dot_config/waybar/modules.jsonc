@@ -138,7 +138,7 @@
         "on-click": "~/.config/hypr/scripts/system/updates.sh up",
         "restart-interval": 60,
         "escape": true,
-        "interval": 5,
+        "interval": 300,
         "return-type": "json",
         "tooltip": true,
         "markup": true
@@ -159,10 +159,10 @@
             "custom/theme_switch",
             "idle_inhibitor",
             "custom/cliphist",
-            // "custom/hyprsunset",
-            "custom/gamemode"
-            // "custom/printer",
-            // "custom/docker"
+            "custom/hyprsunset",
+            "custom/gamemode",
+            "custom/printer",
+            "custom/docker"
         ]
     },
 
@@ -202,17 +202,18 @@
             "Clipboard Manager\nLeft click: open cliphist\nRight click: delete entry from cliphist\nMiddle click: wipe cliphist"
     },
 
-    // // Hyprshade
-    // "custom/hyprsunset": {
-    //     "format": " <span size='large'>󱄤</span> ",
-    //     "tooltip-format": "Toggle Hyprsunset",
-    //     "on-click": "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
-    //     "on-click-middle": "~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
-    //     "on-click-right": "~/.config/hypr/settings/eww/brightness-menu.sh",
-    //     "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
-    //     "return-type": "json",
-    //     "signal": 8
-    // },
+    // Hyprshade
+    "custom/hyprsunset": {
+        "format": " <span size='large'>󱄤</span> ",
+        "tooltip-format": "Toggle Hyprsunset",
+        "on-click": "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
+        "on-click-middle": "~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
+        "on-click-right": "~/.config/hypr/settings/eww/brightness-menu.sh",
+        "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 8
+    },
 
     // Game mode
     "custom/gamemode": {
@@ -221,25 +222,27 @@
         "on-click": "~/.config/hypr/scripts/game-mode/activate.sh"
     },
 
-    // // Printer
-    // "custom/printer": {
-    //     "format": " <span size='x-large'>󰐪</span> ",
-    //     "tooltip-format": "Toggle cups service",
-    //     "on-click": "~/.config/hypr/scripts/system/cups-toggle.sh",
-    //     "exec": "~/.config/hypr/scripts/system/cups-toggle.sh status",
-    //     "return-type": "json",
-    //     "signal": 8
-    // },
+    // Printer
+    "custom/printer": {
+        "format": " <span size='x-large'>󰐪</span> ",
+        "tooltip-format": "Toggle cups service",
+        "on-click": "~/.config/hypr/scripts/system/cups-toggle.sh",
+        "exec": "~/.config/hypr/scripts/system/cups-toggle.sh status",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 9
+    },
 
-    // // Docker
-    // "custom/docker": {
-    //     "format": " <span size='x-large'></span> ",
-    //     "tooltip-format": "Toggle docker service",
-    //     "on-click": "~/.config/hypr/scripts/system/docker-toggle.sh",
-    //     "exec": "~/.config/hypr/scripts/system/docker-toggle.sh status",
-    //     "return-type": "json",
-    //     "signal": 8
-    // },
+    // Docker
+    "custom/docker": {
+        "format": " <span size='x-large'></span> ",
+        "tooltip-format": "Toggle docker service",
+        "on-click": "~/.config/hypr/scripts/system/docker-toggle.sh",
+        "exec": "~/.config/hypr/scripts/system/docker-toggle.sh status",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 10
+    },
 
     // Cava -----------------------------------------------------------------------------
 

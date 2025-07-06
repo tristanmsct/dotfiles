@@ -11,16 +11,17 @@
 if systemctl is-active --quiet docker.service; then
     if [ -z "$1" ]; then
         systemctl stop docker.service
+        # Update waybar icon config.
+        pkill -RTMIN+10 waybar
     elif [ $1 = "status" ]; then
         echo '{"class": "docker_on"}'
     fi
 else
     if [ -z "$1" ]; then
         systemctl start docker.service
+        # Update waybar icon config.
+        pkill -RTMIN+10 waybar
     elif [ $1 = "status" ]; then
         echo '{"class": "docker_off"}'
     fi
 fi
-
-# Update waybar icon config.
-pkill -RTMIN+8 waybar
