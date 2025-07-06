@@ -20,7 +20,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
         keyword decoration:rounding 0"
 
     pkill hyprpaper
-    $HOME/.config/hypr/scripts/waybar/toggle.sh
+    [ ! -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
     pkill nextcloud
     dunstify "Gamemode activated" "Animations, blur, wallpaper and bar disabled"
     exit
