@@ -20,7 +20,11 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
         keyword decoration:rounding 0"
 
     pkill hyprpaper
-    [ ! -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
+
+    # Not turning off waybar anymore, only removing borders.
+    # [ ! -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
+    sed -i -E "s/(border:) 2px/\1 0px/" $HOME/.config/waybar/style.css
+
     pkill nextcloud
     dunstify "Gamemode activated" "Animations, blur, wallpaper and bar disabled"
     exit
@@ -29,6 +33,12 @@ fi
 source ~/.config/hypr/scripts/game-mode/hide-games.sh
 hyprctl reload
 waypaper --restore
-[ -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
+
+# Not turning off waybar anymore, only removing borders.
+# [ -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
+if (grep -q "border-theme: 2px" "$HOME/.config/eww/eww.scss"); then
+    sed -i -E "s/(border:) 0px/\1 2px/" $HOME/.config/waybar/style.css
+fi
+
 /usr/bin/nextcloud --background &
 dunstify "Gamemode deactivated" "Animations, blur, wallpaper and bar enabled"
