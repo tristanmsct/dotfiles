@@ -28,6 +28,10 @@
 /* taskbar button-background colors */
 @define-color taskbar_bg rgba(255, 255, 255, 0.2);
 
+/* element colours */
+@define-color accent-color-element @accent-color;
+@define-color background-theme-element @background-theme;
+
 /* updates-widget icon+text colors */
 @define-color updates_green #a3be8c;
 @define-color updates_yellow #ff9a3c;
@@ -56,9 +60,9 @@ window#waybar {
 }
 
 tooltip {
-    background: @background-theme;
+    background: @background-theme-element;
     border-radius: 25px 15px;
-    border: 2px solid @accent-color;
+    border: 2px solid @accent-color-element;
 }
 
 tooltip label {
@@ -159,7 +163,7 @@ tooltip label {
 
 #workspaces button {
     color: @foreground-theme;
-    background: @background-theme;
+    background: @background-theme-element;
     border-radius: 10px 5px;
     padding: 1px 2px;
     margin: 2px 4px;

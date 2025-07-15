@@ -29,6 +29,7 @@
 
 window {
     background: url("../../.cache/wallpaper/blurred_wallpaper.png");
+    background-color: #111111;
     background-size: cover;
 }
 
