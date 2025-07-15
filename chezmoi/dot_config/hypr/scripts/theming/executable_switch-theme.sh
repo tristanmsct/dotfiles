@@ -13,6 +13,11 @@ if [ -f $HOME/.cache/theme-light-dark ]; then
 fi
 
 if [ $theme_type = "dark" ]; then
+    HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
+    if [ "$HYPRGAMEMODE" = 0 ] ; then
+        dunstify "Game mode enabled, cannot switch to light theme"
+        exit
+    fi
     echo "light" > $HOME/.cache/theme-light-dark
 else
     echo "dark" > $HOME/.cache/theme-light-dark

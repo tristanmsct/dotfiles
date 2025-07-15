@@ -15,14 +15,14 @@
 
 (defpoll borders-on
   :interval "2s"
-  :initial "if (grep -q 'border_size = 0' ~/.config/hypr/conf/windows.conf); then echo 'false'; else echo 'true'; fi"
-  "if (grep -q 'border_size = 0' ~/.config/hypr/conf/windows.conf); then echo 'false'; else echo 'true'; fi"
+  :initial "if (hyprctl getoption general:border_size | grep -q 'int: 0'); then echo 'false'; else echo 'true'; fi"
+  "if (hyprctl getoption general:border_size | grep -q 'int: 0'); then echo 'false'; else echo 'true'; fi"
 )
 
 (defpoll borders-decorations-on
   :interval "2s"
-  :initial "if (grep -q 'border: 0px' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
-  "if (grep -q 'border: 0px' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+  :initial "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
 )
 
 (defvar saturation-value 0.5)

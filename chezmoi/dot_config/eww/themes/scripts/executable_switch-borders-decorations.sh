@@ -7,11 +7,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# TODO : Rofi, NWG, EWW, dunst
-
 if [ $1 == true ]; then
     # Waybar
-    sed -i -E "s/(border:) 2px/\1 0px/" $HOME/.config/waybar/style.css
+    sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
 
     # Eww
     sed -i -E "s/(border-theme:) 2px/\1 0px/" $HOME/.config/eww/eww.scss
@@ -28,7 +26,7 @@ if [ $1 == true ]; then
     # sed -i -E "s/( frame_width =) 2/\1 0/" $HOME/.config/dunst/dunstrc.tpl
 else
     # Waybar
-    sed -i -E "s/(border:) 0px/\1 2px/" $HOME/.config/waybar/style.css
+    sed -i -E "s/(border: 2px solid) rgba\(0,0,0,0\);/\1 @accent-color;/" $HOME/.config/waybar/style.css
 
     # Eww
     sed -i -E "s/(border-theme:) 0px/\1 2px/" $HOME/.config/eww/eww.scss

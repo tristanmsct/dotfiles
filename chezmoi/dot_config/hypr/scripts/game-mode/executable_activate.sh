@@ -7,6 +7,13 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+if [ -f $HOME/.cache/theme-light-dark ]; then
+    theme_type=$(cat $HOME/.cache/theme-light-dark)
+    if [ $theme_type = "light" ]; then
+        $HOME/.config/hypr/scripts/theming/switch-theme.sh
+    fi
+fi
+
 HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
 if [ "$HYPRGAMEMODE" = 1 ] ; then
     hyprctl --batch "\
