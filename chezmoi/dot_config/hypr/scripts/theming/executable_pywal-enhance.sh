@@ -53,6 +53,7 @@ enhance_templates () {
 
         # SCSS / EWW
         sed -i -E "s/(\\\$accent-color: \\\$color)[0-9]{1,2}/\1$COLOR_NB/" $HOME/.cache/wal/colors.scss
+        sed -i -E "s/(\\\$accent-color-transparent: \\\$color)[0-9]{1,2}-tr/\1$COLOR_NB-tr/" $HOME/.cache/wal/colors.scss
         sed -i -E "s/(\\\$highlight-color: )rgba\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},1\)/\1$saturated_color/" $HOME/.cache/wal/colors.scss
         sed -i -E "s/(\\\$background-theme: )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $HOME/.cache/wal/colors.scss
         sed -i -E "s/(\\\$foreground-theme: )#.{6}/\1$TXT_COLOR/" $HOME/.cache/wal/colors.scss
@@ -94,6 +95,7 @@ enhance_templates () {
         # SCSS / EWW
         printf "\n" >> "$HOME/.cache/wal/colors.scss"
         echo "\$accent-color: \$color$COLOR_NB;" >> "$HOME/.cache/wal/colors.scss"
+        echo "\$accent-color-transparent: \$color$COLOR_NB-tr;" >> "$HOME/.cache/wal/colors.scss"
         echo "\$highlight-color: $saturated_color;" >> "$HOME/.cache/wal/colors.scss"
         echo "\$background-theme: $BG_COLOR;" >> "$HOME/.cache/wal/colors.scss"
         echo "\$foreground-theme: $TXT_COLOR;" >> "$HOME/.cache/wal/colors.scss"
