@@ -7,6 +7,12 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
+if [ "$HYPRGAMEMODE" = 0 ] ; then
+    dunstify "Focus mode activated, main borders disabled."
+    exit
+fi
+
 if [ $1 == true ]; then
     sed -i -E "s/(border_size =) 2/\1 0/" $HOME/.config/hypr/conf/windows.conf
 else

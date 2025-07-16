@@ -19,10 +19,18 @@
   "if (hyprctl getoption general:border_size | grep -q 'int: 0'); then echo 'false'; else echo 'true'; fi"
 )
 
+; Since waybar borders are disabled in focus mode, it is not reliable to know if borders are on or not
+; this is why I'm using eww borders as an indicator here.
+; (defpoll borders-decorations-on
+;   :interval "2s"
+;   :initial "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+;   "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+; )
+
 (defpoll borders-decorations-on
   :interval "2s"
-  :initial "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
-  "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+  :initial "if (grep -q '$border-theme: 0px' ~/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q '$border-theme: 0px' ~/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
 )
 
 (defvar saturation-value 0.5)
