@@ -21,7 +21,7 @@ echo -e "$COLOR\n$COLOR_NB" > $HOME/.cache/accent-color
 # We need to wait a bit otherwise we reactivate focus mode before the borders are back on.
 timeout 0.5 sleep 0.5 || true
 if [ "$HYPRGAMEMODE" = 0 ] ; then
-    $HOME/.config/hypr/scripts/game-mode/activate.sh
+    $HOME/.config/hypr/scripts/game-mode/activate.sh quiet
 fi
 
 eww close theme-menu-window-closer
