@@ -63,7 +63,9 @@
           :cursor "pointer"
           (button
             :class "color-item"
-            :onclick "~/.config/eww/themes/scripts/set-hot-colors.sh '${entry}'"
+            ; The nohup command is to detach the execution of the script since there is a sleep in the function
+            ; otherwise the execution is killed when the sleep occurs.
+            :onclick "nohup ~/.config/eww/themes/scripts/set-hot-colors.sh '${entry}' &"
             :tooltip "Click to select a color theme"
             (label :markup "${entry}")
           )
