@@ -21,9 +21,18 @@
 active_window_address=$(hyprctl activewindow -j | jq -r '.address')
 active_window_workspace=$(hyprctl activewindow -j | jq -r '.workspace.id')
 
-# Each monitor has a set of 3 workpaces.
-workspace_set=$(( ($active_window_workspace - 1) / 3 ))
-starting_count=$(( 3 * $workspace_set + 1 ))
+nb_monitors=$(hyprctl monitors -j|jq length)
+
+if [ $nb_monitors -eq 1 ];then
+    starting_count=1
+else
+    # Each monitor has a set of 3 workpaces.
+    workspace_set=$(( ($active_window_workspace - 1) / 3 ))
+    # If we are beyond the normal max workspaces, we default to the set of the last monitor.
+    # For example workspace 8 with two monitor, we will default to the second monitor and the start_count will equal 4.
+    workspace_set=$(( $workspace_set > $nb_monitors ? $nb_monitors : $workspace_set ))
+    starting_count=$(( 3 * $workspace_set + 1 ))
+fi
 
 # Going through each workspace id (its number in the list starting from 1), until an id is not in the list.
 # If all ids are in order without a gap we ge for one more.
@@ -33,7 +42,7 @@ for ((i=$starting_count; ; i++)); do
 done
 
 # Max workspace at 8.
-i=$(($i > 8 ? 8 : $i))
+# i=$(($i > 8 ? 8 : $i))
 
 # Finally moving the target window to the next empty workspace.
 hyprctl dispatch movetoworkspacesilent "$i,address:$active_window_address"
