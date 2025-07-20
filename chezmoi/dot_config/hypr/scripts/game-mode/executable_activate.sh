@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #   ____                                                _                   _   _            _
 #  / ___| __ _ _ __ ___   ___       _ __ ___   ___   __| | ___    __ _  ___| |_(_)_   ____ _| |_ ___
 # | |  _ / _` | '_ ` _ \ / _ \_____| '_ ` _ \ / _ \ / _` |/ _ \  / _` |/ __| __| \ \ / / _` | __/ _ \
@@ -38,7 +38,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
     sed -i -E "s|(\s{4})(path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1# \2|" $HOME/.config/hypr/hyprlock.conf
 
     pkill nextcloud
-    if [ $1 != "quiet" ]; then
+    if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
         dunstify "Gamemode activated" "Animations, blur, wallpaper and bar disabled"
     fi
     exit
@@ -61,6 +61,6 @@ sed -i -E "s|# (path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1|" $HO
 
 /usr/bin/nextcloud --background &
 
-if [ $1 != "quiet" ]; then
+if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
     dunstify "Gamemode deactivated" "Animations, blur, wallpaper and bar enabled"
 fi
