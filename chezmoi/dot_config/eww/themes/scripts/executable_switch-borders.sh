@@ -9,7 +9,7 @@
 
 HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
 if [ "$HYPRGAMEMODE" = 0 ] ; then
-    dunstify "Focus mode activated, main borders disabled."
+    dunstify "Cannot enable main borders" "Main borders are disabled in focus mode."
     exit
 fi
 
