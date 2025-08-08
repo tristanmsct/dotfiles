@@ -79,7 +79,7 @@
       "type": "command",
       "key": "├─",
       "keyColor": "31",
-      "text": "TOTAL=$(pacman -Q | wc -l); AUR=$(pacman -Qm | wc -l); OFFICIAL=$((TOTAL-AUR)); echo \"$TOTAL (pacman: $OFFICIAL, AUR: $AUR)\""
+      "text": "TOTAL=$(pacman -Q | wc -l); EXPLICIT=$(pacman -Qe | wc -l); AUR=$(pacman -Qm | wc -l); DEPS=$((TOTAL-EXPLICIT-AUR)); echo \"$TOTAL (explicit: $EXPLICIT, AUR: $AUR, deps: $DEPS)\""
     },
     {
       "type": "uptime",
