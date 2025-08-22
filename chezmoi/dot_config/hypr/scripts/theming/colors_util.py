@@ -15,7 +15,7 @@ Color = namedtuple("Color", ["hex_match_color", "hex_tela_color", "orchis_match"
 TELA_COLORS = {
     "black": Color("#101010", "#4D4D4D", "Grey"),
     "blue": Color("#3453C9", "#5677fC", "Blue"),
-    # 'brown':    Color('#2e1d17', "#795548", "Red"),  # Brown matches too many colors and does not look good.
+    'brown':    Color('#2e1d17', "#795548", "Red"),
     "green": Color("#7FC683", "#66BB6A", "Green"),
     "grey": Color("#C8C8C8", "#BDBDBD", "Grey"),
     "manjaro": Color("#3BAF99", "#16A085", "Teal"),
@@ -79,19 +79,48 @@ def hex_to_rgb(hex_color):
     return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
 
 
+def weighted_rgb_distance(c1, c2):
+    """Calculate weighted RGB distance that reduces brightness impact."""
+    r_diff = c1[0] - c2[0]
+    g_diff = c1[1] - c2[1]
+    b_diff = c1[2] - c2[2]
+
+    # Weight the differences - reduce overall magnitude impact
+    brightness_diff = (r_diff + g_diff + b_diff) / 3
+
+    # Subtract brightness component to focus more on hue/saturation
+    r_adjusted = r_diff - brightness_diff * 0.5
+    g_adjusted = g_diff - brightness_diff * 0.5
+    b_adjusted = b_diff - brightness_diff * 0.5
+
+    return math.sqrt(r_adjusted**2 + g_adjusted**2 + b_adjusted**2)
+
+
 def rgb_distance(c1, c2):
     """Calculate the Euclidean distance between two RGB colors."""
     return math.sqrt(sum((a - b) ** 2 for a, b in zip(c1, c2)))
 
 
+def normalize_brightness(rgb, target_brightness=128):
+    """Normalize RGB color to target brightness while preserving hue/saturation."""
+    current_brightness = sum(rgb) / 3
+    if current_brightness == 0:
+        return (target_brightness, target_brightness, target_brightness)
+
+    scale = target_brightness / current_brightness
+    return tuple(min(255, int(color * scale)) for color in rgb)
+
+
 def get_closest_color(hex_color, color_dict):
-    """Return the human-readable color name closest to the given hex color from the specified dictionary."""
+    """Return the human-readable color name closest to the given hex color."""
     rgb = hex_to_rgb(hex_color)
+    rgb = normalize_brightness(rgb)
+
     best_match = None
     best_distance = float("inf")
     for name, item in color_dict.items():
         ref_rgb = hex_to_rgb(item.hex_match_color)
-        distance = rgb_distance(rgb, ref_rgb)
+        distance = weighted_rgb_distance(rgb, ref_rgb)
         if distance < best_distance:
             best_distance = distance
             best_match = name
