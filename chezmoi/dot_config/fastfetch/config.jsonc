@@ -18,8 +18,10 @@
       "type": 2
     },
     "bar": {
-      "charElapsed": "",
-      "charTotal": " "
+      "char": {
+        "elapsed": "■",
+        "total": " "
+      }
     },
     "key": {
       "width": 6

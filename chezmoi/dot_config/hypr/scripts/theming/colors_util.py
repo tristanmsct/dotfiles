@@ -9,23 +9,26 @@ import colorsys
 import math
 from collections import namedtuple
 
+# hex_match_color is the color used to find the best match. Colors are adjusted to get less brown, black, etc.
+# hex_tela_color is the actual color of the tela theme.
+# orchis_match is the matching orchist theme color.
 Color = namedtuple("Color", ["hex_match_color", "hex_tela_color", "orchis_match"])
 
 # Define a dictionary of "human" colors with their hex codes.
 TELA_COLORS = {
     "black": Color("#101010", "#4D4D4D", "Grey"),
-    "blue": Color("#3453C9", "#5677fC", "Blue"),
-    'brown':    Color('#2e1d17', "#795548", "Red"),
-    "green": Color("#7FC683", "#66BB6A", "Green"),
+    "blue": Color("#4863d3", "#5677fC", "Blue"),
+    'brown':    Color('#38231b', "#795548", "Red"),
+    "green": Color("#63B567", "#66BB6A", "Green"),
     "grey": Color("#C8C8C8", "#BDBDBD", "Grey"),
-    "manjaro": Color("#3BAF99", "#16A085", "Teal"),
+    "manjaro": Color("#1AC3A2", "#16A085", "Teal"),
     "nord": Color("#3BAF99", "#4D576A", "Grey"),
-    "orange": Color("#FFA92B", "#FF9800", "Orange"),
-    "pink": Color("#F384AA", "#F06292", "Pink"),
-    "purple": Color("#9373CC", "#7E57C2", "Purple"),
-    "red": Color("#EF5350", "#Ef5350", "Red"),
-    "ubuntu": Color("#FC9860", "#FB8441", "Orange"),
-    "yellow": Color("#F5DF38", "#FFCA28", "Yellow"),
+    "orange": Color("#F08F00", "#FF9800", "Orange"),
+    "pink": Color("#BE4D73", "#F06292", "Pink"),
+    "purple": Color("#7652B7", "#7E57C2", "Purple"),
+    "red": Color("#E44F4C", "#Ef5350", "Red"),
+    "ubuntu": Color("#D77137", "#FB8441", "Orange"),
+    "yellow": Color("#C59C1E", "#FFCA28", "Yellow"),
 }
 
 # Orchis hex colors.
@@ -74,9 +77,14 @@ def increase_saturation(hex_color, res_type="hex", sat_increase=0.5, brightness_
 
 
 def hex_to_rgb(hex_color):
-    """Convert a hex color string to an (R, G, B) tuple."""
+    """Convert a hex color string to a (R, G, B) tuple."""
     hex_color = hex_color.lstrip("#")
     return tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+
+
+def rgb_to_hex(r, g, b):
+    """Convert a (R, G, B) tuple to a hex color string."""
+    return f'#{r:02X}{g:02X}{b:02X}'
 
 
 def weighted_rgb_distance(c1, c2):
@@ -120,6 +128,7 @@ def get_closest_color(hex_color, color_dict):
     best_distance = float("inf")
     for name, item in color_dict.items():
         ref_rgb = hex_to_rgb(item.hex_match_color)
+        # ref_rgb = normalize_brightness(ref_rgb)
         distance = weighted_rgb_distance(rgb, ref_rgb)
         if distance < best_distance:
             best_distance = distance
