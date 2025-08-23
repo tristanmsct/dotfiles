@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# System Information Collector Script
+# Creates a directory with various system information files
+
+# Set output directory
+OUTPUT_DIR="/home/tristan/Nextcloud/99-Documents/96-System_info/report_$(date +%Y%m%d_%H%M%S)"
+
+# Create output directory
+mkdir -p "$OUTPUT_DIR"
+echo "Creating system information files in: $OUTPUT_DIR"
+
+# 1. Explicitly installed packages (not from AUR)
+echo "Collecting explicitly installed packages..."
+pacman -Qe > "$OUTPUT_DIR/explicitly_installed_packages.txt"
+
+# 2. Explicitly installed packages from AUR
+echo "Collecting explicitly installed packages from the AUR..."
+pacman -Qm > "$OUTPUT_DIR/explicitly_installed_aur_packages.txt"
+
+# 3. CPU Information
+echo "Collecting CPU information..."
+{
+    echo "=== CPU INFO ==="
+    lscpu
+    echo -e "\n=== /proc/cpuinfo ==="
+    cat /proc/cpuinfo
+} > "$OUTPUT_DIR/cpu_info.txt"
+
+# 4. Memory Information
+echo "Collecting memory information..."
+{
+    echo "=== MEMORY INFO ==="
+    free -h
+    echo -e "\n=== /proc/meminfo ==="
+    cat /proc/meminfo
+} > "$OUTPUT_DIR/memory_info.txt"
+
+# 5. Device Information
+echo "Collecting device information..."
+{
+    echo "=== BLOCK DEVICES ==="
+    lsblk
+    echo -e "\n=== PCI DEVICES ==="
+    lspci
+    echo -e "\n=== USB DEVICES ==="
+    lsusb
+    echo -e "\n=== INPUT DEVICES ==="
+    cat /proc/bus/input/devices
+} > "$OUTPUT_DIR/devices_info.txt"
+
+# 6. Network Information
+echo "Collecting network information..."
+{
+    echo "=== NETWORK INTERFACES ==="
+    ip addr show
+    echo -e "\n=== NETWORK ROUTES ==="
+    ip route show
+    echo -e "\n=== NETWORK STATISTICS ==="
+    ss -tuln
+} > "$OUTPUT_DIR/network_info.txt"
+
+# 7. System Information
+echo "Collecting general system information..."
+{
+    echo "=== SYSTEM INFO ==="
+    uname -a
+    echo -e "\n=== DISTRIBUTION INFO ==="
+    cat /etc/os-release
+    echo -e "\n=== UPTIME ==="
+    uptime
+    echo -e "\n=== KERNEL MODULES ==="
+    lsmod
+    echo -e "\n=== DISK USAGE ==="
+    df -h
+} > "$OUTPUT_DIR/system_info.txt"
+
+# 8. Graphics Information
+echo "Collecting graphics information..."
+{
+    echo "=== GRAPHICS CARDS ==="
+    lspci | grep -i vga
+    lspci | grep -i 3d
+    echo -e "\n=== GRAPHICS DRIVERS ==="
+    lsmod | grep -E "(nvidia|amdgpu|radeon|i915|nouveau)"
+    if command -v nvidia-smi &> /dev/null; then
+        echo -e "\n=== NVIDIA INFO ==="
+        nvidia-smi
+    fi
+} > "$OUTPUT_DIR/graphics_info.txt"
+
+# 9. Services Information
+echo "Collecting services information..."
+{
+    echo "=== ENABLED SERVICES ==="
+    systemctl list-unit-files --state=enabled
+    echo -e "\n=== RUNNING SERVICES ==="
+    systemctl list-units --type=service --state=running
+} > "$OUTPUT_DIR/services_info.txt"
+
+# Create a summary file
+echo "Creating summary file..."
+{
+    echo "System Information Collection"
+    echo "Generated on: $(date)"
+    echo "Hostname: $(cat /etc/hostname 2>/dev/null || uname -n)"
+    echo "User: $(whoami)"
+    echo ""
+    echo "Files created:"
+    ls -la "$OUTPUT_DIR"
+} > "$OUTPUT_DIR/README.txt"
+
+echo ""
+echo "System information collection complete!"
+echo "Files saved in: $OUTPUT_DIR"
+echo ""
+echo "Generated files:"
+ls -la "$OUTPUT_DIR"
