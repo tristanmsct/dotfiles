@@ -1,0 +1,250 @@
+[
+  {
+    "config_version": 2,
+    "id": "debf4df2-83a9-4bbc-9320-2ff1cedd04fe",
+    "archive_prefix": "1ab993-",
+    "repo_id": "863b92e3770bd1b42529982e05f54b1f34e26aec88d74b06787be0e9d7d4ce6d",
+    "repo": {
+      "type": "Local",
+      "path": "archpika/backup-sgArch-tristan",
+      "mount_path": "/run/media/tristan/sgBackup",
+      "uri": "file:///run/media/tristan/sgBackup/archpika/backup-sgArch-tristan",
+      "drive_name": "USB SanDisk 3.2Gen1",
+      "mount_name": "sgBackup",
+      "volume_uuid": "2d307628-a796-4ccd-8c2f-5cfbf2553920",
+      "volume_uuid_identifier": "2d307628-a796-4ccd-8c2f-5cfbf2553920",
+      "removable": true,
+      "icon": ". GThemedIcon drive-removable-media-usb drive-removable-media drive-removable drive drive-removable-media-usb-symbolic drive-removable-media-symbolic drive-removable-symbolic drive-symbolic",
+      "icon_symbolic": ". GThemedIcon drive-removable-media-usb-symbolic drive-removable-media-symbolic drive-removable-symbolic drive-symbolic drive-removable-media-usb drive-removable-media drive-removable drive",
+      "settings": {
+        "command_line_args": []
+      }
+    },
+    "encrypted": true,
+    "encryption_mode": "repokey",
+    "include": [
+      ".config",
+      "Documents",
+      "Media/Pictures",
+      "Nextcloud"
+    ],
+    "exclude": [
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            46,
+            98,
+            111,
+            108,
+            116,
+            100,
+            98
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            46,
+            108,
+            111,
+            103
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            46,
+            116,
+            109,
+            112
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            46,
+            105,
+            112,
+            121,
+            110,
+            98,
+            95,
+            99,
+            104,
+            101,
+            99,
+            107,
+            112,
+            111,
+            105,
+            110,
+            116,
+            115
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            46,
+            112,
+            121,
+            116,
+            101,
+            115,
+            116,
+            95,
+            99,
+            97,
+            99,
+            104,
+            101
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            46,
+            116,
+            111,
+            120
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            46,
+            118,
+            101,
+            110,
+            118
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            95,
+            95,
+            112,
+            121,
+            99,
+            97,
+            99,
+            104,
+            101,
+            95,
+            95
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            98,
+            117,
+            105,
+            108,
+            100
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            100,
+            105,
+            115,
+            116
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            42,
+            47,
+            110,
+            111,
+            100,
+            101,
+            95,
+            109,
+            111,
+            100,
+            117,
+            108,
+            101,
+            115
+          ]
+        }
+      },
+      {
+        "Fnmatch": {
+          "Unix": [
+            46,
+            103,
+            105,
+            116,
+            47
+          ]
+        }
+      },
+      {
+        "PathPrefix": ".config/GIMP"
+      },
+      {
+        "PathPrefix": ".config/docker"
+      },
+      "Caches",
+      "Trash",
+      "FlatpakApps",
+      "VmsContainers"
+    ],
+    "schedule": {
+      "enabled": true,
+      "settings": {
+        "run_on_battery": false
+      },
+      "frequency": {
+        "Weekly": {
+          "preferred_weekday": "Tue"
+        }
+      }
+    },
+    "prune": {
+      "enabled": false,
+      "keep": {
+        "hourly": 48,
+        "daily": 14,
+        "weekly": 4,
+        "monthly": 12,
+        "yearly": 10
+      }
+    },
+    "title": "",
+    "user_scripts": {}
+  }
+]
