@@ -18,7 +18,7 @@ Color = namedtuple("Color", ["hex_match_color", "hex_tela_color", "orchis_match"
 TELA_COLORS = {
     "black": Color("#101010", "#4D4D4D", "Grey"),
     "blue": Color("#4863d3", "#5677fC", "Blue"),
-    'brown': Color('#523226c', "#795548", "Red"),
+    'brown': Color('#522d20', "#795548", "Red"),
     "green": Color("#63B567", "#66BB6A", "Green"),
     "grey": Color("#C8C8C8", "#BDBDBD", "Grey"),
     "manjaro": Color("#1AC3A2", "#16A085", "Teal"),

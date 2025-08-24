@@ -42,6 +42,5 @@ elif [ "$1" == "up" ] ; then
     # Run an update.
     # -----------------------------------------------------------------------------------
 
-    $term --title systemupdate sh -c "$aur_helper -Syu"
-    dunstify "System updated"
+    $term --title systemupdate sh -c "$aur_helper -Syu && dunstify 'System updated' || dunstify 'Update cancelled or failed'"
 fi
