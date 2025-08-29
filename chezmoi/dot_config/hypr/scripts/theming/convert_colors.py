@@ -37,7 +37,7 @@ if __name__ == "__main__":
     orchis_theme = TELA_COLORS[tela_theme].orchis_match
     hex_color = TELA_COLORS[tela_theme].hex_tela_color
 
-    if (args.dracula) and (tela_theme in ["black", "pink", "purple"]) and (random() <= 0.5):
+    if (args.dracula) and (tela_theme in ["black", "purple"]) and (random() <= 0.5):
         tela_theme = "dracula"
 
     # Print both color names and the hex value separated by a space for the shell script to parse.
