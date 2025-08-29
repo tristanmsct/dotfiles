@@ -38,6 +38,7 @@ System Volume Information
 .stversions
 My Saved Places.
 *.sb-*
+.venv
 01-Travail/05-OpenClassrooms/01-Projets/*
 01-Travail/05-OpenClassrooms/98-OCManager/*
 02-Projets/01-Repos/*
