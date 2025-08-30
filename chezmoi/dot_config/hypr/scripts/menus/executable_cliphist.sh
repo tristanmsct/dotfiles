@@ -20,6 +20,6 @@ case $1 in
        fi
        ;;
 
-    *) cliphist list | rofi -dmenu -replace -config ~/.config/rofi/config-search.rasi -theme-str "${THEME_NORTHEAST}" | cliphist decode | wl-copy
+    *) cliphist list | rofi -dmenu -display-columns 2 -replace -config ~/.config/rofi/config-search.rasi -theme-str "${THEME_NORTHEAST}" | cliphist decode | wl-copy
        ;;
 esac
