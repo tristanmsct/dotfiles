@@ -115,7 +115,7 @@ element selected.normal {
     background-color:               @main-color-tr;
     text-color:                     @foreground;
 	border:							0% 0% 0.3% 0.2%;
-    border-radius:                  1.5% 1.0% 1.5% 1.5%;
+    border-radius:                  1.0% 1.5% 1.0% 1.5%;
     border-color:                  	@main-color;
 }
 

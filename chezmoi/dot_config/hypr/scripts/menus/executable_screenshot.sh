@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #  ____                               _           _
 # / ___|  ___ _ __ ___  ___ _ __  ___| |__   ___ | |_
 # \___ \ / __| '__/ _ \/ _ \ '_ \/ __| '_ \ / _ \| __|
@@ -6,220 +6,139 @@
 # |____/ \___|_|  \___|\___|_| |_|___/_| |_|\___/ \__|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
-# Based on https://github.com/hyprwm/contrib/blob/main/grimblast/screenshot.sh
-# -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Screenshots will be stored in $HOME by default.
-# The screenshot will be moved into the screenshot directory
+# Import Current Theme
+theme="$HOME/.config/rofi/config-screenshots.rasi"
 
-# Add this to ~/.config/user-dirs.dirs to save screenshots in a custom folder:
-# XDG_SCREENSHOTS_DIR="$HOME/Screenshots"
+mesg="Saved At: $(xdg-user-dir PICTURES)/Screenshots"
 
-prompt='Screenshot'
-mesg="DIR: ~/Screenshots"
-
-# Screenshot Filename
-source ~/.config/hypr/settings/screenshot-filename.sh
-
-# Screenshot Folder
-source ~/.config/hypr/settings/screenshot-folder.sh
-
-# Screenshot Editor
-export GRIMBLAST_EDITOR="$(cat ~/.config/hypr/settings/screenshot-editor.sh)"
-
-# Example for keybindings
-# bind = SUPER, p, exec, grimblast save active
-# bind = SUPER SHIFT, p, exec, grimblast save area
-# bind = SUPER ALT, p, exec, grimblast save output
-# bind = SUPER CTRL, p, exec, grimblast save screen
-
-# Options
-option_1="Immediate"
-option_2="Delayed"
-
-option_capture_1="Capture Everything"
-option_capture_2="Capture Active Display"
-option_capture_3="Capture Selection"
-
-option_time_1="5s"
-option_time_2="10s"
-option_time_3="20s"
-option_time_4="30s"
-option_time_5="60s"
-#option_time_4="Custom (in seconds)" # Roadmap or someone contribute :)
-
-list_col='1'
-list_row='2'
-
-copy='Copy'
-save='Save'
-copy_save='Copy & Save'
-edit='Edit'
+option_1="󰍺    Capture All"
+option_2="    Capture Active"
+option_3="    Capture Window"
+option_4="    Capture Area"
+option_5="󱎫    Capture in 5s"
+option_6="󱎫    Capture in 10s"
 
 # Rofi CMD
 rofi_cmd() {
-    rofi -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l 2 -width 30 -p "Take screenshot"
+	rofi -theme-str "window {width: 680px;}" \
+		-theme-str "listview {columns: 1; lines: 6;}" \
+		-theme-str 'textbox-prompt-colon {str: "";}' \
+		-dmenu \
+		-mesg "$mesg" \
+		-markup-rows \
+		-theme "${theme}"
 }
 
 # Pass variables to rofi dmenu
 run_rofi() {
-    echo -e "$option_1\n$option_2" | rofi_cmd
+	echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6" | rofi_cmd
 }
 
-####
-# Choose Timer
-# CMD
-timer_cmd() {
-    rofi -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l 5 -width 30 -p "Choose timer"
+# Filename creation
+time_stamp=$(date +%Y-%m-%d-%H-%M-%S)
+# For full screenshot geometry we use hyprctl via wlr-randr if needed
+geometry=$(wlr-randr | grep 'current' | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current')
+dir="$(xdg-user-dir PICTURES)/Screenshots"
+file="Screenshot_${time_stamp}.png"
+
+[ ! -d "$dir" ] && mkdir -p "$dir"
+
+# Notify and view screenshot (using dunstify and viewnior)
+notify_view() {
+	notify_cmd_shot='dunstify -u low --replace=699'
+	$notify_cmd_shot "Copied to clipboard."
+	viewnior "${dir}/$file"
+	if [[ -e "$dir/$file" ]]; then
+		$notify_cmd_shot "Screenshot Saved."
+	else
+		$notify_cmd_shot "Screenshot Deleted."
+	fi
 }
 
-# Ask for confirmation
-timer_exit() {
-    echo -e "$option_time_1\n$option_time_2\n$option_time_3\n$option_time_4\n$option_time_5" | timer_cmd
+# Copy screenshot to clipboard using wl-copy
+copy_shot () {
+	# Write image to file and pipe the same image to wl-copy
+	tee "$file" | wl-copy -t image/png
 }
 
-# Confirm and execute
-timer_run() {
-    selected_timer="$(timer_exit)"
-    if [[ "$selected_timer" == "$option_time_1" ]]; then
-        countdown=5
-        ${1}
-    elif [[ "$selected_timer" == "$option_time_2" ]]; then
-        countdown=10
-        ${1}
-    elif [[ "$selected_timer" == "$option_time_3" ]]; then
-        countdown=20
-        ${1}
-    elif [[ "$selected_timer" == "$option_time_4" ]]; then
-        countdown=30
-        ${1}
-    elif [[ "$selected_timer" == "$option_time_5" ]]; then
-        countdown=60
-        ${1}
-    else
-        exit
-    fi
-}
-###
-
-####
-# Chose Screenshot Type
-# CMD
-type_screenshot_cmd() {
-    rofi -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l 3 -width 30 -p "Type of screenshot"
+# Countdown function
+countdown () {
+	for sec in $(seq $1 -1 1); do
+		dunstify -t 1000 --replace=699 "Taking shot in: $sec"
+		sleep 1
+	done
 }
 
-# Ask for confirmation
-type_screenshot_exit() {
-  echo -e "$option_capture_1\n$option_capture_2\n$option_capture_3" | type_screenshot_cmd
+# Helper: Get active window geometry using hyprctl and jq
+active_geometry() {
+	hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"'
 }
 
-# Confirm and execute
-type_screenshot_run() {
-    selected_type_screenshot="$(type_screenshot_exit)"
-    if [[ "$selected_type_screenshot" == "$option_capture_1" ]]; then
-        option_type_screenshot=screen
-        ${1}
-    elif [[ "$selected_type_screenshot" == "$option_capture_2" ]]; then
-        option_type_screenshot=output
-        ${1}
-    elif [[ "$selected_type_screenshot" == "$option_capture_3" ]]; then
-        option_type_screenshot=area
-        ${1}
-    else
-        exit
-    fi
-}
-###
-
-####
-# Choose to save or copy photo
-# CMD
-copy_save_editor_cmd() {
-    rofi -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l 4 -width 30 -p "How to save"
+# Take screenshot functions using grim and slurp:
+shotnow () {
+	cd "$dir" && sleep 0.5 && grim -t png - | copy_shot
+	notify_view
 }
 
-# Ask for confirmation
-copy_save_editor_exit() {
-    echo -e "$copy\n$save\n$copy_save\n$edit" | copy_save_editor_cmd
+shot5 () {
+	countdown 5
+	sleep 1 && cd "$dir" && grim -t png - | copy_shot
+	notify_view
 }
 
-# Confirm and execute
-copy_save_editor_run() {
-    selected_chosen="$(copy_save_editor_exit)"
-    if [[ "$selected_chosen" == "$copy" ]]; then
-        option_chosen=copy
-        ${1}
-    elif [[ "$selected_chosen" == "$save" ]]; then
-        option_chosen=save
-        ${1}
-    elif [[ "$selected_chosen" == "$copy_save" ]]; then
-        option_chosen=copysave
-        ${1}
-    elif [[ "$selected_chosen" == "$edit" ]]; then
-        option_chosen=edit
-        ${1}
-    else
-        exit
-    fi
-}
-###
-
-timer() {
-    if [[ $countdown -gt 10 ]]; then
-        notify-send -t 1000 "Taking screenshot in ${countdown} seconds"
-        countdown_less_10=$((countdown - 10))
-        sleep $countdown_less_10
-        countdown=10
-    fi
-    while [[ $countdown -ne 0 ]]; do
-        notify-send -t 1000 "Taking screenshot in ${countdown} seconds"
-        countdown=$((countdown - 1))
-        sleep 1
-    done
+shot10 () {
+	countdown 10
+	sleep 1 && cd "$dir" && grim -t png - | copy_shot
+	notify_view
 }
 
-# take shots
-takescreenshot() {
-    sleep 1
-    grimblast --notify "$option_chosen" "$option_type_screenshot" $NAME
-    if [ -f $HOME/$NAME ] ;then
-        if [ -d $screenshot_folder ] ;then
-            mv $HOME/$NAME $screenshot_folder/
-        fi
-    fi
+shotwin () {
+	# Capture active window using geometry from swaymsg
+	geom=$(active_geometry)
+	cd "$dir" && sleep 0.5 && grim -g "$geom" -t png - | copy_shot
+	notify_view
 }
 
-takescreenshot_timer() {
-    sleep 1
-    timer
-    grimblast --notify "$option_chosen" "$option_type_screenshot" $NAME
-    if [ -f $HOME/$NAME ] ;then
-        if [ -d $screenshot_folder ] ;then
-            mv $HOME/$NAME $screenshot_folder/
-        fi
-    fi
+shotactive () {
+	cd "$dir" && sleep 0.5 && grim -o $(hyprctl activeworkspace -j | jq -r '.monitor') -t png - | copy_shot
+	notify_view
 }
 
-# Execute Command
+shotarea () {
+	# Let the user select an area using slurp
+	cd "$dir" && grim -g "$(slurp)" -t png - | copy_shot
+	notify_view
+}
+
+# Execute Command based on option chosen
 run_cmd() {
-    if [[ "$1" == '--opt1' ]]; then
-        type_screenshot_run
-        copy_save_editor_run "takescreenshot"
-    elif [[ "$1" == '--opt2' ]]; then
-        timer_run
-        type_screenshot_run
-        copy_save_editor_run "takescreenshot_timer"
-    fi
+	case "$1" in
+		--opt1) shotnow ;;
+		--opt2) shotactive ;;
+		--opt3) shotwin ;;
+		--opt4) shotarea ;;
+		--opt5) shot5 ;;
+		--opt6) shot10 ;;
+	esac
 }
 
-# Actions
+# Rofi selection and action dispatch
 chosen="$(run_rofi)"
 case ${chosen} in
-$option_1)
-    run_cmd --opt1
-    ;;
-$option_2)
-    run_cmd --opt2
-    ;;
+    "$option_1")
+		run_cmd --opt1
+        ;;
+    "$option_2")
+		run_cmd --opt2
+        ;;
+    "$option_3")
+		run_cmd --opt3
+        ;;
+    "$option_4")
+		run_cmd --opt4
+        ;;
+    "$option_5")
+		run_cmd --opt5
+        ;;
 esac
