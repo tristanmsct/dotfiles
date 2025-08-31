@@ -31,7 +31,7 @@
     // Left Segment
     "modules-left": [
         "custom/appmenu",
-        "group/quicklinks",
+        // "group/quicklinks",
         "hyprland/workspaces",
         "wlr/taskbar"
     ],

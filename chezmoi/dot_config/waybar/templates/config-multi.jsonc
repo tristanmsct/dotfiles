@@ -32,14 +32,14 @@
     // Left Segment
     "modules-left": [
         "custom/appmenu",
-        "group/quicklinks",
+        // "group/quicklinks",
         "hyprland/workspaces",
-        "wlr/taskbar",
+        "wlr/taskbar"
     ],
 
     // Center Segment
     "modules-center": [
-        "group/center",
+        "group/center"
     ],
 
     // Right Segment
@@ -82,14 +82,14 @@
     // Left Segment
     "modules-left": [
         "custom/appmenu",
-        "group/quicklinks",
+        // "group/quicklinks",
         "hyprland/workspaces",
-        "wlr/taskbar",
+        "wlr/taskbar"
     ],
 
     // Center Segment
     "modules-center": [
-        "group/center-secondary",
+        "group/center-secondary"
     ],
 
     // Right Segment

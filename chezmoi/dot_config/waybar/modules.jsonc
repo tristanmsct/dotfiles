@@ -11,10 +11,10 @@
     // Application Launcher -------------------------------------------------------------
     "custom/appmenu": {
         "format": "<span size='x-large'>󰣇</span>",
-        "on-click": "~/.config/nwg-panel/menu-start.sh",
-        "on-click-right": "pkill rofi || rofi -show drun -replace",
-        "on-click-middle": "~/.config/hypr/scripts/menus/keybindings.sh",
-        "tooltip-format": "<span line_height='1.5'>Left: Open the application launcher</span>\n<span line_height='1.5'>Middle: Open Rofi application launcher</span>\n<span line_height='1.5'>Right: Show all keybindings</span>"
+        "on-click": "pkill rofi || rofi -show drun -replace",
+        "on-click-middle": "~/.config/nwg-panel/menu-start.sh",
+        "on-click-right": "~/.config/hypr/scripts/menus/keybindings.sh",
+        "tooltip-format": "<span line_height='1.5'>Left: Open Rofi application launcher</span>\n<span line_height='1.5'>Middle: Show all keybindings</span>\n<span line_height='1.5'>Right: Open the NWG application launcher</span>"
         // "tooltip": false
     },
 
@@ -275,8 +275,8 @@
         "modules": [
             "pulseaudio",
             "bluetooth",
-            "backlight",
             "network",
+            "backlight",
             "battery"
         ]
     },
