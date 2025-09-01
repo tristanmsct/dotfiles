@@ -109,7 +109,7 @@
       :space-evenly false
       :spacing 15
 
-      ;; Hyprsunset toggle button
+      ;; Saturation toggle button
       (eventbox
         :cursor "pointer"
         (button
@@ -120,7 +120,7 @@
         )
       )
 
-      ;; hyprsunset slider
+      ;; saturation slider
       (box
         :class "slider-container"
         :halign "fill"
@@ -176,7 +176,7 @@
     :height "150px"
     :anchor "center"
   )
-  :stacking "fg"
+  :stacking "overlay"
   :wm-ignore false
   :resizable false
   (box

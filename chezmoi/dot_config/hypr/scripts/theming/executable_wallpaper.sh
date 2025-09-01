@@ -75,6 +75,9 @@ else
     $HOME/.config/hypr/scripts/theming/apply-theme.sh
 fi
 
+# Remove any custom saturation
+[ -f "~/.cache/saturation" ] || rm ~/.cache/saturation
+
 # ---------------------------------------------------------------------------------------
 # Created specific wallpapers
 # ---------------------------------------------------------------------------------------
