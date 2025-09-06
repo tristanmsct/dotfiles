@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+#       _                              _                            
+#   ___| |__   ___ _____ __ ___   ___ (_)      ___ _   _ _ __   ___ 
+#  / __| '_ \ / _ \_  / '_ ` _ \ / _ \| |_____/ __| | | | '_ \ / __|
+# | (__| | | |  __// /| | | | | | (_) | |_____\__ \ |_| | | | | (__ 
+#  \___|_| |_|\___/___|_| |_| |_|\___/|_|     |___/\__, |_| |_|\___|
+#                                                  |___/            
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+status_output=$(chezmoi status)
+
+if [ -z "$status_output" ]; then
+    echo "No differences found."
+    exit 0
+fi
+
+echo "$status_output" | while IFS= read -r line; do
+    status="${line:0:2}"
+    target_file="${line:3}"
+    
+    # Ensure we have an absolute path for chezmoi source-path
+    if [[ "$target_file" != /* ]]; then
+        abs_target_file="$HOME/$target_file"
+    else
+        abs_target_file="$target_file"
+    fi
+    
+    # Try to get the source path
+    source_file=$(chezmoi source-path "$abs_target_file" 2>/dev/null)
+    
+    echo
+    echo "=== File: $target_file (status: $status) ==="
+    if [ -n "$source_file" ]; then
+        echo "Source: $source_file"
+    fi
+    
+    case "$status" in
+        D*)
+            echo "File was DELETED from target"
+            echo -n "Restore file [r], remove from source [d], skip [s], quit [q]? "
+            ;;
+        A*)
+            echo "File was ADDED to target"
+            echo -n "Add to source [a], delete from target [d], skip [s], quit [q]? "
+            ;;
+        M*)
+            echo "File was MODIFIED"
+            chezmoi diff "$abs_target_file" 2>/dev/null || echo "(Could not show diff)"
+            echo -n "Apply source->target [a], re-add target->source [r], skip [s], quit [q]? "
+            ;;
+    esac
+    
+    while true; do
+        read -r choice < /dev/tty
+        
+        case "$status" in
+            D*)
+                case $choice in
+                    r|R) 
+                        echo "Restoring $target_file from source..."
+                        chezmoi apply "$abs_target_file"
+                        break
+                        ;;
+                    d|D) 
+                        echo "Removing from source..."
+                        if [ -n "$source_file" ] && [ -f "$source_file" ]; then
+                            rm -f "$source_file"
+                            echo "Removed $source_file"
+                        else
+                            chezmoi forget "$abs_target_file"
+                            echo "Used chezmoi forget for $target_file"
+                        fi
+                        break
+                        ;;
+                    s|S) break ;;
+                    q|Q) exit 0 ;;
+                    *) echo -n "Invalid. Use r, d, s, or q: " ;;
+                esac
+                ;;
+            A*)
+                case $choice in
+                    a|A) 
+                        echo "Adding $target_file to source..."
+                        chezmoi add "$abs_target_file"
+                        break
+                        ;;
+                    d|D) 
+                        echo "Deleting $target_file from target..."
+                        rm -rf "$abs_target_file"
+                        break
+                        ;;
+                    s|S) break ;;
+                    q|Q) exit 0 ;;
+                    *) echo -n "Invalid. Use a, d, s, or q: " ;;
+                esac
+                ;;
+            *)
+                case $choice in
+                    a|A) 
+                        echo "Applying $target_file..."
+                        chezmoi apply "$abs_target_file"
+                        break
+                        ;;
+                    r|R) 
+                        echo "Re-adding $target_file..."
+                        chezmoi add "$abs_target_file"
+                        break
+                        ;;
+                    s|S) break ;;
+                    q|Q) exit 0 ;;
+                    *) echo -n "Invalid. Use a, r, s, or q: " ;;
+                esac
+                ;;
+        esac
+    done
+done
