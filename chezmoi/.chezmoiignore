@@ -2,6 +2,7 @@
 # These files change automatically with themes, but I at least keep a copy here.
 .config/gtk-2.0/gtkrc
 .config/gtk-3.0/settings.ini
+.config/gtk-4.0/settings.ini
 .config/xsettingsd/xsettingsd.conf
 .config/waypaper/config.ini
 .config/qt6ct/qt6ct.conf
