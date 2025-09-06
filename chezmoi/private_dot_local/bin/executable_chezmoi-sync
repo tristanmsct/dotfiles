@@ -45,7 +45,7 @@ echo "$status_output" | while IFS= read -r line; do
             ;;
         M*)
             echo "File was MODIFIED"
-            chezmoi diff "$abs_target_file" 2>/dev/null || echo "(Could not show diff)"
+            # chezmoi diff "$abs_target_file" 2>/dev/null || echo "(Could not show diff)"
             echo -n "Apply source->target [a], re-add target->source [r], skip [s], quit [q]? "
             ;;
     esac
