@@ -1,1 +1,0 @@
-screenshot_folder="$HOME/Media/Pictures/Screenshots"

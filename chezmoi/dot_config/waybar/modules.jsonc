@@ -176,7 +176,7 @@
     "custom/theme_switch": {
         "format": " <span size='large'>󰔎</span> ",
         "on-click": "~/.config/hypr/scripts/theming/switch-theme.sh",
-        "on-click-right": "~/.config/hypr/settings/eww/theme-menu.sh",
+        "on-click-right": "~/.config/hypr/scripts/menus-eww/theme-menu.sh",
         "tooltip-format":
             "Switch between light and dark theme"
     },
@@ -208,7 +208,7 @@
         "tooltip-format": "Toggle Hyprsunset",
         "on-click": "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
         "on-click-middle": "~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
-        "on-click-right": "~/.config/hypr/settings/eww/brightness-menu.sh",
+        "on-click-right": "~/.config/hypr/scripts/menus-eww/brightness-menu.sh",
         "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
         "return-type": "json",
         "interval": "once",
@@ -306,7 +306,7 @@
             "car": "",
             "default": "󰌢"
         },
-        "on-click": "~/.config/hypr/settings/eww/sound-slider.sh",
+        "on-click": "~/.config/hypr/scripts/menus-eww/sound-slider.sh",
         "on-click-middle": "pavucontrol",
         "on-click-right": "~/.config/hypr/scripts/media/audio-helper.sh"
     },
@@ -328,9 +328,9 @@
         "tooltip": false,
         "min-brightness": 20,
         "scroll-step": 5,
-        "on-click": "~/.config/hypr/settings/eww/brightness-slider.sh",
+        "on-click": "~/.config/hypr/scripts/menus-eww/brightness-slider.sh",
         "on-click-middle": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
-        "on-click-right": "~/.config/hypr/settings/eww/brightness-menu.sh"
+        "on-click-right": "~/.config/hypr/scripts/menus-eww/brightness-menu.sh"
     },
 
     "network": {
