@@ -11,12 +11,21 @@
 # List of repos to check.
 # Paths need to be absolute, the ~ notation does not work.
 
-# Main repo, config files and such. The space is important at the end there.
-lst_repos=("$HOME/.local/share/dotfiles ")
+# Main repo, config files and such.
+lst_repos=("$HOME/.local/share/dotfiles")
 
 # The main hub for repos.
 base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
-lst_repos+=$(ls -d ${base_repos}/*/)
+public_repos="$HOME/Nextcloud/02-Projets/02-Public"
+
+# Add repos from directories (proper array concatenation, sorted)
+while IFS= read -r -d '' dir; do
+    lst_repos+=("$dir")
+done < <(find "$base_repos" -maxdepth 1 -type d -not -path "$base_repos" -print0 2>/dev/null | sort -z)
+
+while IFS= read -r -d '' dir; do
+    lst_repos+=("$dir")
+done < <(find "$public_repos" -maxdepth 1 -type d -not -path "$public_repos" -print0 2>/dev/null | sort -z)
 
 # Other repos.
 lst_repos+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-Projets"
