@@ -65,21 +65,21 @@ open_notes_day () {
     fi
 
     # xdg-open $file
-    typora $file &
+    $HOME/.config/hypr/settings/typora.sh $file &
 }
 
 
 open_notes_month () {
     # Open the notes for the month.
     # Create the file if it does not exists.
-    file="${PATH_NOTES}/Month/"$(date '+%Y-%m')"-notes.md"
+    file="${PATH_NOTES}/Day-to-day/Month/"$(date '+%Y-%m')"-notes.md"
 
     if ! test -f "$file"; then
         touch $file
     fi
 
     # xdg-open $file
-    typora $file &
+    $HOME/.config/hypr/settings/typora.sh $file &
 }
 
 
@@ -102,7 +102,7 @@ clean_notes () {
             if [ ! -z "$entry_content" ] && [ $entry_date_day != $today_date ]; then
 
                 # Then we get the corresponding month file, if it does not exists, it is created here.
-                month_file="${PATH_NOTES}/Month/"$entry_date"-notes.md"
+                month_file="${PATH_NOTES}/Day-to-day/Month/"$entry_date"-notes.md"
                 if ! test -f "$month_file"; then
                     touch $month_file
                 fi
@@ -140,7 +140,7 @@ clean_notes () {
 
 archive_notes () {
     # Concatenate every monthly file into an archive file.
-    monthly_notes_dir="${PATH_NOTES}/Month"
+    monthly_notes_dir="${PATH_NOTES}/Day-to-day/Month"
 
     for monthly_entry in "$monthly_notes_dir"/*.md
     do
@@ -157,7 +157,7 @@ archive_notes () {
         if [ $file_age_days -ge 120 ]; then
 
             # Then we get the corresponding archive file, if it does not exists, it is created here.
-            archive_file_name="${PATH_NOTES}/Archive/"$entry_year"-notes.md"
+            archive_file_name="${PATH_NOTES}/Day-to-day/Archive/"$entry_year"-notes.md"
             if ! test -f "$archive_file_name"; then
                 touch $archive_file_name
             fi
