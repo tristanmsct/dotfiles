@@ -18,14 +18,17 @@ lst_repos=("$HOME/.local/share/dotfiles")
 base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
 public_repos="$HOME/Nextcloud/02-Projets/02-Public"
 
-# Add repos from directories (proper array concatenation, sorted)
-while IFS= read -r -d '' dir; do
-    lst_repos+=("$dir")
-done < <(find "$base_repos" -maxdepth 1 -type d -not -path "$base_repos" -print0 2>/dev/null | sort -z)
+# Add base repos
+if [[ -d "$base_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$base_repos"/*/ 2>/dev/null)
+    lst_repos+=("${base_dirs[@]}")
+fi
 
-while IFS= read -r -d '' dir; do
-    lst_repos+=("$dir")
-done < <(find "$public_repos" -maxdepth 1 -type d -not -path "$public_repos" -print0 2>/dev/null | sort -z)
+# Add public repos  
+if [[ -d "$public_repos" ]]; then
+    readarray -t public_dirs < <(ls -1d "$public_repos"/*/ 2>/dev/null)
+    lst_repos+=("${public_dirs[@]}")
+fi
 
 # Other repos.
 lst_repos+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-Projets"

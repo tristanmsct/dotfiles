@@ -37,7 +37,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
 
     sed -i -E "s|(\s{4})(path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1# \2|" $HOME/.config/hypr/hyprlock.conf
 
-    pkill nextcloud
+    /usr/bin/nextcloud --quit
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
         dunstify "Gamemode activated" "Animations, blur, wallpaper and bar disabled"
     fi
