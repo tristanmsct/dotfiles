@@ -41,7 +41,7 @@
     },
     {
         "type": "custom",
-        "format": "System",
+        "format": "System"
     },
     {
       "type": "os",
