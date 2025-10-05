@@ -304,7 +304,7 @@
             "phone": "",
             "portable": "󰄜",
             "car": "",
-            "default": "󰌢"
+            "default": ""
         },
         "on-click": "~/.config/hypr/scripts/menus-eww/sound-slider.sh",
         "on-click-middle": "pavucontrol",
