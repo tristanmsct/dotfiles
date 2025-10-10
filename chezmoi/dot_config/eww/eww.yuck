@@ -10,4 +10,5 @@
 (include "brightness/menu.yuck")
 (include "brightness/slider.yuck")
 (include "sound/slider.yuck")
+(include "sound/sink-switcher.yuck")
 (include "themes/menu.yuck")
