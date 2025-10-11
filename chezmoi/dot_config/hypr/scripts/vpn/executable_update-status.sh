@@ -8,13 +8,18 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-VPN_STATUS_FILE=$HOME/.cache/vpnstatus
-INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
+# Source XDG config if available.
+if [ -f "$HOME/.config/shell/xdg_config" ]; then
+  source "$HOME/.config/shell/xdg_config"
+fi
 
-touch $VPN_STATUS_FILE
+CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
 
 if [[ $INTERFACE == "" ]]; then
-    echo "VPN Down" > $VPN_STATUS_FILE
+    jq '.vpn.connected = false' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq 'del(.vpn.interface)' $CONFIG_FILE | sponge $CONFIG_FILE
 else
-    echo "VPN Up > $INTERFACE" > $VPN_STATUS_FILE
+    INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
+    jq '.vpn.connected = true' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq --arg interface $INTERFACE '.vpn.interface = $interface' $CONFIG_FILE | sponge $CONFIG_FILE
 fi

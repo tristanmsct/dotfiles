@@ -8,10 +8,19 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-if [ -f ~/.cache/waybar-disabled ] ;then
-    rm ~/.cache/waybar-disabled
+# Source XDG config if available.
+if [ -f "$HOME/.config/shell/xdg_config" ]; then
+  source "$HOME/.config/shell/xdg_config"
+fi
+
+CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+WAYBAR_STATUS=$(jq '.waybar.enabled' $CONFIG_FILE)
+
+
+if [ $WAYBAR_STATUS = "true" ] ;then
+    jq '.waybar.enabled = false' $CONFIG_FILE | sponge $CONFIG_FILE
 else
-    touch ~/.cache/waybar-disabled
+    jq '.waybar.enabled = true' $CONFIG_FILE | sponge $CONFIG_FILE
 fi
 
 ~/.config/hypr/scripts/waybar/launch.sh &

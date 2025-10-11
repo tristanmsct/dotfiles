@@ -8,12 +8,18 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Read the VPN status file.
-STATUS=$(cat $HOME/.cache/vpnstatus)
+# Source XDG config if available.
+if [ -f "$HOME/.config/shell/xdg_config" ]; then
+  source "$HOME/.config/shell/xdg_config"
+fi
 
-# Generate JSON based on the status.
-if [[ "$STATUS" != "VPN Down" ]]; then
-    echo "{\"text\": \" 󰒃  \", \"tooltip\": \"$STATUS\", \"alt\": \"connected\"}"
-else
+# Read the VPN status file.
+CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+STATUS=$(jq '.vpn.connected' $CONFIG_FILE)
+
+if [[ "$STATUS" = "false" ]]; then
     echo "{\"text\": \"\", \"alt\": \"off\"}"
+else
+    INTERFACE=$(jq '.vpn.interface' $CONFIG_FILE)
+    echo "{\"text\": \" 󰒃  \", \"tooltip\": $INTERFACE, \"alt\": \"connected\"}"
 fi

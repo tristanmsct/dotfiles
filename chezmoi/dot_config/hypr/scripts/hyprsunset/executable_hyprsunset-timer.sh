@@ -9,6 +9,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 CONFIG_FILE=$HOME/.config/hypr/conf/hyprsunset.json
+CALENDAR_FILE=$HOME/.config/hypr/scripts/hyprsunset/hyprsunset-calendar.json
 manual_filter_on=$(jq '.filter_on' $CONFIG_FILE)
 autotimer_state=$(jq '.auto_timer' $CONFIG_FILE)
 
@@ -34,8 +35,8 @@ minute=$(date +%M)
 minute=$(echo $minute | sed 's/^0*//')
 
 # Morning and evening starts depend on the month and are in the config file.
-morning_start=$(jq -r '.calendar.'$(date +%B)'[0]' $CONFIG_FILE)
-evening_start=$(jq -r '.calendar.'$(date +%B)'[1]' $CONFIG_FILE)
+morning_start=$(jq -r '.calendar.'$(date +%B)'[0]' $CALENDAR_FILE)
+evening_start=$(jq -r '.calendar.'$(date +%B)'[1]' $CALENDAR_FILE)
 
 current_time=$((hour * 60 + minute))
 

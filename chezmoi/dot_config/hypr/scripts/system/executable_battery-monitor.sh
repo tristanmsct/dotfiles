@@ -8,30 +8,30 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-battery_level=$(cat /sys/class/power_supply/BAT1/capacity)
-file_cache_level=$HOME/.cache/battery-level
-
-
-if [ -f $file_cache_level ]; then
-    previous_level=$(cat $file_cache_level)
-else
-    previous_level=$battery_level
+# Source XDG config if available.
+if [ -f "$HOME/.config/shell/xdg_config" ]; then
+  source "$HOME/.config/shell/xdg_config"
 fi
 
-if [ "$battery_level" -gt "$previous_level" ]; then
-    if [ $battery_level = 100 ]; then
+CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+
+BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
+PREVIOUS_LEVEL=$(jq '.battery_level' $CONFIG_FILE)
+
+if [ "$BATTERY_LEVEL" -gt "$PREVIOUS_LEVEL" ]; then
+    if [ $BATTERY_LEVEL = 100 ]; then
         dunstify "Battery fully charged"
     fi
-elif [ "$previous_level" -gt "$battery_level" ]; then
-    if [ $battery_level = 50 ]; then
+elif [ "$PREVIOUS_LEVEL" -gt "$BATTERY_LEVEL" ]; then
+    if [ $BATTERY_LEVEL = 50 ]; then
         dunstify "Battery at 50% level"
-    elif [ $battery_level = 20 ]; then
+    elif [ $BATTERY_LEVEL = 20 ]; then
         dunstify "Battery at 20% level"
-    elif [ $battery_level = 10 ]; then
+    elif [ $BATTERY_LEVEL = 10 ]; then
         dunstify -u critical "Battery at critical 10% level"
-    elif [ $battery_level = 5 ]; then
+    elif [ $BATTERY_LEVEL = 5 ]; then
         dunstify -u critical "Battery at critical 5% level, shutting down soon"
     fi
 fi
 
-echo $battery_level > $file_cache_level
+jq --arg battery_level $BATTERY_LEVEL '.battery_level = $battery_level' $CONFIG_FILE | sponge $CONFIG_FILE

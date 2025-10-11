@@ -28,8 +28,6 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
 
     pkill hyprpaper
 
-    # Not turning off waybar anymore, only removing borders.
-    # [ ! -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
     sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
     sed -i -E "s/(background:) @background-theme;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
 
@@ -48,8 +46,6 @@ source ~/.config/hypr/scripts/game-mode/cleanup-games.sh
 hyprctl reload
 waypaper --restore
 
-# Not turning off waybar anymore, only removing borders.
-# [ -f $HOME/.cache/waybar-disabled ] && $HOME/.config/hypr/scripts/waybar/toggle.sh
 if (grep -q "border-theme: 2px" "$HOME/.config/eww/eww.scss"); then
     sed -i -E "s/(border: 2px solid) rgba\(0,0,0,0\);/\1 @accent-color;/" $HOME/.config/waybar/style.css
 fi

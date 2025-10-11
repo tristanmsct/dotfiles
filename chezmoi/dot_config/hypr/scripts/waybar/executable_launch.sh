@@ -8,11 +8,19 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Source XDG config if available.
+if [ -f "$HOME/.config/shell/xdg_config" ]; then
+  source "$HOME/.config/shell/xdg_config"
+fi
+
+CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+WAYBAR_STATUS=$(jq '.waybar.enabled' $CONFIG_FILE)
+
 # Quit all running waybar instances.
 pkill waybar
 sleep 0.5
 
 # Restart waybar
-if [ ! -f $HOME/.cache/waybar-disabled ] ;then
+if [ $WAYBAR_STATUS = "true" ] ;then
     waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css &
 fi

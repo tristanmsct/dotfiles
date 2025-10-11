@@ -11,3 +11,5 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 
 - [ ] Create ansible playbook for the installation.
 - [ ] Brave : meets screen share looks weirds (probably wayland issue).
+
+- [ ] Hyprsunset config (saturation, accent-color, theme-light-dark, monitor-external-only) - \.cache/(?!wal)
