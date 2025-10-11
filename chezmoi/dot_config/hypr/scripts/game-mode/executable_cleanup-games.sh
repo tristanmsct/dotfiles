@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 base_apps="$HOME/.local/share/applications"
-steam_launch="/home/tristan/.config/hypr/settings/steam.sh"
+steam_launch="/home/tristan/.config/hypr/launchers/steam.sh"
 
 find "$base_apps" -type f -name "*.desktop" -print0 | while IFS= read -r -d '' file; do
     # Check if it's a game that launches with steam

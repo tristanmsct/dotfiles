@@ -12,9 +12,6 @@
 # Initialise variables
 # ---------------------------------------------------------------------------------------
 
-aur_helper="$(cat ~/.config/hypr/settings/aur.sh)"
-term="$(cat ~/.config/hypr/settings/terminal.sh)"
-
 if [[ $# -eq 0 ]] ; then
 
     # -----------------------------------------------------------------------------------
@@ -25,7 +22,7 @@ if [[ $# -eq 0 ]] ; then
         updates_arch=0
     fi
 
-    if ! updates_aur=$(timeout 10 $aur_helper -Qu --aur --quiet | wc -l); then
+    if ! updates_aur=$(timeout 10 yay -Qu --aur --quiet | wc -l); then
         updates_aur=0
     fi
 
@@ -36,11 +33,12 @@ if [[ $# -eq 0 ]] ; then
     else
         printf '{"text": "", "alt": "noupdate"}'
     fi
+
 elif [ "$1" == "up" ] ; then
 
     # -----------------------------------------------------------------------------------
     # Run an update.
     # -----------------------------------------------------------------------------------
 
-    $term --title systemupdate sh -c "$aur_helper -Syu && dunstify 'System updated' || dunstify 'Update cancelled or failed'"
+    kitty --title systemupdate sh -c "yay -Syu && dunstify 'System updated' || dunstify 'Update cancelled or failed'"
 fi

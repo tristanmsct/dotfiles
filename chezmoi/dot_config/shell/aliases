@@ -97,17 +97,17 @@ alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster
 # ---------------------------------------------------------------------------------------
 # This block is important because opening a chromium based or proton app without the appropriate flags.
 # will create a tone of cache and user data in ~/.config.
-alias brave="~/.config/hypr/settings/browser.sh"
-alias typora="~/.config/hypr/settings/typora.sh"
-alias feishin="~/.config/hypr/settings/feishin.sh"
-alias slack="~/.config/hypr/settings/slack.sh"
-alias codium="~/.config/hypr/settings/codium.sh"
-alias vscodium="~/.config/hypr/settings/codium.sh"
-alias nextcloud="~/.config/hypr/settings/nextcloud.sh"
-alias steam="~/.config/hypr/settings/steam.sh"
+alias brave="~/.config/hypr/launchers/browser.sh"
+alias typora="~/.config/hypr/launchers/typora.sh"
+alias feishin="~/.config/hypr/launchers/feishin.sh"
+alias slack="~/.config/hypr/launchers/slack.sh"
+alias codium="~/.config/hypr/launchers/codium.sh"
+alias vscodium="~/.config/hypr/launchers/codium.sh"
+alias nextcloud="~/.config/hypr/launchers/nextcloud.sh"
+alias steam="~/.config/hypr/launchers/steam.sh"
 
 # ---------------------------------------------------------------------------------------
 # QT Applications
 # ---------------------------------------------------------------------------------------
 # These script are about starting the app with the right cursor.
-alias vlc="~/.config/hypr/settings/vlc.sh"
+alias vlc="~/.config/hypr/launchers/vlc.sh"

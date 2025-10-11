@@ -40,14 +40,14 @@
 
     "custom/browser": {
         "format": "<span size='x-large'></span>",
-        "on-click": "~/.config/hypr/settings/browser.sh",
+        "on-click": "~/.config/hypr/launchers/browser.sh",
         "tooltip-format": "Open Web Browser - Brave"
         // "tooltip": false
     },
 
      "custom/terminal": {
         "format": "<span size='x-large'></span>",
-        "on-click": "~/.config/hypr/settings/terminal.sh",
+        "on-click": "kitty",
         "tooltip-format": "Open Terminal - Kitty"
         // "tooltip": false
     },
@@ -61,7 +61,7 @@
 
     "custom/typora": {
         "format": " <span size='x-large'>󰊄</span> ",
-        "on-click": "~/.config/hypr/settings/typora.sh",
+        "on-click": "~/.config/hypr/launchers/typora.sh",
         "tooltip-format": "Open Note Application - Typora"
         // "tooltip": false
     },
@@ -346,7 +346,7 @@
         "tooltip-format-disconnected": "Disconnected",
         "interval": 5,
         "max-length": 50,
-        "on-click": "~/.config/hypr/settings/networkmanager.sh",
+        "on-click": "~/.config/hypr/launchers/networkmanager.sh",
         "on-click-right": "nm-connection-editor"
     },
 
