@@ -1,12 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Source XDG config if available.
-if [ -f "$HOME/.config/ssh/xdg_config" ]; then
-  source "$HOME/.config/ssh/xdg_config"
+if [ -f "$HOME/.config/shell/xdg_config" ]; then
+  source "$HOME/.config/shell/xdg_config"
 fi
-
-# Set defaults if not defined in xdg_config.
-XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 VSCODE_PORTABLE="$XDG_DATA_HOME/VSCodium" exec codium "$@"
