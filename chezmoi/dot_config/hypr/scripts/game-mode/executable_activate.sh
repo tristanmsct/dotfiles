@@ -44,7 +44,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
     exit
 fi
 
-source ~/.config/hypr/scripts/game-mode/hide-games.sh
+source ~/.config/hypr/scripts/game-mode/cleanup-games.sh
 hyprctl reload
 waypaper --restore
 

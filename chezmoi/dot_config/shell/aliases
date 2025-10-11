@@ -104,6 +104,7 @@ alias slack="~/.config/hypr/settings/slack.sh"
 alias codium="~/.config/hypr/settings/codium.sh"
 alias vscodium="~/.config/hypr/settings/codium.sh"
 alias nextcloud="~/.config/hypr/settings/nextcloud.sh"
+alias steam="~/.config/hypr/settings/steam.sh"
 
 # ---------------------------------------------------------------------------------------
 # QT Applications

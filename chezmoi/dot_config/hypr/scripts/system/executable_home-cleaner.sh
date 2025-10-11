@@ -7,8 +7,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-[ -f ~/.steampid ] && rm ~/.steampid
-[ -L ~/.steampath ] && rm ~/.steampath
+# [ -f ~/.steampid ] && rm ~/.steampid
+# [ -L ~/.steampath ] && rm ~/.steampath
 # [ -d ~/.steam ] && rm -rf ~/.steam
 [ -d ~/.pki ] && rm -rf ~/.pki
 [ -f ~/.cache/monitor-config-running ] && rm ~/.cache/monitor-config-running
