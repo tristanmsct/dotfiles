@@ -9,6 +9,7 @@
 .config/qt6ct/style-colors.conf
 .config/hypr/conf/hyprsunset.json
 .config/hypr/conf/monitor.conf
+.config/waybar/config.jsonc
 
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
