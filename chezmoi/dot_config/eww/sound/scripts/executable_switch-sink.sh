@@ -13,16 +13,22 @@ DESCRIPTION="$1"
 get_sink_name() {
     local desc="$1"
 
-    # Check if it's a simplified HDMI description.
-    if [[ "$desc" =~ ^HDMI[[:space:]]([0-9]+)$ ]]; then
+    # Check if it's an HDMI / DisplayPort description.
+    if [[ "$desc" =~ ^HDMI\ /\ DisplayPort\ ([0-9]+)\ Output$ ]]; then
         hdmi_num="${BASH_REMATCH[1]}"
         # Find the actual HDMI sink with that number.
         pactl list sinks | awk -v num="$hdmi_num" '
             /Name:/ {name=$2}
             /Description:/ && /DisplayPort '"$hdmi_num"' Output/ {print name; exit}
         '
+    elif [[ "$desc" == "Speaker" ]]; then
+        # Find sink with Speaker in description.
+        pactl list sinks | awk '
+            /Name:/ {name=$2}
+            /Description:.*Speaker/ {print name; exit}
+        '
     else
-        # Regular description lookup.
+        # Regular description lookup (for Canned Beat, etc.).
         pactl list sinks | grep -B 1 "Description: ${desc}" | grep "Name:" | awk '{print $2}'
     fi
 }
