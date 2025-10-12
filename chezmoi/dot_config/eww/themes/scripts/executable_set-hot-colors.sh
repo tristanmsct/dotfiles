@@ -7,6 +7,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+
 COLOR=$(echo $1 | awk -F'#' '{print "#" $2}' | cut -c 1-7)
 COLOR_NB=$(echo $1 | grep -o "^[0-9]")
 
@@ -16,7 +18,11 @@ HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
 $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB &
 
 # Accent colors are stored in a cache files to set them up again at restart.
-echo -e "$COLOR\n$COLOR_NB" > $HOME/.cache/accent-color
+jq --arg color "$COLOR" --arg color_nb "$COLOR_NB" '
+  .theme.accent_color.enabled = true |
+  .theme.accent_color.hex = $color |
+  .theme.accent_color.index = $color_nb
+' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
 
 # We need to wait a bit otherwise we reactivate focus mode before the borders are back on.
 timeout 0.5 sleep 0.5 || true

@@ -10,7 +10,7 @@
 
 enhance_templates () {
 
-    if [ $theme_type = "dark" ]; then
+    if [ $THEME_TYPE = "dark" ]; then
         hyprctl setcursor Vimix-white-cursors 40
         sed -i "s/-light.png/-dark.png/" $HOME/.config/wlogout/style.css
 

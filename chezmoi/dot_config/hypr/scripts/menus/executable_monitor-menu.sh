@@ -7,6 +7,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+CONFIG_DIR="$HOME/.config/hypr/conf"
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
 source $HOME/.config/hypr/scripts/monitors/monitor-helpers.sh
 
 default="Default"
@@ -31,21 +33,23 @@ selected_setup="$(monitor_menu)"
 case $selected_setup in
     $default)
         # log_message "Manually triggering default conf"
-        rm $HOME/.cache/monitor-external-only
+        jq '.display.monitor_external_only = false' $CONFIG_FILE | sponge $CONFIG_FILE
         cp "$CONFIG_DIR/monitors/mono.conf" "$MONITOR_FILE"
         sed -i 's/"\*": [0-9]/"\*": 4/g' "$HOME/.config/waybar/modules.jsonc"
         hyprctl reload
         ;;
     $auto_detect)
         # log_message "Manually triggering auto detect"
-        rm $HOME/.cache/monitor-external-only
+        jq '.display.monitor_external_only = false' $CONFIG_FILE | sponge $CONFIG_FILE
         $HOME/.config/hypr/scripts/monitors/monitor-check.sh
         ;;
     $external)
+        dunstify hello
         # log_message "Manually triggering external only conf"
         monitor_count=$(hyprctl monitors -j | jq length)
+        dunstify $monitor_count
         if [[ $monitor_count -ge 2 ]]; then
-            touch $HOME/.cache/monitor-external-only
+            jq '.display.monitor_external_only = true' $CONFIG_FILE | sponge $CONFIG_FILE
             sed -i "s|^monitor=eDP-1.*$|monitor=eDP-1,disabled|g" "$MONITOR_FILE"
             sed -i "s|^bindl = , switch:on:Lid Switch, exec, hyprlock$||g" "$MONITOR_FILE"
             sed -i 's/"\*": [0-9]/"\*": 4/g' "$HOME/.config/waybar/modules.jsonc"

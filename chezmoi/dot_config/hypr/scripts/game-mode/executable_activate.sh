@@ -7,11 +7,11 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-if [ -f $HOME/.cache/theme-light-dark ]; then
-    theme_type=$(cat $HOME/.cache/theme-light-dark)
-    if [ $theme_type = "light" ]; then
-        $HOME/.config/hypr/scripts/theming/switch-theme.sh
-    fi
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
+
+if [ $THEME_TYPE = "light" ]; then
+    $HOME/.config/hypr/scripts/theming/switch-theme.sh
 fi
 
 HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')

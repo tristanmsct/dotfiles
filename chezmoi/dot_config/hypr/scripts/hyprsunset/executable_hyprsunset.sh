@@ -13,16 +13,16 @@
 # I can't find a clean way to get hyprsunset state from hyprctl yet, maybe in the future.
 # I can only fetch the current temperature.
 # What is missing is a way to know if the temperature is overwritten by "identity".
-CONFIG_FILE=$HOME/.config/hypr/conf/hyprsunset.json
-hyprsunset_state=$(jq '.filter_on' $CONFIG_FILE)
-autotimer_state=$(jq '.auto_timer' $CONFIG_FILE)
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+hyprsunset_state=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
+autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
 
 pgrep -x hyprsunset >/dev/null || hyprsunset -i &
 
 if [[ $1 = "restore" ]]; then
     # When rebooting, or restarting the session, we can restore the current hyprsunset state.
     if [[ $hyprsunset_state = "true" ]]; then
-        temperature=$(jq '.temperature' $CONFIG_FILE)
+        temperature=$(jq '.hyprsunset.temperature' $CONFIG_FILE)
         hyprctl hyprsunset temperature $temperature
         dunstify "Restoring hyprsunset with temperature $temperature"
     elif [[ $autotimer_state = "true" ]]; then
@@ -35,7 +35,7 @@ elif [[ $hyprsunset_state = "true" ]]; then
     # The filter_on variable need to be changed before the hyprsunset-timer.sh call otherwise the
     # other script will not get past the first check.
     # The goal is to deactivate the manual hyprsunset so if the timer was supposed to be on then we call it, to restore it.
-    jq '.filter_on = false' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.hyprsunset.filter_on = false' $CONFIG_FILE | sponge $CONFIG_FILE
     if [[ $autotimer_state = "true" ]]; then
         $HOME/.config/hypr/scripts/hyprsunset/hyprsunset-timer.sh
         dunstify "Stopping manual hyprsunset, timer resumed"
@@ -44,8 +44,8 @@ elif [[ $hyprsunset_state = "true" ]]; then
         dunstify "Hyprsunset stopped"
     fi
 else
-    jq '.filter_on = true' $CONFIG_FILE | sponge $CONFIG_FILE
-    temperature=$(jq '.temperature' $CONFIG_FILE)
+    jq '.hyprsunset.filter_on = true' $CONFIG_FILE | sponge $CONFIG_FILE
+    temperature=$(jq '.hyprsunset.temperature' $CONFIG_FILE)
     hyprctl hyprsunset temperature $temperature
     dunstify "Hyprsunset started with temperature $temperature"
 fi

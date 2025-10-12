@@ -8,10 +8,10 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-CONFIG_FILE=$HOME/.config/hypr/conf/hyprsunset.json
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
 CALENDAR_FILE=$HOME/.config/hypr/scripts/hyprsunset/hyprsunset-calendar.json
-manual_filter_on=$(jq '.filter_on' $CONFIG_FILE)
-autotimer_state=$(jq '.auto_timer' $CONFIG_FILE)
+manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
+autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
 
 logger -t hyprsunset "Running hyprsunset script"
 

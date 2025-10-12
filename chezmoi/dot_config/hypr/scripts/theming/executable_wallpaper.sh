@@ -12,6 +12,7 @@
 # Set defaults
 # ---------------------------------------------------------------------------------------
 
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
 force_generate=0
 cache_directory="$HOME/.cache/wallpaper"
 cache_file="$cache_directory/current_wallpaper"
@@ -35,7 +36,9 @@ fi
 # When changing wallpaper, the accent-color cache file need to be reset, otherwise
 # accent colors from previous wallpapers might get mixed.
 if ! [ "$wallpaper" = "$(cat $cache_file)" ]; then
-    rm $HOME/.cache/accent-color
+    jq 'del(.theme.accent_color.hex)' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
+    jq 'del(.theme.accent_color.index)' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
+    jq '.theme.accent_color.enabled = false' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
 fi
 
 echo ":: Setting wallpaper with source image $wallpaper"
@@ -65,10 +68,12 @@ source "$HOME/.cache/wal/colors.sh"
 # Should cover all basis.
 # At boot or when refreshing waypapr (meta + W) if an accent color was selected, the cache file will be here, otherwise it will not exist.
 # When switching wallpaper, the cache file is deleted right before so no problem.
-if [ -f $HOME/.cache/accent-color ]; then
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $CONFIG_FILE)
+
+if [ $ACCENT_COLOR_STATUS = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    read -r COLOR < ~/.cache/accent-color
-    read -r COLOR_NB < <(sed -n '2p' ~/.cache/accent-color)
+    COLOR=$(jq -r '.theme.accent_color.hex' $CONFIG_FILE)
+    COLOR_NB=$(jq -r '.theme.accent_color.index' $CONFIG_FILE)
 
     $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB
 else

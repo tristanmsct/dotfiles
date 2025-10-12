@@ -13,6 +13,9 @@
 # The script can run with or without arguments. Without arguments, the first color in the theme will be used unless it is too grey.
 # See python script for more details.
 
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
+
 source $HOME/.config/hypr/scripts/theming/pywal-enhance.sh
 
 COLOR=${1:-"DEFAULT"}
@@ -24,16 +27,11 @@ WAL_COLOR=$(sed -n "${COLOR_NB_INC}p" $HOME/.cache/wal/colors)
 
 read saturated_color <<< $(python $HOME/.config/hypr/scripts/theming/increase_saturation.py -c $WAL_COLOR -t rgba -s 0.2)
 
-theme_type="dark"
-if [ -f $HOME/.cache/theme-light-dark ]; then
-    theme_type=$(cat $HOME/.cache/theme-light-dark)
-fi
-
 # ---------------------------------------------------------------------------------------
 # Applying theme to Icons and GTK applications
 # ---------------------------------------------------------------------------------------
 
-if [ $theme_type = "dark" ]; then
+if [ $THEME_TYPE = "dark" ]; then
     theme_color+="-Dark"
 else
     theme_color+="-Light"
@@ -58,7 +56,7 @@ ln -sf /usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/assets "$HOME/.co
 ln -sf /usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/gtk-dark.css "$HOME/.config/gtk-4.0/gtk-dark.css"
 ln -sf /usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/gtk.css "$HOME/.config/gtk-4.0/gtk.css"
 
-if [ $theme_type = "dark" ]; then
+if [ $THEME_TYPE = "dark" ]; then
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     sed -i "s|color_scheme_path=/usr/share/qt6ct/colors/.*.conf|color_scheme_path=/usr/share/qt6ct/colors/darker.conf|" $HOME/.config/qt6ct/qt6ct.conf
 else

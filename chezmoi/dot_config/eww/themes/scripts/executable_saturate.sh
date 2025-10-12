@@ -19,11 +19,15 @@ WALLPAPER=$(cat $HOME/.cache/wallpaper/current_wallpaper)
 wal -q -i $WALLPAPER --saturate $1 &
 jq '.theme.saturation.enabled = true' $CONFIG_FILE | sponge $CONFIG_FILE
 jq --argjson saturation_level "$1" -r '.theme.saturation.level = $saturation_level' $CONFIG_FILE | sponge $CONFIG_FILE
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $CONFIG_FILE)
 
-if [ -f $HOME/.cache/accent-color ]; then
+if [ $ACCENT_COLOR_STATUS = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    read -r COLOR < ~/.cache/accent-color
-    read -r COLOR_NB < <(sed -n '2p' ~/.cache/accent-color)
+    COLOR=$(jq -r '.theme.accent_color.hex' $CONFIG_FILE)
+    COLOR_NB=$(jq -r '.theme.accent_color.index' $CONFIG_FILE)
+
+    dunstify $COLOR
+    dunstify $COLOR_NB
 
     $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB &
 else

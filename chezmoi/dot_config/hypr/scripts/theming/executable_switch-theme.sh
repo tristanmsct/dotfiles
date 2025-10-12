@@ -7,26 +7,26 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-theme_type="dark"
-if [ -f $HOME/.cache/theme-light-dark ]; then
-    theme_type=$(cat $HOME/.cache/theme-light-dark)
-fi
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
 
-if [ $theme_type = "dark" ]; then
+if [ $THEME_TYPE = "dark" ]; then
     HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
     if [ "$HYPRGAMEMODE" = 0 ] ; then
         dunstify "Game mode enabled, cannot switch to light theme"
         exit
     fi
-    echo "light" > $HOME/.cache/theme-light-dark
+    jq '.theme.mode = "light"' $CONFIG_FILE | sponge $CONFIG_FILE
 else
-    echo "dark" > $HOME/.cache/theme-light-dark
+    jq '.theme.mode = "dark"' $CONFIG_FILE | sponge $CONFIG_FILE
 fi
 
-if [ -f $HOME/.cache/accent-color ]; then
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $CONFIG_FILE)
+
+if [ $ACCENT_COLOR_STATUS = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    read -r COLOR < ~/.cache/accent-color
-    read -r COLOR_NB < <(sed -n '2p' ~/.cache/accent-color)
+    COLOR=$(jq -r '.theme.accent_color.hex' $CONFIG_FILE)
+    COLOR_NB=$(jq -r '.theme.accent_color.index' $CONFIG_FILE)
 
     $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB
 else

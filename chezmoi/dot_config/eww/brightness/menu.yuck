@@ -10,14 +10,14 @@
 ;; Variables
 (defpoll hyprsunset-active
   :interval "1s"
-  :initial "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.filter_on' )"
-  "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.filter_on' )"
+  :initial "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.filter_on' )"
+  "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.filter_on' )"
 )
 
 (defpoll hyprsunset-timer-active
   :interval "1s"
-  :initial "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.auto_timer' )"
-  "echo $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.auto_timer' )"
+  :initial "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.auto_timer' )"
+  "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.auto_timer' )"
 )
 
 (defpoll brightness-value
@@ -34,8 +34,8 @@
 
 (defpoll sunset-value
   :interval "200ms"
-  :initial "echo $(( $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' ) / 50 ))"
-  "echo $(( $( cat /home/tristan/.config/hypr/conf/hyprsunset.json|jq '.temperature' ) / 50 ))"
+  :initial "echo $(( $( cat /home/tristan/.local/state/desktop/state.jsonn|jq '.hyprsunset.temperature' ) / 50 ))"
+  "echo $(( $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
 )
 
 ;; Widget Definition

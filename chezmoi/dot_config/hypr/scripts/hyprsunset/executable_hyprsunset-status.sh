@@ -8,9 +8,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-CONFIG_FILE=$HOME/.config/hypr/conf/hyprsunset.json
-manual_filter_on=$(jq '.filter_on' $CONFIG_FILE)
-autotimer_state=$(jq '.auto_timer' $CONFIG_FILE)
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
+autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
 
 if [ $manual_filter_on = "true" ]; then
     echo '{"class": "filter_on"}'

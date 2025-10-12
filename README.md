@@ -12,5 +12,6 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 - [ ] Create ansible playbook for the installation.
 - [ ] Brave : meets screen share looks weirds (probably wayland issue).
 
-- [ ] Hyprsunset config (accent-color, theme-light-dark, monitor-external-only) + make a default state file - \.cache/(?!wal)
 - [ ] Figlet art for eww menus
+- [ ] For steam, set its pki dir as a symlink to .local/share/pki
+- [ ] Give chromium a fake home
