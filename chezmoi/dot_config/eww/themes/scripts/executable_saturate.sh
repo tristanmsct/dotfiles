@@ -7,6 +7,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+
 # Maybe the saturation function should work even in focus mode but it would be a pain to implement for almost nothing.
 if hyprctl getoption animations:enabled | grep -q "int: 0"; then
     dunstify "Focus mode activated, saturation disabled."
@@ -15,7 +17,8 @@ fi
 
 WALLPAPER=$(cat $HOME/.cache/wallpaper/current_wallpaper)
 wal -q -i $WALLPAPER --saturate $1 &
-echo -e "$1" > $HOME/.cache/saturation
+jq '.theme.saturation.enabled = true' $CONFIG_FILE | sponge $CONFIG_FILE
+jq --argjson saturation_level "$1" -r '.theme.saturation.level = $saturation_level' $CONFIG_FILE | sponge $CONFIG_FILE
 
 if [ -f $HOME/.cache/accent-color ]; then
     # If there was accent colors cached, then we re-apply them.

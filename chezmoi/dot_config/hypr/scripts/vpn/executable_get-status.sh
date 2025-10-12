@@ -8,13 +8,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Source XDG config if available.
-if [ -f "$HOME/.config/shell/xdg_config" ]; then
-  source "$HOME/.config/shell/xdg_config"
-fi
-
 # Read the VPN status file.
-CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
 STATUS=$(jq '.vpn.connected' $CONFIG_FILE)
 
 if [[ "$STATUS" = "false" ]]; then

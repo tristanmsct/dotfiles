@@ -8,12 +8,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Source XDG config if available.
-if [ -f "$HOME/.config/shell/xdg_config" ]; then
-  source "$HOME/.config/shell/xdg_config"
-fi
-
-CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
 WAYBAR_STATUS=$(jq '.waybar.enabled' $CONFIG_FILE)
 
 # Quit all running waybar instances.

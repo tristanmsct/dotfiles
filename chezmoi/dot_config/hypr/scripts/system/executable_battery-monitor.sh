@@ -8,12 +8,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Source XDG config if available.
-if [ -f "$HOME/.config/shell/xdg_config" ]; then
-  source "$HOME/.config/shell/xdg_config"
-fi
-
-CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
 
 BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
 PREVIOUS_LEVEL=$(jq '.battery_level' $CONFIG_FILE)

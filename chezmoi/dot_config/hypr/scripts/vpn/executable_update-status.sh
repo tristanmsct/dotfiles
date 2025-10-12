@@ -8,18 +8,13 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Source XDG config if available.
-if [ -f "$HOME/.config/shell/xdg_config" ]; then
-  source "$HOME/.config/shell/xdg_config"
-fi
-
-CONFIG_FILE=$XDG_STATE_HOME/desktop/state.json
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
 
 if [[ $INTERFACE == "" ]]; then
     jq '.vpn.connected = false' $CONFIG_FILE | sponge $CONFIG_FILE
     jq 'del(.vpn.interface)' $CONFIG_FILE | sponge $CONFIG_FILE
 else
-    INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
     jq '.vpn.connected = true' $CONFIG_FILE | sponge $CONFIG_FILE
     jq --arg interface $INTERFACE '.vpn.interface = $interface' $CONFIG_FILE | sponge $CONFIG_FILE
 fi

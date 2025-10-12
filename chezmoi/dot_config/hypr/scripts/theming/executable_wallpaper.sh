@@ -76,7 +76,9 @@ else
 fi
 
 # Remove any custom saturation
-[ -f "~/.cache/saturation" ] || rm ~/.cache/saturation
+CONFIG_FILE=$HOME/.local/state/desktop/state.json
+jq '.theme.saturation.enabled = false' $CONFIG_FILE | sponge $CONFIG_FILE
+jq 'del(.theme.saturation.level)' $CONFIG_FILE | sponge $CONFIG_FILE
 
 # ---------------------------------------------------------------------------------------
 # Created specific wallpapers
