@@ -13,9 +13,14 @@
 # The script can run with or without arguments. Without arguments, the first color in the theme will be used unless it is too grey.
 # See python script for more details.
 
+# Pywal can be slightly slower than this script and changes later can be overwritten by pywal.
+# A short sleep helps with that issue. Maybe its time to use the rust version.
+sleep 0.2
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
 
+# Import enhance_templates
 source $HOME/.config/hypr/scripts/theming/pywal-enhance.sh
 
 COLOR=${1:-"DEFAULT"}
