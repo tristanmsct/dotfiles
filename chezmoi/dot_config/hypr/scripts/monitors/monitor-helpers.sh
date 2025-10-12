@@ -46,7 +46,7 @@ update_monitor_config() {
 
         MONITOR_EXTERNAL_ONLY=$(jq '.display.monitor_external_only' $CONFIG_FILE)
 
-        if [ $MONITOR_EXTERNAL_ONLY = "true" ]; then
+        if [ $MONITOR_EXTERNAL_ONLY = "false" ]; then
             if [ "$monitor_count" -eq 1 ]; then
                 # log_message "Applying mono configuration"
                 cp "$CONFIG_DIR/monitors/mono.conf" "$MONITOR_FILE"

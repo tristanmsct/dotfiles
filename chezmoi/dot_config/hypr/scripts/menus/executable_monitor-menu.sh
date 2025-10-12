@@ -44,10 +44,8 @@ case $selected_setup in
         $HOME/.config/hypr/scripts/monitors/monitor-check.sh
         ;;
     $external)
-        dunstify hello
         # log_message "Manually triggering external only conf"
         monitor_count=$(hyprctl monitors -j | jq length)
-        dunstify $monitor_count
         if [[ $monitor_count -ge 2 ]]; then
             jq '.display.monitor_external_only = true' $CONFIG_FILE | sponge $CONFIG_FILE
             sed -i "s|^monitor=eDP-1.*$|monitor=eDP-1,disabled|g" "$MONITOR_FILE"
