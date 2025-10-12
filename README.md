@@ -11,5 +11,3 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 
 - [ ] Create ansible playbook for the installation.
 - [ ] Brave : meets screen share looks weirds (probably wayland issue).
-
-- [ ] Give chromium a fake home
