@@ -11,7 +11,7 @@
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 
 BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
-PREVIOUS_LEVEL=$(jq '.battery_level' $CONFIG_FILE)
+PREVIOUS_LEVEL=$(jq -r '.battery_level' $CONFIG_FILE)
 
 if [ "$BATTERY_LEVEL" -gt "$PREVIOUS_LEVEL" ]; then
     if [ $BATTERY_LEVEL = 100 ]; then
@@ -29,4 +29,4 @@ elif [ "$PREVIOUS_LEVEL" -gt "$BATTERY_LEVEL" ]; then
     fi
 fi
 
-jq --arg battery_level $BATTERY_LEVEL '.battery_level = $battery_level' $CONFIG_FILE | sponge $CONFIG_FILE
+jq --argjson battery_level $BATTERY_LEVEL -r '.battery_level = $battery_level' $CONFIG_FILE | sponge $CONFIG_FILE
