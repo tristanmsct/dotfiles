@@ -10,6 +10,6 @@ export STEAM_HOME="$STEAM_HOME"
 [[ -L "$STEAM_HOME/.local" ]] || ln -s "$HOME/.local" "$STEAM_HOME/.local"
 [[ -L "$STEAM_HOME/.config" ]] || ln -s "$HOME/.config" "$STEAM_HOME/.config"
 [[ -L "$STEAM_HOME/.cache" ]] || ln -s "$HOME/.cache" "$STEAM_HOME/.cache"
-[[ -L "$STEAM_HOME/.pki" ]] || ln -s "$HOME/.local/share/pki" "$STEAM_HOME/.pki"
+[[ -L "$STEAM_HOME/.pki" ]] || ln -s "$HOME/.pki" "$STEAM_HOME/.pki"
 
 HOME="$STEAM_HOME" /usr/bin/steam -nochatui -nofriendsui "$@"
