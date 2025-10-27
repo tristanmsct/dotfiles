@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #               _       _     _                   _       _
 # __      _____(_) __ _| |__ | |_  __      ____ _| |_ ___| |__   ___ _ __
 # \ \ /\ / / _ \ |/ _` | '_ \| __| \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|
@@ -17,7 +17,7 @@ script_name=$(basename "$0")
 
 # Message to be displayed as help.
 show_help() {
-    echo "Usage: $script_name [-f | --files DEPTH] [-m | --min-size SIZE_UNIT] [-h | --here] [-e | --exclude-hidden] [--help]"
+    echo "Usage: $script_name [-f | --files DEPTH] [-m | --min-size SIZE_UNIT] [-h | --here] [-e | --exclude-hidden] [-c | --count] [--help]"
     echo "Weight Watcher, get the size of directories."
     echo
     echo "Options:"
@@ -25,6 +25,7 @@ show_help() {
     echo "  -m, --min-size SIZE_UNIT    Specify a minimum size filter (K, M, G). Includes all larger units."
     echo "  -h, --here                  Give the size of the current directory."
     echo "  -e, --exclude-hidden        Exclude hidden files or directories."
+    echo "  -c, --count                 Count files instead of getting the size."
     echo "  --help                      Display this help message."
     exit 0
 }
@@ -68,6 +69,24 @@ while [[ $# -gt 0 ]]; do
             base_search="*"   # Don't search hidden files/directories.
             exclude_hidden_flag="-not -path '*/.*'"  # `find` exclusion flag.
             shift
+            ;;
+        -c|--count)
+            temp_file=$(mktemp)
+
+            # Collect counts and directory names
+            find . -maxdepth 1 -type d ! -name '.' -exec sh -c '
+                count=$(find "$1" -type f | wc -l)
+                echo "$count|$1"
+            ' _ {} \; > "$temp_file"
+
+            # Sort by count (ascending) and display with thousand separator
+            sort -t'|' -k1 -n "$temp_file" | while IFS='|' read count dir; do
+                printf "%'8d files    %s\n" "$count" "${dir#./}"
+            done
+
+            # Cleanup
+            rm "$temp_file"
+            exit 0
             ;;
         --help)
             show_help

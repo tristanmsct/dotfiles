@@ -19,14 +19,19 @@ autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
 
 pgrep -x hyprsunset >/dev/null || hyprsunset -i &
 
+logger -t hyprsunset-base "Starting hyprsunset script"
+
 if [[ $1 = "restore" ]]; then
     # When rebooting, or restarting the session, we can restore the current hyprsunset state.
+    logger -t hyprsunset-base "Restoring hyprsunset config"
     if [[ $hyprsunset_state = "true" ]]; then
         temperature=$(jq '.hyprsunset.temperature' $CONFIG_FILE)
         hyprctl hyprsunset temperature $temperature
+        logger -t hyprsunset-base "Restoring manual hyprsunset"
         dunstify "Restoring hyprsunset with temperature $temperature"
     elif [[ $autotimer_state = "true" ]]; then
         $HOME/.config/hypr/scripts/hyprsunset/hyprsunset-timer.sh
+        logger -t hyprsunset-base "Restoring auto hyprsunset"
         dunstify "Restoring hyprsunset timer"
     else
         hyprctl hyprsunset identity
@@ -38,8 +43,10 @@ elif [[ $hyprsunset_state = "true" ]]; then
     jq '.hyprsunset.filter_on = false' $CONFIG_FILE | sponge $CONFIG_FILE
     if [[ $autotimer_state = "true" ]]; then
         $HOME/.config/hypr/scripts/hyprsunset/hyprsunset-timer.sh
+        logger -t hyprsunset-base "Stopping manual hyprsunset, timer resumed"
         dunstify "Stopping manual hyprsunset, timer resumed"
     else
+        logger -t hyprsunset-base "Hyprsunset stopped"
         hyprctl hyprsunset identity
         dunstify "Hyprsunset stopped"
     fi
@@ -47,6 +54,7 @@ else
     jq '.hyprsunset.filter_on = true' $CONFIG_FILE | sponge $CONFIG_FILE
     temperature=$(jq '.hyprsunset.temperature' $CONFIG_FILE)
     hyprctl hyprsunset temperature $temperature
+    logger -t hyprsunset-base "Hyprsunset started with temperature $temperature"
     dunstify "Hyprsunset started with temperature $temperature"
 fi
 
