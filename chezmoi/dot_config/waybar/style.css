@@ -291,6 +291,15 @@ tooltip label {
     color: #99d989;
 }
 
+#custom-debugger.state_ok {
+    color: #99d989;
+}
+
+#custom-debugger.state_ko {
+    color: #e8a561;
+}
+
+
 /*
  *  ____             _
  * |  _ \  _____   _(_) ___ ___  ___
