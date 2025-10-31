@@ -14,7 +14,7 @@
         "on-click": "pkill rofi || rofi -show drun -replace -i -disable-history",
         "on-click-middle": "~/.config/nwg-panel/menu-start.sh",
         "on-click-right": "~/.config/hypr/scripts/menus/keybindings.sh",
-        "tooltip-format": "<span line_height='1.5'>Left: Open Rofi application launcher</span>\n<span line_height='1.5'>Middle: Show all keybindings</span>\n<span line_height='1.5'>Right: Open the NWG application launcher</span>"
+        "tooltip-format": "<span line_height='1.5'>Left: Open Rofi application launcher</span>\n<span line_height='1.5'>Middle: Open the NWG application launcher   </span>\n<span line_height='1.5'>Right: Show all keybindings</span>"
         // "tooltip": false
     },
 

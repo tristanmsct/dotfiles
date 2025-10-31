@@ -9,20 +9,11 @@
 # ---------------------------------------------------------------------------------------
 # General
 # ---------------------------------------------------------------------------------------
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
-alias ff='fastfetch'
 alias ls='eza -a --icons=always'
 alias ll='eza -al --icons=always'
-alias la="ls -lahF ${colorflag}"
+alias la='ll'
+alias l='la'
 alias lt='eza -a --tree --level=1 --icons=always'
-alias shutdown='systemctl poweroff'
-alias wifi='nmtui'
-
-if [ -n "$ZSH_VERSION" ]; then
-    alias l="ll"
-elif [ -n "$BASH_VERSION" ]; then
-	alias l="la"
-fi
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -30,6 +21,11 @@ alias egrep='egrep --color=auto'
 
 # Enable aliases to be sudo’ed.
 alias sudo='sudo '
+
+alias shutdown='systemctl poweroff'
+alias wifi='nmtui'
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias ff='fastfetch'
 
 # ---------------------------------------------------------------------------------------
 # Kitty
@@ -69,22 +65,21 @@ alias dpsf="docker ps --format 'table {{.Image}}\t{{.Names}}\t{{.Status}}'"
 alias dstats='docker stats --no-stream'
 alias dcstats='docker compose stats --no-stream'
 
-
 # ---------------------------------------------------------------------------------------
 # Git
 # ---------------------------------------------------------------------------------------
-alias gcm='git commit -am'
+alias gad='git add .'
+alias gcm='git commit -m'
+alias gdi='git diff'
+alias gst='git status'
+alias glo='git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+alias gma='git checkout main'
 alias gco='git checkout'
 
 if [ -n "$BASH_VERSION" ]; then
 	source /usr/share/bash-completion/completions/git
 	__git_complete gco _git_checkout
 fi
-
-alias gdi='git diff'
-alias gst='git status'
-alias glo='git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
-alias gma='git checkout main'
 
 # ---------------------------------------------------------------------------------------
 # Kubernetes
