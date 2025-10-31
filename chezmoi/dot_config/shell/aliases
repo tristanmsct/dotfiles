@@ -10,10 +10,10 @@
 # General
 # ---------------------------------------------------------------------------------------
 alias ls='eza -a --icons=always'
-alias ll='eza -al --icons=always'
+alias ll='eza -al --icons=always --sort=type'
 alias la='ll'
 alias l='la'
-alias lt='eza -a --tree --level=1 --icons=always'
+alias lt='eza -a --tree --level=1 --icons=always --sort=type'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
