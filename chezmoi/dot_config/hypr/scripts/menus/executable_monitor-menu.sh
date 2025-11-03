@@ -7,6 +7,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_DIR="$HOME/.config/hypr/conf"
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 source $HOME/.config/hypr/scripts/monitors/monitor-helpers.sh

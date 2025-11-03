@@ -8,7 +8,10 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
+CONFIG_FILE=$HOME/.local/state/desktop/battery.json
 
 BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
 PREVIOUS_LEVEL=$(jq -r '.battery_level' $CONFIG_FILE)

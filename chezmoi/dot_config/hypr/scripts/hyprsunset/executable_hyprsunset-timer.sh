@@ -8,6 +8,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 CALENDAR_FILE=$HOME/.config/hypr/scripts/hyprsunset/hyprsunset-calendar.json
 manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)

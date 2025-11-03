@@ -9,5 +9,39 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 if [[ ! -f ~/.local/state/desktop/state.json ]]; then
-    cp $HOME/.config/hypr/scripts/system/state.json.tpl $HOME/.local/state/desktop/state.json
+cat > $HOME/.local/state/desktop/state.json << 'EOF'
+{
+  "theme": {
+    "accent_color": {
+      "enabled": false
+    },
+      "mode": "dark",
+      "saturation": {
+      "enabled": false
+    }
+  },
+  "display": {
+    "monitor_external_only": false
+  },
+  "waybar": {
+    "enabled": true
+  },
+  "vpn": {
+    "connected": false
+  },
+  "hyprsunset": {
+    "auto_timer": true,
+    "temperature": 6500,
+    "filter_on": false
+  }
+}
+EOF
+fi
+
+if [[ ! -f ~/.local/state/desktop/battery.json ]]; then
+cat > $HOME/.local/state/desktop/battery.json << 'EOF'
+{
+  "battery_level": 100
+}
+EOF
 fi

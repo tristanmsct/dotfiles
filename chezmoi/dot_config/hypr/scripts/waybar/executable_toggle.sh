@@ -8,6 +8,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 WAYBAR_STATUS=$(jq '.waybar.enabled' $CONFIG_FILE)
 

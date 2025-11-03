@@ -102,7 +102,7 @@
     "group/center": {
         "orientation": "horizontal",
         "modules": [
-            "custom/debugger",
+            // "custom/debugger",
             "clock",
             "custom/vpnstatus",
             "custom/updates"

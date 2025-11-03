@@ -10,6 +10,9 @@
 # Simple switch. Turn on hyprsunset if it is off, off if it is on.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 # I can't find a clean way to get hyprsunset state from hyprctl yet, maybe in the future.
 # I can only fetch the current temperature.
 # What is missing is a way to know if the temperature is overwritten by "identity".

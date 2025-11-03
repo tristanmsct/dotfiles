@@ -9,6 +9,9 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 new_value=$1
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
 

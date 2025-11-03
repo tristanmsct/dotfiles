@@ -8,6 +8,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
 

@@ -8,6 +8,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 # Read the VPN status file.
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 STATUS=$(jq '.vpn.connected' $CONFIG_FILE)

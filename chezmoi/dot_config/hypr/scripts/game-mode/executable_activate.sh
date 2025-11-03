@@ -7,6 +7,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
 

@@ -12,6 +12,9 @@
 # Set defaults
 # ---------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 force_generate=0
 cache_directory="$HOME/.cache/wallpaper"
@@ -81,7 +84,6 @@ else
 fi
 
 # Remove any custom saturation
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
 jq '.theme.saturation.enabled = false' $CONFIG_FILE | sponge $CONFIG_FILE
 jq 'del(.theme.saturation.level)' $CONFIG_FILE | sponge $CONFIG_FILE
 

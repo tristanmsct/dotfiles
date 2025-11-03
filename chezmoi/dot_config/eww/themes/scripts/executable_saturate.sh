@@ -7,6 +7,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Set up state file if necessary.
+$HOME/.config/hypr/scripts/system/setup-state.sh
+
 CONFIG_FILE=$HOME/.local/state/desktop/state.json
 
 # Maybe the saturation function should work even in focus mode but it would be a pain to implement for almost nothing.
