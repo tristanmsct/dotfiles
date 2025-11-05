@@ -8,8 +8,11 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-if [[ ! -f ~/.local/state/desktop/state.json ]]; then
-cat > $HOME/.local/state/desktop/state.json << 'EOF'
+STATE_FILE="$HOME/.local/state/desktop/state.json"
+BATTERY_FILE="$HOME/.local/state/desktop/battery.json"
+
+if [ ! -e "$STATE_FILE" ] || [ ! -s "$STATE_FILE" ]; then
+cat > $STATE_FILE << 'EOF'
 {
   "theme": {
     "accent_color": {
@@ -38,8 +41,8 @@ cat > $HOME/.local/state/desktop/state.json << 'EOF'
 EOF
 fi
 
-if [[ ! -f ~/.local/state/desktop/battery.json ]]; then
-cat > $HOME/.local/state/desktop/battery.json << 'EOF'
+if [ ! -e "$BATTERY_FILE" ] || [ ! -s "$BATTERY_FILE" ]; then
+cat > $BATTERY_FILE << 'EOF'
 {
   "battery_level": 100
 }
