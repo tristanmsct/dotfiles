@@ -31,7 +31,7 @@
 
     // Left Segment
     "modules-left": [
-        "custom/appmenu",
+        // "custom/appmenu",
         // "group/quicklinks",
         "hyprland/workspaces",
         "wlr/taskbar"
@@ -45,8 +45,8 @@
     // Right Segment
     "modules-right": [
         "group/misc",
-        "group/devices",
-        "group/system"
+        "group/devices"
+        // "group/system"
     ]
 },
 {
@@ -81,7 +81,7 @@
 
     // Left Segment
     "modules-left": [
-        "custom/appmenu",
+        // "custom/appmenu",
         // "group/quicklinks",
         "hyprland/workspaces",
         "wlr/taskbar"
@@ -95,7 +95,7 @@
     // Right Segment
     "modules-right": [
         "group/misc",
-        "group/devices-secondary",
-        "group/system"
+        "group/devices-secondary"
+        // "group/system"
     ]
 }]
