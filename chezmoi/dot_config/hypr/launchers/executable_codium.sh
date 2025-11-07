@@ -13,5 +13,6 @@ mkdir -p "$CHROMIUM_HOME"
 [[ -L "$CHROMIUM_HOME/.local" ]] || ln -s "$HOME/.local" "$CHROMIUM_HOME/.local"
 [[ -L "$CHROMIUM_HOME/.config" ]] || ln -s "$HOME/.config" "$CHROMIUM_HOME/.config"
 [[ -L "$CHROMIUM_HOME/.cache" ]] || ln -s "$HOME/.cache" "$CHROMIUM_HOME/.cache"
+[[ -L "$CHROMIUM_HOME/.ssh" ]] || ln -s "$HOME/.ssh" "$CHROMIUM_HOME/.ssh"
 
 HOME="$CHROMIUM_HOME" VSCODE_PORTABLE="$XDG_DATA_HOME/VSCodium" VSCODE_CLI_DATA_DIR="$XDG_DATA_HOME/VSCodium/cli" exec codium "$@"
