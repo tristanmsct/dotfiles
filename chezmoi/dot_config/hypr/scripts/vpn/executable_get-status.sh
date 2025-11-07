@@ -8,16 +8,21 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set up state file if necessary.
-$HOME/.config/hypr/scripts/system/setup-state.sh
+INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
 
-# Read the VPN status file.
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-STATUS=$(jq '.vpn.connected' $CONFIG_FILE)
-
-if [[ "$STATUS" = "false" ]]; then
+if [[ $INTERFACE == "" ]]; then
     echo "{\"text\": \"\", \"alt\": \"off\"}"
 else
-    INTERFACE=$(jq '.vpn.interface' $CONFIG_FILE)
-    echo "{\"text\": \" 󰒃  \", \"tooltip\": $INTERFACE, \"alt\": \"connected\"}"
+	DISPLAY=""
+	if [[ $INTERFACE == *"Raspberrypi-VPN"* ]]; then
+		DISPLAY+="Raspberrypi VPN"
+	fi
+	if [[ $INTERFACE == *"wg0-mullvad"* ]]; then
+		if [[ $DISPLAY != "" ]]; then
+			DISPLAY+=" | "
+		fi
+		PLACE=$(mullvad status | grep "Visible location:" | sed 's/.*Visible location:\s*//' | cut -d'.' -f1)
+		DISPLAY+=$PLACE
+	fi
+    echo "{\"text\": \" 󰒃  \", \"tooltip\": \"$DISPLAY\", \"alt\": \"connected\"}"
 fi

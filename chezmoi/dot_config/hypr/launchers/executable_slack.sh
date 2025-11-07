@@ -9,9 +9,6 @@ fi
 CHROMIUM_HOME=$HOME/.local/state/chromium_home
 mkdir -p "$CHROMIUM_HOME"
 
-# Point Steam's data to our custom location
-export CHROMIUM_HOME="$CHROMIUM_HOME"
-
 # Create symlinks only if they don't exist
 [[ -L "$CHROMIUM_HOME/.local" ]] || ln -s "$HOME/.local" "$CHROMIUM_HOME/.local"
 [[ -L "$CHROMIUM_HOME/.config" ]] || ln -s "$HOME/.config" "$CHROMIUM_HOME/.config"

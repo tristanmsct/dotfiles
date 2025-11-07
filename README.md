@@ -12,5 +12,4 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 - [ ] Create ansible playbook for the installation.
 - [ ] Brave : meets screen share looks weirds (probably wayland issue).
 - [ ] External only monitor script is super wonky.
-- [ ] Adapt VPN menu to mullvad, also waybar badge.
 - [ ] Use Mullvad on the raspberry pi.

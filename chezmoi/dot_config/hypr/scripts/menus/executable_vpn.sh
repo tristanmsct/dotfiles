@@ -7,41 +7,46 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-LST_WG_INTERFACES=$(nmcli -g NAME,TYPE connection show | grep ":wireguard$" | cut -d':' -f1 | while read -r interface; do
-    if [[ "$interface" == ProtonVPN* ]]; then
-        echo "󰒃   $interface"
-    elif [[ "$interface" == *Raspberrypi* ]] || [[ "$interface" == *raspberry* ]]; then
-        echo "   $interface"
-    else
-        echo "$interface"
-    fi
-done)
+# List of interfaces.
+# Just add a country here.
+LST_INTERFACES='󰒃   Mullvad-FR'
+LST_INTERFACES+=$'\n''󰒃   Mullvad-NL'
+LST_INTERFACES+=$'\n''󰒃   Mullvad-UK'
+LST_INTERFACES+=$'\n''󰒃   Mullvad-DE'
+LST_INTERFACES+=$'\n''󰒃   Mullvad-US'
+LST_INTERFACES+=$'\n''   Raspberrypi-VPN'
 
 INITIAL_INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
 
 # If a wireguard connection is already running, we add an option to down it.
 if [[ $INITIAL_INTERFACE != "" ]]; then
-    LST_WG_INTERFACES+=$'\n   Deactivate'
+    LST_INTERFACES+=$'\n   Deactivate'
 fi
 
-NB_INTERFACE=$(echo "$LST_WG_INTERFACES" | wc -l)
+
+# Displaying rofi menu.
+
+NB_INTERFACE=$(echo "$LST_INTERFACES" | wc -l)
 NB_INTERFACE=$((NB_INTERFACE>=8 ? 8 : NB_INTERFACE))
 
-SELECTION=$(echo -e "$LST_WG_INTERFACES" | rofi -dmenu -font "Fira Sans,Fira Sans Medium 14" -config ~/.config/rofi/config-simple.rasi -markup-rows -l $NB_INTERFACE -p "Select:")
+SELECTION=$(echo -e "$LST_INTERFACES" | rofi -dmenu -font "Fira Sans,Fira Sans Medium 14" -config ~/.config/rofi/config-simple.rasi -markup-rows -l $NB_INTERFACE -p "Select:")
+CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
 
-if [[ $SELECTION == "" ]]; then
-    # This command "successfully does nothing", allowing for an empty if segment.
-    :
-elif [[ $SELECTION == "   Deactivate" ]]; then
-    echo "Deactivating current interface"
-    nmcli connection down $INITIAL_INTERFACE
-else
-    # Strip the icon and space from the selection
-    CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
-    if [[ $INITIAL_INTERFACE != "" ]]; then
-        nmcli connection down $INITIAL_INTERFACE
-    fi
-    nmcli connection up $CLEAN_SELECTION
+# VPN Logic.
+
+# If there is already a VPN running we disconnect.
+# If we want a new VPN connection, then we need to disconnect, if we just chose disconnect, then we need to diconnect too.
+if [[ $INITIAL_INTERFACE != "" ]]; then
+    nmcli connection down Raspberrypi-VPN
+    mullvad disconnect
 fi
 
-$HOME/.config/hypr/scripts/vpn/update-status.sh
+# Start Raspberrypi VPN or Mullvad if we chose one of them. If we clicked Disconnect, we do nothing.
+if [[ $CLEAN_SELECTION == *"Raspberrypi-VPN"* ]]; then
+    nmcli connection up $CLEAN_SELECTION
+elif [[ $CLEAN_SELECTION == *"Mullvad"* ]]; then
+    COUNTRY_LOWER="${CLEAN_SELECTION##*-}"
+    COUNTRY_LOWER="${COUNTRY_LOWER,,}"
+    mullvad relay set location $COUNTRY_LOWER
+    mullvad connect
+fi
