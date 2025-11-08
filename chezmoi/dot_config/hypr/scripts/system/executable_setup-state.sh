@@ -29,6 +29,9 @@ cat > $STATE_FILE << 'EOF'
   "waybar": {
     "enabled": true
   },
+  "vpn": {
+    "connected": false
+  },
   "hyprsunset": {
     "auto_timer": true,
     "temperature": 6500,

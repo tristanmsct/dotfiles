@@ -353,7 +353,7 @@
         "format": "{ifname}",
         "format-wifi": "<span size='large'>󰤨</span> {signalStrength}%",
         "format-ethernet": "<span size='large'>󱘖</span> Wired",
-        "format-linked": "<span size='large'>󱘖</span> {ifname} (No IP)",
+        "format-linked": "<span size='large'>󰒃</span> VPN",
         "format-disconnected": " Off",
         "tooltip-format": "{ifname}",
         "tooltip-format-wifi": "   {essid} |    {bandwidthUpBytes} |    {bandwidthDownBytes}",
