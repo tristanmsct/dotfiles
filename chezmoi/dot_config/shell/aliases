@@ -93,6 +93,7 @@ alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster
 # This block is important because opening a chromium based or proton app without the appropriate flags.
 # will create a tone of cache and user data in ~/.config.
 alias brave="~/.config/hypr/launchers/browser.sh"
+alias firefox="~/.config/hypr/launchers/firefox.sh"
 alias typora="~/.config/hypr/launchers/typora.sh"
 alias feishin="~/.config/hypr/launchers/feishin.sh"
 alias slack="~/.config/hypr/launchers/slack.sh"
