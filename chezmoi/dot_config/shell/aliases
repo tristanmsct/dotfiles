@@ -9,9 +9,9 @@
 # ---------------------------------------------------------------------------------------
 # General
 # ---------------------------------------------------------------------------------------
-alias ls='eza -a --icons=always'
-alias ll='eza -al --icons=always --sort=type'
-alias la='ll'
+alias ls='eza --icons=always'
+alias ll='eza -l --icons=always --sort=type'
+alias la='ll -a'
 alias l='la'
 alias lt='eza -a --tree --level=1 --icons=always --sort=type'
 
@@ -88,10 +88,9 @@ alias ke='kubectl get events --sort-by='\''.lastTimestamp'\'''
 alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster --region europe-west9 --project ino-it-s-kroko-ppr'
 
 # ---------------------------------------------------------------------------------------
-# Proton application
+# Custom launchers
 # ---------------------------------------------------------------------------------------
-# This block is important because opening a chromium based or proton app without the appropriate flags.
-# will create a tone of cache and user data in ~/.config.
+# Custom launchers for apps that need to be run with spcial flags and environment variables.
 alias brave="~/.config/hypr/launchers/browser.sh"
 alias firefox="~/.config/hypr/launchers/firefox.sh"
 alias typora="~/.config/hypr/launchers/typora.sh"
@@ -102,8 +101,5 @@ alias vscodium="~/.config/hypr/launchers/codium.sh"
 alias nextcloud="~/.config/hypr/launchers/nextcloud.sh"
 alias steam="~/.config/hypr/launchers/steam.sh"
 
-# ---------------------------------------------------------------------------------------
-# QT Applications
-# ---------------------------------------------------------------------------------------
 # These script are about starting the app with the right cursor.
-alias vlc="~/.config/hypr/launchers/vlc.sh"
+alias vlc="~/.config/hypr/launchers/vlc.sh"  # For VLC, it's because it is a Qt app and otherwise it does not have the right cursor.
