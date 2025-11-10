@@ -26,6 +26,7 @@ alias shutdown='systemctl poweroff'
 alias wifi='nmtui'
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 alias ff='fastfetch'
+alias bashterm='bash --rcfile $HOME/.config/bash/.bashrc'
 
 # ---------------------------------------------------------------------------------------
 # Kitty
