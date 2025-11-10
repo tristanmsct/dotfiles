@@ -19,6 +19,7 @@ export XDG_CONFIG_HOME="$HOME"/.config
 export XDG_CACHE_HOME="$HOME"/.cache
 export XDG_DATA_HOME="$HOME"/.local/share
 export XDG_STATE_HOME="$HOME"/.local/state
+export FAKE_HOME="$XDG_STATE_HOME/fake_home"
 
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
 export ZSH="$XDG_DATA_HOME"/oh-my-zsh
