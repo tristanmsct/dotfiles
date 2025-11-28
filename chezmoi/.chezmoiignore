@@ -9,6 +9,7 @@
 .config/qt6ct/style-colors.conf
 .config/hypr/conf/monitor.conf
 .config/waybar/config.jsonc
+.config/rofi-games/box-art
 
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
