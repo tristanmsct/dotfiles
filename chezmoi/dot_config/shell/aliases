@@ -28,6 +28,9 @@ alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 alias ff='fastfetch'
 alias bashterm='bash --rcfile $HOME/.config/bash/.bashrc'
 
+alias servarr-up="docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml up -d"
+alias servarr-down="docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down"
+
 # ---------------------------------------------------------------------------------------
 # Kitty
 # ---------------------------------------------------------------------------------------
