@@ -54,9 +54,11 @@ fi
 
 # Start Raspberrypi VPN or Mullvad if we chose one of them. If we clicked Disconnect, we do nothing.
 if [[ $CLEAN_SELECTION == *"Raspberrypi-VPN"* ]]; then
+     docker ps | grep -q qbittorrent && docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down
     nmcli connection up $CLEAN_SELECTION
     $HOME/.config/hypr/scripts/vpn/update-status.sh $CLEAN_SELECTION
 elif [[ $CLEAN_SELECTION == *"Proton"* ]]; then
+     docker ps | grep -q qbittorrent && docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down
     # Extract country code (e.g., "Proton-FR" -> "FR").
     COUNTRY=$(echo "$CLEAN_SELECTION" | sed 's/Proton-//' | xargs)
     SERVER="${SERVER_MAP[$COUNTRY]}"
