@@ -10,6 +10,7 @@
 .config/hypr/conf/monitor.conf
 .config/waybar/config.jsonc
 .config/rofi-games/box-art
+.config/hypr/scripts/system/config-baseline.txt
 
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
