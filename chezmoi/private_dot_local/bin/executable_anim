@@ -45,7 +45,7 @@ case $choice in
         cmatrix -s ${@:2}
         ;;
     bonsai)
-        bonsai.sh -li ${@:2}
+        cbonsai -li ${@:2}
         ;;
     -h|--help)
         show_help

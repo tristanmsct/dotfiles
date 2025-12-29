@@ -10,15 +10,30 @@ OUTPUT_DIR="/home/tristan/Nextcloud/99-Documents/96-System_info/report_$(date +%
 mkdir -p "$OUTPUT_DIR"
 echo "Creating system information files in: $OUTPUT_DIR"
 
-# 1. Explicitly installed packages (not from AUR)
-echo "Collecting explicitly installed packages..."
-pacman -Qe > "$OUTPUT_DIR/explicitly_installed_packages.txt"
+# 1. List all package
+echo "Collecting all installed packages..."
+declare -A order=([core]=1 [extra]=2 [multilib]=3 [cachyos]=4 [cachyos-v3]=5 [aur]=6)
 
-# 2. Explicitly installed packages from AUR
-echo "Collecting explicitly installed packages from the AUR..."
-pacman -Qm > "$OUTPUT_DIR/explicitly_installed_aur_packages.txt"
+# Get list of explicitly installed packages
+explicit=$(pacman -Qe | awk '{print $1}')
 
-# 3. CPU Information
+{
+    echo "repository,package,version,install_type"
+    {
+        pacman -Sl | awk '$4 ~ /^\[installed/ {print $1"|"$2"|"$3}'
+        pacman -Qm | while read -r pkg ver; do echo "aur|$pkg|$ver"; done
+    } | while IFS='|' read -r repo pkg ver; do
+        if echo "$explicit" | grep -q "^${pkg}$"; then
+            install_type="explicit"
+        else
+            install_type="dependency"
+        fi
+        sortkey=${order[$repo]:-99}
+        echo "$sortkey|$repo|$pkg|$ver|$install_type"
+    done | sort -t'|' -k1,1n | cut -d'|' -f2- | tr '|' ','
+} > "$OUTPUT_DIR/full_packages_list.csv"
+
+# 2. CPU Information
 echo "Collecting CPU information..."
 {
     echo "=== CPU INFO ==="
@@ -27,7 +42,7 @@ echo "Collecting CPU information..."
     cat /proc/cpuinfo
 } > "$OUTPUT_DIR/cpu_info.txt"
 
-# 4. Memory Information
+# 3. Memory Information
 echo "Collecting memory information..."
 {
     echo "=== MEMORY INFO ==="
@@ -36,7 +51,7 @@ echo "Collecting memory information..."
     cat /proc/meminfo
 } > "$OUTPUT_DIR/memory_info.txt"
 
-# 5. Device Information
+# 4. Device Information
 echo "Collecting device information..."
 {
     echo "=== BLOCK DEVICES ==="
@@ -49,7 +64,7 @@ echo "Collecting device information..."
     cat /proc/bus/input/devices
 } > "$OUTPUT_DIR/devices_info.txt"
 
-# 6. Network Information
+# 5. Network Information
 echo "Collecting network information..."
 {
     echo "=== NETWORK INTERFACES ==="
@@ -60,7 +75,7 @@ echo "Collecting network information..."
     ss -tuln
 } > "$OUTPUT_DIR/network_info.txt"
 
-# 7. System Information
+# 6. System Information
 echo "Collecting general system information..."
 {
     echo "=== SYSTEM INFO ==="
@@ -75,7 +90,7 @@ echo "Collecting general system information..."
     df -h
 } > "$OUTPUT_DIR/system_info.txt"
 
-# 8. Graphics Information
+# 7. Graphics Information
 echo "Collecting graphics information..."
 {
     echo "=== GRAPHICS CARDS ==="
@@ -89,7 +104,7 @@ echo "Collecting graphics information..."
     fi
 } > "$OUTPUT_DIR/graphics_info.txt"
 
-# 9. Services Information
+# 8. Services Information
 echo "Collecting services information..."
 {
     echo "=== ENABLED SERVICES ==="
