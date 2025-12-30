@@ -5,7 +5,7 @@ options=(
   'cava:Starts cava audio visualiser'
   'aqua:Starts asciiquarium'
   'matrix:Starts cmatrix with potential optionnal parameters'
-  'bonsai:Starts bonsai.sh with potential optionnal parameters'
+  'bonsai:Starts cbonsai with potential optionnal parameters'
   '--help:Display the help message for this function'
 )
 

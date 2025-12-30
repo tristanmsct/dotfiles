@@ -1,0 +1,14 @@
+#compdef servarr
+
+local -a options
+options=(
+  'up:Start containers'
+  'down:Stop containers'
+  'restart:Restart containers'
+  'pull:Update container'
+  'logs:Print logs for containers'
+  'shutdown:Stops containers and docker'
+  '--help:Display the help message for this function'
+)
+
+_describe 'values' options

@@ -1,4 +1,4 @@
-@import url('../../.cache/wal/colors-nwg.css');
+@import url('/home/tristan/.cache/wal/colors-nwg.css');
 
 * {
     color: @foreground-theme;

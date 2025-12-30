@@ -10,7 +10,7 @@
 
 if systemctl is-active --quiet docker.service; then
     if [ -z "$1" ]; then
-        systemctl stop docker.service
+        systemctl stop docker.socket
         # Update waybar icon config.
         pkill -RTMIN+10 waybar
     elif [ $1 = "status" ]; then

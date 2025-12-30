@@ -21,7 +21,7 @@ show_help() {
     echo "  cava                 Starts cava audio visualiser."
     echo "  aqua                 Starts asciiquarium."
     echo "  matrix               Starts cmatrix with potential optionnal parameters."
-    echo "  bonsai               Starts bonsai.sh with potential optionnal parameters."
+    echo "  bonsai               Starts cbonsai with potential optionnal parameters."
     echo "  -h, --help           Display this help message."
     exit 0
 }
