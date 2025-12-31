@@ -29,7 +29,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
         keyword general:border_size 0;\
         keyword decoration:rounding 0"
 
-    pkill hyprpaper
+    awww kill
 
     sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
     sed -i -E "s/(background:) @background-theme;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css

@@ -68,7 +68,6 @@ update_monitor_config() {
         # log_message "hyprctl reload ..."
         hyprctl reload
         # log_message "wallpaper reload ..."
-        pkill hyprpaper
         waypaper --restore
         $HOME/.config/hypr/scripts/waybar/launch.sh
         # log_message "Configuration reloaded"
