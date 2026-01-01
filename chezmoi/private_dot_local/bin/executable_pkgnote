@@ -59,7 +59,7 @@ def add_note(package: str, reason: str):
     notes = load_notes()
 
     notes[package] = {
-        "reason": reason
+        "reason": reason.strip('"')
     }
 
     save_notes(notes)
