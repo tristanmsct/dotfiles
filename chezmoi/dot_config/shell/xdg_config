@@ -22,11 +22,9 @@ export XDG_STATE_HOME="$HOME"/.local/state
 export FAKE_HOME="$XDG_STATE_HOME/fake_home"
 
 export ANSIBLE_HOME="$XDG_DATA_HOME"/ansible
-export ZSH="$XDG_DATA_HOME"/oh-my-zsh
 export GOPATH="$XDG_DATA_HOME"/go
 export GOTELEMETRYDIR="$XDG_CACHE_HOME"/go-telemetry
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
-export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
 export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 export IPYTHONDIR="$XDG_CONFIG_HOME"/ipython
@@ -43,8 +41,17 @@ export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
 
 # Shell-specific settings.
 if [ -n "$ZSH_VERSION" ]; then
-    export HISTFILE="${XDG_STATE_HOME}"/zsh/history
+    export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
+    export ZSH="$XDG_DATA_HOME"/oh-my-zsh
+    export ZSH_COMPDUMP="$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
+
+    [[ -d "$XDG_STATE_HOME"/zsh ]] || mkdir -p "$XDG_STATE_HOME"/zsh
+    [[ -d "$XDG_CACHE_HOME"/zsh ]] || mkdir -p "$XDG_CACHE_HOME"/zsh
+
+    export HISTFILE="$XDG_STATE_HOME"/zsh/history
+    zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
 elif [ -n "$BASH_VERSION" ]; then
+    [ -d "$XDG_STATE_HOME"/bash ] || mkdir -p "$XDG_STATE_HOME"/bash
     export HISTFILE="${XDG_STATE_HOME}"/bash/history
     export BASHDIR="$XDG_CONFIG_HOME"/bash
 fi
