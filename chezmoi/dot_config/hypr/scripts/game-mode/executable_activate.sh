@@ -45,7 +45,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
     exit
 fi
 
-source ~/.config/hypr/scripts/game-mode/cleanup-games.sh
+source $HOME/.config/hypr/scripts/game-mode/cleanup-games.sh
 hyprctl reload
 waypaper --restore
 
@@ -58,7 +58,7 @@ sed -i -E "s|/\* (background: url.*) \*/|\1|" $HOME/.config/wlogout/style.css
 
 sed -i -E "s|# (path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1|" $HOME/.config/hypr/hyprlock.conf
 
-/usr/bin/nextcloud --background &
+$HOME/.config/hypr/launchers/nextcloud.sh --background &
 
 if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
     dunstify "Gamemode deactivated" "Animations, blur, wallpaper and bar enabled"

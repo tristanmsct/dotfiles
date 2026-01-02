@@ -14,7 +14,7 @@ eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/zen.toml)"
 # -----------------------------------------------------
 # Tools
 # -----------------------------------------------------
-[[ -s /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
+eval "$(zoxide init bash)"
 eval $(thefuck --alias)
 eval "$(ssh-agent)" &>/dev/null
 

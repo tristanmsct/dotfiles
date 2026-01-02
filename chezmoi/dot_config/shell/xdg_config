@@ -30,6 +30,7 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/pythonrc
 export IPYTHONDIR="$XDG_CONFIG_HOME"/ipython
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyters
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export BUILDX_CONFIG="$XDG_DATA_HOME"/docker/buildx
 # export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export VSCODE_PORTABLE="$XDG_CONFIG_HOME"/VSCodium
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
