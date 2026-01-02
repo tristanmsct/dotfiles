@@ -16,6 +16,7 @@ _watcher() {
                     desktop) desc="Monitor .desktop file changes" ;;
                     config) desc="Monitor .config directory" ;;
                     git) desc="Check git repositories status" ;;
+                    aur) desc="Check for custom AUR packages changes" ;;
                     chezmoi) desc="Track chezmoi-managed files" ;;
                     pkg) desc="Manage package notes" ;;
                     sysinfo) desc="Collect system information" ;;

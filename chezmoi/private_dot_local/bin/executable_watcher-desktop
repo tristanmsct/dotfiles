@@ -12,6 +12,9 @@ SYSTEM_DIR="/usr/share/applications"
 LOCAL_DIR="$HOME/.local/share/applications"
 NOTES_DIR="$HOME/.local/share/system-notes/applications"
 
+ORANGE='\033[38;2;255;158;23m'
+NC='\033[0m'
+
 # Ensure notes directory exists
 mkdir -p "$NOTES_DIR"
 
@@ -27,12 +30,12 @@ if [[ -z "$1" ]]; then
 
         if [[ ! -f "$test_file" ]]; then
             has_changes=true
-            echo -e "\e[31m$app_file\e[0m"
+            echo -e "${ORANGE}$app_file${NC}"
             echo " [new file - not yet tracked]"
             echo
         elif ! cmp -s "$source_file" "$test_file"; then
             has_changes=true
-            echo -e "\e[31m$app_file\e[0m"
+            echo -e "${ORANGE}$app_file${NC}"
             diff "$source_file" "$test_file"
             echo
         fi
