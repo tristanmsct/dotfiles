@@ -17,12 +17,12 @@ sddm_theme_name="eucalyptus-drop"
 sddm_asset_folder="/usr/share/sddm/themes/$sddm_theme_name/Backgrounds"
 
 # Changing the SDDM wallpaper with the new one.
-rm $sddm_asset_folder/current_wallpaper.*
-cp $WALLPAPER $sddm_asset_folder/current_wallpaper.$extension
+sudo rm $sddm_asset_folder/current_wallpaper.*
+sudo cp $WALLPAPER $sddm_asset_folder/current_wallpaper.$extension
 
 # Adding the SDDM template and replacing the wallpaper and accent color.
 sddm_theme_tpl="$HOME/.config/sddm-themes/theme-eucalyptus-drop.tpl"
-cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/theme.conf
-sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.$extension"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+sudo cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+sudo sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.$extension"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
 
-sed -i 's/ACCENTCOLOR/'"$COLOR"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+sudo sed -i 's/ACCENTCOLOR/'"$COLOR"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf

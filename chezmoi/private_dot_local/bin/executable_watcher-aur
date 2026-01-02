@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+#                _       _
+# __      ____ _| |_ ___| |__   ___ _ __       __ _ _   _ _ __
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____ / _` | | | | '__|
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| (_| | |_| | |
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \__,_|\__,_|_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# The main hub for aur repos.
+aur_repos="$HOME/.local/share/aur"
+
+lst_repos=()
+# Add base repos
+if [[ -d "$aur_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$aur_repos"/*/ 2>/dev/null)
+    lst_repos=("${base_dirs[@]}")
+fi
+
+ORANGE='\033[38;2;255;158;23m'
+BLUE='\033[38;2;73;136;252m'
+PURPLE='\033[38;2;150;85;166m'
+GREEN='\033[38;2;125;235;103m'
+NC='\033[0m'
+
+ssh-add $HOME/.ssh/id_perso
+
+for repo in ${lst_repos[@]}; do
+
+    # We go from repo to repo because we cannot run git commands from outside.
+    # The update is necessary to get the changes.
+    cd $repo
+    git remote update &> /dev/null
+
+    # Splitting the path by '/' to keep only the last bit, this gives a more readable display at the end.
+    path_repo=(${repo//\// })
+    repo_dir=${path_repo[${#path_repo[@]} - 1]}
+
+    # The `clean` variable is initialised with a value of 0 and incremented depending of the repos status.
+    # Local changes -> +1
+    # Remote changes -> +2
+    # This gives four different possible states for the repo.
+    clean=0
+    status=$(git status)
+
+    if ! (git status|grep -q "working tree clean"); then clean=$((clean+1)); fi;
+    if (git status|grep -q "Your branch is behind"); then clean=$((clean+2)); fi;
+
+    case "$clean" in
+
+        0) echo -e "Repo ${PURPLE}$repo_dir${NC} is ${GREEN}up to date${NC}."
+            ;;
+        1) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${BLUE}local${NC} changes."
+            ;;
+        2) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${ORANGE}remote AUR${NC} changes."
+            ;;
+        3) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${BLUE}local${NC} and ${ORANGE}remote AUR${NC} changes."
+        ;;
+        *) echo "🍞 Something went really wrong."
+        ;;
+
+    esac
+
+    # Get package name from PKGBUILD
+    pkgname=$(grep -E '^pkgname=' PKGBUILD | cut -d'=' -f2 | tr -d '"' | head -n1)
+
+    # Check if package is installed
+    if pacman -Q "$pkgname" &>/dev/null; then
+        current=$(pacman -Q "$pkgname" 2>/dev/null | cut -d' ' -f2)
+        makepkg -od &>/dev/null
+        new=$(makepkg --packagelist 2>/dev/null | head -n1 | xargs basename | sed "s/${pkgname}-//" | sed 's/-[^-]*-[^-]*\.pkg\.tar\.zst//')
+
+        current=$(sed -e 's/\-[0-9]*$//g'  <<<$current)
+        new=$(sed -e 's/\-[0-9]*$//g'  <<<$new)
+
+        if [ "$current" != "$new" ] && [ -n "$new" ]; then
+            echo -e "${ORANGE}Source update available${NC}: $current -> $new"
+        fi
+    fi
+
+done
