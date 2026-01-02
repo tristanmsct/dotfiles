@@ -22,11 +22,12 @@ plugins=(
     dirhistory
 )
 
-# Set-up oh-my-zsh
-source $ZSH/oh-my-zsh.sh
-
+# Initialize completion system
 fpath=(~/.config/zsh/completions $fpath)
 autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+
+# Set-up oh-my-zsh
+source $ZSH/oh-my-zsh.sh
 
 # -----------------------------------------------------
 # Set-up FZF key bindings (CTRL R for fuzzy history finder)

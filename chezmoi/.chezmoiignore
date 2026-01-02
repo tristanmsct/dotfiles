@@ -9,6 +9,8 @@
 .config/qt6ct/style-colors.conf
 .config/hypr/conf/monitor.conf
 .config/waybar/config.jsonc
+.config/wlogout/style.css
+.config//config.jsonc
 .config/rofi-games/box-art
 
 # Byte-compiled / optimized / DLL files

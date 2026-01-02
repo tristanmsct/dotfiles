@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#                _       _
+# __      ____ _| |_ ___| |__   ___ _ __
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|
+#  \ V  V / (_| | || (__| | | |  __/ |
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+WATCHER_DIR="$HOME/.local/bin"
+
+# If no args or help requested
+if [[ -z "$1" ]] || [[ "$1" =~ ^(-h|--help|help)$ ]]; then
+    echo "watcher - System monitoring toolkit"
+    echo
+    echo "Available commands:"
+    for script in "$WATCHER_DIR"/watcher-*; do
+        [[ -x "$script" ]] && basename "$script" | sed 's/^watcher-/  /'
+    done
+    echo
+    echo "Usage: watcher <command> [args]"
+    exit 0
+fi
+
+# Dispatch to watcher-<command>
+target="$WATCHER_DIR/watcher-$1"
+shift
+
+if [[ -x "$target" ]]; then
+    exec "$target" "$@"
+else
+    echo "Error: watcher-$1 not found"
+    echo "Run 'watcher' to see available commands"
+    exit 1
+fi

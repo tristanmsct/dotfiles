@@ -1,0 +1,13 @@
+#compdef watcher-config
+
+_watcher-config() {
+    local -a options
+    options=(
+        ':Check for new files and directories in ~/.config'
+        'update:Update the baseline file'
+    )
+
+    _describe 'watcher-config commands' options
+}
+
+_watcher-config "$@"

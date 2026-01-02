@@ -77,7 +77,7 @@ def list_notes(package: str = None):
     if not package:
         package = subprocess.run(["gum", "choose", "all", *notes.keys(), "exit"], stdout=subprocess.PIPE, text=True).stdout.strip()
 
-        if package == "exit":
+        if package in ["", "exit"]:
             print("Action cancelled")
             sys.exit(1)
 
@@ -143,6 +143,9 @@ def main():
         blank_start = True
         command = subprocess.run(["gum", "choose", "add", "list", "remove", "search"], stdout=subprocess.PIPE, text=True).stdout.strip()
 
+    if command == "":
+        sys.exit(1)
+
     if blank_start or all([val is None for key, val in args.__dict__.items() if key != "command"]):
         gum_command = ["gum", "input", f"--prompt=pkgnote {command} ", f"--placeholder={subparsers.choices[command].usage}"]
         arguments = subprocess.run(gum_command, stdout=subprocess.PIPE, text=True).stdout.strip().split(" ", maxsplit=1)
@@ -150,16 +153,20 @@ def main():
         args = parser.parse_args([command, *arguments])
 
     if args.command == "add":
-        add_note(args.package, args.reason)
+        if args.package and args.reason:
+            add_note(args.package, args.reason)
 
     elif args.command == "list":
-        list_notes(args.package)
+        if args.package is not None:
+            list_notes(args.package)
 
     elif command == "remove":
-        remove_note(args.package)
+        if args.package is not None:
+            remove_note(args.package)
 
     elif command == "search":
-        search_notes(args.term)
+        if args.term is not None:
+            search_notes(args.term)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,13 @@
+#compdef watcher-chezmoi
+
+_watcher-chezmoi() {
+    local -a options
+    options=(
+        ':Check for untracked files'
+        'update:Update the baseline file'
+    )
+
+    _describe 'watcher-chezmoi commands' options
+}
+
+_watcher-chezmoi "$@"

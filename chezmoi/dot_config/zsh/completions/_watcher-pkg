@@ -1,0 +1,15 @@
+#compdef watcher-pkg
+
+_watcher-pkg() {
+    local -a options
+    options=(
+      'add:Add a package and its reason'
+      'list:List all or a specific package'
+      'remove:Remove a package'
+      'search:Search for a package or a reason'
+    )
+
+    _describe 'watcher-pkg commands' options
+}
+
+_watcher-pkg "$@"

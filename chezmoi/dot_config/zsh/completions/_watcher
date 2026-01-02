@@ -1,0 +1,48 @@
+#compdef watcher
+
+_watcher() {
+    local -a commands
+    local watcher_dir="$HOME/.local/bin"
+
+    case $CURRENT in
+        2)
+            # First argument: command names
+            for script in "$watcher_dir"/watcher-*; do
+                [[ -x "$script" ]] || continue
+                local cmd=$(basename "$script" | sed 's/^watcher-//')
+                local desc=""
+
+                case "$cmd" in
+                    desktop) desc="Monitor .desktop file changes" ;;
+                    config) desc="Monitor .config directory" ;;
+                    git) desc="Check git repositories status" ;;
+                    chezmoi) desc="Track chezmoi-managed files" ;;
+                    pkg) desc="Manage package notes" ;;
+                    sysinfo) desc="Collect system information" ;;
+                esac
+
+                commands+=("$cmd:$desc")
+            done
+            _describe 'watcher command' commands
+            ;;
+        3)
+            # Second argument: subcommands based on first arg
+            case ${words[2]} in
+                desktop)
+                    _arguments '2:command:_watcher-desktop'
+                    ;;
+                config)
+                    _arguments '2:command:_watcher-config'
+                    ;;
+                chezmoi)
+                    _arguments '2:command:_watcher-chezmoi'
+                    ;;
+                pkg)
+                    _arguments '2:command:_watcher-pkg'
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_watcher "$@"
