@@ -5,4 +5,4 @@ if [ -f "$HOME/.config/shell/xdg_config" ]; then
   source "$HOME/.config/shell/xdg_config"
 fi
 
-exec feishin --user-data-dir="$XDG_DATA_HOME/feishin-data" "$@"
+exec /usr/bin/feishin --user-data-dir="$XDG_DATA_HOME/feishin-data" "$@"

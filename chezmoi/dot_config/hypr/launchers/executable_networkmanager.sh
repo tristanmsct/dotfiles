@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-kitty --class dotfiles-floating -e nmtui
+kitty --class nmtui -e /usr/bin/nmtui

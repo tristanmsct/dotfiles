@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-nextcloud --logdir ~/.local/share/Nextcloud/logs "$@"
+/usr/bin/nextcloud --logdir $HOME/.local/share/Nextcloud/logs "$@"

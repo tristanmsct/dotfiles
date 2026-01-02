@@ -4,4 +4,4 @@
 # Get XDG variables and create the fake home if it does not exists.
 source $HOME/.config/hypr/launchers/setup-fake-home.sh
 
-HOME="$FAKE_HOME" exec slack --user-data-dir="$XDG_DATA_HOME/slack-data" "$@"
+HOME="$FAKE_HOME" exec /usr/bin/slack --user-data-dir="$XDG_DATA_HOME/slack-data" "$@"
