@@ -39,6 +39,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export SQLITE_HISTORY="$XDG_CACHE_HOME"/sqlite_history
+export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 
 # Shell-specific settings.
 if [ -n "$ZSH_VERSION" ]; then
