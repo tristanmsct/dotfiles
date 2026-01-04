@@ -120,7 +120,7 @@
     "custom/debugger": {
         "format": " <span size='medium'></span> ",
         "exec": "~/.config/hypr/scripts/system/debug-state.sh",
-        "on-click": "subl ~/.local/state/desktop/state.json",
+        // "on-click": "subl ~/.local/state/desktop/state.json",
         "restart-interval": 60,
         "escape": true,
         "interval": 2,
