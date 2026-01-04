@@ -26,7 +26,7 @@ alias shutdown='systemctl poweroff'
 alias wifi='nmtui'
 alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 alias ff='fastfetch'
-alias bashterm='bash --rcfile $HOME/.config/bash/.bashrc'
+alias bashterm="bash --rcfile $HOME/.config/bash/.bashrc"
 
 # ---------------------------------------------------------------------------------------
 # Kitty
@@ -85,7 +85,7 @@ fi
 # ---------------------------------------------------------------------------------------
 # Kubernetes
 # ---------------------------------------------------------------------------------------
-alias ke='kubectl get events --sort-by='\''.lastTimestamp'\'''
+alias ke="kubectl get events --sort-by='.lastTimestamp'"
 alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster --region europe-west9 --project ino-it-s-kroko-ppr'
 
 # ---------------------------------------------------------------------------------------

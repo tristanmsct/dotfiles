@@ -8,8 +8,7 @@
 
 export SHELLDIR="$HOME/.config/shell"
 
-source "$SHELLDIR/xdg_config"
-source "$SHELLDIR/python"
-source "$BASHDIR/customization"
+source "$SHELLDIR/env"
+source "$BASHDIR/config"
 source "$SHELLDIR/aliases"
 source "$SHELLDIR/autostart"

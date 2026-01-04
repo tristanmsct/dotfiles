@@ -5,6 +5,8 @@
 # /___|___/_| |_|  \___|\__,_|___/\__\___/|_| |_| |_|_|___/\__,_|\__|_|\___/|_| |_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# /!\ This file is very specific about the order of the instructions.
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # -----------------------------------------------------
 # oh-myzsh plugins
@@ -23,6 +25,7 @@ plugins=(
 )
 
 # Initialize completion system
+# /!\ Moving these instructions down can break the config.
 fpath=(~/.config/zsh/completions $fpath)
 autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
@@ -34,11 +37,6 @@ source $ZSH/oh-my-zsh.sh
 # -----------------------------------------------------
 source <(fzf --zsh)
 
-# zsh history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt appendhistory
-
 # -----------------------------------------------------
 # Prompt
 # -----------------------------------------------------
@@ -47,30 +45,22 @@ if [[ $(tty) == *"pts"* ]]; then
     eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/zen.toml)"
 fi
 
-# Shipped Theme
-# eval "$(oh-my-posh init zsh --config /usr/share/oh-my-posh/themes/agnoster.omp.json)"
-
-# -----------------------------------------------------
-# Custom Scripts
-# -----------------------------------------------------
-export PATH="$HOME/.local/bin:$PATH"
-
 # -----------------------------------------------------
 # Tools
 # -----------------------------------------------------
+eval "$(pyenv init - zsh)"
 eval "$(zoxide init zsh)"
-eval $(thefuck --alias)
+eval "$(thefuck --alias)"
 eval "$(ssh-agent)" &>/dev/null
 
 # -----------------------------------------------------
 # Terminal Keybinds
 # -----------------------------------------------------
-#bindkey "^?" backward-kill-word
 bindkey "^?" backward-delete-char    # Backspace deletes a single character
 bindkey "^W" backward-kill-word     # Ctrl + W (or remapped Ctrl + Backspace) deletes a word
 
 # -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-[[ ! -f $ZDOTDIR/task_completion.zsh ]] || source $ZDOTDIR/task_completion.zsh
-[[ ! -f $ZDOTDIR/eww_completions.zsh ]] || source $ZDOTDIR/eww_completions.zsh
+[[ ! -f $ZDOTDIR/applications/task_completion.zsh ]] || source "$ZDOTDIR/applications/task_completion.zsh"
+[[ ! -f $ZDOTDIR/applications/eww_completions.zsh ]] || source "$ZDOTDIR/applications/eww_completions.zsh"

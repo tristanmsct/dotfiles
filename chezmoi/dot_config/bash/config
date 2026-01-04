@@ -14,12 +14,13 @@ eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/zen.toml)"
 # -----------------------------------------------------
 # Tools
 # -----------------------------------------------------
+eval "$(pyenv init - bash)"
 eval "$(zoxide init bash)"
-eval $(thefuck --alias)
+eval "$(thefuck --alias)"
 eval "$(ssh-agent)" &>/dev/null
 
 # -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-[[ ! -f $HOME/.config/shell/completion ]] || source $HOME/.config/shell/completion
+[[ ! -f $HOME/.config/bash/completion ]] || source $HOME/.config/bash/completion
 [[ ! -f $HOME/.config/bash/task_completion.bash ]] || source $HOME/.config/bash/task_completion.bash
