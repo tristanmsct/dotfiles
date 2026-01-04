@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 # Source XDG config if available.
-if [ -f "$HOME/.config/shell/xdg_config" ]; then
-  source "$HOME/.config/shell/xdg_config"
+if [ -f "$HOME/.config/shell/env" ]; then
+  source "$HOME/.config/shell/env"
+else
+  # Create fake home with symlinks to real XDG dirs.
+  export XDG_STATE_HOME="$HOME/.local/state"
+  export FAKE_HOME="$XDG_STATE_HOME/fake_home"
 fi
-
-# Create fake home with symlinks to real XDG dirs.
-export FAKE_HOME=$XDG_STATE_HOME/fake_home
 
 if [[ ! -d "$FAKE_HOME" ]]; then
   mkdir -p "$FAKE_HOME"

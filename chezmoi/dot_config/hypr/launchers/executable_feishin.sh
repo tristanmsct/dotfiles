@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-# Source XDG config if available.
-if [ -f "$HOME/.config/shell/xdg_config" ]; then
-  source "$HOME/.config/shell/xdg_config"
-fi
+# Get XDG variables and create the fake home if it does not exists.
+source $HOME/.config/hypr/launchers/setup-fake-home.sh
 
 exec /usr/bin/feishin --user-data-dir="$XDG_DATA_HOME/feishin-data" "$@"
