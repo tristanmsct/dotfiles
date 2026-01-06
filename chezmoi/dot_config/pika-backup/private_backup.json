@@ -25,6 +25,7 @@
     "include": [
       ".config",
       ".local/share/system-notes",
+      ".ssh",
       "Documents",
       "Media/Pictures",
       "Nextcloud"
