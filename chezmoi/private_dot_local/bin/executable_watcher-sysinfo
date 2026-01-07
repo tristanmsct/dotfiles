@@ -18,30 +18,7 @@ OUTPUT_DIR="$HOME/.local/share/system-notes/system_info/report_$(date +%Y%m%d_%H
 mkdir -p "$OUTPUT_DIR"
 echo "Creating system information files in: $OUTPUT_DIR"
 
-# 1. List all package
-echo "Collecting all installed packages..."
-declare -A order=([core]=1 [extra]=2 [multilib]=3 [cachyos]=4 [cachyos-v3]=5 [aur]=6)
-
-# Get list of explicitly installed packages
-explicit=$(pacman -Qe | awk '{print $1}')
-
-{
-    echo "repository,package,version,install_type"
-    {
-        pacman -Sl | awk '$4 ~ /^\[installed/ {print $1"|"$2"|"$3}'
-        pacman -Qm | while read -r pkg ver; do echo "aur|$pkg|$ver"; done
-    } | while IFS='|' read -r repo pkg ver; do
-        if echo "$explicit" | grep -q "^${pkg}$"; then
-            install_type="explicit"
-        else
-            install_type="dependency"
-        fi
-        sortkey=${order[$repo]:-99}
-        echo "$sortkey|$repo|$pkg|$ver|$install_type"
-    done | sort -t'|' -k1,1n | cut -d'|' -f2- | tr '|' ','
-} > "$OUTPUT_DIR/full_packages_list.csv"
-
-# 2. CPU Information
+# 1. CPU Information
 echo "Collecting CPU information..."
 {
     echo "=== CPU INFO ==="
@@ -50,7 +27,7 @@ echo "Collecting CPU information..."
     cat /proc/cpuinfo
 } > "$OUTPUT_DIR/cpu_info.txt"
 
-# 3. Memory Information
+# 2. Memory Information
 echo "Collecting memory information..."
 {
     echo "=== MEMORY INFO ==="
@@ -59,7 +36,7 @@ echo "Collecting memory information..."
     cat /proc/meminfo
 } > "$OUTPUT_DIR/memory_info.txt"
 
-# 4. Device Information
+# 3. Device Information
 echo "Collecting device information..."
 {
     echo "=== BLOCK DEVICES ==="
@@ -72,7 +49,7 @@ echo "Collecting device information..."
     cat /proc/bus/input/devices
 } > "$OUTPUT_DIR/devices_info.txt"
 
-# 5. Network Information
+# 4. Network Information
 echo "Collecting network information..."
 {
     echo "=== NETWORK INTERFACES ==="
@@ -83,7 +60,7 @@ echo "Collecting network information..."
     ss -tuln
 } > "$OUTPUT_DIR/network_info.txt"
 
-# 6. System Information
+# 5. System Information
 echo "Collecting general system information..."
 {
     echo "=== SYSTEM INFO ==="
@@ -98,7 +75,7 @@ echo "Collecting general system information..."
     df -h
 } > "$OUTPUT_DIR/system_info.txt"
 
-# 7. Graphics Information
+# 6. Graphics Information
 echo "Collecting graphics information..."
 {
     echo "=== GRAPHICS CARDS ==="
@@ -112,7 +89,7 @@ echo "Collecting graphics information..."
     fi
 } > "$OUTPUT_DIR/graphics_info.txt"
 
-# 8. Services Information
+# 7. Services Information
 echo "Collecting services information..."
 {
     echo "=== ENABLED SERVICES ==="
@@ -121,7 +98,7 @@ echo "Collecting services information..."
     systemctl list-units --type=service --state=running
 } > "$OUTPUT_DIR/services_info.txt"
 
-# Create a summary file
+# 8. Create a summary file
 echo "Creating summary file..."
 {
     echo "System Information Collection"
