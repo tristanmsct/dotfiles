@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+#                _       _                          _         _        __
+# __      ____ _| |_ ___| |__   ___ _ __      _ __ | | ____ _(_)_ __  / _| ___
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____| '_ \| |/ / _` | | '_ \| |_ / _ \
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| |_) |   < (_| | | | | |  _| (_) |
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|       | .__/|_|\_\__, |_|_| |_|_|  \___/
+#                                            |_|        |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+show_help() {
+    echo "Usage: $script_name [save] [query] [diff] [-h | --help]"
+    echo "Keep track of packages from different repos and installation types."
+    echo
+    echo "Options:"
+    echo "  save                    Save the current state, used as a pacman hook."
+    echo "  query                   Query the package list (Repo -r, Name -n, Version -v, Installation type -t)."
+    echo "  diff                    Display the difference between two states (default is last two, -c for choice)."
+    echo "  -h, --help              Display this help message."
+    exit 0
+}
+
+PACKAGE_INFO_DIR="$HOME/.local/share/system-notes/packages_info/"
+
+get_file() {
+    local selected=$(/usr/bin/ls $PACKAGE_INFO_DIR | sort -r | awk '{
+        match($0, /packages_([0-9]{8})_[0-9]+/, arr)
+        date = arr[1]
+        printf "%s/%s/%s - %s\n", substr(date,1,4), substr(date,5,2), substr(date,7,2), $0
+    }' | gum choose "$@")
+
+    # Extract and return the original filename with full path
+    echo "$PACKAGE_INFO_DIR/$(echo "$selected" | awk -F' - ' '{print $2}')"
+}
+
+save_package_list () {
+    # Set output directory
+
+    OUTPUT_FILE="$PACKAGE_INFO_DIR/packages_$(date +%Y%m%d_%H%M%S)"
+
+    # Create output directory
+    mkdir -p "$PACKAGE_INFO_DIR"
+
+    # 1. List all package
+    echo "Collecting all installed packages..."
+    declare -A order=([core]=1 [extra]=2 [multilib]=3 [cachyos]=4 [cachyos-v3]=5 [aur]=6)
+
+    # Get list of explicitly installed packages
+    explicit=$(pacman -Qe | awk '{print $1}')
+
+    {
+        echo "repository,package,version,install_type"
+        {
+            pacman -Sl | awk '$4 ~ /^\[installed/ {print $1"|"$2"|"$3}'
+            pacman -Qm | while read -r pkg ver; do echo "aur|$pkg|$ver"; done
+        } | while IFS='|' read -r repo pkg ver; do
+            if echo "$explicit" | grep -q "^${pkg}$"; then
+                install_type="explicit"
+            else
+                install_type="dependency"
+            fi
+            sortkey=${order[$repo]:-99}
+            echo "$sortkey|$repo|$pkg|$ver|$install_type"
+        done | sort -t'|' -k1,1n | cut -d'|' -f2- | tr '|' ','
+    } > "$OUTPUT_FILE"
+}
+
+query_package_list () {
+    shift
+    original_file=$(get_file --header "Choose a file")
+
+    QUERY=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -r|--repo|--repository)
+                QUERY+="\$1==\"$2\"&&"
+                shift 2
+                ;;
+            -n|--name|--package)
+                QUERY+="\$2==\"$2\"&&"
+                shift 2
+                ;;
+            -v|--version)
+                QUERY+="\$3==\"$2\"&&"
+                shift 2
+                ;;
+            -t|--type)
+                QUERY+="\$4==\"$2\"&&"
+                shift 2
+                ;;
+            *)
+                echo "$script_name: Unknown option '$1'. Use --help for usage."; exit 1 ;;
+        esac
+    done
+
+    if [[ ! -z "$QUERY" ]]; then
+        awk -F',' "${QUERY::-2}" $original_file |
+            gum table -s',' --columns=Repository,Name,Version,Type --print
+    else
+        gum table -s',' --columns=Repository,Name,Version,Type --print -f $original_file
+    fi
+}
+
+show_diff () {
+    shift
+
+    if [[ $1 = "-c" ]]; then
+        file1=$(get_file --header "New file")
+
+        file2=$(get_file --header "Old file")
+    else
+        read -r file1 file2 <<< "$(/usr/bin/ls $PACKAGE_INFO_DIR | sort -r | head -2 | tr '\n' ' ')"
+        file1="$PACKAGE_INFO_DIR/$file1"
+        file2="$PACKAGE_INFO_DIR/$file2"
+    fi
+
+    awk -F',' 'NR>1 {print $1","$2","$4}' "$file1" | sort > /tmp/new.tmp
+    awk -F',' 'NR>1 {print $1","$2","$4}' "$file2" | sort > /tmp/old.tmp
+
+    echo "=== Only in old (deleted) ==="
+    comm -23 /tmp/old.tmp /tmp/new.tmp | gum table -s',' --columns=Repository,Name,Type --print
+    echo
+
+    echo "=== Only in new (added) ==="
+    comm -13 /tmp/old.tmp /tmp/new.tmp | gum table -s',' --columns=Repository,Name,Type --print
+    echo
+
+    echo "=== Installation type changed ==="
+    # Get packages in both files (by repo,name only)
+    awk -F',' 'NR>1 {print $1","$2}' "$file1" | sort > /tmp/new_keys.tmp
+    awk -F',' 'NR>1 {print $1","$2}' "$file2" | sort > /tmp/old_keys.tmp
+
+    # Find common packages
+    comm -12 /tmp/old_keys.tmp /tmp/new_keys.tmp | while read key; do
+        old_line=$(grep "^$key," /tmp/old.tmp)
+        new_line=$(grep "^$key," /tmp/new.tmp)
+        if [ "$old_line" != "$new_line" ]; then
+            repo=$(echo "$key" | cut -d',' -f1)
+            name=$(echo "$key" | cut -d',' -f2)
+            old_type=$(echo "$old_line" | cut -d',' -f3)
+            new_type=$(echo "$new_line" | cut -d',' -f3)
+            echo "$repo,$name,$old_type,$new_type"
+        fi
+    done | gum table -s',' --columns="Repository,Name,Old Type,New Type" --print
+}
+
+
+case $1 in
+    ""|"help"|"-h"|"--help")
+        show_help
+        ;;
+    save)
+        save_package_list
+        ;;
+    query)
+        query_package_list "$@"
+        ;;
+    diff)
+        show_diff "$@"
+        ;;
+    *)
+        echo "Unkown command."
+        ;;
+esac

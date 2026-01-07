@@ -58,7 +58,7 @@ eval "$(ssh-agent)" &>/dev/null
 # -----------------------------------------------------
 bindkey "^?" backward-delete-char    # Backspace deletes a single character
 bindkey "^W" backward-kill-word      # Ctrl + W (or remapped Ctrl + Backspace) deletes a word
-bindkey '^G' kill-whole-line         # Ctrl + G to clear the line
+bindkey '^D' kill-whole-line         # Ctrl + G to clear the line
 
 # -----------------------------------------------------
 # Completion Scripts

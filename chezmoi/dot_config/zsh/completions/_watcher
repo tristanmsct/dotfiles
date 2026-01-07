@@ -18,12 +18,14 @@ _watcher() {
                     git) desc="Check git repositories status" ;;
                     aur) desc="Check for custom AUR packages changes" ;;
                     chezmoi) desc="Track chezmoi-managed files" ;;
-                    pkg) desc="Manage package notes" ;;
+                    pkgnotes) desc="Manage package notes" ;;
+                    pkginfo) desc="Collect packages information" ;;
                     sysinfo) desc="Collect system information" ;;
                 esac
 
                 commands+=("$cmd:$desc")
             done
+            commands+=("open:Open the system notes directory")
             _describe 'watcher command' commands
             ;;
         3)
@@ -38,8 +40,11 @@ _watcher() {
                 chezmoi)
                     _arguments '2:command:_watcher-chezmoi'
                     ;;
-                pkg)
-                    _arguments '2:command:_watcher-pkg'
+                pkgnotes)
+                    _arguments '2:command:_watcher-pkgnotes'
+                    ;;
+                pkginfo)
+                    _arguments '2:command:_watcher-pkginfo'
                     ;;
             esac
             ;;

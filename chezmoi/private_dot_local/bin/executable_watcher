@@ -22,11 +22,17 @@ if [[ -z "$1" ]] || [[ "$1" =~ ^(-h|--help|help)$ ]]; then
     exit 0
 fi
 
+# Open does not need a stand alone script
+if [[ "$1" = "open" ]]; then
+    xdg-open $HOME/.local/share/system-notes > /dev/null 2>&1 & disown
+    exit 1
+fi
+
 # Dispatch to watcher-<command>
 target="$WATCHER_DIR/watcher-$1"
-shift
 
 if [[ -x "$target" ]]; then
+    shift
     exec "$target" "$@"
 else
     echo "Error: watcher-$1 not found"
