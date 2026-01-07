@@ -23,8 +23,6 @@ PURPLE='\033[38;2;150;85;166m'
 GREEN='\033[38;2;125;235;103m'
 NC='\033[0m'
 
-ssh-add $HOME/.ssh/id_perso
-
 for repo in ${lst_repos[@]}; do
 
     # We go from repo to repo because we cannot run git commands from outside.
