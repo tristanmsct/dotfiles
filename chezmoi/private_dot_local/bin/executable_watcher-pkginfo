@@ -63,6 +63,12 @@ save_package_list () {
             echo "$sortkey|$repo|$pkg|$ver|$install_type"
         done | sort -t'|' -k1,1n | cut -d'|' -f2- | tr '|' ','
     } > "$OUTPUT_FILE"
+
+    # When the script is run by the pacman hook, it is run as root
+    # This command will transfer the file ownership to my user.
+    if [ -n "$SUDO_USER" ]; then
+        chown "$SUDO_USER:$SUDO_USER" "$OUTPUT_FILE"
+    fi
 }
 
 query_package_list () {
