@@ -27,6 +27,7 @@ alias wifi='nmtui'
 alias wget="wget --hsts-file=$XDG_DATA_HOME/wget-hsts"
 alias ff='fastfetch'
 alias bashterm="bash --rcfile $HOME/.config/bash/.bashrc"
+alias open-dotfiles="xdg-open $HOME/.local/share/dotfiles > /dev/null 2>&1 & disown"
 
 # ---------------------------------------------------------------------------------------
 # Kitty

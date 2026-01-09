@@ -31,6 +31,7 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 export FAKE_HOME="$XDG_STATE_HOME/fake_home"
+export DOTFILES="$XDG_DATA_HOME/dotfiles"
 export PATH="$HOME/.local/bin:$PATH"
 
 # Python
