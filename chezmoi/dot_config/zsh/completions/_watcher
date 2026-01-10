@@ -26,6 +26,7 @@ _watcher() {
                 commands+=("$cmd:$desc")
             done
             commands+=("open:Open the system notes directory")
+            commands+=("all:Run main watchers")
             _describe 'watcher command' commands
             ;;
         3)

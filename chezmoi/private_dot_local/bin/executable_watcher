@@ -22,9 +22,31 @@ if [[ -z "$1" ]] || [[ "$1" =~ ^(-h|--help|help)$ ]]; then
     exit 0
 fi
 
-# Open does not need a stand alone script
+# "Open" and "all" commands do not need a stand alone script
 if [[ "$1" = "open" ]]; then
     xdg-open $HOME/.local/share/system-notes > /dev/null 2>&1 & disown
+    exit 1
+elif [[ "$1" = "all" ]]; then
+    echo "=== Chezmoi monitored files and directories ==="
+    "$WATCHER_DIR/watcher-chezmoi"
+    echo
+
+    echo "=== ~/.config directories ==="
+    "$WATCHER_DIR/watcher-config"
+    echo
+
+    echo "=== .destkop files ==="
+    "$WATCHER_DIR/watcher-config"
+    echo
+
+    echo "=== AUR custom PKGFILE ==="
+    "$WATCHER_DIR/watcher-aur"
+    echo
+
+    echo "=== Git repositories ==="
+    "$WATCHER_DIR/watcher-git"
+    echo
+
     exit 1
 fi
 
