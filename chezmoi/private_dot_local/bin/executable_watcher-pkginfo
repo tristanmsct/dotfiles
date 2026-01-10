@@ -16,6 +16,7 @@ show_help() {
     echo "  save                    Save the current state, used as a pacman hook."
     echo "  query                   Query the package list (Repo -r, Name -n, Version -v, Installation type -t)."
     echo "  diff                    Display the difference between two states (default is last two, -c for choice)."
+    echo "  delete                  Delete a package info file."
     echo "  -h, --help              Display this help message."
     exit 0
 }
@@ -69,6 +70,12 @@ save_package_list () {
     if [ -n "$SUDO_USER" ]; then
         chown "$SUDO_USER:$SUDO_USER" "$OUTPUT_FILE"
     fi
+}
+
+delete_file () {
+    file_to_delete=$(get_file --header "Choose a file")
+    rm $file_to_delete
+    echo "Deleted : $file_to_delete"
 }
 
 query_package_list () {
@@ -163,6 +170,9 @@ case $1 in
         ;;
     diff)
         show_diff "$@"
+        ;;
+    delete)
+        delete_file
         ;;
     *)
         echo "Unkown command."

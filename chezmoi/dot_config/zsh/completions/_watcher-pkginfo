@@ -6,6 +6,7 @@ _watcher-pkginfo() {
       'save:Save the current state, used as a pacman hook'
       'query:Query the package list (Repo -r, Name -n, Version -v, Installation type -t)'
       'diff:Display the difference between two states (default is last two, -c for choice)'
+      'delete:Delete a package info file'
       'help:Display this help message'
     )
 
