@@ -36,7 +36,7 @@ elif [[ "$1" = "all" ]]; then
     echo
 
     echo "=== .destkop files ==="
-    "$WATCHER_DIR/watcher-config"
+    "$WATCHER_DIR/watcher-desktop"
     echo
 
     echo "=== AUR custom PKGFILE ==="

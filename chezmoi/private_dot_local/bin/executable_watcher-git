@@ -18,6 +18,8 @@ PURPLE='\033[38;2;150;85;166m'
 GREEN='\033[38;2;125;235;103m'
 NC='\033[0m'
 
+if ! (ssh-add -l|grep -q "tristan.muscat@pm.me"); then ssh-add $HOME/.ssh/id_perso; fi;
+
 for repo in ${lst_repos[@]}; do
 
     # We go from repo to repo because we cannot run git commands from outside.
