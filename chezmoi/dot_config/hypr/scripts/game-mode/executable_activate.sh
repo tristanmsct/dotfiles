@@ -17,10 +17,10 @@ if [ $THEME_TYPE = "light" ]; then
     $HOME/.config/hypr/scripts/theming/switch-theme.sh
 fi
 
-HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
+HYPRGAMEMODE=$(hyprctl getoption decoration:shadow:enabled | awk 'NR==1{print $2}')
 if [ "$HYPRGAMEMODE" = 1 ] ; then
     hyprctl --batch "\
-        keyword animations:enabled 0;\
+        keyword animations:enabled 1;\
         keyword decoration:shadow:enabled 0;\
         keyword decoration:blur:enabled 0;\
         keyword decoration:inactive_opacity 1;\
@@ -40,7 +40,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
 
     /usr/bin/nextcloud --quit
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
-        dunstify "Gamemode activated" "Animations, blur, wallpaper and bar disabled"
+        dunstify "Gamemode activated" "Decorations, blur, wallpaper and bar disabled"
     fi
     exit
 fi
@@ -61,5 +61,5 @@ sed -i -E "s|# (path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1|" $HO
 $HOME/.config/hypr/launchers/nextcloud.sh --background &
 
 if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
-    dunstify "Gamemode deactivated" "Animations, blur, wallpaper and bar enabled"
+    dunstify "Gamemode deactivated" "Decorations, blur, wallpaper and bar enabled"
 fi
