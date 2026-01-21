@@ -70,6 +70,10 @@ export VSCODE_PORTABLE="$XDG_CONFIG_HOME/VSCodium"
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | source $MYVIMRC'
 export GVIMINIT='let $MYGVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/gvimrc" : "$XDG_CONFIG_HOME/nvim/init.gvim" | source $MYGVIMRC'
 
+# FZF
+export FZF_DEFAULT_COMMAND="fd --type file --color=always"
+export FZF_DEFAULT_OPTS="--ansi"
+
 # Shell-specific settings
 if [ -n "$ZSH_VERSION" ]; then
     export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
