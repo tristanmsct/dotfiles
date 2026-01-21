@@ -48,16 +48,16 @@ elif [[ "$1" = "all" ]]; then
     echo
 
     exit 1
-fi
-
-# Dispatch to watcher-<command>
-target="$WATCHER_DIR/watcher-$1"
-
-if [[ -x "$target" ]]; then
-    shift
-    exec "$target" "$@"
 else
-    echo "Error: watcher-$1 not found"
-    echo "Run 'watcher' to see available commands"
-    exit 1
+    # Dispatch to watcher-<command>
+    target="$WATCHER_DIR/watcher-$1"
+
+    if [[ -x "$target" ]]; then
+        shift
+        exec "$target" "$@"
+    else
+        echo "Error: watcher-$1 not found"
+        echo "Run 'watcher' to see available commands"
+        exit 1
+    fi
 fi
