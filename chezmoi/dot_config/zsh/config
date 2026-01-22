@@ -24,10 +24,18 @@ plugins=(
     dirhistory
 )
 
+# -----------------------------------------------------
+# Completion Scripts
+# -----------------------------------------------------
+
 # Initialize completion system
 # /!\ Moving these instructions down can break the config.
 fpath=(~/.config/zsh/completions $fpath)
 autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+
+[[ ! -f $ZDOTDIR/applications/task_completion.zsh ]] || source "$ZDOTDIR/applications/task_completion.zsh"
+[[ ! -f $ZDOTDIR/applications/eww_completion.zsh ]] || source "$ZDOTDIR/applications/eww_completion.zsh"
+[[ ! -f $ZDOTDIR/applications/glow_completion.zsh ]] || source "$ZDOTDIR/applications/glow_completion.zsh"
 
 # Set-up oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -36,14 +44,6 @@ source $ZSH/oh-my-zsh.sh
 # Set-up FZF key bindings (CTRL R for fuzzy history finder)
 # -----------------------------------------------------
 source <(fzf --zsh)
-
-# -----------------------------------------------------
-# Prompt
-# -----------------------------------------------------
-# Don't start oh-my-posh on TTY, because we load a simple prompt.
-if [[ $(tty) == *"pts"* ]]; then
-    eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/zen.toml)"
-fi
 
 # -----------------------------------------------------
 # Tools
@@ -59,9 +59,3 @@ eval "$(ssh-agent)" &>/dev/null
 bindkey "^?" backward-delete-char    # Backspace deletes a single character
 bindkey "^W" backward-kill-word      # Ctrl + W (or remapped Ctrl + Backspace) deletes a word
 bindkey '^D' kill-whole-line         # Ctrl + G to clear the line
-
-# -----------------------------------------------------
-# Completion Scripts
-# -----------------------------------------------------
-[[ ! -f $ZDOTDIR/applications/task_completion.zsh ]] || source "$ZDOTDIR/applications/task_completion.zsh"
-[[ ! -f $ZDOTDIR/applications/eww_completions.zsh ]] || source "$ZDOTDIR/applications/eww_completions.zsh"

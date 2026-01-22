@@ -36,7 +36,7 @@ if [[ -z "$1" ]]; then
         elif ! cmp -s "$source_file" "$test_file"; then
             has_changes=true
             echo -e "${ORANGE}$app_file${NC}"
-            diff "$source_file" "$test_file"
+            delta "$source_file" "$test_file"
             echo
         fi
     done <<< "$monitor_list"

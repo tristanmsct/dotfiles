@@ -12,3 +12,9 @@ source "$SHELLDIR/env"
 source "$BASHDIR/config"
 source "$SHELLDIR/aliases"
 source "$SHELLDIR/autostart"
+
+if [[ $(tty) == *"pts"* ]]; then
+  eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/blueish.omp.json)"
+else
+  eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/zen.toml)"
+fi
