@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Typora
+GenericName=Markdown Editor
+#Exec=typora %U
+Exec=/home/tristan/.config/hypr/launchers/typora.sh %U
+Icon=typora
+Type=Application
+StartupNotify=true
+Categories=Office;WordProcessor;
+MimeType=text/markdown;text/x-markdown;
+

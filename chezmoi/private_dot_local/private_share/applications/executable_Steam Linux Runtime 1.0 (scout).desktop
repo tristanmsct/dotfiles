@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Steam Linux Runtime 1.0 (scout)
+Comment=Play this game on Steam
+Exec=/home/tristan/.config/hypr/settings/steam.sh steam://rungameid/1070560
+Icon=steam
+Terminal=false
+Type=Application
+Categories=Game;
+NoDisplay=true

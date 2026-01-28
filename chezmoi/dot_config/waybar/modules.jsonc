@@ -360,8 +360,8 @@
         "tooltip-format-disconnected": "Disconnected",
         "interval": 5,
         "max-length": 50,
-        "on-click": "~/.config/hypr/launchers/networkmanager.sh",
-        "on-click-right": "nm-connection-editor"
+        "on-click": "nmrs",
+        "on-click-right": "~/.config/hypr/launchers/networkmanager.sh"
     },
 
     // Battery

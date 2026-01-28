@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Bluetooth Manager
+Exec=adw-bluetooth
+Icon=blueman
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

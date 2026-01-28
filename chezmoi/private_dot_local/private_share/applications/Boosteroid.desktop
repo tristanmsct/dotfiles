@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Exec=/usr/bin/Boosteroid
+Name=Boosteroid
+Comment=Boosteroid cloud gaming client
+#Icon=/home/tristan/.local/share/Boosteroid.svg
+#Icon=/home/tristan/Media/Pictures/Icons/Boosteroid.svg
+Icon=Boosteroid
+NoDisplay=true
