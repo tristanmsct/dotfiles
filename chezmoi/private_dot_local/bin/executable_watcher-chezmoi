@@ -14,13 +14,24 @@ if [[ -z $1 ]]; then
 
 	NOT_TRACKED=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> //')
 
+	STATUS_OUTPUT=$(chezmoi status)
+
+	if [[ -z $NOT_TRACKED && -z "$STATUS_OUTPUT" ]]; then
+		echo "No changes"
+		exit 0
+	fi
+
+	if [[ -z $NOT_TRACKED ]]; then
+		echo "No new files"
+	fi
+
 	if [[ -n $NOT_TRACKED ]]; then
 		echo "Not tracked:"
 		echo "$NOT_TRACKED"
 	fi
 
-	if [[ -z $NOT_TRACKED ]]; then
-		echo "No changes"
+	if [ -n "$STATUS_OUTPUT" ]; then
+		echo "Some changes found, run chezmoi-sync."
 	fi
 else
 	if [[ $1 == "update" ]]; then
