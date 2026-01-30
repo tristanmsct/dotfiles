@@ -1,0 +1,15 @@
+#compdef jaccuse
+
+_jaccuse() {
+    local -a options
+    options=(
+      '--reverse:Show reverse dependencies'
+      '--deep:Deep search'
+      '--quiet:Quiet mode'
+      '--help:Display help message'
+    )
+
+    _describe 'watcher-pkgnotes commands' options
+}
+
+_jaccuse "$@"

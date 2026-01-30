@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
 #    _
 #   (_) __ _  ___ ___ _   _ ___  ___
 #   | |/ _` |/ __/ __| | | / __|/ _ \
@@ -7,4 +7,140 @@
 # |__/
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-comm -12 <(pactree -r -u "$1" | tail -n +2 | sort) <(pacman -Qeq | sort)
+import subprocess
+import sys
+import argparse
+
+# ANSI color codes
+ORANGE = "\033[38;2;255;158;23m"
+GREEN = "\033[38;2;30;220;60m"
+NC = "\033[0m"
+
+
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(description="Dependency surveillance tool")
+
+    # Flags
+    parser.add_argument("-r", "--reverse", action="store_true", help="Show reverse dependencies")
+    parser.add_argument("-d", "--deep", action="store_true", help="Deep search")
+    parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode")
+
+    # Optional positional package argument
+    parser.add_argument("package", nargs="?", help="Package name")
+
+    return parser.parse_args()
+
+
+def pick_package():
+    """Pick a package interactively using gum filter."""
+    try:
+        # Get list of packages.
+        pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True)
+
+        # Pass the package list to gum filter via stdin.
+        gum_result = subprocess.run(
+            ["gum", "filter", "--placeholder", "Search packages..."],
+            input=pacman_result.stdout,  # Pass as stdin, not as argument.
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+
+        package = gum_result.stdout.strip()
+
+        if package:
+            return package
+        else:
+            print("No package selected", file=sys.stderr)
+            sys.exit(1)
+
+    except subprocess.CalledProcessError:
+        print("Exiting", file=sys.stderr)
+        sys.exit(1)
+    except FileNotFoundError:
+        print("Error: Command not found. Make sure 'gum' is installed.", file=sys.stderr)
+        sys.exit(1)
+
+
+def get_explicit_dependents(package):
+    """Find explicitly installed packages that require the given package."""
+    try:
+        # Get reverse dependencies (packages that require this one).
+        pactree_result = subprocess.run(["pactree", "-r", "-u", package], stdout=subprocess.PIPE, text=True, check=True)
+        # Skip first line (the package itself) and sort.
+        reverse_deps = set(pactree_result.stdout.strip().split("\n")[1:])
+        reverse_deps = {dep.strip() for dep in reverse_deps if dep.strip()}
+
+        # Get explicitly installed packages.
+        pacman_result = subprocess.run(["pacman", "-Qeq"], stdout=subprocess.PIPE, text=True, check=True)
+        explicit_pkgs = set(pacman_result.stdout.strip().split("\n"))
+
+        # Find intersection (comm -12 equivalent).
+        lst_deps = sorted(reverse_deps & explicit_pkgs)
+
+        # Display results.
+        if lst_deps:
+            print(f"These explicitly installed packages require {ORANGE}{package}{NC}:")
+            for dep in lst_deps:
+                print(dep)
+        else:
+            print(f"{ORANGE}{package}{NC} is not required by any explicitly installed package")
+
+        return lst_deps
+
+    except subprocess.CalledProcessError:
+        print(f"Error: Could not process package '{package}'", file=sys.stderr)
+        sys.exit(1)
+
+
+def find_potential_orphans(package, deep_search=False, quiet=False):
+    pactree_cmd = ["pactree", "-u"]
+    if not deep_search:
+        pactree_cmd.append("-d 1")
+    pactree_cmd.append(package)
+
+    lst_dependencies = subprocess.run(pactree_cmd, stdout=subprocess.PIPE, text=True, check=True)
+    lst_dependencies = set(lst_dependencies.stdout.strip().split("\n")[1:])
+    lst_dependencies = {dep.strip() for dep in lst_dependencies if dep.strip()}
+    lst_dependencies = {dep.split("=")[0].strip(">") for dep in lst_dependencies}
+
+    if not lst_dependencies:
+        print(f"{ORANGE}{package}{NC} does not have any dependency")
+        return
+
+    ct_orph = 0
+    ct_req = 0
+    if not quiet:
+        print(f"Listing {ORANGE}dependencies that would be uninstalled{NC} and {GREEN}dependencies that would remain{NC}")
+    for depencency in lst_dependencies:
+        lst_reqs_of_dependency = subprocess.run(["pactree", "-u", "-r", depencency], stdout=subprocess.PIPE, text=True, check=True)
+        lst_reqs_of_dependency = set(lst_reqs_of_dependency.stdout.strip().split("\n")[1:])
+        lst_reqs_of_dependency = {dep.strip() for dep in lst_reqs_of_dependency if dep.strip()}
+        lst_reqs_of_dependency = {dep.split("=")[0].strip(">") for dep in lst_reqs_of_dependency}
+
+        if lst_reqs_of_dependency - lst_dependencies - {package}:
+            if not quiet:
+                print(f"{GREEN}{depencency}{NC}")
+            ct_req += 1
+        else:
+            if not quiet:
+                print(f"{ORANGE}{depencency}{NC}")
+            ct_orph += 1
+
+    print(f"Out of {ct_orph + ct_req} dependencies, {ORANGE}{ct_orph}{NC} packages would be uninstalled, {GREEN}{ct_req}{NC} would remain")
+
+
+def main(args):
+    if not (package := args.package):
+        package = pick_package()
+
+    if args.reverse:
+        find_potential_orphans(package, deep_search=args.deep, quiet=args.quiet)
+    else:
+        get_explicit_dependents(package)
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    main(args)

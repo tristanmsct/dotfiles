@@ -14,13 +14,18 @@ from colors_util import TELA_COLORS
 from colors_util import get_closest_color
 from colors_util import validate_hex_format
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--color", type=str, help="A color to improve in a hex format '#RRGGBB'", default=None)
-parser.add_argument("-d", "--dracula", action="store_true", help="Uses Dracula theme randomly instead of black, purple or pink colors")
+
+def parse_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--color", type=str, help="A color to improve in a hex format '#RRGGBB'", default=None)
+    parser.add_argument("-d", "--dracula", action="store_true", help="Uses Dracula theme randomly instead of black, purple or pink colors")
+
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
-    args = parser.parse_args()
+    args = parse_args()
 
     # There are two scenarios :
     # No argument then we get the first color from the theme.
