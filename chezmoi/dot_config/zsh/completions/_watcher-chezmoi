@@ -4,6 +4,7 @@ _watcher-chezmoi() {
     local -a options
     options=(
         ':Check for untracked files'
+        'sync:Run chezmoi synchronisation script'
         'update:Update the baseline file'
     )
 

@@ -7,14 +7,25 @@
 #                                                  |___/
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-status_output=$(chezmoi status)
 
-if [ -z "$status_output" ]; then
+BASELINE_FILE=$HOME/.local/share/system-notes/chezmoi-baseline.txt
+DIFF_OUTPUT=$(diff <(cat $BASELINE_FILE) <(chezmoi unmanaged $HOME))
+NOT_TRACKED=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> //')
+
+STATUS_OUTPUT=$(chezmoi status)
+
+if [[ -n "$NOT_TRACKED" ]]; then
+    while IFS= read -r line; do
+        STATUS_OUTPUT+="\nA  ${line}"
+    done <<< "$NOT_TRACKED"
+fi
+
+if [ -z "$STATUS_OUTPUT" ]; then
     echo "No differences found."
     exit 0
 fi
 
-echo "$status_output" | while IFS= read -r line; do
+echo -e "$STATUS_OUTPUT" | while IFS= read -r line; do
     status="${line:0:2}"
     target_file="${line:3}"
 
@@ -41,7 +52,11 @@ echo "$status_output" | while IFS= read -r line; do
             ;;
         A*)
             echo "File was ADDED to target"
-            echo -n "Add to source [a], delete from target [d], skip [s], quit [q]? "
+            echo -n "Add to source [a], delete from target [d], ignore [i], skip [s], quit [q]? "
+            ;;
+        *A)
+            echo "File was ADDED to source"
+            echo -n "Apply source->target [a], remove from source [d], skip [s], quit [q]? "
             ;;
         *M*)
             echo "File was MODIFIED"
@@ -77,6 +92,29 @@ echo "$status_output" | while IFS= read -r line; do
                     *) echo -n "Invalid. Use r, d, s, or q: " ;;
                 esac
                 ;;
+            *A)
+                case $choice in
+                    a|A)
+                        echo "Applying $target_file from source to target..."
+                        chezmoi apply "$abs_target_file"
+                        break
+                        ;;
+                    d|D)
+                        echo "Removing from source..."
+                        if [ -n "$source_file" ] && [ -f "$source_file" ]; then
+                            rm -f "$source_file"
+                            echo "Removed $source_file"
+                        else
+                            chezmoi forget "$abs_target_file"
+                            echo "Used chezmoi forget for $target_file"
+                        fi
+                        break
+                        ;;
+                    s|S) break ;;
+                    q|Q) exit 0 ;;
+                    *) echo -n "Invalid. Use a, d, s, or q: " ;;
+                esac
+                ;;
             A*)
                 case $choice in
                     a|A)
@@ -89,9 +127,15 @@ echo "$status_output" | while IFS= read -r line; do
                         rm -rf "$abs_target_file"
                         break
                         ;;
+                    i|I)
+                        echo "Ignoring $target_file"
+                        echo $target_file >> $BASELINE_FILE
+                        { grep '^\.' $BASELINE_FILE | LC_ALL=C sort; grep -v '^\.' $BASELINE_FILE | LC_ALL=C sort; } | sponge $BASELINE_FILE
+                        break
+                        ;;
                     s|S) break ;;
                     q|Q) exit 0 ;;
-                    *) echo -n "Invalid. Use a, d, s, or q: " ;;
+                    *) echo -n "Invalid. Use a, d, i, s, or q: " ;;
                 esac
                 ;;
             *)

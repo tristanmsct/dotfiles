@@ -16,25 +16,27 @@ if [[ -z $1 ]]; then
 
 	STATUS_OUTPUT=$(chezmoi status)
 
+	if [[ -n "$NOT_TRACKED" ]]; then
+		while IFS= read -r line; do
+			STATUS_OUTPUT+="\nA  ${line}"
+		done <<< "$NOT_TRACKED"
+	fi
+
 	if [[ -z $NOT_TRACKED && -z "$STATUS_OUTPUT" ]]; then
 		echo "No changes"
 		exit 0
 	fi
 
-	if [[ -z $NOT_TRACKED ]]; then
-		echo "No new files"
-	fi
-
-	if [[ -n $NOT_TRACKED ]]; then
-		echo "Not tracked:"
-		echo "$NOT_TRACKED"
-	fi
-
+	echo "Changes:"
 	if [ -n "$STATUS_OUTPUT" ]; then
-		chezmoi status
+		echo -e "$STATUS_OUTPUT" | while IFS= read -r line; do
+			echo "$line"
+		done
 	fi
 else
 	if [[ $1 == "update" ]]; then
 		chezmoi unmanaged $HOME > $BASELINE_FILE
+	elif [[ $1 == "sync" ]]; then
+		chezmoi-sync
 	fi
 fi
