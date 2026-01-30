@@ -20,6 +20,7 @@ if [[ -z $1 ]]; then
 		while IFS= read -r line; do
 			STATUS_OUTPUT+="\nA  ${line}"
 		done <<< "$NOT_TRACKED"
+		STATUS_OUTPUT=${STATUS_OUTPUT%\\n}
 	fi
 
 	if [[ -z $NOT_TRACKED && -z "$STATUS_OUTPUT" ]]; then
