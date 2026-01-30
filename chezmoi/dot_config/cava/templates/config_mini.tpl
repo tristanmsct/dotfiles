@@ -50,3 +50,7 @@ gradient_color_2 = '#ffffff'
 [output]
 orientation = horizontal
 channels = mono
+
+[input]
+; method = pulse
+; source = alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Mic1__source

@@ -1,0 +1,11 @@
+sourceDir = "/home/tristan/.local/share/dotfiles/chezmoi"
+encryption = "age"
+editor = "codium --wait"
+persistentState = "/home/tristan/.local/share/chezmoi/chezmoistate.boltdb"
+
+[age]
+    identity = "~/.config/chezmoi/key.txt"
+    symmetric = true
+
+[diff]
+    pager = "delta"

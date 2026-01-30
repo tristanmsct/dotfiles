@@ -49,13 +49,6 @@ get_file() {
     done <<< "$selected"
 }
 
-dev() {
-    while IFS= read -r path; do
-        echo "Processing: $path"
-        # Do something with $path
-    done < <(get_file --multiple)
-}
-
 save_package_list () {
     # Set output directory
 
@@ -202,9 +195,6 @@ case $1 in
         ;;
     delete)
         delete_file
-        ;;
-    dev)
-        dev
         ;;
     *)
         echo "Unkown command."
