@@ -103,7 +103,7 @@ echo "$status_output" | while IFS= read -r line; do
                         ;;
                     r|R)
                         echo "Re-adding $target_file..."
-                        chezmoi add "$abs_target_file"
+                        chezmoi re-add "$abs_target_file"
                         break
                         ;;
                     s|S) break ;;

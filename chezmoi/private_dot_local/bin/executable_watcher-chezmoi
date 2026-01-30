@@ -31,7 +31,7 @@ if [[ -z $1 ]]; then
 	fi
 
 	if [ -n "$STATUS_OUTPUT" ]; then
-		echo "Some changes found, run chezmoi-sync."
+		chezmoi status
 	fi
 else
 	if [[ $1 == "update" ]]; then

@@ -24,14 +24,36 @@ show_help() {
 PACKAGE_INFO_DIR="$HOME/.local/share/system-notes/packages_info/"
 
 get_file() {
-    local selected=$(/usr/bin/ls $PACKAGE_INFO_DIR | sort -r | awk '{
+    local options=""
+    if [[ $1 = "--multiple" ]]; then
+        options="--no-limit"
+        shift
+    elif [[ $1 = "--compare" ]]; then
+        options="--limit 2"
+        shift
+    fi
+
+    local selected=$(/usr/bin/ls "$PACKAGE_INFO_DIR" | sort -r | awk '{
         match($0, /packages_([0-9]{8})_[0-9]+/, arr)
         date = arr[1]
         printf "%s/%s/%s - %s\n", substr(date,1,4), substr(date,5,2), substr(date,7,2), $0
-    }' | gum choose "$@")
+    }' | gum choose $options "$@")
 
-    # Extract and return the original filename with full path
-    echo "$PACKAGE_INFO_DIR/$(echo "$selected" | awk -F' - ' '{print $2}')"
+    # Exit if nothing selected
+    [[ -z $selected ]] && return 1
+
+    # Extract and return the original filename(s) with full path
+    while IFS= read -r line; do
+        filename=$(awk -F' - ' '{print $2}' <<< "$line")
+        echo "${PACKAGE_INFO_DIR}${filename}"
+    done <<< "$selected"
+}
+
+dev() {
+    while IFS= read -r path; do
+        echo "Processing: $path"
+        # Do something with $path
+    done < <(get_file --multiple)
 }
 
 save_package_list () {
@@ -73,9 +95,10 @@ save_package_list () {
 }
 
 delete_file () {
-    file_to_delete=$(get_file --header "Choose a file")
-    rm $file_to_delete
-    echo "Deleted : $file_to_delete"
+    while IFS= read -r path; do
+        rm "$path"
+        echo "Deleted : $path"
+    done < <(get_file --multiple --header "Choose files to delete")
 }
 
 query_package_list () {
@@ -118,9 +141,15 @@ show_diff () {
     shift
 
     if [[ $1 = "-c" ]]; then
-        file1=$(get_file --header "New file")
+        readarray -t paths < <(get_file --compare --header "Pick two states to compare")
 
-        file2=$(get_file --header "Old file")
+        if [[ ${#paths[@]} -ne 2 ]]; then
+            echo "Error: you need to select two files ${#paths[@]}" >&2
+            exit 1
+        fi
+
+        file1="${paths[0]}"
+        file2="${paths[1]}"
     else
         read -r file1 file2 <<< "$(/usr/bin/ls $PACKAGE_INFO_DIR | sort -r | head -2 | tr '\n' ' ')"
         file1="$PACKAGE_INFO_DIR/$file1"
@@ -173,6 +202,9 @@ case $1 in
         ;;
     delete)
         delete_file
+        ;;
+    dev)
+        dev
         ;;
     *)
         echo "Unkown command."
