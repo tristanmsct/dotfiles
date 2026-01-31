@@ -36,7 +36,7 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
 
     sed -i -E "s|(background: url.*;$)|/\* \1 \*/|" $HOME/.config/wlogout/style.css
 
-    sed -i -E "s|(\s{4})(path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1# \2|" $HOME/.config/hypr/hyprlock.conf
+    rm $HOME/.cache/wallpaper/blurred_wallpaper.png
 
     /usr/bin/nextcloud --quit
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
@@ -55,8 +55,6 @@ fi
 sed -i -E "s/(background:) rgba\(0,0,0,0\);/\1 @background-theme;/" $HOME/.config/waybar/style.css
 
 sed -i -E "s|/\* (background: url.*) \*/|\1|" $HOME/.config/wlogout/style.css
-
-sed -i -E "s|# (path = \\\$HOME/.cache/wallpaper/blurred_wallpaper.png)|\1|" $HOME/.config/hypr/hyprlock.conf
 
 $HOME/.config/hypr/launchers/nextcloud.sh --background &
 
