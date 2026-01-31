@@ -7,7 +7,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-BASELINE_FILE=$HOME/.local/share/system-notes/chezmoi-baseline.txt
+BASELINE_FILE=$HOME/.local/share/system-tracking/chezmoi-baseline.txt
 
 if [[ -z $1 ]]; then
 	DIFF_OUTPUT=$(diff <(cat $BASELINE_FILE) <(chezmoi unmanaged $HOME))

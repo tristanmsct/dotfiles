@@ -14,12 +14,12 @@ _watcher() {
 
                 case "$cmd" in
                     desktop) desc="Monitor .desktop file changes" ;;
-                    config) desc="Monitor .config directory" ;;
+                    xdg) desc="Monitor xdg directories" ;;
                     git) desc="Check git repositories status" ;;
                     aur) desc="Check for custom AUR packages changes" ;;
                     chezmoi) desc="Track chezmoi-managed files" ;;
-                    pkgnotes) desc="Manage package notes" ;;
-                    pkginfo) desc="Collect packages information" ;;
+                    pacnotes) desc="Manage package notes" ;;
+                    pkglog) desc="Collect packages logs" ;;
                     sysinfo) desc="Collect system information" ;;
                 esac
 
@@ -35,17 +35,17 @@ _watcher() {
                 desktop)
                     _arguments '2:command:_watcher-desktop'
                     ;;
-                config)
-                    _arguments '2:command:_watcher-config'
+                xdg)
+                    _arguments '2:command:_watcher-xdg'
                     ;;
                 chezmoi)
                     _arguments '2:command:_watcher-chezmoi'
                     ;;
-                pkgnotes)
-                    _arguments '2:command:_watcher-pkgnotes'
+                pacnotes)
+                    _arguments '2:command:_watcher-pacnotes'
                     ;;
-                pkginfo)
-                    _arguments '2:command:_watcher-pkginfo'
+                pkglog)
+                    _arguments '2:command:_watcher-pkglog'
                     ;;
             esac
             ;;

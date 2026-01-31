@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-#                _       _                          _         _        __
-# __      ____ _| |_ ___| |__   ___ _ __      _ __ | | ____ _(_)_ __  / _| ___
-# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____| '_ \| |/ / _` | | '_ \| |_ / _ \
-#  \ V  V / (_| | || (__| | | |  __/ | |_____| |_) |   < (_| | | | | |  _| (_) |
-#   \_/\_/ \__,_|\__\___|_| |_|\___|_|       | .__/|_|\_\__, |_|_| |_|_|  \___/
-#                                            |_|        |___/
+#                _       _                          _         _
+# __      ____ _| |_ ___| |__   ___ _ __      _ __ | | ____ _| | ___   __ _
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____| '_ \| |/ / _` | |/ _ \ / _` |
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| |_) |   < (_| | | (_) | (_| |
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|       | .__/|_|\_\__, |_|\___/ \__, |
+#                                            |_|        |___/         |___/
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -21,7 +21,10 @@ show_help() {
     exit 0
 }
 
-PACKAGE_INFO_DIR="$HOME/.local/share/system-notes/packages_info/"
+PACKAGE_INFO_DIR="$HOME/.local/share/system-tracking/packages_info/"
+
+GREEN='\033[38;2;125;235;103m'
+NC='\033[0m'
 
 get_file() {
     local options=""
@@ -152,15 +155,15 @@ show_diff () {
     awk -F',' 'NR>1 {print $1","$2","$4}' "$file1" | sort > /tmp/new.tmp
     awk -F',' 'NR>1 {print $1","$2","$4}' "$file2" | sort > /tmp/old.tmp
 
-    echo "=== Only in old (deleted) ==="
+    echo -e "=== ${GREEN}Only in old (deleted)${NC} ==="
     comm -23 /tmp/old.tmp /tmp/new.tmp | gum table -s',' --columns=Repository,Name,Type --print
     echo
 
-    echo "=== Only in new (added) ==="
+    echo -e "=== ${GREEN}Only in new (added)${NC} ==="
     comm -13 /tmp/old.tmp /tmp/new.tmp | gum table -s',' --columns=Repository,Name,Type --print
     echo
 
-    echo "=== Installation type changed ==="
+    echo -e "=== ${GREEN}Installation type changed${NC} ==="
     # Get packages in both files (by repo,name only)
     awk -F',' 'NR>1 {print $1","$2}' "$file1" | sort > /tmp/new_keys.tmp
     awk -F',' 'NR>1 {print $1","$2}' "$file2" | sort > /tmp/old_keys.tmp

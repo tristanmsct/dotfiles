@@ -1,0 +1,13 @@
+#compdef watcher-xdg
+
+_watcher-xdg() {
+    local -a options
+    options=(
+        ':Check for new files and directories in xdg directories'
+        'update:Update the baseline file'
+    )
+
+    _describe 'watcher-xdg commands' options
+}
+
+_watcher-xdg "$@"

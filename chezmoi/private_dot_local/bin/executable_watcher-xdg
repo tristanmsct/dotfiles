@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#                _       _                           _
+# __      ____ _| |_ ___| |__   ___ _ __    __  ____| | __ _
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|___\ \/ / _` |/ _` |
+#  \ V  V / (_| | || (__| | | |  __/ | |_____>  < (_| | (_| |
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|      /_/\_\__,_|\__, |
+#                                                      |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+CONFIG_BASELINE=$HOME/.local/share/system-tracking/config-baseline.txt
+STATE_BASELINE=$HOME/.local/share/system-tracking/state-baseline.txt
+SHARE_BASELINE=$HOME/.local/share/system-tracking/share-baseline.txt
+
+ORANGE='\033[38;2;255;158;23m'
+NC='\033[0m'
+
+display_diff() {
+	ADDITIONS=$(echo "$1" | grep "^>" | sed 's/^> //')
+	DELETIONS=$(echo "$1" | grep "^<" | sed 's/^< //')
+
+	if [[ -n $ADDITIONS ]]; then
+		echo "Added:"
+		echo "$ADDITIONS"
+	fi
+
+	if [[ -n $DELETIONS ]]; then
+		echo "Deleted:"
+		echo "$DELETIONS"
+	fi
+
+	if [[ -z $ADDITIONS && -z $DELETIONS ]]; then
+		echo "No changes"
+	fi
+}
+
+if [[ -z $1 ]]; then
+	echo -e "=     ${ORANGE}.config${NC}     ="
+	DIFF_OUTPUT=$(diff <(cat $CONFIG_BASELINE) <(/usr/bin/ls -1 ~/.config/))
+	display_diff "$DIFF_OUTPUT"
+
+	echo -e "=   ${ORANGE}.local/state${NC}  ="
+	DIFF_OUTPUT=$(diff <(cat $STATE_BASELINE) <(/usr/bin/ls -1 ~/.local/state/))
+	display_diff "$DIFF_OUTPUT"
+
+	echo -e "=   ${ORANGE}.local/share${NC}  ="
+	DIFF_OUTPUT=$(diff <(cat $SHARE_BASELINE) <(/usr/bin/ls -1 ~/.local/share/))
+	display_diff "$DIFF_OUTPUT"
+else
+	if [[ $1 == "update" ]]; then
+		/usr/bin/ls -1 ~/.config/ > $BASELINE_FILE
+		/usr/bin/ls -1 ~/.local/state/ > $STATE_BASELINE
+		/usr/bin/ls -1 ~/.local/share/ > $SHARE_BASELINE
+	fi
+fi

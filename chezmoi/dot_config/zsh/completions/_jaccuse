@@ -9,7 +9,7 @@ _jaccuse() {
       '--help:Display help message'
     )
 
-    _describe 'watcher-pkgnotes commands' options
+    _describe 'jaccuse commands' options
 }
 
 _jaccuse "$@"

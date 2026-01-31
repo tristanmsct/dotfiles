@@ -1,6 +1,6 @@
-#compdef watcher-pkgnotes
+#compdef watcher-pacnotes
 
-_watcher-pkgnotes() {
+_watcher-pacnotes() {
     local -a options
     options=(
       'add:Add a package and its reason'
@@ -9,7 +9,7 @@ _watcher-pkgnotes() {
       'search:Search for a package or a reason'
     )
 
-    _describe 'watcher-pkgnotes commands' options
+    _describe 'watcher-pacnotes commands' options
 }
 
-_watcher-pkgnotes "$@"
+_watcher-pacnotes "$@"

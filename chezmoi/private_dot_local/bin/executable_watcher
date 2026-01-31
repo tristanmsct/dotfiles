@@ -7,7 +7,14 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# TODO
+# system-tracking dir should be renamed.
+# watcher config should also monitor local/state and local/share I think.
+
 WATCHER_DIR="$HOME/.local/bin"
+
+GREEN='\033[38;2;125;235;103m'
+NC='\033[0m'
 
 # If no args or help requested
 if [[ -z "$1" ]] || [[ "$1" =~ ^(-h|--help|help)$ ]]; then
@@ -24,26 +31,26 @@ fi
 
 # "Open" and "all" commands do not need a stand alone script
 if [[ "$1" = "open" ]]; then
-    xdg-open $HOME/.local/share/system-notes > /dev/null 2>&1 & disown
+    xdg-open $HOME/.local/share/system-tracking > /dev/null 2>&1 & disown
     exit 1
 elif [[ "$1" = "all" ]]; then
-    echo "=== Chezmoi monitored files and directories ==="
+    echo -e "=== ${GREEN}Chezmoi monitored files and directories${NC} ==="
     "$WATCHER_DIR/watcher-chezmoi"
     echo
 
-    echo "=== ~/.config directories ==="
-    "$WATCHER_DIR/watcher-config"
+    echo -e "=== ${GREEN}XDG directories${NC} ==="
+    "$WATCHER_DIR/watcher-xdg"
     echo
 
-    echo "=== .destkop files ==="
+    echo -e "=== ${GREEN}.destkop files${NC} ==="
     "$WATCHER_DIR/watcher-desktop"
     echo
 
-    echo "=== AUR custom PKGFILE ==="
+    echo -e "=== ${GREEN}AUR custom PKGFILE${NC} ==="
     "$WATCHER_DIR/watcher-aur"
     echo
 
-    echo "=== Git repositories ==="
+    echo -e "=== ${GREEN}Git repositories${NC} ==="
     "$WATCHER_DIR/watcher-git"
     echo
 

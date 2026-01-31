@@ -1,6 +1,6 @@
-#compdef watcher-pkginfo
+#compdef watcher-pkglog
 
-_watcher-pkginfo() {
+_watcher-pkglog() {
     local -a options
     options=(
       'save:Save the current state, used as a pacman hook'
@@ -10,7 +10,7 @@ _watcher-pkginfo() {
       'help:Display this help message'
     )
 
-    _describe 'watcher-pkginfo commands' options
+    _describe 'watcher-pkglog commands' options
 }
 
-_watcher-pkginfo "$@"
+_watcher-pkglog "$@"

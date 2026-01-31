@@ -10,7 +10,7 @@
 
 SYSTEM_DIR="/usr/share/applications"
 LOCAL_DIR="$HOME/.local/share/applications"
-NOTES_DIR="$HOME/.local/share/system-notes/applications"
+NOTES_DIR="$HOME/.local/share/system-tracking/applications"
 
 ORANGE='\033[38;2;255;158;23m'
 NC='\033[0m'
