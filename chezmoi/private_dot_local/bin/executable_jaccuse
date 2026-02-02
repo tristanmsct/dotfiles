@@ -6,6 +6,10 @@
 #  _/ |\__,_|\___\___|\__,_|___/\___|
 # |__/
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# For example, all these depend on gtk4.
+# jaccuse -d "adw-bluetooth baobab gnome-calculator gnome-calendar gnome-podcasts smile libadwaita libinput-gestures pinta nmrs
+# proton-vpn-cli pika-backup simple-scan steam mission-center pavucontrol nautilus"
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 import subprocess
 import sys
@@ -14,40 +18,42 @@ import argparse
 # ANSI color codes
 ORANGE = "\033[38;2;255;158;23m"
 GREEN = "\033[38;2;30;220;60m"
+PURPLE = "\033[38;2;150;85;166m"
 NC = "\033[0m"
 
 
 def parse_args():
-    """Parse command line arguments."""
+    """Parse command line arguments"""
     parser = argparse.ArgumentParser(description="Dependency surveillance tool")
 
-    # Flags
+    # Flags.
     parser.add_argument("-r", "--reverse", action="store_true", help="Show reverse dependencies")
     parser.add_argument("-d", "--deep", action="store_true", help="Deep search")
     parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode")
+    parser.add_argument("-u", "--only-uninstall", action="store_true", help="Displays only potentially orphaned dependencies")
 
-    # Optional positional package argument
+    # Optional positional package argument.
     parser.add_argument("package", nargs="?", help="Package name")
 
     return parser.parse_args()
 
 
 def pick_package():
-    """Pick a package interactively using gum filter."""
+    """Pick a package interactively using gum filter"""
     try:
-        # Get list of packages.
-        pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True)
+        # Get full list of installed packages.
+        lst_all_packages = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True)
 
-        # Pass the package list to gum filter via stdin.
+        # Get a selection of package.
         gum_result = subprocess.run(
             ["gum", "filter", "--placeholder", "Search packages...", "--no-limit"],
-            input=pacman_result.stdout,  # Pass as stdin, not as argument.
+            input=lst_all_packages.stdout,  # Pass as stdin, not as argument.
             stdout=subprocess.PIPE,
             text=True,
             check=True,
         )
 
-        package = gum_result.stdout.strip()
+        package = gum_result.stdout.strip().split("\n")
 
         if package:
             return package
@@ -63,128 +69,133 @@ def pick_package():
         sys.exit(1)
 
 
+def create_repr_list_packages(lst_packages):
+    """Create a string representation for a list of packages"""
+    repr_list_package = ""
+    for package in lst_packages:
+        if package == lst_packages[-1]:
+            repr_list_package += f" and {PURPLE}{package}{NC}"
+        else:
+            repr_list_package += f", {PURPLE}{package}{NC}"
+
+    return repr_list_package.strip(", ").strip(" and ")
+
+
 def get_explicit_dependents(lst_packages):
-    """Find explicitly installed packages that require the given package."""
+    """Find explicitly installed packages that require the given package"""
+    # If even one package is misspelled, we throw an error, it is safer.
     try:
-        lst_of_set_of_dependencies = []
-        text_display = ""
+        lst_of_set_of_dependents = []
         for package in lst_packages:
             # Get reverse dependencies (packages that require this one).
             pactree_result = subprocess.run(["pactree", "-r", "-u", package], stdout=subprocess.PIPE, text=True, check=True)
-            # Skip first line (the package itself) and sort.
-            reverse_deps = set(pactree_result.stdout.strip().split("\n")[1:])
-            reverse_deps = {dep.strip() for dep in reverse_deps if dep.strip()}
+            set_dependents = set(pactree_result.stdout.strip().split("\n")[1:])  # The first line of pactree is the package itself.
+            set_dependents = {dep.strip() for dep in set_dependents if dep.strip()}
 
             # Get explicitly installed packages.
             pacman_result = subprocess.run(["pacman", "-Qeq"], stdout=subprocess.PIPE, text=True, check=True)
-            explicit_pkgs = set(pacman_result.stdout.strip().split("\n"))
+            set_explicit_pkgs = set(pacman_result.stdout.strip().split("\n"))
 
-            # Find intersection (comm -12 equivalent).
-            lst_deps = reverse_deps & explicit_pkgs
+            # We keep only the intersection of the dependents and the explictly installed packages.
+            lst_of_set_of_dependents.append(set_dependents & set_explicit_pkgs)
 
-            lst_of_set_of_dependencies.append(lst_deps)
+        # We finally get the intersection of all the lists of sets of dependents.
+        final_set = set.intersection(*lst_of_set_of_dependents)
 
-            if len(lst_packages) == 1:
-                text_display = f"{ORANGE}{package}{NC}"
-            elif package == lst_packages[-1]:
-                text_display += f" and {ORANGE}{package}{NC}"
-            else:
-                text_display += f", {ORANGE}{package}{NC}"
-
-        final_set = set.intersection(*lst_of_set_of_dependencies)
-
-        text_display = text_display.strip(", ")
+        repr_list_package = create_repr_list_packages(lst_packages)
 
         # Display results.
         if final_set:
-            print(f"These explicitly installed packages require {text_display}:")
+            print(f"List of {GREEN}explicitly installed packages{NC} that require {repr_list_package}:")
             for dep in final_set:
-                print(dep)
+                print(f"{GREEN}{dep}{NC}")
         else:
-            if len(lst_packages) == 1:
-                print(f"{ORANGE}{package}{NC} is not required by any explicitly installed package")
-            else:
-                print(f"{text_display} are not dependencies of any common explicitly installed package")
+            suffix = ("is not a dependency" if len(lst_packages) == 1 else "are not dependencies")
+            print(f"{repr_list_package} {suffix} of any common explicitly installed package.")
 
-        return lst_deps
+        return final_set
 
     except subprocess.CalledProcessError:
         print(f"Error: Could not process package '{package}'", file=sys.stderr)
         sys.exit(1)
 
 
-def find_potential_orphans(lst_packages, deep_search=False, quiet=False):
-    full_set_dependencies = set()
-    text_display = ""
-    for package in lst_packages:
-        pactree_cmd = ["pactree", "-u"]
-        if not deep_search:
-            pactree_cmd.append("-d 1")
-        pactree_cmd.append(package)
+def find_full_list_of_dependencies(lst_packages, deep_search=False):
+    """Find the full list of dependencies for a list of packages"""
+    # If even one package is misspelled, we throw an error, it is safer.
+    try:
+        full_set_dependencies = set()
+        for package in lst_packages:
+            pactree_cmd = ["pactree", "-u"]
+            if not deep_search:
+                pactree_cmd.append("-d 1")
+            pactree_cmd.append(package)
 
-        lst_dependencies = subprocess.run(pactree_cmd, stdout=subprocess.PIPE, text=True, check=True)
-        lst_dependencies = set(lst_dependencies.stdout.strip().split("\n")[1:])
-        lst_dependencies = {dep.strip() for dep in lst_dependencies if dep.strip()}
-        lst_dependencies = {dep.split("=")[0].strip(">") for dep in lst_dependencies}
+            lst_dependencies = subprocess.run(pactree_cmd, stdout=subprocess.PIPE, text=True, check=True)
+            lst_dependencies = set(lst_dependencies.stdout.strip().split("\n")[1:])
+            lst_dependencies = {dep.strip() for dep in lst_dependencies if dep.strip()}
+            lst_dependencies = {dep.split("=")[0].strip(">") for dep in lst_dependencies}
 
-        full_set_dependencies.update(lst_dependencies)
+            full_set_dependencies.update(lst_dependencies)
 
-        if len(lst_packages) == 1:
-            text_display = f"{ORANGE}{package}{NC}"
-        elif package == lst_packages[-1]:
-            text_display += f" and {ORANGE}{package}{NC}"
-        else:
-            text_display += f", {ORANGE}{package}{NC}"
+    except subprocess.CalledProcessError:
+        print(f"Error: Could not process package '{package}'", file=sys.stderr)
+        sys.exit(1)
 
-    text_display = text_display.strip(", ")
+    return full_set_dependencies
+
+
+def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uninstall=False):
+    """Get list of potential orphans if uninstalling a list of packages"""
+    full_set_dependencies = find_full_list_of_dependencies(lst_packages, deep_search)
+    repr_list_package = create_repr_list_packages(lst_packages)
 
     if not full_set_dependencies:
-        if len(lst_packages) == 1:
-            print(f"{text_display} does not have any dependency")
-        else:
-            print(f"{text_display} do not have any dependency")
-        return
+        suffix = ("does not" if len(lst_packages) == 1 else "do not")
+        print(f"{repr_list_package} {suffix} does not have any dependency")
+    else:
+        ct_orph = 0
+        ct_req = 0
+        if not quiet:
+            print(f"List of dependencies for {repr_list_package} ({GREEN}would be uninstalled{NC} and {ORANGE}would remain{NC}):")
+        for depencency in full_set_dependencies:
+            lst_reqs_of_dependency = subprocess.run(
+                ["pactree", "-u", "-r", depencency],
+                stdout=subprocess.PIPE,
+                text=True,
+                check=True,
+            )
+            lst_reqs_of_dependency = set(lst_reqs_of_dependency.stdout.strip().split("\n")[1:])
+            lst_reqs_of_dependency = {dep.strip() for dep in lst_reqs_of_dependency if dep.strip()}
+            lst_reqs_of_dependency = {dep.split("=")[0].strip(">") for dep in lst_reqs_of_dependency}
 
-    ct_orph = 0
-    ct_req = 0
-    if not quiet:
-        print(f"Listing {ORANGE}dependencies that would be uninstalled{NC} and {GREEN}dependencies that would remain{NC}")
-    for depencency in full_set_dependencies:
-        lst_reqs_of_dependency = subprocess.run(["pactree", "-u", "-r", depencency], stdout=subprocess.PIPE, text=True, check=True)
-        lst_reqs_of_dependency = set(lst_reqs_of_dependency.stdout.strip().split("\n")[1:])
-        lst_reqs_of_dependency = {dep.strip() for dep in lst_reqs_of_dependency if dep.strip()}
-        lst_reqs_of_dependency = {dep.split("=")[0].strip(">") for dep in lst_reqs_of_dependency}
+            if lst_reqs_of_dependency - full_set_dependencies - set(lst_packages):
+                if not quiet and not only_uninstall:
+                    print(f"{ORANGE}{depencency}{NC}")
+                ct_req += 1
+            else:
+                if not quiet:
+                    print(f"{GREEN}{depencency}{NC}")
+                ct_orph += 1
 
-        if lst_reqs_of_dependency - full_set_dependencies - {package}:
-            if not quiet:
-                print(f"{GREEN}{depencency}{NC}")
-            ct_req += 1
-        else:
-            if not quiet:
-                print(f"{ORANGE}{depencency}{NC}")
-            ct_orph += 1
-
-    print(f"Out of {ct_orph + ct_req} dependencies, {ORANGE}{ct_orph}{NC} packages would be uninstalled, {GREEN}{ct_req}{NC} would remain")
+        str_output = f"Out of {ct_orph + ct_req} dependencies, {GREEN}{ct_orph}{NC} "
+        str_output += f"packages would be uninstalled, {ORANGE}{ct_req}{NC} would remain."
+        print(str_output)
 
 
 def main(args):
+    """Get a list of packages and perform a normal or reverse search of dependencies"""
     if not (lst_packages := args.package):
         lst_packages = pick_package()
-        lst_packages = lst_packages.split("\n")
     else:
-        lst_packages = lst_packages.split("\n")
+        lst_packages = lst_packages.split(" ")
 
     if args.reverse:
-        find_potential_orphans(lst_packages, deep_search=args.deep, quiet=args.quiet)
-    else:
         get_explicit_dependents(lst_packages)
+    else:
+        get_potential_orphans(lst_packages, deep_search=args.deep, quiet=args.quiet, only_uninstall=args.only_uninstall)
 
 
 if __name__ == "__main__":
     args = parse_args()
     main(args)
-
-    # tmp = pick_package()
-    # tmp = tmp.split("\n")
-
-    # find_potential_orphans(tmp, deep_search=args.deep, quiet=args.quiet)
