@@ -22,6 +22,7 @@ if [[ -z $1 ]]; then
 		done <<< "$NOT_TRACKED"
 		STATUS_OUTPUT=${STATUS_OUTPUT%\\n}
 	fi
+	STATUS_OUTPUT=$(echo -e "$STATUS_OUTPUT" | sed '/^$/d')  # Remove empty lines
 
 	if [[ -z $NOT_TRACKED && -z "$STATUS_OUTPUT" ]]; then
 		echo "No changes"

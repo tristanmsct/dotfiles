@@ -25,6 +25,7 @@ if [[ -n "$NOT_TRACKED" ]]; then
         STATUS_OUTPUT+="\nA  ${line}"
     done <<< "$NOT_TRACKED"
 fi
+STATUS_OUTPUT=$(echo -e "$STATUS_OUTPUT" | sed '/^$/d')  # Remove empty lines
 
 if [ -z "$STATUS_OUTPUT" ]; then
     echo "No differences found."
