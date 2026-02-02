@@ -73,7 +73,6 @@
     // Taskbar --------------------------------------------------------------------------
     "wlr/taskbar": {
         "format": "{icon}",
-        // "icon-theme": "${i_theme}",
         "all-outputs": true,
         "icon-size": 24,
         "spacing": 0,
