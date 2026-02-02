@@ -38,9 +38,8 @@ minute=$(date +%M)
 minute=$(echo $minute | sed 's/^0*//')
 
 # Morning and evening starts depend on the month and are in the config file.
-morning_start=$(jq -r '.calendar.'$(date +%B)'[0]' $CALENDAR_FILE)
-evening_start=$(jq -r '.calendar.'$(date +%B)'[1]' $CALENDAR_FILE)
-
+morning_start=$(jq -r '.calendar.'$(LC_TIME=en_UK.utf8 date +%B)'[0]' $CALENDAR_FILE)
+evening_start=$(jq -r '.calendar.'$(LC_TIME=en_UK.utf8 date +%B)'[1]' $CALENDAR_FILE)
 current_time=$((hour * 60 + minute))
 
 # If we are before the morning start, then we add 24h to the current time, so that if it is 1h20, we will have 25h20.
