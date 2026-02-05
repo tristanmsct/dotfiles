@@ -1,0 +1,17 @@
+---
+- name: Get my user
+  ansible.builtin.set_fact:
+    remote_regular_user: '{{ ansible_facts["user_id"] }}'
+
+- debug:
+    msg: "Running as user: {{ remote_regular_user }}"
+
+- name: Install git package
+  pacman:
+    name:
+      - git
+      - kitty
+      - nautilus
+    state: present
+    update_cache: yes
+  become: true

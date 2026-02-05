@@ -1,28 +1,22 @@
 ---
-- name: Machine global setup
+- name: Arch Linux Setup
   hosts: localhost
-  connection: local
-  become: true
   gather_facts: true
 
-  tasks:
-    - name: Get my user
-      ansible.builtin.set_fact:
-        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+  vars:
+    user: "{{ ansible_user_id }}"
 
-    - name: print to stdout
-      command: echo "{{ remote_regular_user }}"
-      register: hello
-
-    - debug: msg="{{ remote_regular_user }}"
-
-    - debug: msg="{{ hello.stdout }}"
-
-    - name: Install git package
-      pacman:
-        name:
-          - git
-          - kitty
-          - nautilus
-        state: present
-        update_cache: yes
+  roles:
+    - role: base
+      tags: base
+    - role: hyprland
+      tags: hyprland
+    - role: git
+      tags: git
+    - role: bitwarden
+      tags: bitwarden
+    # - theming
+    # - development
+    # - dotfiles
+    # - scripts
+    # - backup

@@ -1,0 +1,15 @@
+---
+- debug:
+    msg: "Installing bitwarden"
+
+- name: Prompt for Bitwarden server URL
+  pause:
+    prompt: "Enter Bitwarden server URL (or press Enter for default bitwarden.com)"
+  register: bw_server_input
+
+- name: Set Bitwarden server URL
+  set_fact:
+    bitwarden_server: "https://{{ bw_server_input.user_input | default('vault.bitwarden.com', true) }}"
+
+- debug:
+    msg: "Server : {{ bitwarden_server }}"
