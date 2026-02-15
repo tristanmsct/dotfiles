@@ -10,6 +10,8 @@
 # Tools
 # -----------------------------------------------------
 eval "$(pyenv init - bash)"
+eval "$(glow completion bash)"
+eval "$(eww shell-completions --shell bash)"
 eval "$(zoxide init bash)"
 eval "$(thefuck --alias)"
 eval "$(ssh-agent)" &>/dev/null
@@ -17,5 +19,4 @@ eval "$(ssh-agent)" &>/dev/null
 # -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-[[ ! -f $HOME/.config/bash/completion ]] || source $HOME/.config/bash/completion
-[[ ! -f $HOME/.config/bash/applications/task_completion.bash ]] || source $HOME/.config/bash/applications/task_completion.bash
+[[ ! -f $HOME/.config/shell/bash/completion ]] || source $HOME/.config/shell/bash/completion

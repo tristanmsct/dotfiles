@@ -6,9 +6,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-export SHELLDIR="$HOME/.config/shell"
-
-source "$SHELLDIR/env"
+source "$HOME/.config/shell/env"
 source "$ZDOTDIR/config"
 source "$SHELLDIR/aliases"
 source "$SHELLDIR/autostart"
@@ -20,7 +18,7 @@ if [[ $(tty) == *"pts"* ]]; then
   fi
   source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
-  [[ ! -f ${ZDOTDIR:-~}/.p10k.zsh ]] || source ${ZDOTDIR:-~}/.p10k.zsh
+  [[ ! -f ${ZDOTDIR:-~}/prompt/p10k.zsh ]] || source ${ZDOTDIR:-~}/prompt/p10k.zsh
 else
-  [[ ! -f "$ZDOTDIR/zsh_tty_prompt" ]] || source "$ZDOTDIR/zsh_tty_prompt"
+  [[ ! -f "$ZDOTDIR/prompt/zsh_tty_prompt.zsh" ]] || source "$ZDOTDIR/prompt/zsh_tty_prompt.zsh"
 fi

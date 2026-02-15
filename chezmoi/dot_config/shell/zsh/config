@@ -30,25 +30,22 @@ plugins=(
 
 # Initialize completion system
 # /!\ Moving these instructions down can break the config.
-fpath=(~/.config/zsh/completions $fpath)
-autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
-
-[[ ! -f $ZDOTDIR/applications/task_completion.zsh ]] || source "$ZDOTDIR/applications/task_completion.zsh"
-[[ ! -f $ZDOTDIR/applications/eww_completion.zsh ]] || source "$ZDOTDIR/applications/eww_completion.zsh"
-[[ ! -f $ZDOTDIR/applications/glow_completion.zsh ]] || source "$ZDOTDIR/applications/glow_completion.zsh"
+fpath=("$XDG_CONFIG_HOME/shell/zsh/completions" $fpath)
+autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 # Set-up oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
 # -----------------------------------------------------
-# Set-up FZF key bindings (CTRL R for fuzzy history finder)
+# Tools initialisations
 # -----------------------------------------------------
+# So that `task` get the same completion as `go-task`.
+source <(task --completion zsh | sed 's/go_task/task/g; s/go-task/task/g')
+# Set-up FZF key bindings (CTRL R for fuzzy history finder).
 source <(fzf --zsh)
-
-# -----------------------------------------------------
-# Tools
-# -----------------------------------------------------
 eval "$(pyenv init - zsh)"
+eval "$(glow completion zsh)"
+eval "$(eww shell-completions --shell zsh)"
 eval "$(zoxide init zsh)"
 eval "$(thefuck --alias)"
 eval "$(ssh-agent)" &>/dev/null

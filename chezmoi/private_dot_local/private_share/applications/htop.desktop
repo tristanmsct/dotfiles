@@ -65,3 +65,4 @@ Exec=kitty --app-id htop -e htop
 Terminal=false
 Categories=System;Monitor;ConsoleOnly;
 Keywords=system;process;task
+NoDisplay=true

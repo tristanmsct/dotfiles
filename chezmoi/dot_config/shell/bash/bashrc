@@ -6,9 +6,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-export SHELLDIR="$HOME/.config/shell"
-
-source "$SHELLDIR/env"
+source "$HOME/.config/shell/env"
 source "$BASHDIR/config"
 source "$SHELLDIR/aliases"
 source "$SHELLDIR/autostart"

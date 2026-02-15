@@ -131,7 +131,7 @@
 
     // Clock
     "clock": {
-        "format": "{:%H:%M - %a %d}",
+        "format": "{:%H:%M - %a %d/%m}",
         "on-click": "gnome-calendar",
         "tooltip": false
     },

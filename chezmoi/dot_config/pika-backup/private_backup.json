@@ -24,7 +24,7 @@
     "encryption_mode": "repokey",
     "include": [
       ".config",
-      ".local/share/system-notes",
+      ".local/share/system-tracking",
       ".ssh",
       "Documents",
       "Media/Pictures",

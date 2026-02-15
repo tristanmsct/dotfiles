@@ -23,7 +23,7 @@ reverse = false
 
 [[entries]]
 title = "The Legend of Zelda: Majora's Mask"
-launch_command = "kitty"
+launch_command = "mupen64plus /home/tristan/Nextcloud/99-Documents/07-Games/ROMs/TloZ-majoras_mask.n64"
 # launch_env = { LOG_LEVEL = "info", "can_quote_key_too" = "some_value"}
 # launch_env = { SDL_VIDEODRIVER = "x11" }
 # path_game_dir = "/opt/GDLauncher"
