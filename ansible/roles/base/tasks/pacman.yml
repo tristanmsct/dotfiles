@@ -1,0 +1,45 @@
+---
+# tasks file for base/pacman
+- name: Modify makepkg configuration
+  lineinfile:
+    path: /etc/makepkg.conf
+    regexp: '^#?\s*{{ item.key }}'
+    line: "{{ item.key }}={{ item.value }}"
+    backrefs: yes
+  with_items:
+    - key: MAKEFLAGS
+      value: '"-j$(nproc)"'
+    - key: COMPRESSXZ
+      value: (xz -c -z - --threads=0)
+  become: true
+
+- name: Enable pacman options
+  lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^#?\s*{{ item }}'
+    line: "{{ item }}"
+    backrefs: yes
+  with_items:
+    - Color
+    - ParallelDownloads
+    - CheckSpace
+  become: true
+
+- name: Modify pacman configuration
+  lineinfile:
+    path: /etc/pacman.conf
+    regexp: '^#?\s*{{ item.key }}'
+    line: "{{ item.key }} = {{ item.value }}"
+    backrefs: yes
+  with_items:
+    - key: ParallelDownloads
+      value: "{{ [ansible_facts['processor_vcpus'], 8] | min }}"
+  become: true
+
+- name: Add ILoveCandy to pacman.conf
+  lineinfile:
+    path: /etc/pacman.conf
+    insertafter: '^Color$'
+    line: "ILoveCandy"
+    state: present
+  become: true

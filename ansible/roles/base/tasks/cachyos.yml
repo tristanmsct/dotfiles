@@ -1,0 +1,46 @@
+---
+- name: Detect highest supported CPU microarchitecture level
+  shell: /lib/ld-linux-x86-64.so.2 --help | grep 'x86-64-v.*supported' | grep -oP 'x86-64-v\d+' | sort -V | tail -1
+  register: cpu_arch_level
+  changed_when: false
+
+- name: Display detected CPU architecture
+  debug:
+    msg: "Detected highest supported CPU architecture: {{ cpu_arch_level.stdout }}"
+
+- name: Import CachyOS GPG key
+  command: pacman-key --recv-keys F3B607488DB35A47
+  become: true
+  changed_when: false
+
+- name: Locally sign CachyOS key
+  command: pacman-key --lsign-key F3B607488DB35A47
+  become: true
+  changed_when: false
+
+- name: Add CachyOS repositories
+  blockinfile:
+    path: /etc/pacman.conf
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - CachyOS Repositories"
+    insertafter: EOF
+    prepend_newline: true
+    append_newline: true
+    block: |
+      {% if cpu_arch_level.stdout == 'x86-64-v4' %}
+      [cachyos-v4]
+      Server = https://mirror.cachyos.org/repo/x86_64_v4/$repo
+
+      {% endif %}
+      {% if cpu_arch_level.stdout in ['x86-64-v3', 'x86-64-v4'] %}
+      [cachyos-v3]
+      Server = https://mirror.cachyos.org/repo/x86_64_v3/$repo
+
+      {% endif %}
+      [cachyos]
+      Server = https://mirror.cachyos.org/repo/x86_64/$repo
+  become: true
+
+- name: Update pacman database
+  pacman:
+    update_cache: yes
+  become: true

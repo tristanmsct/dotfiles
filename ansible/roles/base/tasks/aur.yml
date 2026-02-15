@@ -1,0 +1,37 @@
+---
+- name: Check if yay is installed
+  stat:
+    path: /usr/bin/yay
+  register: yay_binary
+  tags:
+    - aur
+
+- name: Install yay
+  block:
+    - name: Clone yay from github
+      git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: /tmp/yay
+        version: master
+        update: yes
+      become: false
+
+    - name: Build yay package
+      command: makepkg --noconfirm -s
+      args:
+        chdir: /tmp/yay
+        creates: /tmp/yay/yay-*.pkg.tar.zst
+      become: false
+
+    - name: Install yay package
+      shell: pacman -U --noconfirm yay-*.pkg.tar.zst
+      args:
+        chdir: /tmp/yay
+      become: true
+  when: not yay_binary.stat.exists
+  tags:
+    - aur
+
+- name: AUR install clean up
+  command: yay -Yc
+  become: true

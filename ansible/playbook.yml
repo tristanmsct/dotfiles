@@ -3,9 +3,6 @@
   hosts: localhost
   gather_facts: true
 
-  vars:
-    user: "{{ ansible_user_id }}"
-
   roles:
     - role: base
       tags: base

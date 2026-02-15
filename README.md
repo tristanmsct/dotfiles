@@ -10,6 +10,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 
 
 - [ ] Create ansible playbook for the installation.
+    - [ ] Setup bitwarden.
+    - [ ] Setup nextcloud.
 
 
 # Ansible

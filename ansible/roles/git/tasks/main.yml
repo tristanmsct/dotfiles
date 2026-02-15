@@ -9,4 +9,4 @@
 #     - { name: 'user.email', value: "{{ git_user_email }}" }
 
 - debug:
-    msg: "Installing Git"
+    msg: "Installing Git {{ username }}"
