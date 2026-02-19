@@ -10,11 +10,12 @@
 # General
 # ---------------------------------------------------------------------------------------
 alias ls='eza --icons=always'
-alias ll='eza --long --icons=always --sort=type'
-alias la='ll --all'
-alias l='la'
-alias lt='eza --all --tree --level=1 --icons=always --sort=type'
-alias lg='eza --tree --level=1 --sort=type --icons=always --all --long --git --no-filesize --no-time --no-user --no-permissions'
+alias ll='eza --icons=always --sort=type --long'
+alias l='eza --icons=always --sort=type --long --all'
+alias la='eza --icons=always --sort=type --oneline --all'
+alias lt='eza --tree --level=1 --icons=always --sort=type --all'
+alias lg='eza --tree --level=1 --icons=always --sort=type --all --long --git --no-filesize --no-time --no-user --no-permissions'
+alias lr='eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --no-filesize --no-time --no-user --no-permissions'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
