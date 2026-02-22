@@ -13,6 +13,7 @@
 
 # Main repo, config files and such.
 lst_repos=("$HOME/.local/share/dotfiles")
+lst_repos+=("$HOME/.local/share/ansible-archlinux")
 
 # The main hub for repos.
 base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
@@ -24,7 +25,7 @@ if [[ -d "$base_repos" ]]; then
     lst_repos+=("${base_dirs[@]}")
 fi
 
-# Add public repos  
+# Add public repos
 if [[ -d "$public_repos" ]]; then
     readarray -t public_dirs < <(ls -1d "$public_repos"/*/ 2>/dev/null)
     lst_repos+=("${public_dirs[@]}")
