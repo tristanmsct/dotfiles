@@ -35,15 +35,15 @@ display_diff() {
 }
 
 if [[ -z $1 ]]; then
-	echo -e "=     ${ORANGE}.config${NC}     ="
+	echo -e "=       ${ORANGE}.config${NC}       ="
 	DIFF_OUTPUT=$(diff <(cat $CONFIG_BASELINE) <(/usr/bin/ls -1 ~/.config/))
 	display_diff "$DIFF_OUTPUT"
 
-	echo -e "=   ${ORANGE}.local/state${NC}  ="
+	echo -e "=     ${ORANGE}.local/state${NC}    ="
 	DIFF_OUTPUT=$(diff <(cat $STATE_BASELINE) <(/usr/bin/ls -1 ~/.local/state/))
 	display_diff "$DIFF_OUTPUT"
 
-	echo -e "=   ${ORANGE}.local/share${NC}  ="
+	echo -e "=     ${ORANGE}.local/share${NC}    ="
 	DIFF_OUTPUT=$(diff <(cat $SHARE_BASELINE) <(/usr/bin/ls -1 ~/.local/share/))
 	display_diff "$DIFF_OUTPUT"
 else
