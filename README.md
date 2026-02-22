@@ -8,22 +8,4 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --source=~/.local/share/dot
 
 # TODO
 
-
-- [ ] Create ansible playbook for the installation.
-    - [ ] Setup bitwarden.
-    - [ ] Setup nextcloud.
-
-
-# Ansible
-
-
-```bash
-# Full setup
-ansible-playbook playbook.yml -K
-
-# Only install Hyprland
-ansible-playbook playbook.yml -K --tags hyprland
-
-# Skip backup configuration
-ansible-playbook playbook.yml -K --skip-tags backup
-```
+- [ ] Review chezmoiignore.
