@@ -28,3 +28,15 @@ launch_command = "mupen64plus /home/tristan/Nextcloud/99-Documents/07-Games/ROMs
 # launch_env = { SDL_VIDEODRIVER = "x11" }
 # path_game_dir = "/opt/GDLauncher"
 path_box_art = "majoras_mask.png"
+
+[[entries]]
+title = "Thronefall"
+launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+
+[[entries]]
+title = "Slay the Spire"
+launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+
+[[entries]]
+title = "FTL: Faster Than Light"
+launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
