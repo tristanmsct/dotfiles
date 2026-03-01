@@ -10,6 +10,7 @@
 # General
 # ---------------------------------------------------------------------------------------
 alias ls='eza --icons=always'
+alias lh='eza --icons=always --sort=type --oneline'
 alias la='eza --icons=always --sort=type --oneline --all'
 alias ll='eza --icons=always --sort=type --long'
 alias l='eza --icons=always --sort=type --long --all'

@@ -6,7 +6,4 @@ Terminal=false
 Exec=/usr/bin/Boosteroid
 Name=Boosteroid
 Comment=Boosteroid cloud gaming client
-#Icon=/home/tristan/.local/share/Boosteroid.svg
-#Icon=/home/tristan/Media/Pictures/Icons/Boosteroid.svg
 Icon=Boosteroid
-NoDisplay=true
