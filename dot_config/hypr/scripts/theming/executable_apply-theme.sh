@@ -76,6 +76,7 @@ fi
 gio set $HOME/Nextcloud metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-cloud.svg"
 gio set $HOME/Media/Movies metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
 gio set $HOME/Media/Series metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
+gio set $HOME/Media/Games metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-games.svg"
 
 source $HOME/.local/bin/get-repo-list
 
