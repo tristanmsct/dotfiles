@@ -2,7 +2,6 @@
 Name=VSCodium - Wayland
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-#Exec=/usr/bin/codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland %F
 Exec=/home/tristan/.config/hypr/launchers/codium.sh --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland %F
 Icon=vscodium
 Type=Application
@@ -13,9 +12,9 @@ MimeType=text/plain;inode/directory;
 Actions=new-empty-window;
 Keywords=vscode;
 NoDisplay=true
+Hidden=true
 
 [Desktop Action new-empty-window]
 Name=New Empty Window
-#Exec=/usr/bin/codium --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland %F
 Exec=/home/tristan/.config/hypr/launchers/codium.sh --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --new-window %F
 Icon=vscodium

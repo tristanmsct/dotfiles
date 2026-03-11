@@ -3,7 +3,6 @@ Name=Slack
 StartupWMClass=Slack
 Comment=Slack Desktop
 GenericName=Slack Client for Linux
-#Exec=/usr/bin/slack -s %U
 Exec=/home/tristan/.config/hypr/launchers/slack.sh -s %U
 Icon=slack
 Type=Application

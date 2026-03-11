@@ -2,7 +2,6 @@
 Name=VSCodium
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-#Exec=/usr/bin/codium %F
 Exec=/home/tristan/.config/hypr/launchers/codium.sh %F
 Icon=vscodium
 Type=Application
@@ -15,6 +14,5 @@ Keywords=vscode;
 
 [Desktop Action new-empty-window]
 Name=New Empty Window
-#Exec=/usr/bin/codium %F
 Exec=/home/tristan/.config/hypr/launchers/codium.sh %F
 Icon=vscodium
