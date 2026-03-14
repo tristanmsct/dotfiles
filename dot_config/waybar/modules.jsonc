@@ -103,8 +103,8 @@
         "modules": [
             // "custom/debugger",
             "clock",
-            "custom/vpnstatus",
-            "custom/updates"
+            "custom/vpnstatus"
+            // "custom/updates"
         ]
     },
 

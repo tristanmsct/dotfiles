@@ -6,11 +6,11 @@ Exec=/home/tristan/.config/hypr/launchers/codium.sh --enable-features=UseOzonePl
 Icon=vscodium
 Type=Application
 StartupNotify=false
-StartupWMClass=codium-url-handler
+StartupWMClass=codium
 Categories=Utility;Development;IDE;
 MimeType=text/plain;inode/directory;
 Actions=new-empty-window;
-Keywords=vscode;
+Keywords=vscodium;codium;vscode;
 NoDisplay=true
 Hidden=true
 

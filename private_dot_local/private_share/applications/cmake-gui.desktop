@@ -11,3 +11,4 @@ Categories=Development;Building;
 StartupNotify=true
 MimeType=application/x-cmakecache;
 NoDisplay=true
+Hidden=true
