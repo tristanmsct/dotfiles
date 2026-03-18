@@ -34,6 +34,9 @@ if [[ "$1" = "open" ]]; then
     xdg-open $HOME/.local/share/system-tracking > /dev/null 2>&1 & disown
     exit 1
 elif [[ "$1" = "all" ]]; then
+    fast=false
+    [[ "$2" = "--fast" ]] && fast=true
+
     echo -e "=== ${GREEN}Chezmoi monitored files and directories${NC} ==="
     "$WATCHER_DIR/watcher-chezmoi"
     echo
@@ -46,13 +49,15 @@ elif [[ "$1" = "all" ]]; then
     "$WATCHER_DIR/watcher-desktop"
     echo
 
-    echo -e "=== ${GREEN}AUR custom PKGFILE${NC} ==="
-    "$WATCHER_DIR/watcher-aur"
-    echo
+    if [[ "$fast" = false ]]; then
+        echo -e "=== ${GREEN}AUR custom PKGFILE${NC} ==="
+        "$WATCHER_DIR/watcher-aur"
+        echo
 
-    echo -e "=== ${GREEN}Git repositories${NC} ==="
-    "$WATCHER_DIR/watcher-git"
-    echo
+        echo -e "=== ${GREEN}Git repositories${NC} ==="
+        "$WATCHER_DIR/watcher-git"
+        echo
+    fi
 
     exit 1
 else
