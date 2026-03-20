@@ -76,7 +76,7 @@ list > row {
   padding: 0;
 }
 list > row:selected {
-  background: var(--accent-color);
+  background: var(--bg-quadernary);
   color: var(--bg-primary);
 }
 
