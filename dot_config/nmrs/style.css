@@ -1,13 +1,17 @@
+@import url('/home/tristan/.cache/wal/colors-nwg.css');
+
 /* Themes */
 window.light-theme {
   --bg-primary: #ffffff;
   --bg-secondary: #f5f5f5;
   --bg-tertiary: #e5e5e5;
+  --bg-quadernary: #9ca3af;
   --text-primary: #1a1a1a;
   --text-secondary: #4a4a4a;
   --text-tertiary: #6a6a6a;
   --border-color: #d0d0d0;
-  --border-color-hover: #b0b0b0;
+  --border-color-secondary: #3a3a3a;
+  --border-color-hover: #9ca3af;
   --accent-color: #2563eb;
   --success-color: #16a34a;
   --warning-color: #d97706;
@@ -18,11 +22,13 @@ window.dark-theme {
   --bg-primary: #121212;
   --bg-secondary: #1e1e1e;
   --bg-tertiary: #2a2a2a;
+  --bg-quadernary: #3a3a3a;
   --text-primary: #e0e0e0;
   --text-secondary: #bbbbbb;
   --text-tertiary: #9ca3af;
   --border-color: #2a2a2a;
-  --border-color-hover: #3a3a3a;
+  --border-color-secondary: #3a3a3a;
+  --border-color-hover: #9ca3af;
   --accent-color: #2563eb;
   --success-color: #22c55e;
   --warning-color: #f59e0b;
@@ -31,13 +37,13 @@ window.dark-theme {
 
 /* Window */
 window {
-  background-color: var(--bg-primary);
+  background-color: var(--bg-tertiary);
   color: var(--text-primary);
 }
 
 /* Header */
 headerbar {
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-color);
 }
@@ -48,20 +54,21 @@ switch {
 }
 
 switch:checked {
-  background-color: var(--bg-tertiary);
+  background-color: @accent-color;
 }
 
 /* Wi-Fi label */
 .wifi-label {
+  margin-left: 20px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 /* List */
 list {
-  background: var(--bg-primary);
+  background: var(--bg-tertiary);
   border: none;
-  padding: 20px;
+  padding: 30px;
 }
 list > row {
   background: transparent;
@@ -82,15 +89,19 @@ list > row:selected {
 
 /* Network selection */
 .network-selection {
-  padding: 6px 10px;
-  margin: 2px 0;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  padding: 10px 10px;
+  margin: 0px 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color-secondary);
+}
+.network-selection:first-child {
+  border-radius: 15px 15px 0px 0px;
+}
+.network-selection:last-child{
+  border-radius: 0px 0px 15px 15px;
 }
 .network-selection:hover {
-  background: var(--bg-tertiary);
-  border-color: var(--border-color-hover);
+  background: var(--bg-quadernary);
   transition: background 150ms ease, border-color 150ms ease;
 }
 .network-selection.connected {
@@ -120,7 +131,7 @@ label.network-poor { color: var(--error-color); }
 
 /* Network page */
 .network-page {
-  background: var(--bg-primary);
+  background: var(--bg-tertiary);
   padding: 16px 20px;
   color: var(--text-primary);
   border: none;
@@ -133,7 +144,7 @@ label.network-poor { color: var(--error-color); }
   color: var(--text-tertiary);
   font-weight: 500;
   font-size: 13px;
-  padding: 4px 0;
+  padding: 4px 10px;
 }
 .back-button:hover { color: var(--text-primary); }
 
@@ -292,6 +303,7 @@ popover row label {
 /* Wired device styles */
 .wired-section-header,
 .wireless-section-header {
+  margin-left: 10px;
   font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
