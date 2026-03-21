@@ -94,11 +94,14 @@ list > row:selected {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color-secondary);
 }
-.network-selection:last-child{
+.network-selection:last-child {
   border-radius: 0px 0px 15px 15px;
 }
 .network-selection:first-child {
   border-radius: 15px 15px 0px 0px;
+}
+.network-selection:only-child {
+  border-radius: 15px 15px 15px 15px;
 }
 .network-selection:hover {
   background: var(--bg-quadernary);
