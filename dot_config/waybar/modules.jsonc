@@ -83,12 +83,14 @@
         // "ignore-list": ["kitty"],
         // To add steam game icons to waybar, their ID need to be mapped to their name.
         // Check Arch guide in the icon section for more info.
+        // General rule : add the client class as a key, the icon name as a value.
         "app_ids-mapping": {
           "firefoxdeveloperedition": "firefox-developer-edition",
           "steam_app_1996010": "Crow Country",
           "steam_app_294100": "RimWorld by Ludeon Studios",
           "steam_app_2239150": "Thronefall",
-          "FTL.amd64": "FTL: Faster Than Light"
+          "FTL.amd64": "FTL: Faster Than Light",
+          "org.nmrs.ui": "network-wireless"
         },
         "rewrite": {
           "Firefox Web Browser": "Firefox"
