@@ -28,5 +28,8 @@
     "files.trimTrailingWhitespace": true,
     "flake8.args": [
       "--max-line=139"
-    ]
+    ],
+    "files.associations": {
+      "**/shell/**": "shellscript",
+    }
 }
