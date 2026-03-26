@@ -12,7 +12,7 @@ window.light-theme {
   --border-color: #d0d0d0;
   --border-color-secondary: #3a3a3a;
   --border-color-hover: #9ca3af;
-  --accent-color: #2563eb;
+  --accent-color: @accent-color;
   --success-color: #16a34a;
   --warning-color: #d97706;
   --error-color: #dc2626;
@@ -29,7 +29,7 @@ window.dark-theme {
   --border-color: #2a2a2a;
   --border-color-secondary: #3a3a3a;
   --border-color-hover: #9ca3af;
-  --accent-color: #2563eb;
+  --accent-color: @accent-color;
   --success-color: #22c55e;
   --warning-color: #f59e0b;
   --error-color: #ef4444;
@@ -54,7 +54,7 @@ switch {
 }
 
 switch:checked {
-  background-color: @accent-color;
+  background-color: var(--accent-color);
 }
 
 /* Wi-Fi label */
