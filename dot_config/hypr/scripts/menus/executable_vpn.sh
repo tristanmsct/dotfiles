@@ -7,20 +7,18 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Map country codes to server IDs. --------------------------------------------------------------------------------------------------------
-declare -A SERVER_MAP=(
-    ["FR"]="FR#13"
-    ["DE"]="DE#191"
-    ["NL"]="NL#231"
-    ["CH"]="CH#253"
-    ["UK"]="UK#276"
-    ["US"]="US-NY#193"
+# List of quick connect countries. --------------------------------------------------------------------------------------------------------
+LST_COUNTRIES=(
+    "FR"
+    "UK"
+    "US"
+    "AU"
 )
 
 # Creating the list to be displayed. ------------------------------------------------------------------------------------------------------
 
 LST_INTERFACES=""
-for country in "${!SERVER_MAP[@]}"; do
+for country in "${LST_COUNTRIES[@]}"; do
      LST_INTERFACES+="󰒃   Proton-$country"
      LST_INTERFACES+=$'\n'
 done
@@ -37,7 +35,10 @@ fi
 NB_INTERFACE=$(echo "$LST_INTERFACES" | wc -l)
 NB_INTERFACE=$((NB_INTERFACE>=8 ? 8 : NB_INTERFACE))
 
-SELECTION=$(echo -e "$LST_INTERFACES" | rofi -dmenu -font "Fira Sans,Fira Sans Medium 14" -config ~/.config/rofi/config-simple.rasi -markup-rows -l $NB_INTERFACE -p "Select:")
+SELECTION=$(
+    echo -e "$LST_INTERFACES" | rofi -dmenu -font "Fira Sans,Fira Sans Medium 14" \
+        -config ~/.config/rofi/config-simple-entry.rasi -markup-rows -l $NB_INTERFACE -p "Select:"
+    )
 CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
 
 # VPN Logic. ------------------------------------------------------------------------------------------------------------------------------
@@ -57,18 +58,20 @@ if [[ $CLEAN_SELECTION == *"Raspberrypi-VPN"* ]]; then
     docker ps | grep -q gluetun && docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down qbittorrent gluetun
     nmcli connection up $CLEAN_SELECTION
     $HOME/.config/hypr/scripts/vpn/update-status.sh $CLEAN_SELECTION
-elif [[ $CLEAN_SELECTION == *"Proton"* ]]; then
+elif [[ $CLEAN_SELECTION != *"Deactivate"* ]]; then
     docker ps | grep -q gluetun && docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down qbittorrent gluetun
     # Extract country code (e.g., "Proton-FR" -> "FR").
     COUNTRY=$(echo "$CLEAN_SELECTION" | sed 's/Proton-//' | xargs)
-    SERVER="${SERVER_MAP[$COUNTRY]}"
 
     # Connect and capture output.
-    OUTPUT=$(protonvpn connect "$SERVER" 2>&1)
+    OUTPUT=$(protonvpn connect --country "$COUNTRY" 2>&1)
     # Extract location from "Connected to X in (location)." line.
     if echo "$OUTPUT" | grep -q "Connected to"; then
-        LOCATION=$(echo "$OUTPUT" | grep "Connected to" | sed -n 's/.*in \(.*\)\. Your.*/\1/p')
+        LOCATION=$(echo "$OUTPUT" | grep -oP '(?<=in )[\w\s,]+(?=\. )')
+        echo $LOCATION
 
         $HOME/.config/hypr/scripts/vpn/update-status.sh $LOCATION
+    elif echo "$OUTPUT" | grep -q "Invalid country name"; then
+        dunstify "Invalid country name"
     fi
 fi
