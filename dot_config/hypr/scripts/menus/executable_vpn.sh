@@ -41,6 +41,11 @@ SELECTION=$(
     )
 CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
 
+# Allow to exit when pressing esc on the menu.
+if [[ $CLEAN_SELECTION == "" ]]; then
+    exit
+fi
+
 # VPN Logic. ------------------------------------------------------------------------------------------------------------------------------
 
 # If there is already a VPN running we disconnect.
