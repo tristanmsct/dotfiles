@@ -32,7 +32,7 @@ if [[ -d "$public_repos" ]]; then
 fi
 
 # Other repos.
-lst_repos+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-Projets"
-    "$HOME/Nextcloud/01-Travail/05-OpenClassrooms/98-OCManager")
+lst_repos+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-OC_Projets"
+    "$HOME/Nextcloud/01-Travail/05-OpenClassrooms/98-OC_Manager")
 
 export lst_repos
