@@ -28,11 +28,6 @@ warn()     { echo -e "  ${ORANGE}⚠${RESET}  $1"; }
 alert()    { echo -e "  ${RED}✖${RESET}  $1"; }
 row()      { echo -e "  $(printf '%-35s' "$1") $2"; }
 
-# Returns size in bytes for numeric comparison
-bytes() {
-    du -sb "$1" 2>/dev/null | awk '{print $1}' || echo 0
-}
-
 duh() {
     du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "n/a"
 }
@@ -42,10 +37,13 @@ colorize() {
     local raw="$1" warn_mb="$2" alert_mb="$3"
     local mb
     mb=$(echo "$raw" | awk '
-        /G$/ { printf "%.0f", $1 * 1024; next }
-        /M$/ { printf "%.0f", $1;        next }
-        /K$/ { printf "%.0f", $1 / 1024; next }
-              { print 0 }
+        /GB$/ { printf "%.0f", $1 * 1024; next }
+        /MB$/ { printf "%.0f", $1;        next }
+        /kB$/ { printf "%.0f", $1 / 1024; next }
+        /G$/  { printf "%.0f", $1 * 1024; next }
+        /M$/  { printf "%.0f", $1;        next }
+        /K$/  { printf "%.0f", $1 / 1024; next }
+               { print 0 }
     ')
     if   (( mb >= alert_mb )); then echo -e "${RED}${raw}${RESET}"
     elif (( mb >= warn_mb  )); then echo -e "${ORANGE}${raw}${RESET}"
@@ -77,7 +75,7 @@ if [[ -d "$YAY_CACHE" ]]; then
 fi
 
 # orphaned packages
-ORPHANS=$(pacman -Qdtq 2>/dev/null | wc -l)
+ORPHANS=$(pacman -Qdtq 2>/dev/null | wc -l) || true
 if (( ORPHANS == 0 )); then ok "No orphaned packages"
 elif (( ORPHANS < 5 )); then warn "$ORPHANS orphaned package(s)  → yay -Yc"
 else alert "$ORPHANS orphaned package(s)  → yay -Yc"
@@ -116,12 +114,8 @@ subsection "Python (pip / uv / pyenv)"
 
 # pip
 if command -v pip &>/dev/null; then
-    PIP_INFO=$(pip cache info 2>/dev/null \
-        | grep -E 'index page cache size|wheels size' \
-        | awk -F': ' '{print $2}' \
-        | paste -sd / \
-        | sed -r 's/\// \/ /g')
-    row "pip cache (index / wheels)" "${PIP_INFO:-n/a}"
+    PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g')
+    row "pip cache (index / wheels)" "$(colorize ${PIP_INFO} 500 1500)"
 fi
 
 # uv
@@ -166,7 +160,7 @@ if [[ -d "$CARGO_HOME" ]]; then
         label="${pair%%:*}"
         subdir="${pair##*:}"
         path="${CARGO_HOME}/${subdir}"
-        [[ -d "$path" ]] && row "  $label" "$(duh "$path")"
+        [[ -d "$path" ]] && row "  $label" "$(colorize $(duh "$path") 500 1500)"
     done
 else
     row "cargo home" "${DIM}absent${RESET}"
@@ -184,8 +178,8 @@ row "npm cache" "$(colorize "$(duh "$NPM_CACHE")" 400 1000)\t ${DIM}(${NPM_CACHE
 subsection "Docker"
 
 if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
-    docker system df 2>/dev/null | tail -n +2 | while IFS= read -r line; do
-        echo "  $line"
+    docker system df --format "{{.Type}}\t{{.Size}}" 2>/dev/null | while IFS=$'\t' read -r type size; do
+        row "$type" "$(colorize "$size" 500 1000)"
     done
 else
     echo -e "  ${DIM}Docker not running or not installed${RESET}"
@@ -197,7 +191,7 @@ subsection "Hyprland / hyprpm"
 
 HYPRPM_CACHE="/var/cache/hyprpm"
 
-row "Hyprpm cache" "$(duh "$HYPRPM_CACHE")\t  ${DIM}(${HYPRPM_CACHE})${RESET}"
+row "Hyprpm cache" "$(colorize $(duh "$HYPRPM_CACHE") 800 2000)\t  ${DIM}(${HYPRPM_CACHE})${RESET}"
 
 # -- Journal ----------------------------------------------------------------------------
 
@@ -205,4 +199,4 @@ subsection "systemd journal"
 
 JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
     | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
-row "journal on disk" "$JOURNAL_SZ"
+row "journal on disk" "$(colorize $JOURNAL_SZ 800 2000)"

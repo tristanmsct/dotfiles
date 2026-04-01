@@ -46,8 +46,10 @@ if [[ -z "$1" ]]; then
     fi
 elif [[ "$1" == "update" ]]; then
     # Update tracked files
-    while IFS= read -r app_file; do
-        cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
-    done <<< "$monitor_list"
-    echo "✓ Tracked files updated"
+    if gum confirm "Confirm desktop baseline update"; then
+        while IFS= read -r app_file; do
+            cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
+        done <<< "$monitor_list"
+        echo "✓ Tracked files updated"
+    fi
 fi

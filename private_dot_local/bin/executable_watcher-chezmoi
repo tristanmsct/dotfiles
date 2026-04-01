@@ -37,7 +37,7 @@ if [[ -z $1 ]]; then
 	fi
 else
 	if [[ $1 == "update" ]]; then
-		chezmoi unmanaged $HOME > $BASELINE_FILE
+		gum confirm "Confirm chezmoi baseline update" && chezmoi unmanaged $HOME > $BASELINE_FILE
 	elif [[ $1 == "sync" ]]; then
 		chezmoi-sync
 	fi

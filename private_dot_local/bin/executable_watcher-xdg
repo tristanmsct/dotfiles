@@ -52,8 +52,10 @@ if [[ -z $1 ]]; then
 	display_diff "$DIFF_OUTPUT"
 else
 	if [[ $1 == "update" ]]; then
-		/usr/bin/ls -1 ~/.config/ > $CONFIG_BASELINE
-		/usr/bin/ls -1 ~/.local/state/ > $STATE_BASELINE
-		/usr/bin/ls -1 ~/.local/share/ > $SHARE_BASELINE
+		if gum confirm "Confirm XDG baseline update"; then
+			/usr/bin/ls -1 ~/.config/ > $CONFIG_BASELINE
+			/usr/bin/ls -1 ~/.local/state/ > $STATE_BASELINE
+			/usr/bin/ls -1 ~/.local/share/ > $SHARE_BASELINE
+		fi
 	fi
 fi
