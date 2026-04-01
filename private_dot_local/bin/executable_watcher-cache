@@ -51,6 +51,88 @@ colorize() {
     fi
 }
 
+show_commands() {
+    bat --language=bash --style=plain --color=always <<EOF
+$1
+EOF
+}
+
+# -- help section -----------------------------------------------------------------------
+
+if [[ "$#" -ge 1 ]] && ([[ "$1" == "--tips" ]] || [[ "$1" == "-t" ]]); then
+
+subsection "Pacman / AUR"
+echo "Remove orphaned packages"
+show_commands "    yay -Yc"
+
+echo "Clean package cache"
+show_commands "    yay -Sc"
+
+echo "Keep only the 2 most recent versions of each package"
+show_commands "    sudo paccache -rk2"
+
+echo "Remove cache for uninstalled packages entirely"
+show_commands "    sudo paccache -ruk0"
+
+
+subsection "~/.cache"
+echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
+
+
+subsection "Python (pip / uv / pyenv)"
+echo "Purge pip cache"
+show_commands "    pip cache purge"
+
+echo "Prune uv cache"
+show_commands "    uv cache prune"
+
+
+subsection "Go"
+echo "Clean go cache"
+show_commands \
+"    go clean -cache
+    go clean -modcache"
+
+
+subsection "Rust / Cargo"
+echo "Clean rust cache"
+show_commands "    cargo-cache -a"
+
+
+subsection "Node / npm"
+echo "Delete npm cache"
+show_commands "    sudo rm -r $HOME/.cache/npm"
+
+
+subsection "Docker"
+echo "Prune docker system"
+show_commands "    docker system prune"
+echo "Or clean individual components"
+show_commands \
+"    docker image prune
+    docker container prune
+    docker network prune
+    docker volume prune
+    docker builder prune"
+
+
+subsection "Hyprland / hyprpm"
+echo "Clean hyprpm cache"
+show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
+echo "This removes the plugins as they are used directly from this cache"
+
+
+subsection "systemd journal"
+echo "Clean the journal"
+show_commands \
+"    # keep only last 2 weeks
+    sudo journalctl --vacuum-time=2weeks
+    # or cap by size
+    sudo journalctl --vacuum-size=200M"
+
+exit
+fi
+
 # -- pacman / yay -----------------------------------------------------------------------
 
 subsection "Pacman / AUR"
@@ -114,7 +196,10 @@ subsection "Python (pip / uv / pyenv)"
 
 # pip
 if command -v pip &>/dev/null; then
-    PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g')
+    PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g') || true
+    if [[ -z $PIP_INFO ]]; then
+        PIP_INFO="0k"
+    fi
     row "pip cache (index / wheels)" "$(colorize ${PIP_INFO} 500 1500)"
 fi
 

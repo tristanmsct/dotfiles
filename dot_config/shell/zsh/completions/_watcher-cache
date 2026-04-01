@@ -1,0 +1,13 @@
+#compdef watcher-cache
+
+_watcher-cache() {
+    local -a options
+    options=(
+        ':Check for caches accros the computer'
+        '--tips:Gives tips on how to handle each cache'
+    )
+
+    _describe 'watcher-cache commands' options
+}
+
+_watcher-cache "$@"

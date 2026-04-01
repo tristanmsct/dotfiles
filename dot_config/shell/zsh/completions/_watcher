@@ -48,6 +48,8 @@ _watcher() {
                 pkglog)
                     _arguments '2:command:_watcher-pkglog'
                     ;;
+                cache)
+                    _arguments '2:command:_watcher-cache'
             esac
             ;;
     esac
