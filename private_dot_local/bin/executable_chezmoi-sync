@@ -18,7 +18,7 @@ ORANGE='\033[38;2;255;158;23m'
 BLUE='\033[38;2;73;136;252m'
 PURPLE='\033[38;2;150;85;166m'
 GREEN='\033[38;2;125;235;103m'
-NC='\033[0m'
+RESET='\033[0m'
 
 if [[ -n "$NOT_TRACKED" ]]; then
     while IFS= read -r line; do
@@ -47,26 +47,26 @@ echo -e "$STATUS_OUTPUT" | while IFS= read -r line; do
     source_file=$(chezmoi source-path "$abs_target_file" 2>/dev/null)
 
     echo
-    echo -e "=== File: ${ORANGE}$target_file${NC} (status: ${GREEN}$status${NC}) ==="
+    echo -e "=== File: ${ORANGE}$target_file${RESET} (status: ${GREEN}$status${RESET}) ==="
     if [ -n "$source_file" ]; then
         echo "Source: $source_file"
     fi
 
     case "$status" in
         D*)
-            echo -e "File was ${PURPLE}DELETED from target${NC}"
+            echo -e "File was ${PURPLE}DELETED from target${RESET}"
             echo -n "Restore file [r], remove from source [d], skip [s], quit [q]? "
             ;;
         A*)
-            echo -e "File was ${PURPLE}ADDED to target${NC}"
+            echo -e "File was ${PURPLE}ADDED to target${RESET}"
             echo -n "Add to source [a], delete from target [d], ignore [i], skip [s], quit [q]? "
             ;;
         *A)
-            echo -e "File was ${PURPLE}ADDED to source${NC}"
+            echo -e "File was ${PURPLE}ADDED to source${RESET}"
             echo -n "Apply source->target [a], remove from source [d], skip [s], quit [q]? "
             ;;
         *M*)
-            echo -e "File was ${PURPLE}MODIFIED${NC}"
+            echo -e "File was ${PURPLE}MODIFIED${RESET}"
             # chezmoi diff "$abs_target_file" 2>/dev/null || echo "(Could not show diff)"
             echo -n "Apply source->target [a], re-add target->source [r], skip [s], quit [q]? "
             ;;

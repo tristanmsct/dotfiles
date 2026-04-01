@@ -19,7 +19,7 @@ import argparse
 ORANGE = "\033[38;2;255;158;23m"
 GREEN = "\033[38;2;30;220;60m"
 PURPLE = "\033[38;2;150;85;166m"
-NC = "\033[0m"
+RESET = "\033[0m"
 
 
 def parse_args():
@@ -74,9 +74,9 @@ def create_repr_list_packages(lst_packages):
     repr_list_package = ""
     for package in lst_packages:
         if package == lst_packages[-1]:
-            repr_list_package += f" and {PURPLE}{package}{NC}"
+            repr_list_package += f" and {PURPLE}{package}{RESET}"
         else:
-            repr_list_package += f", {PURPLE}{package}{NC}"
+            repr_list_package += f", {PURPLE}{package}{RESET}"
 
     return repr_list_package.strip(", ").strip(" and ")
 
@@ -106,9 +106,9 @@ def get_explicit_dependents(lst_packages):
 
         # Display results.
         if final_set:
-            print(f"List of {GREEN}explicitly installed packages{NC} that require {repr_list_package}:")
+            print(f"List of {GREEN}explicitly installed packages{RESET} that require {repr_list_package}:")
             for dep in final_set:
-                print(f"{GREEN}{dep}{NC}")
+                print(f"{GREEN}{dep}{RESET}")
         else:
             suffix = ("is not a dependency" if len(lst_packages) == 1 else "are not dependencies")
             print(f"{repr_list_package} {suffix} of any common explicitly installed package.")
@@ -157,7 +157,7 @@ def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uni
         ct_orph = 0
         ct_req = 0
         if not quiet:
-            print(f"List of dependencies for {repr_list_package} ({GREEN}would be uninstalled{NC} and {ORANGE}would remain{NC}):")
+            print(f"List of dependencies for {repr_list_package} ({GREEN}would be uninstalled{RESET} and {ORANGE}would remain{RESET}):")
         for depencency in full_set_dependencies:
             lst_reqs_of_dependency = subprocess.run(
                 ["pactree", "-u", "-r", depencency],
@@ -171,15 +171,15 @@ def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uni
 
             if lst_reqs_of_dependency - full_set_dependencies - set(lst_packages):
                 if not quiet and not only_uninstall:
-                    print(f"{ORANGE}{depencency}{NC}")
+                    print(f"{ORANGE}{depencency}{RESET}")
                 ct_req += 1
             else:
                 if not quiet:
-                    print(f"{GREEN}{depencency}{NC}")
+                    print(f"{GREEN}{depencency}{RESET}")
                 ct_orph += 1
 
-        str_output = f"Out of {ct_orph + ct_req} dependencies, {GREEN}{ct_orph}{NC} "
-        str_output += f"packages would be uninstalled, {ORANGE}{ct_req}{NC} would remain."
+        str_output = f"Out of {ct_orph + ct_req} dependencies, {GREEN}{ct_orph}{RESET} "
+        str_output += f"packages would be uninstalled, {ORANGE}{ct_req}{RESET} would remain."
         print(str_output)
 
 

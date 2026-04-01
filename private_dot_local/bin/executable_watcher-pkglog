@@ -24,7 +24,7 @@ show_help() {
 PACKAGE_INFO_DIR="$HOME/.local/share/system-tracking/packages_info/"
 
 GREEN='\033[38;2;125;235;103m'
-NC='\033[0m'
+RESET='\033[0m'
 
 get_file() {
     local options=""
@@ -155,15 +155,15 @@ show_diff () {
     awk -F',' 'NR>1 {print $1","$2","$4}' "$file1" | sort > /tmp/new.tmp
     awk -F',' 'NR>1 {print $1","$2","$4}' "$file2" | sort > /tmp/old.tmp
 
-    echo -e "=== ${GREEN}Only in old (deleted)${NC} ==="
+    echo -e "=== ${GREEN}Only in old (deleted)${RESET} ==="
     comm -23 /tmp/old.tmp /tmp/new.tmp | gum table -s',' --columns=Repository,Name,Type --print
     echo
 
-    echo -e "=== ${GREEN}Only in new (added)${NC} ==="
+    echo -e "=== ${GREEN}Only in new (added)${RESET} ==="
     comm -13 /tmp/old.tmp /tmp/new.tmp | gum table -s',' --columns=Repository,Name,Type --print
     echo
 
-    echo -e "=== ${GREEN}Installation type changed${NC} ==="
+    echo -e "=== ${GREEN}Installation type changed${RESET} ==="
     # Get packages in both files (by repo,name only)
     awk -F',' 'NR>1 {print $1","$2}' "$file1" | sort > /tmp/new_keys.tmp
     awk -F',' 'NR>1 {print $1","$2}' "$file2" | sort > /tmp/old_keys.tmp

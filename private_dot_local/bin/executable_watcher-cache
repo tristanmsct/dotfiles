@@ -1,0 +1,208 @@
+#!/usr/bin/env bash
+#                _       _                                   _
+# __      ____ _| |_ ___| |__   ___ _ __       ___ __ _  ___| |__   ___
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____ / __/ _` |/ __| '_ \ / _ \
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| (_| (_| | (__| | | |  __/
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \___\__,_|\___|_| |_|\___|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# snapshot of cache & disk health
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+set -euo pipefail
+
+# -- Helpers ----------------------------------------------------------------------------
+
+ORANGE="\033[38;2;255;158;23m"
+GREEN="\033[38;2;30;220;60m"
+CYAN="\033[38;2;105;230;245m"
+RED="\033[38;2;225;20;20m"
+
+BOLD='\033[1m'
+DIM='\033[2m'
+RESET='\033[0m'
+
+subsection()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
+ok()       { echo -e "  ${GREEN}✔${RESET}  $1"; }
+warn()     { echo -e "  ${ORANGE}⚠${RESET}  $1"; }
+alert()    { echo -e "  ${RED}✖${RESET}  $1"; }
+row()      { echo -e "  $(printf '%-35s' "$1") $2"; }
+
+# Returns size in bytes for numeric comparison
+bytes() {
+    du -sb "$1" 2>/dev/null | awk '{print $1}' || echo 0
+}
+
+duh() {
+    du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "n/a"
+}
+
+# Colour-code a size string based on MB thresholds ($2=warn MB, $3=alert MB)
+colorize() {
+    local raw="$1" warn_mb="$2" alert_mb="$3"
+    local mb
+    mb=$(echo "$raw" | awk '
+        /G$/ { printf "%.0f", $1 * 1024; next }
+        /M$/ { printf "%.0f", $1;        next }
+        /K$/ { printf "%.0f", $1 / 1024; next }
+              { print 0 }
+    ')
+    if   (( mb >= alert_mb )); then echo -e "${RED}${raw}${RESET}"
+    elif (( mb >= warn_mb  )); then echo -e "${ORANGE}${raw}${RESET}"
+    else                            echo -e "${GREEN}${raw}${RESET}"
+    fi
+}
+
+# -- pacman / yay -----------------------------------------------------------------------
+
+subsection "Pacman / AUR"
+
+# pacman pkg cache (sudo may be needed; fallback gracefully)
+PKG_CACHE="/var/cache/pacman/pkg"
+if PKG_SIZE=$(sudo du -sh "$PKG_CACHE" 2>/dev/null | awk '{print $1}'); then
+    # stale partial downloads
+    STALE_DL=$(sudo find "$PKG_CACHE" -maxdepth 1 -name 'download-*' 2>/dev/null | wc -l)
+    row "pacman pkg cache" "$(colorize "$PKG_SIZE" 2048 4096)"
+    if (( STALE_DL > 0 )); then
+        warn "$STALE_DL stale download-* dir(s) in $PKG_CACHE  → sudo rm -rf ${PKG_CACHE}/download-*"
+    fi
+else
+    row "pacman pkg cache" "${DIM}(needs sudo)${RESET}"
+fi
+
+# yay build cache
+YAY_CACHE="${HOME}/.cache/yay"
+if [[ -d "$YAY_CACHE" ]]; then
+    row "yay build cache" "$(colorize "$(duh "$YAY_CACHE")" 512 1024)"
+fi
+
+# orphaned packages
+ORPHANS=$(pacman -Qdtq 2>/dev/null | wc -l)
+if (( ORPHANS == 0 )); then ok "No orphaned packages"
+elif (( ORPHANS < 5 )); then warn "$ORPHANS orphaned package(s)  → yay -Yc"
+else alert "$ORPHANS orphaned package(s)  → yay -Yc"
+fi
+
+# -- ~/.cache breakdown -----------------------------------------------------------------
+
+subsection "~/.cache"
+
+CACHE_THRESHOLD_MB=500  # only show dirs above this size
+
+CACHE_TOTAL=$(duh "${HOME}/.cache")
+row "total" "$(colorize "$CACHE_TOTAL" 3000 7000)"
+
+echo -e "\n  ${DIM}Dirs above ${CACHE_THRESHOLD_MB}MB:${RESET}"
+while IFS=$'\t' read -r sz name; do
+    row "  $name" "$(colorize "$sz" 1000 2000)"
+done < <(
+    find "${HOME}/.cache" -mindepth 1 -maxdepth 1 -type d \
+        | xargs -I{} du -sh {} 2>/dev/null \
+        | sort -rh \
+        | awk -v thresh="$CACHE_THRESHOLD_MB" '
+            /^[0-9.]+G/ { print; next }
+            /^[0-9.]+M/ { if ($1+0 >= thresh) print; next }
+        ' \
+        | while IFS= read -r line; do
+            sz=$(echo "$line" | awk '{print $1}')
+            name=$(basename "$(echo "$line" | awk '{print $2}')")
+            printf '%s\t%s\n' "$sz" "$name"
+        done
+)
+
+# -- Python ecosystem -------------------------------------------------------------------
+
+subsection "Python (pip / uv / pyenv)"
+
+# pip
+if command -v pip &>/dev/null; then
+    PIP_INFO=$(pip cache info 2>/dev/null \
+        | grep -E 'index page cache size|wheels size' \
+        | awk -F': ' '{print $2}' \
+        | paste -sd / \
+        | sed -r 's/\// \/ /g')
+    row "pip cache (index / wheels)" "${PIP_INFO:-n/a}"
+fi
+
+# uv
+if command -v uv &>/dev/null; then
+    UV_DIR=$(uv cache dir 2>/dev/null || echo "${HOME}/.cache/uv")
+    UV_SZ=$(duh "$UV_DIR")
+    row "uv cache" "$(colorize "$UV_SZ" 1000 2000)\t ${DIM}(${UV_DIR})${RESET}"
+fi
+
+# pyenv
+PYENV_ROOT="${PYENV_ROOT:-${HOME}/.pyenv}"
+if [[ -d "$PYENV_ROOT" ]]; then
+    PYENV_SZ=$(duh "$PYENV_ROOT")
+    row "pyenv root" "$(colorize "$PYENV_SZ" 2000 5000)\t ${DIM}(${PYENV_ROOT})${RESET}"
+    # shims count
+    SHIMS=$(find "${PYENV_ROOT}/shims" -maxdepth 1 -type f 2>/dev/null | wc -l)
+    row "pyenv shims" "$SHIMS  ${DIM}\t (run: pyenv rehash if stale)${RESET}"
+fi
+
+# -- Go ---------------------------------------------------------------------------------
+
+subsection "Go"
+
+GO_BUILD="${HOME}/.cache/go-build"
+GO_MOD="${GOPATH:-${HOME}/go}/pkg/mod"
+
+if [[ -d "$GO_BUILD" ]]; then
+    row "go build cache" "$(colorize "$(duh "$GO_BUILD")" 500 1500)\t ${DIM}(${GO_BUILD})${RESET}"
+fi
+if [[ -d "$GO_MOD" ]]; then
+    row "go module cache" "$(colorize "$(duh "$GO_MOD")" 500 2000)\t ${DIM}(${GO_MOD})${RESET}"
+fi
+
+# -- Rust / Cargo -----------------------------------------------------------------------
+
+subsection "Rust / Cargo"
+
+CARGO_HOME="${CARGO_HOME:-${HOME}/.local/share/cargo}"
+if [[ -d "$CARGO_HOME" ]]; then
+    row "cargo home" "$(colorize "$(duh "$CARGO_HOME")" 500 1500)\t ${DIM}(${CARGO_HOME})${RESET}"
+    for pair in "registry (crate sources):registry" "git checkouts:git"; do
+        label="${pair%%:*}"
+        subdir="${pair##*:}"
+        path="${CARGO_HOME}/${subdir}"
+        [[ -d "$path" ]] && row "  $label" "$(duh "$path")"
+    done
+else
+    row "cargo home" "${DIM}absent${RESET}"
+fi
+
+# -- Node / npm -------------------------------------------------------------------------
+
+subsection "Node / npm"
+
+NPM_CACHE=$(npm config get cache 2>/dev/null || echo "${HOME}/.cache/npm")
+row "npm cache" "$(colorize "$(duh "$NPM_CACHE")" 400 1000)\t ${DIM}(${NPM_CACHE})${RESET}"
+
+# -- Docker -----------------------------------------------------------------------------
+
+subsection "Docker"
+
+if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
+    docker system df 2>/dev/null | tail -n +2 | while IFS= read -r line; do
+        echo "  $line"
+    done
+else
+    echo -e "  ${DIM}Docker not running or not installed${RESET}"
+fi
+
+# -- Hyprland / hyprpm ------------------------------------------------------------------
+
+subsection "Hyprland / hyprpm"
+
+HYPRPM_CACHE="/var/cache/hyprpm"
+
+row "Hyprpm cache" "$(duh "$HYPRPM_CACHE")\t  ${DIM}(${HYPRPM_CACHE})${RESET}"
+
+# -- Journal ----------------------------------------------------------------------------
+
+subsection "systemd journal"
+
+JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
+    | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
+row "journal on disk" "$JOURNAL_SZ"

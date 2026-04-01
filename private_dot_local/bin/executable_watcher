@@ -14,7 +14,10 @@
 WATCHER_DIR="$HOME/.local/bin"
 
 GREEN='\033[38;2;125;235;103m'
-NC='\033[0m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+section()  { echo -e "=== ${BOLD}${GREEN}$1${RESET} ==="; }
 
 # If no args or help requested
 if [[ -z "$1" ]] || [[ "$1" =~ ^(-h|--help|help)$ ]]; then
@@ -35,26 +38,38 @@ if [[ "$1" = "open" ]]; then
     exit 1
 elif [[ "$1" = "all" ]]; then
     fast=false
-    [[ "$2" = "--fast" ]] && fast=true
+    full=false
+    if [[ "$2" = "--fast" ]] || [[ "$3" = "--fast" ]]; then
+        fast=true
+    fi
+    if [[ "$2" = "--full" ]] || [[ "$3" = "--full" ]]; then
+        full=true
+    fi
 
-    echo -e "=== ${GREEN}Chezmoi monitored files and directories${NC} ==="
+    section "Chezmoi monitored files and directories"
     "$WATCHER_DIR/watcher-chezmoi"
     echo
 
-    echo -e "=== ${GREEN}XDG directories${NC} ==="
+    section "XDG directories"
     "$WATCHER_DIR/watcher-xdg"
     echo
 
-    echo -e "=== ${GREEN}.destkop files${NC} ==="
+    section ".destkop files"
     "$WATCHER_DIR/watcher-desktop"
     echo
 
+    if [[ "$full" = true ]]; then
+        section "Caches"
+        "$WATCHER_DIR/watcher-cache"
+        echo
+    fi
+
     if [[ "$fast" = false ]]; then
-        echo -e "=== ${GREEN}AUR custom PKGFILE${NC} ==="
+        section "AUR custom PKGFILE"
         "$WATCHER_DIR/watcher-aur"
         echo
 
-        echo -e "=== ${GREEN}Git repositories${NC} ==="
+        section "Git repositories"
         "$WATCHER_DIR/watcher-git"
         echo
     fi

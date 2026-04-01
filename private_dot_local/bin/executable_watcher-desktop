@@ -13,7 +13,7 @@ LOCAL_DIR="$HOME/.local/share/applications"
 NOTES_DIR="$HOME/.local/share/system-tracking/applications"
 
 ORANGE='\033[38;2;255;158;23m'
-NC='\033[0m'
+RESET='\033[0m'
 
 # Ensure notes directory exists
 mkdir -p "$NOTES_DIR"
@@ -30,12 +30,12 @@ if [[ -z "$1" ]]; then
 
         if [[ ! -f "$custom_file" ]]; then
             has_changes=true
-            echo -e "${ORANGE}$app_file${NC}"
+            echo -e "${ORANGE}$app_file${RESET}"
             echo " [new file - not yet tracked]"
             echo
         elif ! cmp -s "$custom_file" "$source_file"; then
             has_changes=true
-            echo -e "${ORANGE}$app_file${NC}"
+            echo -e "${ORANGE}$app_file${RESET}"
             delta "$custom_file" "$source_file"
             echo
         fi

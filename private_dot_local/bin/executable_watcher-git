@@ -16,7 +16,7 @@ ORANGE='\033[38;2;255;158;23m'
 BLUE='\033[38;2;73;136;252m'
 PURPLE='\033[38;2;150;85;166m'
 GREEN='\033[38;2;125;235;103m'
-NC='\033[0m'
+RESET='\033[0m'
 
 if ! (ssh-add -l|grep -q "tristan.muscat@pm.me"); then ssh-add $HOME/.ssh/id_perso; fi;
 
@@ -43,13 +43,13 @@ for repo in ${lst_repos[@]}; do
 
     case "$clean" in
 
-        0) echo -e "Repo ${PURPLE}$repo_dir${NC} is ${GREEN}up to date${NC}."
+        0) echo -e "Repo ${PURPLE}$repo_dir${RESET} is ${GREEN}up to date${RESET}."
             ;;
-        1) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${BLUE}local${NC} changes."
+        1) echo -e "Repo ${PURPLE}$repo_dir${RESET} has ${BLUE}local${RESET} changes."
             ;;
-        2) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${ORANGE}remote${NC} changes."
+        2) echo -e "Repo ${PURPLE}$repo_dir${RESET} has ${ORANGE}remote${RESET} changes."
             ;;
-        3) echo -e "Repo ${PURPLE}$repo_dir${NC} has ${BLUE}local${NC} and ${ORANGE}remote${NC} changes."
+        3) echo -e "Repo ${PURPLE}$repo_dir${RESET} has ${BLUE}local${RESET} and ${ORANGE}remote${RESET} changes."
         ;;
         *) echo "🍞 Something went really wrong."
         ;;

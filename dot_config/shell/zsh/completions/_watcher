@@ -18,6 +18,7 @@ _watcher() {
                     git) desc="Check git repositories status" ;;
                     aur) desc="Check for custom AUR packages changes" ;;
                     chezmoi) desc="Track chezmoi-managed files" ;;
+                    cache) desc="Check for caches" ;;
                     pacnotes) desc="Manage package notes" ;;
                     pkglog) desc="Collect packages logs" ;;
                     sysinfo) desc="Collect system information" ;;

@@ -12,8 +12,12 @@ CONFIG_BASELINE=$HOME/.local/share/system-tracking/config-baseline.txt
 STATE_BASELINE=$HOME/.local/share/system-tracking/state-baseline.txt
 SHARE_BASELINE=$HOME/.local/share/system-tracking/share-baseline.txt
 
-ORANGE='\033[38;2;255;158;23m'
-NC='\033[0m'
+CYAN="\033[38;2;105;230;245m"
+BOLD='\033[1m'
+RESET='\033[0m'
+
+subsection()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
+
 
 display_diff() {
 	ADDITIONS=$(echo "$1" | grep "^>" | sed 's/^> //')
@@ -35,15 +39,15 @@ display_diff() {
 }
 
 if [[ -z $1 ]]; then
-	echo -e "=       ${ORANGE}.config${NC}       ="
+	subsection "      .config      "
 	DIFF_OUTPUT=$(diff <(cat $CONFIG_BASELINE) <(/usr/bin/ls -1 ~/.config/))
 	display_diff "$DIFF_OUTPUT"
 
-	echo -e "=     ${ORANGE}.local/state${NC}    ="
+	subsection "    .local/state   "
 	DIFF_OUTPUT=$(diff <(cat $STATE_BASELINE) <(/usr/bin/ls -1 ~/.local/state/))
 	display_diff "$DIFF_OUTPUT"
 
-	echo -e "=     ${ORANGE}.local/share${NC}    ="
+	subsection "    .local/share   "
 	DIFF_OUTPUT=$(diff <(cat $SHARE_BASELINE) <(/usr/bin/ls -1 ~/.local/share/))
 	display_diff "$DIFF_OUTPUT"
 else
