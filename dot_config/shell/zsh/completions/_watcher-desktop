@@ -5,6 +5,7 @@ _watcher-desktop() {
     options=(
         ':Check for changes in the .desktop files.'
         'update:Update the baseline file'
+        'resolve:Resolve differences between custom and baseline files'
     )
 
     _describe 'watcher-desktop commands' options

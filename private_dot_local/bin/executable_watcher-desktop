@@ -26,23 +26,47 @@ if [[ -z "$1" ]]; then
     has_changes=false
     while IFS= read -r app_file; do
         source_file="$SYSTEM_DIR/$app_file"
-        custom_file="$NOTES_DIR/$app_file"
+        baseline_file="$NOTES_DIR/$app_file"
 
-        if [[ ! -f "$custom_file" ]]; then
+        if [[ ! -f "$baseline_file" ]]; then
             has_changes=true
             echo -e "${ORANGE}$app_file${RESET}"
             echo " [new file - not yet tracked]"
             echo
-        elif ! cmp -s "$custom_file" "$source_file"; then
+        elif ! cmp -s "$baseline_file" "$source_file"; then
             has_changes=true
             echo -e "${ORANGE}$app_file${RESET}"
-            delta "$custom_file" "$source_file"
+            delta "$baseline_file" "$source_file"
             echo
         fi
     done <<< "$monitor_list"
 
     if ! $has_changes; then
         echo "No changes"
+    fi
+elif [[ "$1" == "resolve" ]]; then
+    # Resolve differences
+    has_changes=false
+    while IFS= read -r app_file; do
+        source_file="$SYSTEM_DIR/$app_file"
+        baseline_file="$NOTES_DIR/$app_file"
+        local_file="$LOCAL_DIR/$app_file"
+
+        if ! cmp -s "$baseline_file" "$source_file"; then
+            has_changes=true
+            meld "$source_file" "$local_file"
+        fi
+    done <<< "$monitor_list"
+
+    if ! $has_changes; then
+        echo "No changes"
+    else
+        if gum confirm "Update desktop baseline ?"; then
+            while IFS= read -r app_file; do
+                cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
+            done <<< "$monitor_list"
+            echo "✓ Tracked files updated"
+        fi
     fi
 elif [[ "$1" == "update" ]]; then
     # Update tracked files
