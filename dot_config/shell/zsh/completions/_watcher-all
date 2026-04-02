@@ -1,0 +1,14 @@
+#compdef watcher-all
+
+_watcher-all() {
+    local -a options
+    options=(
+        ':Run main watchers'
+        '--cache:Performs a cache check'
+        '--nogit:Omits git checks that can take a while'
+    )
+
+    _describe 'watcher-all commands' options
+}
+
+_watcher-all "$@"

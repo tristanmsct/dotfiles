@@ -33,6 +33,9 @@ _watcher() {
         3)
             # Second argument: subcommands based on first arg
             case ${words[2]} in
+                all)
+                    _arguments '2:command:_watcher-all'
+                    ;;
                 desktop)
                     _arguments '2:command:_watcher-desktop'
                     ;;
