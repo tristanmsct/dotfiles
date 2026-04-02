@@ -57,10 +57,6 @@ has_flag() {
     return 1
 }
 
-if has_flag "$@" -- -c --cache -f --full; then
-    echo "cache mode"
-fi
-
 if [[ $# -eq 0 ]]; then
     show_help
 fi
