@@ -83,7 +83,7 @@ show_commands "    sudo paccache -ruk0"
 subsection "Hyprland / hyprpm"
 echo "Clean hyprpm cache"
 show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
-echo "This removes the plugins as they are used directly from this cache"
+echo "⚠ This removes the plugins themselves as they are used directly from this cache, use with caution"
 
 subsection "Systemd journal"
 echo "Clean the journal"
@@ -103,13 +103,22 @@ show_commands "    docker volume prune"
 show_commands "    docker builder prune"
 
 
-section "Application"
+section "Applications"
 
 subsection "Main cache (~/.cache)"
 echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
 
-subsection "Other caches"
-echo "Clean manually, each cache is different"
+subsection "Brave"
+echo "Clean Brave caches from brave://settings/clearBrowserData or with cli"
+show_commands "rm -rf ~/.cache/brave-cache"
+
+subsection "Slack"
+echo "Clean Slack caches"
+show_commands "rm -rf ~/.local/share/slack-data/Service\ Worker/CacheStorage"
+
+subsection "VSCodium"
+echo "Clean VSCodium caches"
+show_commands "rm -rf ~/.config/VSCodium/Cache ~/.cache/electron"
 
 
 section "Dev tools"
@@ -121,6 +130,9 @@ show_commands "    pip cache purge"
 echo "Prune uv cache"
 show_commands "    uv cache prune"
 
+echo "Uninstall unused pyenv versions"
+show_commands "    pyenv uninstall <version>"
+
 subsection "Go"
 echo "Clean go cache"
 
@@ -129,11 +141,16 @@ show_commands "    go clean -modcache"
 
 subsection "Rust / Cargo"
 echo "Clean rust cache"
-show_commands "    cargo-cache -a"
+show_commands "    cargo-cache -a  # cargo install cargo-cache"
 
 subsection "Node / npm"
-echo "Delete npm cache"
-show_commands "    sudo rm -r $HOME/.cache/npm"
+echo "Clean npm cache"
+show_commands "    npm cache clean --force"
+
+subsection "Pre-commit"
+echo "Clean pre-commit environments"
+show_commands "    pre-commit clean"
+
 
 section "Trash"
 echo "Empty the trash directory either graphically or using trash-cli"
@@ -346,7 +363,7 @@ subsection "Pre-commit"
 PRECOMMIT="${HOME}/.cache/pre-commit"
 if [[ -d "$PYENV_ROOT" ]]; then
     PRECOMMIT_SZ=$(duh "$PRECOMMIT")
-    row "pre-commit" "$(colorize "$PRECOMMIT_SZ" 500 2000)\t ${DIM}(${PRECOMMIT})${RESET}"
+    row "pre-commit envs" "$(colorize "$PRECOMMIT_SZ" 500 2000)\t ${DIM}(${PRECOMMIT})${RESET}"
 fi
 
 # == Trash ==============================================================================
