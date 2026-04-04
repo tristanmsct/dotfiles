@@ -16,7 +16,7 @@ CYAN="\033[38;2;105;230;245m"
 BOLD='\033[1m'
 RESET='\033[0m'
 
-subsection()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
+section()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
 
 
 display_diff() {
@@ -39,15 +39,15 @@ display_diff() {
 }
 
 if [[ -z $1 ]]; then
-	subsection "      .config      "
+	section "      .config      "
 	DIFF_OUTPUT=$(diff <(cat $CONFIG_BASELINE) <(/usr/bin/ls -1 ~/.config/))
 	display_diff "$DIFF_OUTPUT"
 
-	subsection "    .local/state   "
+	section "    .local/state   "
 	DIFF_OUTPUT=$(diff <(cat $STATE_BASELINE) <(/usr/bin/ls -1 ~/.local/state/))
 	display_diff "$DIFF_OUTPUT"
 
-	subsection "    .local/share   "
+	section "    .local/share   "
 	DIFF_OUTPUT=$(diff <(cat $SHARE_BASELINE) <(/usr/bin/ls -1 ~/.local/share/))
 	display_diff "$DIFF_OUTPUT"
 else

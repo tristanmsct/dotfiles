@@ -22,14 +22,19 @@ BOLD='\033[1m'
 DIM='\033[2m'
 RESET='\033[0m'
 
-subsection()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
+section()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
+subsection()  { echo -e "\n${BOLD}${GREEN}- $1${RESET}"; }
 ok()       { echo -e "  ${GREEN}✔${RESET}  $1"; }
 warn()     { echo -e "  ${ORANGE}⚠${RESET}  $1"; }
 alert()    { echo -e "  ${RED}✖${RESET}  $1"; }
 row()      { echo -e "  $(printf '%-35s' "$1") $2"; }
 
 duh() {
-    du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "n/a"
+    du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "0k"
+}
+
+sduh() {
+    sudo du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "0k"
 }
 
 # Colour-code a size string based on MB thresholds ($2=warn MB, $3=alert MB)
@@ -61,6 +66,7 @@ EOF
 
 if [[ "$#" -ge 1 ]] && ([[ "$1" == "--tips" ]] || [[ "$1" == "-t" ]]); then
 
+section "System"
 subsection "Pacman / AUR"
 echo "Remove orphaned packages"
 show_commands "    yay -Yc"
@@ -74,14 +80,39 @@ show_commands "    sudo paccache -rk2"
 echo "Remove cache for uninstalled packages entirely"
 show_commands "    sudo paccache -ruk0"
 
+subsection "Hyprland / hyprpm"
+echo "Clean hyprpm cache"
+show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
+echo "This removes the plugins as they are used directly from this cache"
 
-subsection "~/.cache"
+subsection "Systemd journal"
+echo "Clean the journal"
+show_commands "    # keep only last 2 weeks"
+show_commands "    sudo journalctl --vacuum-time=2weeks"
+show_commands "    # or cap by size"
+show_commands "    sudo journalctl --vacuum-size=200M"
+
+subsection "Docker"
+echo "Prune docker system"
+show_commands "    docker system prune"
+echo "Or clean individual components"
+show_commands "    docker image prune"
+show_commands "    docker container prune"
+show_commands "    docker network prune"
+show_commands "    docker volume prune"
+show_commands "    docker builder prune"
+
+
+section "Application"
+
+subsection "Main cache (~/.cache)"
 echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
-
 
 subsection "Other caches"
 echo "Clean manually, each cache is different"
 
+
+section "Dev tools"
 
 subsection "Python (pip / uv / pyenv)"
 echo "Purge pip cache"
@@ -90,57 +121,34 @@ show_commands "    pip cache purge"
 echo "Prune uv cache"
 show_commands "    uv cache prune"
 
-
 subsection "Go"
 echo "Clean go cache"
-show_commands \
-"    go clean -cache
-    go clean -modcache"
 
+show_commands "    go clean -cache"
+show_commands "    go clean -modcache"
 
 subsection "Rust / Cargo"
 echo "Clean rust cache"
 show_commands "    cargo-cache -a"
 
-
 subsection "Node / npm"
 echo "Delete npm cache"
 show_commands "    sudo rm -r $HOME/.cache/npm"
 
-
-subsection "Docker"
-echo "Prune docker system"
-show_commands "    docker system prune"
-echo "Or clean individual components"
-show_commands \
-"    docker image prune
-    docker container prune
-    docker network prune
-    docker volume prune
-    docker builder prune"
-
-
-subsection "Hyprland / hyprpm"
-echo "Clean hyprpm cache"
-show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
-echo "This removes the plugins as they are used directly from this cache"
-
-
-subsection "systemd journal"
-echo "Clean the journal"
-show_commands \
-"    # keep only last 2 weeks
-    sudo journalctl --vacuum-time=2weeks
-    # or cap by size
-    sudo journalctl --vacuum-size=200M"
+section "Trash"
+echo "Empty the trash directory either graphically or using trash-cli"
+show_commands "    trash-empty 60"
 
 exit
 fi
 
-# -- pacman / yay -----------------------------------------------------------------------
+# == System =============================================================================
+
+section "System"
+
+# -- Pacakge Manager --------------------------------------------------------------------
 
 subsection "Pacman / AUR"
-
 # pacman pkg cache (sudo may be needed; fallback gracefully)
 PKG_CACHE="/var/cache/pacman/pkg"
 if PKG_SIZE=$(sudo du -sh "$PKG_CACHE" 2>/dev/null | awk '{print $1}'); then
@@ -167,18 +175,55 @@ elif (( ORPHANS < 5 )); then warn "$ORPHANS orphaned package(s)  → yay -Yc"
 else alert "$ORPHANS orphaned package(s)  → yay -Yc"
 fi
 
-# -- ~/.cache breakdown -----------------------------------------------------------------
+# -- Hyprland / Hyprpm ------------------------------------------------------------------
 
-subsection "~/.cache"
+subsection "Hyprland / hyprpm"
+HYPRPM_CACHE="/var/cache/hyprpm"
+row "Hyprpm cache" "$(colorize $(duh "$HYPRPM_CACHE") 800 2000)\t ${DIM}(${HYPRPM_CACHE})${RESET}"
 
-CACHE_THRESHOLD_MB=500  # only show dirs above this size
+# -- Journal ----------------------------------------------------------------------------
+
+subsection "Systemd journal"
+JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
+    | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
+row "journal on disk" "$(colorize $JOURNAL_SZ 800 2000)"
+
+# -- Docker -----------------------------------------------------------------------------
+
+subsection "Docker"
+if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
+    docker system df --format "{{.Type}}\t{{.Size}}" 2>/dev/null | while IFS=$'\t' read -r type size; do
+        row "$type" "$(colorize "$size" 500 1000)"
+    done
+else
+    DOCKER_CACHE="/var/lib/docker"
+
+    if [[ -d "$DOCKER_CACHE" ]]; then
+        row "Docker cache" "$(colorize "$(sduh "$DOCKER_CACHE")" 500 1500)\t ${DIM}(${DOCKER_CACHE})${RESET}"
+    else
+        echo -e "  ${DIM}Docker not running or not installed${RESET}"
+    fi
+fi
+
+# == Applications =======================================================================
+
+section "Applications"
+
+# -- ~/.cache ---------------------------------------------------------------------------
+
+subsection "Main cache (~/.cache)"
+other_caches="uv brave-cache pre-commit"
+
+CACHE_THRESHOLD_MB=300  # only show dirs above this size
 
 CACHE_TOTAL=$(duh "${HOME}/.cache")
-row "total" "$(colorize "$CACHE_TOTAL" 3000 7000)"
+row "total" "$(colorize "$CACHE_TOTAL" 3000 7000)\t ${DIM}(includes entries below)${RESET}"
 
 echo -e "\n  ${DIM}Dirs above ${CACHE_THRESHOLD_MB}MB:${RESET}"
 while IFS=$'\t' read -r sz name; do
-    row "  $name" "$(colorize "$sz" 1000 2000)"
+    if [[ " ${other_caches} " != *" $name "* ]]; then
+        row "  $name" "$(colorize "$sz" 1000 2000)"
+    fi
 done < <(
     find "${HOME}/.cache" -mindepth 1 -maxdepth 1 -type d \
         | xargs -I{} du -sh {} 2>/dev/null \
@@ -194,32 +239,46 @@ done < <(
         done
 )
 
-# -- Other caches -----------------------------------------------------------------------
-
-subsection "Other caches"
+# -- Other applications -----------------------------------------------------------------
 
 PNPM_CACHE="${HOME}/.local/share/pnpm/store"
 
 if [[ -d "$PNPM_CACHE" ]]; then
+    subsection "PNPM"
     row "pnpm cache" "$(colorize "$(duh "$PNPM_CACHE")" 500 1500)\t ${DIM}(${PNPM_CACHE})${RESET}"
 fi
 
+BRAVE_MAIN_CACHE="${HOME}/.cache/brave-cache"
 BRAVE_CACHE="${HOME}/.local/share/brave-data/Default/Service Worker"
 
 if [[ -d "$BRAVE_CACHE" ]]; then
-    row "Brave cache" "$(colorize "$(duh "$BRAVE_CACHE")" 500 1500)\t ${DIM}(${BRAVE_CACHE})${RESET}"
+    subsection "Brave"
+    row "Brave main cache" "$(colorize "$(duh "$BRAVE_MAIN_CACHE")" 500 1500)\t ${DIM}(${BRAVE_MAIN_CACHE})${RESET}"
+    row "Brave user cache" "$(colorize "$(duh "$BRAVE_CACHE")" 500 1500)\t ${DIM}(${BRAVE_CACHE})${RESET}"
 fi
 
 SLACK_CACHE="${HOME}/.local/share/slack-data/Service Worker"
 
 if [[ -d "$SLACK_CACHE" ]]; then
+    subsection "Slack"
     row "Slack cache" "$(colorize "$(duh "$SLACK_CACHE")" 500 1500)\t ${DIM}(${SLACK_CACHE})${RESET}"
 fi
 
+VSCODIUM_CACHE="${HOME}/.local/share/VSCodium/user-data"
+
+if [[ -d "$VSCODIUM_CACHE" ]]; then
+    subsection "VSCodium"
+    row "VSCodium cache" "$(colorize "$(duh "$VSCODIUM_CACHE")" 500 1500)\t ${DIM}(${VSCODIUM_CACHE})${RESET}"
+    echo -e "  ${DIM}~/.cache/electron may contain other VSCodium cached files${RESET}"
+fi
+
+# == Dev tools ==========================================================================
+
+section "Dev tools"
+
 # -- Python ecosystem -------------------------------------------------------------------
 
-subsection "Python (pip / uv / pyenv)"
-
+subsection "Python"
 # pip
 if command -v pip &>/dev/null; then
     PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g') || true
@@ -249,7 +308,6 @@ fi
 # -- Go ---------------------------------------------------------------------------------
 
 subsection "Go"
-
 GO_BUILD="${HOME}/.cache/go-build"
 GO_MOD="${GOPATH:-${HOME}/go}/pkg/mod"
 
@@ -263,7 +321,6 @@ fi
 # -- Rust / Cargo -----------------------------------------------------------------------
 
 subsection "Rust / Cargo"
-
 CARGO_HOME="${CARGO_HOME:-${HOME}/.local/share/cargo}"
 if [[ -d "$CARGO_HOME" ]]; then
     row "cargo home" "$(colorize "$(duh "$CARGO_HOME")" 500 1500)\t ${DIM}(${CARGO_HOME})${RESET}"
@@ -280,42 +337,21 @@ fi
 # -- Node / npm -------------------------------------------------------------------------
 
 subsection "Node / npm"
-
 NPM_CACHE=$(npm config get cache 2>/dev/null || echo "${HOME}/.cache/npm")
 row "npm cache" "$(colorize "$(duh "$NPM_CACHE")" 400 1000)\t ${DIM}(${NPM_CACHE})${RESET}"
 
-# -- Docker -----------------------------------------------------------------------------
+# -- Pre-commit -------------------------------------------------------------------------
 
-subsection "Docker"
-
-if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
-    docker system df --format "{{.Type}}\t{{.Size}}" 2>/dev/null | while IFS=$'\t' read -r type size; do
-        row "$type" "$(colorize "$size" 500 1000)"
-    done
-else
-    echo -e "  ${DIM}Docker not running or not installed${RESET}"
+subsection "Pre-commit"
+PRECOMMIT="${HOME}/.cache/pre-commit"
+if [[ -d "$PYENV_ROOT" ]]; then
+    PRECOMMIT_SZ=$(duh "$PRECOMMIT")
+    row "pre-commit" "$(colorize "$PRECOMMIT_SZ" 500 2000)\t ${DIM}(${PRECOMMIT})${RESET}"
 fi
 
-# -- Hyprland / hyprpm ------------------------------------------------------------------
+# == Trash ==============================================================================
 
-subsection "Hyprland / hyprpm"
-
-HYPRPM_CACHE="/var/cache/hyprpm"
-
-row "Hyprpm cache" "$(colorize $(duh "$HYPRPM_CACHE") 800 2000)\t  ${DIM}(${HYPRPM_CACHE})${RESET}"
-
-# -- Journal ----------------------------------------------------------------------------
-
-subsection "systemd journal"
-
-JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
-    | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
-row "journal on disk" "$(colorize $JOURNAL_SZ 800 2000)"
-
-# -- Trash ------------------------------------------------------------------------------
-
-subsection "Trash"
-
+section "Trash"
 TRASH_DIR="${HOME}/.local/share/Trash"
 
 if [[ -d "$TRASH_DIR" ]]; then
