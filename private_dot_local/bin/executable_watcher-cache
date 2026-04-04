@@ -79,6 +79,10 @@ subsection "~/.cache"
 echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
 
 
+subsection "Other caches"
+echo "Clean manually, each cache is different"
+
+
 subsection "Python (pip / uv / pyenv)"
 echo "Purge pip cache"
 show_commands "    pip cache purge"
@@ -190,6 +194,28 @@ done < <(
         done
 )
 
+# -- Other caches -----------------------------------------------------------------------
+
+subsection "Other caches"
+
+PNPM_CACHE="${HOME}/.local/share/pnpm/store"
+
+if [[ -d "$PNPM_CACHE" ]]; then
+    row "pnpm cache" "$(colorize "$(duh "$PNPM_CACHE")" 500 1500)\t ${DIM}(${PNPM_CACHE})${RESET}"
+fi
+
+BRAVE_CACHE="${HOME}/.local/share/brave-data/Default/Service Worker"
+
+if [[ -d "$BRAVE_CACHE" ]]; then
+    row "Brave cache" "$(colorize "$(duh "$BRAVE_CACHE")" 500 1500)\t ${DIM}(${BRAVE_CACHE})${RESET}"
+fi
+
+SLACK_CACHE="${HOME}/.local/share/slack-data/Service Worker"
+
+if [[ -d "$SLACK_CACHE" ]]; then
+    row "Slack cache" "$(colorize "$(duh "$SLACK_CACHE")" 500 1500)\t ${DIM}(${SLACK_CACHE})${RESET}"
+fi
+
 # -- Python ecosystem -------------------------------------------------------------------
 
 subsection "Python (pip / uv / pyenv)"
@@ -285,3 +311,13 @@ subsection "systemd journal"
 JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
     | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
 row "journal on disk" "$(colorize $JOURNAL_SZ 800 2000)"
+
+# -- Trash ------------------------------------------------------------------------------
+
+subsection "Trash"
+
+TRASH_DIR="${HOME}/.local/share/Trash"
+
+if [[ -d "$TRASH_DIR" ]]; then
+    row "Trash directory" "$(colorize "$(duh "$TRASH_DIR")" 2000 4000)\t ${DIM}(${TRASH_DIR})${RESET}"
+fi
