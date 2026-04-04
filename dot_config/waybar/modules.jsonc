@@ -40,7 +40,7 @@
 
     "custom/browser": {
         "format": "<span size='x-large'></span>",
-        "on-click": "~/.config/hypr/launchers/browser.sh",
+        "on-click": "~/.config/hypr/launchers/brave.sh",
         "tooltip-format": "Open Web Browser - Brave"
         // "tooltip": false
     },

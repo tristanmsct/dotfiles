@@ -99,7 +99,7 @@ alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster
 # Custom launchers
 # ---------------------------------------------------------------------------------------
 # Custom launchers for apps that need to be run with spcial flags and environment variables.
-alias brave="~/.config/hypr/launchers/browser.sh"
+alias brave="~/.config/hypr/launchers/brave.sh"
 alias firefox="~/.config/hypr/launchers/firefox.sh"
 alias typora="~/.config/hypr/launchers/typora.sh"
 alias feishin="~/.config/hypr/launchers/feishin.sh"
