@@ -84,7 +84,7 @@ while [[ $# -gt 0 ]]; do
             echo
 
             if has_flag "$@" -- -c --cache; then
-                section "Caches"
+                section "System and application caches"
                 "$WATCHER_DIR/watcher-cache"
                 echo
             fi

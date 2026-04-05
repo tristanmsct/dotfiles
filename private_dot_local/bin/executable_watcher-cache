@@ -14,7 +14,8 @@ set -euo pipefail
 # -- Helpers ----------------------------------------------------------------------------
 
 ORANGE="\033[38;2;255;158;23m"
-GREEN="\033[38;2;30;220;60m"
+GREEN='\033[38;2;125;235;103m'
+PURPLE='\033[38;2;150;85;166m'
 CYAN="\033[38;2;105;230;245m"
 RED="\033[38;2;225;20;20m"
 
@@ -23,7 +24,7 @@ DIM='\033[2m'
 RESET='\033[0m'
 
 section()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
-subsection()  { echo -e "\n${BOLD}${GREEN}- $1${RESET}"; }
+subsection()  { echo -e "\n${BOLD}${PURPLE}- $1${RESET}"; }
 ok()       { echo -e "  ${GREEN}✔${RESET}  $1"; }
 warn()     { echo -e "  ${ORANGE}⚠${RESET}  $1"; }
 alert()    { echo -e "  ${RED}✖${RESET}  $1"; }
