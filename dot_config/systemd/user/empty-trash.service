@@ -1,5 +1,5 @@
 [Unit]
-Description=Empty trash files older than 30 days
+Description=Empty trash files older than 60 days
 
 [Service]
 Type=oneshot

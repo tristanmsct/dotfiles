@@ -11,6 +11,7 @@
 CONFIG_BASELINE=$HOME/.local/share/system-tracking/config-baseline.txt
 STATE_BASELINE=$HOME/.local/share/system-tracking/state-baseline.txt
 SHARE_BASELINE=$HOME/.local/share/system-tracking/share-baseline.txt
+CACHE_BASELINE=$HOME/.local/share/system-tracking/cache-baseline.txt
 
 CYAN="\033[38;2;105;230;245m"
 BOLD='\033[1m'
@@ -50,12 +51,17 @@ if [[ -z $1 ]]; then
 	section "    .local/share   "
 	DIFF_OUTPUT=$(diff <(cat $SHARE_BASELINE) <(/usr/bin/ls -1 ~/.local/share/))
 	display_diff "$DIFF_OUTPUT"
+
+	section "       .cache      "
+	DIFF_OUTPUT=$(diff <(cat $CACHE_BASELINE) <(/usr/bin/ls -1 ~/.cache/))
+	display_diff "$DIFF_OUTPUT"
 else
 	if [[ $1 == "update" ]]; then
 		if gum confirm "Confirm XDG baseline update"; then
 			/usr/bin/ls -1 ~/.config/ > $CONFIG_BASELINE
 			/usr/bin/ls -1 ~/.local/state/ > $STATE_BASELINE
 			/usr/bin/ls -1 ~/.local/share/ > $SHARE_BASELINE
+			/usr/bin/ls -1 ~/.cache/ > $CACHE_BASELINE
 		fi
 	fi
 fi
