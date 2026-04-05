@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+#                _       _                          _ _
+# __      ____ _| |_ ___| |__   ___ _ __       __ _(_) |_
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____ / _` | | __|
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| (_| | | |_
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \__, |_|\__|
+#                                             |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# Check all local repos for local and remote changes.
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+source "$HOME/.config/shell/lib/format"
+
+# -- Gathering the lists of all repositories to check -----------------------------------
+
+# Main repo, config files and such.
+lst_repos_system=("$HOME/.local/share/dotfiles")
+lst_repos_system+=("$HOME/.local/share/ansible-archlinux")
+
+# The main hub for repos.
+base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
+public_repos="$HOME/Nextcloud/02-Projets/02-Public"
+aur_repos="$HOME/.local/share/aur"
+
+# Add base repos
+if [[ -d "$base_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$base_repos"/*/ 2>/dev/null)
+    lst_repos_projects=("${base_dirs[@]}")
+fi
+
+# Add public repos
+if [[ -d "$public_repos" ]]; then
+    readarray -t public_dirs < <(ls -1d "$public_repos"/*/ 2>/dev/null)
+    lst_repos_projects+=("${public_dirs[@]}")
+fi
+
+# Other repos.
+lst_repos_projects+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-OC_Projets"
+    "$HOME/Nextcloud/01-Travail/05-OpenClassrooms/98-OC_Manager")
+
+lst_repos_aur=()
+# Add aur repos
+if [[ -d "$aur_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$aur_repos"/*/ 2>/dev/null)
+    lst_repos_aur=("${base_dirs[@]}")
+fi
+
+# -- Main checking function -------------------------------------------------------------
+
+check-repo() {
+    # We go from repo to repo because we cannot run git commands from outside.
+    # The update is necessary to get the changes.
+    current_repo=$1
+    cd $current_repo
+    git remote update &> /dev/null
+
+    # Splitting the path by '/' to keep only the last bit, this gives a more readable display at the end.
+    path_repo=(${current_repo//\// })
+    repo_dir=${path_repo[${#path_repo[@]} - 1]}
+
+    # The `clean` variable is initialised with a value of 0 and incremented depending of the repos status.
+    # Local changes -> +1
+    # Remote changes -> +2
+    # This gives four different possible states for the repo.
+    clean=0
+    status=$(git status)
+
+    if ! (git status|grep -q "working tree clean"); then clean=$((clean+1)); fi;
+    if (git status|grep -q "Your branch is behind"); then clean=$((clean+2)); fi;
+
+    case "$clean" in
+
+        0) echo -e "Repo ${PURPLE}$repo_dir${RESET} is ${GREEN}up to date${RESET}."
+            ;;
+        1) echo -e "Repo ${PURPLE}$repo_dir${RESET} has ${BLUE}local${RESET} changes."
+            ;;
+        2) echo -e "Repo ${PURPLE}$repo_dir${RESET} has ${ORANGE}remote${RESET} changes."
+            ;;
+        3) echo -e "Repo ${PURPLE}$repo_dir${RESET} has ${BLUE}local${RESET} and ${ORANGE}remote${RESET} changes."
+        ;;
+        *) echo "🍞 Something went really wrong."
+        ;;
+    esac
+}
+
+# -- Permorming all checks --------------------------------------------------------------
+
+# Checking if the ssh identity is already added, otherwise it will be prompted everytime.
+if ! (ssh-add -l|grep -q "tristan.muscat@pm.me"); then ssh-add $HOME/.ssh/id_perso; fi;
+
+subsection "System repositories"
+for repo in ${lst_repos_system[@]}; do
+    check-repo $repo
+done
+
+subsection "Aur repositories"
+for repo in ${lst_repos_aur[@]}; do
+    check-repo $repo
+
+    # Get package name from PKGBUILD
+    pkgname=$(grep -E '^pkgname=' PKGBUILD | cut -d'=' -f2 | tr -d '"' | head -n1)
+
+    # Check if package is installed
+    if pacman -Q "$pkgname" &>/dev/null; then
+        current=$(pacman -Q "$pkgname" 2>/dev/null | cut -d' ' -f2)
+        makepkg -od &>/dev/null
+        new=$(makepkg --packagelist 2>/dev/null | head -n1 | xargs basename | sed "s/${pkgname}-//" | sed 's/-[^-]*-[^-]*\.pkg\.tar\.zst//')
+
+        current=$(sed -e 's/\-[0-9]*$//g'  <<<$current)
+        new=$(sed -e 's/\-[0-9]*$//g'  <<<$new)
+
+        if [ "$current" != "$new" ] && [ -n "$new" ]; then
+            echo -e "${ORANGE}Source update available${RESET}: $current -> $new"
+        fi
+    fi
+done
+
+subsection "Projects repositories"
+for repo in ${lst_repos_projects[@]}; do
+    check-repo $repo
+done

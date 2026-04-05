@@ -78,7 +78,37 @@ gio set $HOME/Media/Movies metadata::custom-icon "file:///usr/share/icons/Tela-c
 gio set $HOME/Media/Series metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
 gio set $HOME/Media/Games metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-games.svg"
 
-source $HOME/.local/bin/get-repo-list
+# Getting all repos
+# Main repo, config files and such.
+lst_repos=("$HOME/.local/share/dotfiles")
+lst_repos+=("$HOME/.local/share/ansible-archlinux")
+
+# The main hub for repos.
+base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
+public_repos="$HOME/Nextcloud/02-Projets/02-Public"
+aur_repos="$HOME/.local/share/aur"
+
+# Add base repos
+if [[ -d "$base_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$base_repos"/*/ 2>/dev/null)
+    lst_repos+=("${base_dirs[@]}")
+fi
+
+# Add public repos
+if [[ -d "$public_repos" ]]; then
+    readarray -t public_dirs < <(ls -1d "$public_repos"/*/ 2>/dev/null)
+    lst_repos+=("${public_dirs[@]}")
+fi
+
+# Add aur repos
+if [[ -d "$aur_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$aur_repos"/*/ 2>/dev/null)
+    lst_repos+=("${base_dirs[@]}")
+fi
+
+# Other repos.
+lst_repos+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-OC_Projets"
+    "$HOME/Nextcloud/01-Travail/05-OpenClassrooms/98-OC_Manager")
 
 for repo in ${lst_repos[@]}; do
     gio set "$repo" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-git.svg"

@@ -8,17 +8,12 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-CONFIG_BASELINE=$HOME/.local/share/system-tracking/config-baseline.txt
-STATE_BASELINE=$HOME/.local/share/system-tracking/state-baseline.txt
-SHARE_BASELINE=$HOME/.local/share/system-tracking/share-baseline.txt
-CACHE_BASELINE=$HOME/.local/share/system-tracking/cache-baseline.txt
+source "$HOME/.config/shell/lib/format"
 
-CYAN="\033[38;2;105;230;245m"
-BOLD='\033[1m'
-RESET='\033[0m'
-
-section()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
-
+CONFIG_BASELINE=$HOME/.local/share/watcher/xdg/config-baseline.txt
+STATE_BASELINE=$HOME/.local/share/watcher/xdg/state-baseline.txt
+SHARE_BASELINE=$HOME/.local/share/watcher/xdg/share-baseline.txt
+CACHE_BASELINE=$HOME/.local/share/watcher/xdg/cache-baseline.txt
 
 display_diff() {
 	ADDITIONS=$(echo "$1" | grep "^>" | sed 's/^> //')
@@ -40,19 +35,19 @@ display_diff() {
 }
 
 if [[ -z $1 ]]; then
-	section "      .config      "
+	subsection "      .config      "
 	DIFF_OUTPUT=$(diff <(cat $CONFIG_BASELINE) <(/usr/bin/ls -1 ~/.config/))
 	display_diff "$DIFF_OUTPUT"
 
-	section "    .local/state   "
+	subsection "    .local/state   "
 	DIFF_OUTPUT=$(diff <(cat $STATE_BASELINE) <(/usr/bin/ls -1 ~/.local/state/))
 	display_diff "$DIFF_OUTPUT"
 
-	section "    .local/share   "
+	subsection "    .local/share   "
 	DIFF_OUTPUT=$(diff <(cat $SHARE_BASELINE) <(/usr/bin/ls -1 ~/.local/share/))
 	display_diff "$DIFF_OUTPUT"
 
-	section "       .cache      "
+	subsection "       .cache      "
 	DIFF_OUTPUT=$(diff <(cat $CACHE_BASELINE) <(/usr/bin/ls -1 ~/.cache/))
 	display_diff "$DIFF_OUTPUT"
 else

@@ -9,22 +9,12 @@
 # snapshot of cache & disk health
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+source "$HOME/.config/shell/lib/format"
+
 set -euo pipefail
 
 # -- Helpers ----------------------------------------------------------------------------
 
-ORANGE="\033[38;2;255;158;23m"
-GREEN='\033[38;2;125;235;103m'
-PURPLE='\033[38;2;150;85;166m'
-CYAN="\033[38;2;105;230;245m"
-RED="\033[38;2;225;20;20m"
-
-BOLD='\033[1m'
-DIM='\033[2m'
-RESET='\033[0m'
-
-section()  { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
-subsection()  { echo -e "\n${BOLD}${PURPLE}- $1${RESET}"; }
 ok()       { echo -e "  ${GREEN}✔${RESET}  $1"; }
 warn()     { echo -e "  ${ORANGE}⚠${RESET}  $1"; }
 alert()    { echo -e "  ${RED}✖${RESET}  $1"; }
@@ -67,8 +57,8 @@ EOF
 
 if [[ "$#" -ge 1 ]] && ([[ "$1" == "--tips" ]] || [[ "$1" == "-t" ]]); then
 
-section "System"
-subsection "Pacman / AUR"
+subsection "System"
+subsubsection "Pacman / AUR"
 echo "Remove orphaned packages"
 show_commands "    yay -Yc"
 
@@ -81,19 +71,19 @@ show_commands "    sudo paccache -rk2"
 echo "Remove cache for uninstalled packages entirely"
 show_commands "    sudo paccache -ruk0"
 
-subsection "Hyprland / hyprpm"
+subsubsection "Hyprland / hyprpm"
 echo "Clean hyprpm cache"
 show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
 echo "⚠ This removes the plugins themselves as they are used directly from this cache, use with caution"
 
-subsection "Systemd journal"
+subsubsection "Systemd journal"
 echo "Clean the journal"
 show_commands "    # keep only last 2 weeks"
 show_commands "    sudo journalctl --vacuum-time=2weeks"
 show_commands "    # or cap by size"
 show_commands "    sudo journalctl --vacuum-size=200M"
 
-subsection "Docker"
+subsubsection "Docker"
 echo "Prune docker system"
 show_commands "    docker system prune"
 echo "Or clean individual components"
@@ -104,27 +94,27 @@ show_commands "    docker volume prune"
 show_commands "    docker builder prune"
 
 
-section "Applications"
+subsection "Applications"
 
-subsection "Main cache (~/.cache)"
+subsubsection "Main cache (~/.cache)"
 echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
 
-subsection "Brave"
+subsubsection "Brave"
 echo "Clean Brave caches from brave://settings/clearBrowserData or with cli"
 show_commands "rm -rf ~/.cache/brave-cache"
 
-subsection "Slack"
+subsubsection "Slack"
 echo "Clean Slack caches"
 show_commands "rm -rf ~/.local/share/slack-data/Service\ Worker/CacheStorage"
 
-subsection "VSCodium"
+subsubsection "VSCodium"
 echo "Clean VSCodium caches"
 show_commands "rm -rf ~/.config/VSCodium/Cache ~/.cache/electron"
 
 
-section "Dev tools"
+subsection "Dev tools"
 
-subsection "Python (pip / uv / pyenv)"
+subsubsection "Python (pip / uv / pyenv)"
 echo "Purge pip cache"
 show_commands "    pip cache purge"
 
@@ -134,26 +124,26 @@ show_commands "    uv cache prune"
 echo "Uninstall unused pyenv versions"
 show_commands "    pyenv uninstall <version>"
 
-subsection "Go"
+subsubsection "Go"
 echo "Clean go cache"
 
 show_commands "    go clean -cache"
 show_commands "    go clean -modcache"
 
-subsection "Rust / Cargo"
+subsubsection "Rust / Cargo"
 echo "Clean rust cache"
 show_commands "    cargo-cache -a  # cargo install cargo-cache"
 
-subsection "Node / npm"
+subsubsection "Node / npm"
 echo "Clean npm cache"
 show_commands "    npm cache clean --force"
 
-subsection "Pre-commit"
+subsubsection "Pre-commit"
 echo "Clean pre-commit environments"
 show_commands "    pre-commit clean"
 
 
-section "Trash"
+subsection "Trash"
 echo "Empty the trash directory either graphically or using trash-cli"
 show_commands "    trash-empty 60"
 
@@ -162,11 +152,11 @@ fi
 
 # == System =============================================================================
 
-section "System"
+subsection "System"
 
 # -- Pacakge Manager --------------------------------------------------------------------
 
-subsection "Pacman / AUR"
+subsubsection "Pacman / AUR"
 # pacman pkg cache (sudo may be needed; fallback gracefully)
 PKG_CACHE="/var/cache/pacman/pkg"
 if PKG_SIZE=$(sudo du -sh "$PKG_CACHE" 2>/dev/null | awk '{print $1}'); then
@@ -195,20 +185,20 @@ fi
 
 # -- Hyprland / Hyprpm ------------------------------------------------------------------
 
-subsection "Hyprland / hyprpm"
+subsubsection "Hyprland / hyprpm"
 HYPRPM_CACHE="/var/cache/hyprpm"
 row "Hyprpm cache" "$(colorize $(duh "$HYPRPM_CACHE") 800 2000)\t ${DIM}(${HYPRPM_CACHE})${RESET}"
 
 # -- Journal ----------------------------------------------------------------------------
 
-subsection "Systemd journal"
+subsubsection "Systemd journal"
 JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
     | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
 row "journal on disk" "$(colorize $JOURNAL_SZ 800 2000)"
 
 # -- Docker -----------------------------------------------------------------------------
 
-subsection "Docker"
+subsubsection "Docker"
 if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
     docker system df --format "{{.Type}}\t{{.Size}}" 2>/dev/null | while IFS=$'\t' read -r type size; do
         row "$type" "$(colorize "$size" 500 1000)"
@@ -225,11 +215,11 @@ fi
 
 # == Applications =======================================================================
 
-section "Applications"
+subsection "Applications"
 
 # -- ~/.cache ---------------------------------------------------------------------------
 
-subsection "Main cache (~/.cache)"
+subsubsection "Main cache (~/.cache)"
 other_caches="uv brave-cache pre-commit"
 
 CACHE_THRESHOLD_MB=300  # only show dirs above this size
@@ -262,7 +252,7 @@ done < <(
 PNPM_CACHE="${HOME}/.local/share/pnpm/store"
 
 if [[ -d "$PNPM_CACHE" ]]; then
-    subsection "PNPM"
+    subsubsection "PNPM"
     row "pnpm cache" "$(colorize "$(duh "$PNPM_CACHE")" 500 1500)\t ${DIM}(${PNPM_CACHE})${RESET}"
 fi
 
@@ -270,7 +260,7 @@ BRAVE_MAIN_CACHE="${HOME}/.cache/brave-cache"
 BRAVE_CACHE="${HOME}/.local/share/brave-data/Default/Service Worker"
 
 if [[ -d "$BRAVE_CACHE" ]]; then
-    subsection "Brave"
+    subsubsection "Brave"
     row "Brave main cache" "$(colorize "$(duh "$BRAVE_MAIN_CACHE")" 500 1500)\t ${DIM}(${BRAVE_MAIN_CACHE})${RESET}"
     row "Brave user cache" "$(colorize "$(duh "$BRAVE_CACHE")" 500 1500)\t ${DIM}(${BRAVE_CACHE})${RESET}"
 fi
@@ -278,25 +268,25 @@ fi
 SLACK_CACHE="${HOME}/.local/share/slack-data/Service Worker"
 
 if [[ -d "$SLACK_CACHE" ]]; then
-    subsection "Slack"
+    subsubsection "Slack"
     row "Slack cache" "$(colorize "$(duh "$SLACK_CACHE")" 500 1500)\t ${DIM}(${SLACK_CACHE})${RESET}"
 fi
 
 VSCODIUM_CACHE="${HOME}/.local/share/VSCodium/user-data"
 
 if [[ -d "$VSCODIUM_CACHE" ]]; then
-    subsection "VSCodium"
+    subsubsection "VSCodium"
     row "VSCodium cache" "$(colorize "$(duh "$VSCODIUM_CACHE")" 500 1500)\t ${DIM}(${VSCODIUM_CACHE})${RESET}"
     echo -e "  ${DIM}~/.cache/electron may contain other VSCodium cached files${RESET}"
 fi
 
 # == Dev tools ==========================================================================
 
-section "Dev tools"
+subsection "Dev tools"
 
 # -- Python ecosystem -------------------------------------------------------------------
 
-subsection "Python"
+subsubsection "Python"
 # pip
 if command -v pip &>/dev/null; then
     PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g') || true
@@ -325,7 +315,7 @@ fi
 
 # -- Go ---------------------------------------------------------------------------------
 
-subsection "Go"
+subsubsection "Go"
 GO_BUILD="${HOME}/.cache/go-build"
 GO_MOD="${GOPATH:-${HOME}/go}/pkg/mod"
 
@@ -338,7 +328,7 @@ fi
 
 # -- Rust / Cargo -----------------------------------------------------------------------
 
-subsection "Rust / Cargo"
+subsubsection "Rust / Cargo"
 CARGO_HOME="${CARGO_HOME:-${HOME}/.local/share/cargo}"
 if [[ -d "$CARGO_HOME" ]]; then
     row "cargo home" "$(colorize "$(duh "$CARGO_HOME")" 500 1500)\t ${DIM}(${CARGO_HOME})${RESET}"
@@ -354,13 +344,13 @@ fi
 
 # -- Node / npm -------------------------------------------------------------------------
 
-subsection "Node / npm"
+subsubsection "Node / npm"
 NPM_CACHE=$(npm config get cache 2>/dev/null || echo "${HOME}/.cache/npm")
 row "npm cache" "$(colorize "$(duh "$NPM_CACHE")" 400 1000)\t ${DIM}(${NPM_CACHE})${RESET}"
 
 # -- Pre-commit -------------------------------------------------------------------------
 
-subsection "Pre-commit"
+subsubsection "Pre-commit"
 PRECOMMIT="${HOME}/.cache/pre-commit"
 if [[ -d "$PYENV_ROOT" ]]; then
     PRECOMMIT_SZ=$(duh "$PRECOMMIT")
@@ -369,7 +359,7 @@ fi
 
 # == Trash ==============================================================================
 
-section "Trash"
+subsection "Trash"
 TRASH_DIR="${HOME}/.local/share/Trash"
 
 if [[ -d "$TRASH_DIR" ]]; then

@@ -1,0 +1,30 @@
+#   __                  _   _
+#  / _|_   _ _ __   ___| |_(_) ___  _ __  ___
+# | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+# |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+# |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# Python docstring generation function.
+docpy() {
+    python -c '
+    from datetime import datetime
+    now_date = datetime.now().strftime("%Y-%m-%d")
+    print(f"#!/usr/bin/env python \n\"\"\"\nCreated on {now_date}.\n\n@author: Tristan Muscat\n@email: tristan.muscat@pm.me\n\"\"\"\n")
+    ' | wl-copy
+}
+
+
+# Bitwarden decryption tool.
+bw-decrypt() {
+    python $HOME/Nextcloud/02-Projets/02-Public/BitwardenDecrypt/BitwardenDecrypt.py "$@"
+}
+
+
+# Show colors in terminal.
+show-colors() {
+    for a in {40..47}; do
+        echo -ne "\e[0;37;$a""m\\\e[0;37;$a""m\e[0;37;40m "
+    done
+}

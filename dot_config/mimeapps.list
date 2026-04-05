@@ -1,0 +1,33 @@
+[Default Applications]
+application/x-zerosize=sublime_text.desktop
+text/plain=sublime_text.desktop
+text/markdown=typora.desktop
+application/x-shellscript=sublime_text.desktop
+application/octet-stream=sublime_text.desktop
+application/json=sublime_text.desktop
+application/yaml=sublime_text.desktop
+application/vnd.ms-publisher=sublime_text.desktop
+application/toml=sublime_text.desktop
+text/x-python3=sublime_text.desktop
+inode/directory=org.gnome.Nautilus.desktop
+image/svg+xml=brave-browser.desktop
+text/x-tex=sublime_text.desktop
+image/jpeg=viewnior.desktop
+image/png=viewnior.desktop
+application/pdf=onlyoffice-desktopeditors.desktop
+application/wps-office.xlsx=onlyoffice-desktopeditors.desktop
+application/wps-office.docx=onlyoffice-desktopeditors.desktop
+application/wps-office.pptx=onlyoffice-desktopeditors.desktop
+
+[Added Associations]
+application/x-zerosize=typora.desktop;sublime_text.desktop;vscodium.desktop;nvim.desktop;
+text/plain=sublime_text.desktop;vscodium.desktop;typora.desktop;nvim.desktop;
+text/markdown=typora.desktop;sublime_text.desktop;
+application/yaml=sublime_text.desktop;vscodium.desktop;nvim.desktop;
+application/toml=sublime_text.desktop;vscodium.desktop;nvim.desktop;
+application/x-shellscript=sublime_text.desktop;vscodium.desktop;nvim.desktop;
+text/x-python3=sublime_text.desktop;vscodium.desktop;nvim.desktop;
+application/pdf=onlyoffice-desktopeditors.desktop;brave-browser.desktop;org.gnome.Evince.desktop;
+application/wps-office.xlsx=onlyoffice-desktopeditors.desktop;
+application/wps-office.docx=onlyoffice-desktopeditors.desktop;
+application/wps-office.pptx=onlyoffice-desktopeditors.desktop;

@@ -47,7 +47,7 @@ def parse_args(lst_args=None):
     return parser.parse_args(lst_args)
 
 
-NOTES_FILE = Path.home() / ".local/share/system-tracking" / "pacman-notes.json"
+NOTES_FILE = Path.home() / ".local/share/watcher/pacnotes" / "db.json"
 
 
 def pick_package():
@@ -126,7 +126,9 @@ def list_notes(package: str = None):
         return
 
     if not package:
-        package = subprocess.run(["gum", "choose", "all", *notes.keys(), "exit"], stdout=subprocess.PIPE, text=True).stdout.strip()
+        sorted_packages = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--header=Choose", "all", *sorted_packages, "exit"]
+        package = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
 
         if package in ["", "exit"]:
             print("Action cancelled")
@@ -150,9 +152,11 @@ def remove_note(package):
     """Remove a note for a package"""
     notes = load_notes()
     if not package:
-        package = subprocess.run(["gum", "choose", *notes.keys(), "exit"], stdout=subprocess.PIPE, text=True).stdout.strip()
+        sorted_packages = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--header=Choose", sorted_packages, "exit"]
+        package = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
 
-        if package == "exit":
+        if package == "exit" or package == "":
             print("Action cancelled")
             sys.exit(1)
 
@@ -196,7 +200,7 @@ def main():
         command = subprocess.run(["gum", "choose", "add", "list", "remove", "search"], stdout=subprocess.PIPE, text=True).stdout.strip()
         args = parse_args([command])
 
-    if command == "":
+    if args.command == "":
         sys.exit(1)
 
     if args.command == "add":
@@ -205,10 +209,10 @@ def main():
     elif args.command == "list":
         list_notes(args.package)
 
-    elif command == "remove":
+    elif args.command == "remove":
         remove_note(args.package)
 
-    elif command == "search":
+    elif args.command == "search":
         search_notes(args.term)
 
 

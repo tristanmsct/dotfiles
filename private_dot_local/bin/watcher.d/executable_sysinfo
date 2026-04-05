@@ -12,7 +12,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set output directory
-OUTPUT_DIR="$HOME/.local/share/system-tracking/system_info/report_$(date +%Y%m%d_%H%M%S)"
+OUTPUT_DIR="$HOME/.local/share/watcher/sysinfo/report_$(date +%Y%m%d_%H%M%S)"
 
 
 if gum confirm "Confirm sysinfo backup creation"; then

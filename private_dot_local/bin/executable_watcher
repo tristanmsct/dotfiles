@@ -7,16 +7,15 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# TODO
+# XDG could be a lot better with tracking per package
+
+source "$HOME/.config/shell/lib/format"
+
 # Get the script name.
 script_name=$(basename "$0")
 
-WATCHER_DIR="$HOME/.local/bin"
-
-GREEN='\033[38;2;125;235;103m'
-BOLD='\033[1m'
-RESET='\033[0m'
-
-section()  { echo -e "=== ${BOLD}${GREEN}$1${RESET} ==="; }
+WATCHER_DIR="$HOME/.local/bin/watcher.d"
 
 # Message to be displayed as help.
 show_help() {
@@ -24,11 +23,18 @@ show_help() {
     echo "Usage: $script_name <command> [args]"
     echo
     echo "Available commands:"
-    for script in "$WATCHER_DIR"/watcher-*; do
-        [[ -x "$script" ]] && basename "$script" | sed 's/^watcher-/  /'
-    done
-    echo -e "  open\t\t opens the dedicated watcher directory"
-    echo -e "  -h, --help\t display this help message"
+    echo -e "  all\t\t -- Run main watchers"
+    echo -e "  aur\t\t -- Check for custom AUR packages changes"
+    echo -e "  cache\t\t -- Check for caches"
+    echo -e "  chezmoi\t -- Track chezmoi-managed files"
+    echo -e "  desktop\t -- Monitor .desktop file changes"
+    echo -e "  git\t\t -- Check git repositories status"
+    echo -e "  open\t\t -- Open the system notes directory"
+    echo -e "  pacnotes\t -- Manage package notes"
+    echo -e "  pkglog\t -- Collect packages logs"
+    echo -e "  sysinfo\t -- Collect system information"
+    echo -e "  xdg\t\t -- Monitor xdg directories"
+    echo -e "  -h, --help\t -- Display this help message"
     echo
     exit 0
 }
@@ -67,35 +73,31 @@ while [[ $# -gt 0 ]]; do
             show_help
             ;;
         open)
-            xdg-open $HOME/.local/share/system-tracking > /dev/null 2>&1 & disown
+            xdg-open $HOME/.local/share/watcher > /dev/null 2>&1 & disown
             exit 1
             ;;
         all)
             section "Chezmoi monitored files and directories"
-            "$WATCHER_DIR/watcher-chezmoi"
+            "$WATCHER_DIR/chezmoi"
             echo
 
             section "XDG directories"
-            "$WATCHER_DIR/watcher-xdg"
+            "$WATCHER_DIR/xdg"
             echo
 
             section ".destkop files"
-            "$WATCHER_DIR/watcher-desktop"
+            "$WATCHER_DIR/desktop"
             echo
 
             if has_flag "$@" -- -c --cache; then
                 section "System and application caches"
-                "$WATCHER_DIR/watcher-cache"
+                "$WATCHER_DIR/cache"
                 echo
             fi
 
             if ! has_flag "$@" -- -n --nogit; then
-                section "AUR custom PKGFILE"
-                "$WATCHER_DIR/watcher-aur"
-                echo
-
                 section "Git repositories"
-                "$WATCHER_DIR/watcher-git"
+                "$WATCHER_DIR/git" --aur
                 echo
             fi
 
@@ -103,7 +105,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             # Dispatch to watcher-<command>
-            target="$WATCHER_DIR/watcher-$1"
+            target="$WATCHER_DIR/$1"
 
             if [[ -x "$target" ]]; then
                 shift

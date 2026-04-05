@@ -1,16 +1,14 @@
 #!/usr/bin/env python
-#    _
-#   (_) __ _  ___ ___ _   _ ___  ___
-#   | |/ _` |/ __/ __| | | / __|/ _ \
-#   | | (_| | (_| (__| |_| \__ \  __/
-#  _/ |\__,_|\___\___|\__,_|___/\___|
-# |__/
-# -----------------------------------------------------------------------------------------------------------------------------------------
-# For example, all these depend on gtk4.
-# jaccuse -d "adw-bluetooth baobab gnome-calculator gnome-calendar gnome-podcasts smile libadwaita libinput-gestures pinta nmrs
-# proton-vpn-cli pika-backup simple-scan steam mission-center pavucontrol nautilus"
-# -----------------------------------------------------------------------------------------------------------------------------------------
+"""
+Created on 2026-04-05.
 
+@author: Tristan Muscat
+@email: tristan.muscat@pm.me
+
+For example, all these depend on gtk4.
+jaccuse -d "adw-bluetooth baobab gnome-calculator gnome-calendar gnome-podcasts smile libadwaita libinput-gestures pinta nmrs
+proton-vpn-cli pika-backup simple-scan steam mission-center pavucontrol nautilus"
+"""
 import subprocess
 import sys
 import argparse

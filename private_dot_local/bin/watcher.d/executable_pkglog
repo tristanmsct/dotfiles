@@ -8,23 +8,23 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+source "$HOME/.config/shell/lib/format"
+
 show_help() {
     echo "Usage: $script_name [save] [query] [diff] [-h | --help]"
     echo "Keep track of packages from different repos and installation types."
     echo
     echo "Options:"
-    echo "  save                    Save the current state, used as a pacman hook."
-    echo "  query                   Query the package list (Repo -r, Name -n, Version -v, Installation type -t)."
-    echo "  diff                    Display the difference between two states (default is last two, -c for choice)."
     echo "  delete                  Delete a package info file."
+    echo "  diff                    Display the difference between two states (default is last two, -c for choice)."
+    echo "  query                   Query the package list (Repo -r, Name -n, Version -v, Installation type -t)."
+    echo "  notes                   Manage notes for packages reasons."
+    echo "  save                    Save the current state, used as a pacman hook."
     echo "  -h, --help              Display this help message."
     exit 0
 }
 
-PACKAGE_INFO_DIR="$HOME/.local/share/system-tracking/packages_info/"
-
-GREEN='\033[38;2;125;235;103m'
-RESET='\033[0m'
+PACKAGE_INFO_DIR="$HOME/.local/share/watcher/pkglog/"
 
 get_file() {
     local options=""
@@ -198,6 +198,9 @@ case $1 in
         ;;
     delete)
         delete_file
+        ;;
+    notes)
+        "$HOME/.local/bin/watcher.d/_pacnotes"
         ;;
     *)
         echo "Unkown command."

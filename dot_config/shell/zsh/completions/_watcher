@@ -2,24 +2,23 @@
 
 _watcher() {
     local -a commands
-    local watcher_dir="$HOME/.local/bin"
+    local watcher_dir="$HOME/.local/bin/watcher.d"
 
     case $CURRENT in
         2)
             # First argument: command names
-            for script in "$watcher_dir"/watcher-*; do
+            for script in "$watcher_dir"/*; do
                 [[ -x "$script" ]] || continue
-                local cmd=$(basename "$script" | sed 's/^watcher-//')
+                local cmd=$(basename "$script")
+                [[ "$cmd" == _* ]] && continue
                 local desc=""
 
                 case "$cmd" in
                     desktop) desc="Monitor .desktop file changes" ;;
                     xdg) desc="Monitor xdg directories" ;;
                     git) desc="Check git repositories status" ;;
-                    aur) desc="Check for custom AUR packages changes" ;;
                     chezmoi) desc="Track chezmoi-managed files" ;;
                     cache) desc="Check for caches" ;;
-                    pacnotes) desc="Manage package notes" ;;
                     pkglog) desc="Collect packages logs" ;;
                     sysinfo) desc="Collect system information" ;;
                 esac
@@ -44,9 +43,6 @@ _watcher() {
                     ;;
                 chezmoi)
                     _arguments '2:command:_watcher-chezmoi'
-                    ;;
-                pacnotes)
-                    _arguments '2:command:_watcher-pacnotes'
                     ;;
                 pkglog)
                     _arguments '2:command:_watcher-pkglog'
