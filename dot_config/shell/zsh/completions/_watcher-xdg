@@ -4,6 +4,7 @@ _watcher-xdg() {
     local -a options
     options=(
         ':Check for new files and directories in xdg directories'
+        'notes:Manage notes for xdg directories reasons'
         'update:Update the baseline file'
     )
 

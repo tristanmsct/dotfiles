@@ -11,12 +11,12 @@
 # Creates a directory with various system information files
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set output directory
+# Set output directory.
 OUTPUT_DIR="$HOME/.local/share/watcher/sysinfo/report_$(date +%Y%m%d_%H%M%S)"
 
 
 if gum confirm "Confirm sysinfo backup creation"; then
-    # Create output directory
+    # Create output directory.
     mkdir -p "$OUTPUT_DIR"
     echo "Creating system information files in: $OUTPUT_DIR"
 else

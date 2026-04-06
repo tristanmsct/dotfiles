@@ -1,0 +1,16 @@
+#compdef watcher-pkgnotes
+
+_watcher-pkgnotes() {
+    local -a options
+    options=(
+      'add:Add a package and its reason'
+      'query:Query all or a specific package'
+      'search:Search for a package or a reason'
+      'edit:Edit notes for a package'
+      'remove:Remove notes for a package'
+    )
+
+    _describe 'watcher-pkgnotes commands' options
+}
+
+_watcher-pkgnotes "$@"

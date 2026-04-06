@@ -1,0 +1,250 @@
+#!/usr/bin/env python
+"""
+Package Notes Manager - Track reasons for installed packages
+
+Created on 2026-01-01.
+
+@author: Tristan Muscat
+@email: tristan.muscat@pm.me
+
+Usage:
+    _pkgnotes add <package> <reason>
+    _pkgnotes query <package>
+    _pkgnotes search <term>
+    _pkgnotes edit <package>
+    _pkgnotes remove <package>
+"""
+
+import subprocess
+import json
+from pathlib import Path
+import sys
+import argparse
+import os
+
+# ANSI color codes.
+ORANGE = "\033[38;2;255;158;23m"
+GREEN = "\033[38;2;125;235;103m"
+RESET = "\033[0m"
+
+NOTES_FILE = Path.home() / ".local/share/watcher/pkgnotes" / "db.json"
+
+
+def parse_args(lst_args=None):
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(prog="pkgnotes", description="Track reasons for installed packages")
+    subparsers = parser.add_subparsers(title="Commands", metavar="", dest="command")
+
+    parser_add = subparsers.add_parser('add', help='Add a package and its reason', usage="<package> <reason>")
+    parser_add.add_argument("package", type=str, nargs="?")
+    parser_add.add_argument("reason", type=str, nargs="?")
+
+    parser_query = subparsers.add_parser('query', help='Query all or a specific package', usage="<package>")
+    parser_query.add_argument("package", type=str, nargs="?")
+
+    parser_search = subparsers.add_parser('search', help='Search for a package or a reason', usage="<term>")
+    parser_search.add_argument("term", type=str, nargs="?")
+
+    parser_edit = subparsers.add_parser('edit', help='Edit notes for a package', usage="<package>")
+    parser_edit.add_argument("package", type=str, nargs="?")
+
+    parser_remove = subparsers.add_parser('remove', help='Remove notes for a package', usage="<package>")
+    parser_remove.add_argument("package", type=str, nargs="?")
+
+    return parser.parse_args(lst_args)
+
+
+def load_notes() -> dict:
+    """Load notes from JSON file"""
+    if not NOTES_FILE.exists():
+        return {}
+    with open(NOTES_FILE, 'r') as f:
+        return json.load(f)
+
+
+def save_notes(notes: dict):
+    """Save notes to JSON file"""
+    NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(NOTES_FILE, 'w') as f:
+        json.dump(notes, f, indent=2)
+
+
+def pick_package(lst_known_packages: list):
+    """Pick a package interactively using gum filter."""
+    try:
+        # Get list of packages.
+        pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True).stdout.split("\n")
+        pacman_result = sorted(list(set(pacman_result) - set(lst_known_packages)))[1:]
+
+        # Pass the package list to gum filter via stdin.
+        gum_result = subprocess.run(
+            ["gum", "filter", "--placeholder", "Search packages...", *pacman_result],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+
+        package = gum_result.stdout.strip()
+
+        if package:
+            return package
+        else:
+            print("No package selected", file=sys.stderr)
+            sys.exit(1)
+
+    except subprocess.CalledProcessError:
+        print("Exiting", file=sys.stderr)
+        sys.exit(1)
+    except FileNotFoundError:
+        print("Error: Command not found. Make sure 'gum' is installed.", file=sys.stderr)
+        sys.exit(1)
+
+
+def add_note(package: str, reason: str):
+    """Add or update a note for a package"""
+    notes = load_notes()
+
+    if not package:
+        package = pick_package(notes.keys())
+
+    if not reason:
+        reason = subprocess.run(
+            ["gum", "input", f"--header=Reason for {package}", "--placeholder=Type the reason this package is installed"],
+            stdout=subprocess.PIPE, text=True
+        ).stdout.strip()
+
+    notes[package] = {
+        "reason": reason.strip('"')
+    }
+
+    save_notes(notes)
+    print(f"✓ Note added for '{ORANGE}{package}{RESET}'")
+
+
+def remove_note(package):
+    """Remove a note for a package"""
+    notes = load_notes()
+    if not package:
+        sorted_packages = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_packages]
+        lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_packages == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    for package in lst_packages:
+        if package in notes:
+            del notes[package]
+            save_notes(notes)
+            print(f"✓ Note removed for '{ORANGE}{package}{RESET}'")
+        else:
+            print(f"No note found for '{ORANGE}{package}{RESET}'")
+
+
+def query_notes(package: str = None):
+    """Query notes for a specific package or all packages"""
+    notes = load_notes()
+
+    if not notes:
+        print("No package notes found.")
+        return
+
+    if not package:
+        sorted_packages = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_packages]
+        lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_packages == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    print(f"\n=== {GREEN}Package Notes{RESET} ===")
+    for package in lst_packages:
+        if package in notes:
+            print(f"{ORANGE}{package}{RESET}:")
+            print(f"  {notes[package]['reason']}")
+            print()
+        else:
+            print(f"No note found for '{ORANGE}{package}{RESET}'")
+
+
+def search_notes(term):
+    """Search for a term in package names or reasons"""
+    notes = load_notes()
+
+    if not term:
+        term = subprocess.run(
+            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True).stdout.strip()
+
+    if term == "":
+        print("Action cancelled")
+        sys.exit(1)
+
+    term_lower = term.lower()
+
+    matches = {
+        pkg: data for pkg, data in notes.items()
+        if term_lower in pkg.lower() or term_lower in data['reason'].lower()
+    }
+
+    if matches:
+        print(f"\n=== {GREEN}Search results for '{ORANGE}{term}{GREEN}'{RESET} ===")
+        for pkg, data in sorted(matches.items()):
+            print(f"{ORANGE}{pkg}{RESET}:")
+            print(f"  {data['reason']}")
+            print()
+    else:
+        print(f"No matches found for '{ORANGE}{term}{RESET}'")
+
+
+def edit_note(package: str):
+    """Edit notes for a directory"""
+    notes = load_notes()
+    if not package:
+        sorted_packages = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--header=Choose", *sorted_packages]
+        package = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+        if package == "":
+            print("Action cancelled")
+            sys.exit(1)
+
+    os.system("clear")
+    current_reason = notes[package]["reason"]
+    subprocess.run(["wl-copy", current_reason])
+    print(f"\n=== {GREEN}Current reason{RESET} ===")
+    print(f"""Reason : {current_reason}""")
+    print()
+    add_note(package=package, reason="")
+
+
+def main():
+    args = parse_args()
+
+    if not (command := args.command):
+        lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove"]
+        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
+        args = parse_args([command])
+
+    if args.command == "":
+        sys.exit(1)
+
+    if args.command == "add":
+        add_note(args.package, args.reason)
+
+    elif args.command == "query":
+        query_notes(args.package)
+
+    elif args.command == "search":
+        search_notes(args.term)
+
+    elif args.command == "edit":
+        edit_note(args.package)
+
+    elif args.command == "remove":
+        remove_note(args.package)
+
+
+if __name__ == "__main__":
+    main()

@@ -7,9 +7,6 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# TODO
-# XDG could be a lot better with tracking per package
-
 source "$HOME/.config/shell/lib/format"
 
 # Get the script name.
@@ -104,7 +101,7 @@ while [[ $# -gt 0 ]]; do
             exit 1
             ;;
         *)
-            # Dispatch to watcher-<command>
+            # Dispatch to watcher plugin.
             target="$WATCHER_DIR/$1"
 
             if [[ -x "$target" ]]; then
@@ -112,7 +109,7 @@ while [[ $# -gt 0 ]]; do
                 exec "$target" "$@"
                 exit 1
             else
-                echo "Error: watcher-$1 not found"
+                echo "Error: $1 not found"
                 echo "Run 'watcher' to see available commands"
                 exit 1
             fi

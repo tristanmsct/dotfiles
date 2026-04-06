@@ -29,7 +29,7 @@ if [[ -d "$base_repos" ]]; then
     lst_repos_projects=("${base_dirs[@]}")
 fi
 
-# Add public repos
+# Add public repos.
 if [[ -d "$public_repos" ]]; then
     readarray -t public_dirs < <(ls -1d "$public_repos"/*/ 2>/dev/null)
     lst_repos_projects+=("${public_dirs[@]}")
@@ -40,7 +40,7 @@ lst_repos_projects+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-OC_Projets
     "$HOME/Nextcloud/01-Travail/05-OpenClassrooms/98-OC_Manager")
 
 lst_repos_aur=()
-# Add aur repos
+# Add aur repos.
 if [[ -d "$aur_repos" ]]; then
     readarray -t base_dirs < <(ls -1d "$aur_repos"/*/ 2>/dev/null)
     lst_repos_aur=("${base_dirs[@]}")
@@ -98,10 +98,10 @@ subsection "Aur repositories"
 for repo in ${lst_repos_aur[@]}; do
     check-repo $repo
 
-    # Get package name from PKGBUILD
+    # Get package name from PKGBUILD.
     pkgname=$(grep -E '^pkgname=' PKGBUILD | cut -d'=' -f2 | tr -d '"' | head -n1)
 
-    # Check if package is installed
+    # Check if package is installed.
     if pacman -Q "$pkgname" &>/dev/null; then
         current=$(pacman -Q "$pkgname" 2>/dev/null | cut -d' ' -f2)
         makepkg -od &>/dev/null

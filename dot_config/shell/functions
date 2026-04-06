@@ -28,3 +28,7 @@ show-colors() {
         echo -ne "\e[0;37;$a""m\\\e[0;37;$a""m\e[0;37;40m "
     done
 }
+
+fdxdg() {
+    fd --exact-depth=1 $1 .config/ .cache .local/share .local/state
+}

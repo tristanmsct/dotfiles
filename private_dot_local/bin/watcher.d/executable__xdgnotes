@@ -1,0 +1,357 @@
+#!/usr/bin/env python
+"""
+Directories Notes Manager - Track reasons for application directories in the XDG places
+
+Created on 2026-04-06.
+
+@author: Tristan Muscat
+@email: tristan.muscat@pm.me
+Usage:
+    _xdgnotes add <directory>
+    _xdgnotes query <directory>
+    _xdgnotes query-application <directory>
+    _xdgnotes search <term>
+    _xdgnotes edit <directory>
+    _xdgnotes remove <directory>
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+# ANSI color codes.
+ORANGE = "\033[38;2;255;158;23m"
+GREEN = "\033[38;2;125;235;103m"
+DIM = "\033[2m"
+RESET = "\033[0m"
+
+BASE_PATHS = {
+    "config": "~/.config",
+    "cache": "~/.cache",
+    "share": "~/.local/share",
+    "state": "~/.local/state"
+}
+
+NOTES_FILE = Path.home() / ".local/share/watcher/xdgnotes" / "db.json"
+
+
+def parse_args(lst_args=None):
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(prog="xdgnotes", description="Track reasons for xdg directories")
+    subparsers = parser.add_subparsers(title="Commands", metavar="", dest="command")
+
+    parser_add = subparsers.add_parser('add', help='Add a directory and its reason', usage="<directory> <reason>")
+    parser_add.add_argument("directory", type=str, nargs="?")
+    parser_add.add_argument("reason", type=str, nargs="?")
+
+    parser_query = subparsers.add_parser('query', help='Query all or a specific directory', usage="<directory>")
+    parser_query.add_argument("directory", type=str, nargs="?")
+
+    parser_query_app = subparsers.add_parser('query-application', help='Query all or a specific application', usage="<application>")
+    parser_query_app.add_argument("application", type=str, nargs="?")
+
+    parser_search = subparsers.add_parser('search', help='Search for a directory or a reason', usage="<term>")
+    parser_search.add_argument("term", type=str, nargs="?")
+
+    parser_edit = subparsers.add_parser('edit', help='Edit notes for a directory', usage="<directory>")
+    parser_edit.add_argument("directory", type=str, nargs="?")
+
+    parser_remove = subparsers.add_parser('remove', help='Remove notes for a directory', usage="<directory>")
+    parser_remove.add_argument("directory", type=str, nargs="?")
+
+    return parser.parse_args(lst_args)
+
+
+def load_notes() -> dict:
+    """Load notes from JSON file"""
+    if not NOTES_FILE.exists():
+        return {}
+    with open(NOTES_FILE, 'r') as f:
+        return json.load(f)
+
+
+def save_notes(notes: dict):
+    """Save notes to JSON file"""
+    NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(NOTES_FILE, 'w') as f:
+        json.dump(notes, f, indent=2)
+
+
+def get_full_path(str_path: str) -> str:
+    lst_path = str_path.split(":")
+    lst_path[0] = BASE_PATHS[lst_path[0]]
+
+    res = "/".join(lst_path)
+
+    return res
+
+
+def pick_directory(lst_known_dirs: list):
+    """Pick a directory interactively using gum filter."""
+    try:
+        # Get list of directories.
+        user = os.getenv("USER")
+        config_res = subprocess.run(["ls", f"""/home/{user}/.config"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        cache_res = subprocess.run(["ls", f"""/home/{user}/.cache"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        share_res = subprocess.run(["ls", f"""/home/{user}/.local/share"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        state_res = subprocess.run(["ls", f"""/home/{user}/.local/state"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+
+        config_res = [f"config:{elt}" for elt in config_res.split("\n") if elt != ""]
+        cache_res = [f"cache:{elt}" for elt in cache_res.split("\n") if elt != ""]
+        share_res = [f"share:{elt}" for elt in share_res.split("\n") if elt != ""]
+        state_res = [f"state:{elt}" for elt in state_res.split("\n") if elt != ""]
+
+        lst_res = config_res + cache_res + share_res + state_res
+        lst_res = sorted(list(set(lst_res) - set(lst_known_dirs)))
+
+        if not lst_res:
+            print("No directory to annotate", file=sys.stderr)
+            sys.exit(1)
+
+        # Pass the package list to gum filter via stdin.
+        gum_result = subprocess.run(
+            ["gum", "filter", "--placeholder", "Search directories...", *lst_res],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+
+        directory = gum_result.stdout.strip()
+
+        if directory:
+            return directory
+        else:
+            print("No directory selected", file=sys.stderr)
+            sys.exit(1)
+
+    except subprocess.CalledProcessError:
+        print("Exiting", file=sys.stderr)
+        sys.exit(1)
+    except FileNotFoundError:
+        print("Error: Command not found. Make sure 'gum' is installed.", file=sys.stderr)
+        sys.exit(1)
+
+
+def add_note(directory: str):
+    """Add or update a note for a package"""
+    notes = load_notes()
+
+    if not directory:
+        directory = pick_directory(notes.keys())
+
+    # Get list of packages.
+    pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True)
+
+    try:
+        # Pass the package list to gum filter via stdin.
+        gum_result = subprocess.run(
+            ["gum", "filter", "--placeholder", f"Search packages for {get_full_path(directory)}...", "--no-limit"],
+            input=pacman_result.stdout,  # Pass as stdin, not as argument.
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+
+        lst_app = gum_result.stdout.strip().split("\n")
+
+        reason = subprocess.run(
+            ["gum", "input", f"--header=Reason for {get_full_path(directory)}", "--placeholder=Type the reason this directory is there"],
+            stdout=subprocess.PIPE, text=True
+        ).stdout.strip().strip('"')
+    except subprocess.CalledProcessError:
+        print("Exiting", file=sys.stderr)
+        sys.exit(1)
+    except FileNotFoundError:
+        print("Error: Command not found. Make sure 'gum' is installed.", file=sys.stderr)
+        sys.exit(1)
+
+    notes[directory] = {
+        "applications": lst_app,
+    }
+
+    if reason:
+        notes[directory]["reason"] = reason
+
+    save_notes(notes)
+    print(f"✓ Note added for '{ORANGE}{directory}{RESET}'")
+
+
+def query_notes(directory: str = None):
+    """Query notes for a specific package or all packages"""
+    notes = load_notes()
+
+    if not notes:
+        print("No package notes found.")
+        return
+
+    if not directory:
+        sorted_directories = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_directories]
+        lst_directories = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_directories == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    col_width = max(len(get_full_path(path)) for path in notes.keys()) + 4
+
+    print(f"\n=== {GREEN}Directories Notes{RESET} ===")
+    for directory in lst_directories:
+        if directory in notes:
+            display_apps = " - ".join(notes[directory].get("applications", []))
+            print(f"{ORANGE}{get_full_path(directory).ljust(col_width)}{RESET}{DIM}{display_apps}{RESET}")
+            print(f"  {notes[directory].get("reason", "No specified reason.")}")
+            print()
+        else:
+            print(f"No note found for '{ORANGE}{directory}{RESET}'")
+
+
+def get_all_dir_for_app(application: str, notes: dict, col_width: int = 20) -> list:
+    # For an application, get all its directories and format it cleanly.
+    # ~/.config/rofi     Used for rofi config files.
+    res = [
+        f"""{get_full_path(key).ljust(col_width)}{DIM}{val.get("reason", "")}{RESET}"""
+        for key, val in notes.items() if application in val["applications"]
+    ]
+
+    return res
+
+
+def query_application(application: str = None):
+    """Query notes for a specific package or all packages"""
+    notes = load_notes()
+
+    if not notes:
+        print("No package notes found.")
+        return
+
+    sorted_directories = sorted(set([app for elt in notes.values() for app in elt["applications"]]))
+    if not application:
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_directories]
+        lst_applications = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_applications == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    col_width = max(len(get_full_path(path)) for path in notes.keys()) + 4
+
+    print(f"\n=== {GREEN}Applications Notes{RESET} ===")
+    for application in lst_applications:
+        if application in sorted_directories:
+            lst_dirs = get_all_dir_for_app(application, notes, col_width)
+            print(f"{ORANGE}{application}{RESET}:")
+            for subdir in lst_dirs:
+                print(f"  {subdir}")
+            print()
+        else:
+            print(f"No note found for '{ORANGE}{application}{RESET}'")
+
+
+def search_notes(term: str):
+    """Search for a term in package names or reasons"""
+    notes = load_notes()
+
+    if not term:
+        term = subprocess.run(
+            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True).stdout.strip()
+
+    if term == "":
+        print("Action cancelled")
+        sys.exit(1)
+
+    term_lower = term.lower()
+
+    matches = {
+        directory: data for directory, data in notes.items()
+        if term_lower in directory.lower() or term_lower in data.get("reason", "").lower()
+    }
+
+    if matches:
+        print(f"\n=== {GREEN}Search results for '{ORANGE}{term}{GREEN}'{RESET} ===")
+        for directory, data in sorted(matches.items()):
+            print(f"{ORANGE}{get_full_path(directory)}{RESET}:")
+            print(f"  {data.get("reason", "No specified reason.")}")
+            print()
+    else:
+        print(f"No matches found for '{ORANGE}{term}{RESET}'")
+
+
+def edit_note(directory: str):
+    """Edit notes for a directory"""
+    notes = load_notes()
+    if not directory:
+        sorted_directories = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--header=Choose", *sorted_directories]
+        directory = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+        if directory == "":
+            print("Action cancelled")
+            sys.exit(1)
+
+    os.system("clear")
+    current_reason = notes[directory].get("reason", "")
+    subprocess.run(["wl-copy", current_reason])
+    print(f"\n=== {GREEN}Current reason{RESET} ===")
+    print(f"""Applications : {" - ".join(notes[directory].get("applications", []))}""")
+    print(f"""Reason : {current_reason}""")
+    print()
+    add_note(directory=directory)
+
+
+def remove_note(directory: str):
+    """Remove a note for a package"""
+    notes = load_notes()
+    if not directory:
+        sorted_directories = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_directories]
+        lst_directories = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_directories == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    for directory in lst_directories:
+        if directory in notes:
+            del notes[directory]
+            save_notes(notes)
+            print(f"✓ Note removed for '{ORANGE}{directory}{RESET}'")
+        else:
+            print(f"No note found for '{ORANGE}{directory}{RESET}'")
+
+
+def main():
+    args = parse_args()
+
+    if not (command := args.command):
+        lst_gum_options = ["gum", "choose", "add", "query", "query-application", "search", "edit", "remove"]
+        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
+        args = parse_args([command])
+
+    if args.command == "":
+        sys.exit(1)
+
+    if args.command == "add":
+        add_note(args.directory)
+
+    elif args.command == "query":
+        query_notes(args.directory)
+
+    elif args.command == "query-application":
+        query_application(args.application)
+
+    elif args.command == "search":
+        search_notes(args.term)
+
+    elif args.command == "edit":
+        edit_note(args.directory)
+
+    elif args.command == "remove":
+        remove_note(args.directory)
+
+
+if __name__ == "__main__":
+    main()

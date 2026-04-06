@@ -28,7 +28,7 @@ sduh() {
     sudo du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "0k"
 }
 
-# Colour-code a size string based on MB thresholds ($2=warn MB, $3=alert MB)
+# Colour-code a size string based on MB thresholds ($2=warn MB, $3=alert MB).
 colorize() {
     local raw="$1" warn_mb="$2" alert_mb="$3"
     local mb
@@ -157,7 +157,7 @@ subsection "System"
 # -- Pacakge Manager --------------------------------------------------------------------
 
 subsubsection "Pacman / AUR"
-# pacman pkg cache (sudo may be needed; fallback gracefully)
+# pacman pkg cache (sudo may be needed; fallback gracefully).
 PKG_CACHE="/var/cache/pacman/pkg"
 if PKG_SIZE=$(sudo du -sh "$PKG_CACHE" 2>/dev/null | awk '{print $1}'); then
     # stale partial downloads
@@ -170,13 +170,13 @@ else
     row "pacman pkg cache" "${DIM}(needs sudo)${RESET}"
 fi
 
-# yay build cache
+# yay build cache.
 YAY_CACHE="${HOME}/.cache/yay"
 if [[ -d "$YAY_CACHE" ]]; then
     row "yay build cache" "$(colorize "$(duh "$YAY_CACHE")" 512 1024)"
 fi
 
-# orphaned packages
+# orphaned packages.
 ORPHANS=$(pacman -Qdtq 2>/dev/null | wc -l) || true
 if (( ORPHANS == 0 )); then ok "No orphaned packages"
 elif (( ORPHANS < 5 )); then warn "$ORPHANS orphaned package(s)  → yay -Yc"
@@ -222,7 +222,7 @@ subsection "Applications"
 subsubsection "Main cache (~/.cache)"
 other_caches="uv brave-cache pre-commit"
 
-CACHE_THRESHOLD_MB=300  # only show dirs above this size
+CACHE_THRESHOLD_MB=300  # only show dirs above this size.
 
 CACHE_TOTAL=$(duh "${HOME}/.cache")
 row "total" "$(colorize "$CACHE_TOTAL" 3000 7000)\t ${DIM}(includes entries below)${RESET}"
@@ -287,7 +287,7 @@ subsection "Dev tools"
 # -- Python ecosystem -------------------------------------------------------------------
 
 subsubsection "Python"
-# pip
+# pip.
 if command -v pip &>/dev/null; then
     PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g') || true
     if [[ -z $PIP_INFO ]]; then
@@ -296,19 +296,19 @@ if command -v pip &>/dev/null; then
     row "pip cache (index / wheels)" "$(colorize ${PIP_INFO} 500 1500)"
 fi
 
-# uv
+# uv.
 if command -v uv &>/dev/null; then
     UV_DIR=$(uv cache dir 2>/dev/null || echo "${HOME}/.cache/uv")
     UV_SZ=$(duh "$UV_DIR")
     row "uv cache" "$(colorize "$UV_SZ" 1000 2000)\t ${DIM}(${UV_DIR})${RESET}"
 fi
 
-# pyenv
+# pyenv.
 PYENV_ROOT="${PYENV_ROOT:-${HOME}/.pyenv}"
 if [[ -d "$PYENV_ROOT" ]]; then
     PYENV_SZ=$(duh "$PYENV_ROOT")
     row "pyenv root" "$(colorize "$PYENV_SZ" 2000 5000)\t ${DIM}(${PYENV_ROOT})${RESET}"
-    # shims count
+    # shims count.
     SHIMS=$(find "${PYENV_ROOT}/shims" -maxdepth 1 -type f 2>/dev/null | wc -l)
     row "pyenv shims" "$SHIMS  ${DIM}\t (run: pyenv rehash if stale)${RESET}"
 fi

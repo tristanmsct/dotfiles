@@ -51,6 +51,14 @@ _watcher() {
                     _arguments '2:command:_watcher-cache'
             esac
             ;;
+        4)
+            if [[ ${words[2]} == "xdg" ]] && [[ ${words[3]} == "notes" ]]; then
+                 _arguments '3:command:_watcher-xdgnotes'
+            elif
+                [[ ${words[2]} == "pkglog" ]] && [[ ${words[3]} == "notes" ]]; then
+                 _arguments '3:command:_watcher-pkgnotes'
+            fi
+            ;;
     esac
 }
 

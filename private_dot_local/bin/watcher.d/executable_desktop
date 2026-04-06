@@ -14,14 +14,14 @@ SYSTEM_DIR="/usr/share/applications"
 LOCAL_DIR="$HOME/.local/share/applications"
 NOTES_DIR="$HOME/.local/share/watcher/desktop"
 
-# Ensure notes directory exists
+# Ensure notes directory exists.
 mkdir -p "$NOTES_DIR"
 
-# Find .desktop files in both directories
+# Find .desktop files in both directories.
 monitor_list=$(comm -12 <(ls "$SYSTEM_DIR" 2>/dev/null | sort) <(ls "$LOCAL_DIR" 2>/dev/null | sort))
 
 if [[ -z "$1" ]]; then
-    # Show differences
+    # Show differences.
     has_changes=false
     while IFS= read -r app_file; do
         source_file="$SYSTEM_DIR/$app_file"
@@ -44,7 +44,7 @@ if [[ -z "$1" ]]; then
         echo "No changes"
     fi
 elif [[ "$1" == "resolve" ]]; then
-    # Resolve differences
+    # Resolve differences.
     has_changes=false
     while IFS= read -r app_file; do
         source_file="$SYSTEM_DIR/$app_file"
@@ -68,7 +68,7 @@ elif [[ "$1" == "resolve" ]]; then
         fi
     fi
 elif [[ "$1" == "update" ]]; then
-    # Update tracked files
+    # Update tracked files.
     if gum confirm "Confirm desktop baseline update"; then
         while IFS= read -r app_file; do
             cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"

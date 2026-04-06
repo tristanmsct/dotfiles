@@ -42,10 +42,10 @@ get_file() {
         printf "%s/%s/%s - %s\n", substr(date,1,4), substr(date,5,2), substr(date,7,2), $0
     }' | gum choose $options "$@")
 
-    # Exit if nothing selected
+    # Exit if nothing selected.
     [[ -z $selected ]] && return 1
 
-    # Extract and return the original filename(s) with full path
+    # Extract and return the original filename(s) with full path.
     while IFS= read -r line; do
         filename=$(awk -F' - ' '{print $2}' <<< "$line")
         echo "${PACKAGE_INFO_DIR}${filename}"
@@ -53,18 +53,18 @@ get_file() {
 }
 
 save_package_list () {
-    # Set output directory
+    # Set output directory.
 
     OUTPUT_FILE="$PACKAGE_INFO_DIR/packages_$(date +%Y%m%d_%H%M%S)"
 
-    # Create output directory
+    # Create output directory.
     mkdir -p "$PACKAGE_INFO_DIR"
 
-    # 1. List all package
+    # List all package.
     echo "Collecting all installed packages..."
     declare -A order=([core]=1 [extra]=2 [multilib]=3 [cachyos]=4 [cachyos-v3]=5 [aur]=6)
 
-    # Get list of explicitly installed packages
+    # Get list of explicitly installed packages.
     explicit=$(pacman -Qe | awk '{print $1}')
 
     {
@@ -83,7 +83,7 @@ save_package_list () {
         done | sort -t'|' -k1,1n | cut -d'|' -f2- | tr '|' ','
     } > "$OUTPUT_FILE"
 
-    # When the script is run by the pacman hook, it is run as root
+    # When the script is run by the pacman hook, it is run as root.
     # This command will transfer the file ownership to my user.
     if [ -n "$SUDO_USER" ]; then
         chown "$SUDO_USER:$SUDO_USER" "$OUTPUT_FILE"
@@ -164,11 +164,11 @@ show_diff () {
     echo
 
     echo -e "=== ${GREEN}Installation type changed${RESET} ==="
-    # Get packages in both files (by repo,name only)
+    # Get packages in both files (by repo,name only).
     awk -F',' 'NR>1 {print $1","$2}' "$file1" | sort > /tmp/new_keys.tmp
     awk -F',' 'NR>1 {print $1","$2}' "$file2" | sort > /tmp/old_keys.tmp
 
-    # Find common packages
+    # Find common packages.
     comm -12 /tmp/old_keys.tmp /tmp/new_keys.tmp | while read key; do
         old_line=$(grep "^$key," /tmp/old.tmp)
         new_line=$(grep "^$key," /tmp/new.tmp)
@@ -200,7 +200,8 @@ case $1 in
         delete_file
         ;;
     notes)
-        "$HOME/.local/bin/watcher.d/_pacnotes"
+        shift
+        "$HOME/.local/bin/watcher.d/_pkgnotes" "$@"
         ;;
     *)
         echo "Unkown command."
