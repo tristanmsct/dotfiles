@@ -116,7 +116,7 @@ done
 
 gio set "$HOME/Media" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder_color_default_pictures.svg"
 
-# Forces nautilus to reload its theme, otherwise the icon are changed but not orchis themé&e.
+# Forces nautilus to reload its theme, otherwise the icon are changed but not orchis theme.
 pkill -f nautilus
 
 # ---------------------------------------------------------------------------------------

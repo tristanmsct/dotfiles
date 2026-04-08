@@ -43,6 +43,12 @@ enhance_templates () {
         sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $HOME/.cache/wal/colors-nwg.css
         sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $HOME/.cache/wal/colors-nwg.css
 
+        # NMRS
+        sed -i -E "s/(accent-color @color)[0-9]{1,2}/\1$COLOR_NB/" $HOME/.cache/wal/colors-nmrs.css
+        sed -i -E "s/(highlight-color )rgba\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},1\)/\1$saturated_color/" $HOME/.cache/wal/colors-nmrs.css
+        sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $HOME/.cache/wal/colors-nmrs.css
+        sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $HOME/.cache/wal/colors-nmrs.css
+
         # Waybar
         sed -i -E "s/(accent-color @color)[0-9]{1,2}/\1$COLOR_NB/" $HOME/.cache/wal/colors-waybar.css
         sed -i -E "s/(highlight-color )rgba\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},1\)/\1$saturated_color/" $HOME/.cache/wal/colors-waybar.css
@@ -82,6 +88,13 @@ enhance_templates () {
         echo "@define-color highlight-color $saturated_color;" >> "$HOME/.cache/wal/colors-nwg.css"
         echo "@define-color background-theme $BG_COLOR;" >> "$HOME/.cache/wal/colors-nwg.css"
         echo "@define-color foreground-theme $TXT_COLOR;" >> "$HOME/.cache/wal/colors-nwg.css"
+
+        # NMRS
+        printf "\n" >> "$HOME/.cache/wal/colors-nmrs.css"
+        echo "@define-color accent-color @color$COLOR_NB;" >> "$HOME/.cache/wal/colors-nmrs.css"
+        echo "@define-color highlight-color $saturated_color;" >> "$HOME/.cache/wal/colors-nmrs.css"
+        echo "@define-color background-theme $BG_COLOR;" >> "$HOME/.cache/wal/colors-nmrs.css"
+        echo "@define-color foreground-theme $TXT_COLOR;" >> "$HOME/.cache/wal/colors-nmrs.css"
 
         # Waybar
         printf "\n" >> "$HOME/.cache/wal/colors-waybar.css"

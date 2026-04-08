@@ -1,0 +1,90 @@
+/*
+ *  ____        __ _       _                 _                   _
+ * |  _ \ ___  / _(_)  ___(_)_ __ ___  _ __ | | ___    ___ _ __ | |_ _ __ _   _
+ * | |_) / _ \| |_| | / __| | '_ ` _ \| '_ \| |/ _ \  / _ \ '_ \| __| '__| | | |
+ * |  _ < (_) |  _| | \__ \ | | | | | | |_) | |  __/ |  __/ | | | |_| |  | |_| |
+ * |_| \_\___/|_| |_| |___/_|_| |_| |_| .__/|_|\___|  \___|_| |_|\__|_|   \__, |
+ *                                    |_|                                 |___/
+ *
+ * ----------------------------------------------------------------------------------------------------------------------------------------
+ * For a simple prompt for a value.
+ * ----------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+// Configuration --------------------------------------------------------------------------------------------------------------------------
+configuration {
+    modi:                           "drun";
+    show-icons:                     false;
+	hover-select:                   true;
+    me-select-entry:                "";
+    me-accept-entry:                "MousePrimary";
+}
+
+@import "config-base.rasi"
+
+// Overwriting font size.
+configuration {
+    font:                           "Fira Sans 13";
+}
+
+// Window / Mainbox -----------------------------------------------------------------------------------------------------------------------
+window {
+    location:                       northeast;
+    anchor:                         northeast;
+    width:                          25%;
+    x-offset:                       -5%;
+    y-offset:                       5%;
+    spacing:                        0;
+    padding:                        0% 1% 0 0%;
+    margin:                         0;
+}
+
+mainbox {
+    orientation:                    horizontal;
+    spacing:                        0px;
+    margin:                         0px;
+    children:                       [ "listbox" ];
+}
+
+// Listbox --------------------------------------------------------------------------------------------------------------------------------
+listbox {
+    children:                       [ "inputbar", "message", "listview" ];
+}
+
+// Search bar -----------------------------------------------------------------------------------------------------------------------------
+inputbar {
+	children: 						[ "textbox-prompt-colon", "entry" ];
+    background-color:               transparent;
+    border:                         0;
+}
+
+entry {
+    placeholder:                    "Search";
+}
+
+// Listview -------------------------------------------------------------------------------------------------------------------------------
+listview {
+    columns:                        1;
+    lines:                          10;
+    cycle:                          true;
+    padding:                        1%;
+}
+
+// Elements -------------------------------------------------------------------------------------------------------------------------------
+element {
+    padding:                        1% 0 1% 1%;
+    margin:                         0.5% 0 0.5% 0;
+}
+
+element-icon {
+    background-color:               transparent;
+    text-color:                     inherit;
+    size:                           6%;
+}
+
+element-text {
+    background-color:               transparent;
+    text-color:                     inherit;
+    vertical-align:                 0.5;
+    horizontal-align:               0.0;
+}
