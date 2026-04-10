@@ -77,9 +77,22 @@ def add_note(file: str, reason: str):
         lst_gum_prompt = ["gum", "input", "--header=Custom system file", "--placeholder=Input..."]
         file = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).stdout.strip()
 
+    if file == "":
+        print("Action cancelled")
+        sys.exit(1)
+
+    bl_concat = True
+    if file in notes:
+        lst_gum_prompt = ["gum", "confirm", "File already in notes, append new notes ?"]
+        # Gum returncode is inverted for some reason ?
+        bl_concat = not bool(subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).returncode)
+
     if not reason:
         lst_gum_prompt = ["gum", "input", f"--header=Reason for {file}", "--placeholder=Type the reason this custom system file"]
         reason = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+    if file in notes and bl_concat:
+        reason = notes[file]["reason"] + " " + reason
 
     notes[file] = {
         "reason": reason.strip('"')
@@ -131,7 +144,9 @@ def query_notes(file: str = None):
     for file in lst_files:
         if file in notes:
             print(f"{ORANGE}{file}{RESET}:")
-            print(f"  {notes[file]['reason']}")
+            if (reason := notes[file]['reason']) == "":
+                reason = "No specified reason."
+            print(f"  {reason}")
             print()
         else:
             print(f"No note found for '{ORANGE}{file}{RESET}'")
