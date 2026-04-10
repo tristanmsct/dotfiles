@@ -15,110 +15,117 @@
 OUTPUT_DIR="$HOME/.local/share/watcher/sysinfo/report_$(date +%Y%m%d_%H%M%S)"
 
 
-if gum confirm "Confirm sysinfo backup creation"; then
-    # Create output directory.
-    mkdir -p "$OUTPUT_DIR"
-    echo "Creating system information files in: $OUTPUT_DIR"
+if [[ $1 == "notes" ]]; then
+    shift
+    "$HOME/.local/bin/watcher.d/_sysnotes" "$@"
 else
-    echo "Backup cancelled"
-    exit
-fi
 
-# 1. CPU Information
-echo "Collecting CPU information..."
-{
-    echo "=== CPU INFO ==="
-    lscpu
-    echo -e "\n=== /proc/cpuinfo ==="
-    cat /proc/cpuinfo
-} > "$OUTPUT_DIR/cpu_info.txt"
-
-# 2. Memory Information
-echo "Collecting memory information..."
-{
-    echo "=== MEMORY INFO ==="
-    free -h
-    echo -e "\n=== /proc/meminfo ==="
-    cat /proc/meminfo
-} > "$OUTPUT_DIR/memory_info.txt"
-
-# 3. Device Information
-echo "Collecting device information..."
-{
-    echo "=== BLOCK DEVICES ==="
-    lsblk
-    echo -e "\n=== PCI DEVICES ==="
-    lspci
-    echo -e "\n=== USB DEVICES ==="
-    lsusb
-    echo -e "\n=== INPUT DEVICES ==="
-    cat /proc/bus/input/devices
-} > "$OUTPUT_DIR/devices_info.txt"
-
-# 4. Network Information
-echo "Collecting network information..."
-{
-    echo "=== NETWORK INTERFACES ==="
-    ip addr show
-    echo -e "\n=== NETWORK ROUTES ==="
-    ip route show
-    echo -e "\n=== NETWORK STATISTICS ==="
-    ss -tuln
-} > "$OUTPUT_DIR/network_info.txt"
-
-# 5. System Information
-echo "Collecting general system information..."
-{
-    echo "=== SYSTEM INFO ==="
-    uname -a
-    echo -e "\n=== DISTRIBUTION INFO ==="
-    cat /etc/os-release
-    echo -e "\n=== UPTIME ==="
-    uptime
-    echo -e "\n=== KERNEL MODULES ==="
-    lsmod
-    echo -e "\n=== DISK USAGE ==="
-    df -h
-} > "$OUTPUT_DIR/system_info.txt"
-
-# 6. Graphics Information
-echo "Collecting graphics information..."
-{
-    echo "=== GRAPHICS CARDS ==="
-    lspci | grep -i vga
-    lspci | grep -i 3d
-    echo -e "\n=== GRAPHICS DRIVERS ==="
-    lsmod | grep -E "(nvidia|amdgpu|radeon|i915|nouveau)"
-    if command -v nvidia-smi &> /dev/null; then
-        echo -e "\n=== NVIDIA INFO ==="
-        nvidia-smi
+    if gum confirm "Confirm sysinfo backup creation"; then
+        # Create output directory.
+        mkdir -p "$OUTPUT_DIR"
+        echo "Creating system information files in: $OUTPUT_DIR"
+    else
+        echo "Backup cancelled"
+        exit
     fi
-} > "$OUTPUT_DIR/graphics_info.txt"
 
-# 7. Services Information
-echo "Collecting services information..."
-{
-    echo "=== ENABLED SERVICES ==="
-    systemctl list-unit-files --state=enabled
-    echo -e "\n=== RUNNING SERVICES ==="
-    systemctl list-units --type=service --state=running
-} > "$OUTPUT_DIR/services_info.txt"
+    # 1. CPU Information
+    echo "Collecting CPU information..."
+    {
+        echo "=== CPU INFO ==="
+        lscpu
+        echo -e "\n=== /proc/cpuinfo ==="
+        cat /proc/cpuinfo
+    } > "$OUTPUT_DIR/cpu_info.txt"
 
-# 8. Create a summary file
-echo "Creating summary file..."
-{
-    echo "System Information Collection"
-    echo "Generated on: $(date)"
-    echo "Hostname: $(cat /etc/hostname 2>/dev/null || uname -n)"
-    echo "User: $(whoami)"
+    # 2. Memory Information
+    echo "Collecting memory information..."
+    {
+        echo "=== MEMORY INFO ==="
+        free -h
+        echo -e "\n=== /proc/meminfo ==="
+        cat /proc/meminfo
+    } > "$OUTPUT_DIR/memory_info.txt"
+
+    # 3. Device Information
+    echo "Collecting device information..."
+    {
+        echo "=== BLOCK DEVICES ==="
+        lsblk
+        echo -e "\n=== PCI DEVICES ==="
+        lspci
+        echo -e "\n=== USB DEVICES ==="
+        lsusb
+        echo -e "\n=== INPUT DEVICES ==="
+        cat /proc/bus/input/devices
+    } > "$OUTPUT_DIR/devices_info.txt"
+
+    # 4. Network Information
+    echo "Collecting network information..."
+    {
+        echo "=== NETWORK INTERFACES ==="
+        ip addr show
+        echo -e "\n=== NETWORK ROUTES ==="
+        ip route show
+        echo -e "\n=== NETWORK STATISTICS ==="
+        ss -tuln
+    } > "$OUTPUT_DIR/network_info.txt"
+
+    # 5. System Information
+    echo "Collecting general system information..."
+    {
+        echo "=== SYSTEM INFO ==="
+        uname -a
+        echo -e "\n=== DISTRIBUTION INFO ==="
+        cat /etc/os-release
+        echo -e "\n=== UPTIME ==="
+        uptime
+        echo -e "\n=== KERNEL MODULES ==="
+        lsmod
+        echo -e "\n=== DISK USAGE ==="
+        df -h
+    } > "$OUTPUT_DIR/system_info.txt"
+
+    # 6. Graphics Information
+    echo "Collecting graphics information..."
+    {
+        echo "=== GRAPHICS CARDS ==="
+        lspci | grep -i vga
+        lspci | grep -i 3d
+        echo -e "\n=== GRAPHICS DRIVERS ==="
+        lsmod | grep -E "(nvidia|amdgpu|radeon|i915|nouveau)"
+        if command -v nvidia-smi &> /dev/null; then
+            echo -e "\n=== NVIDIA INFO ==="
+            nvidia-smi
+        fi
+    } > "$OUTPUT_DIR/graphics_info.txt"
+
+    # 7. Services Information
+    echo "Collecting services information..."
+    {
+        echo "=== ENABLED SERVICES ==="
+        systemctl list-unit-files --state=enabled
+        echo -e "\n=== RUNNING SERVICES ==="
+        systemctl list-units --type=service --state=running
+    } > "$OUTPUT_DIR/services_info.txt"
+
+    # 8. Create a summary file
+    echo "Creating summary file..."
+    {
+        echo "System Information Collection"
+        echo "Generated on: $(date)"
+        echo "Hostname: $(cat /etc/hostname 2>/dev/null || uname -n)"
+        echo "User: $(whoami)"
+        echo ""
+        echo "Files created:"
+        ls -la "$OUTPUT_DIR"
+    } > "$OUTPUT_DIR/README.txt"
+
     echo ""
-    echo "Files created:"
+    echo "System information collection complete!"
+    echo "Files saved in: $OUTPUT_DIR"
+    echo ""
+    echo "Generated files:"
     ls -la "$OUTPUT_DIR"
-} > "$OUTPUT_DIR/README.txt"
 
-echo ""
-echo "System information collection complete!"
-echo "Files saved in: $OUTPUT_DIR"
-echo ""
-echo "Generated files:"
-ls -la "$OUTPUT_DIR"
+fi

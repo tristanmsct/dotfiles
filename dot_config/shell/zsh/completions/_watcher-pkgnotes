@@ -5,7 +5,7 @@ _watcher-pkgnotes() {
     options=(
       'add:Add a package and its reason'
       'query:Query all or a specific package'
-      'search:Search for a package or a reason'
+      'search:Search for a package or a reason by search term'
       'edit:Edit notes for a package'
       'remove:Remove notes for a package'
     )

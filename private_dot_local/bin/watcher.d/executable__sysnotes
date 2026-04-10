@@ -1,0 +1,218 @@
+#!/usr/bin/env python
+"""
+System Notes Manager - Track reasons for system custom files
+
+Created on 2026-04-10.
+
+@author: Tristan Muscat
+@email: tristan.muscat@pm.me
+
+Usage:
+    _pkgnotes add <file> <reason>
+    _pkgnotes query <file>
+    _pkgnotes search <file>
+    _pkgnotes edit <file>
+    _pkgnotes remove <file>
+"""
+
+import subprocess
+import json
+from pathlib import Path
+import sys
+import argparse
+import os
+
+# ANSI color codes.
+ORANGE = "\033[38;2;255;158;23m"
+GREEN = "\033[38;2;125;235;103m"
+RESET = "\033[0m"
+
+NOTES_FILE = Path.home() / ".local/share/watcher/sysnotes" / "db.json"
+
+
+def parse_args(lst_args=None):
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(prog="sysnotes", description="Track reasons for custom system files")
+    subparsers = parser.add_subparsers(title="Commands", metavar="", dest="command")
+
+    parser_add = subparsers.add_parser('add', help='Add a custom system file and its reason', usage="<file> <reason>")
+    parser_add.add_argument("file", type=str, nargs="?")
+    parser_add.add_argument("reason", type=str, nargs="?")
+
+    parser_query = subparsers.add_parser('query', help='Query all or a specific custom system file', usage="<file>")
+    parser_query.add_argument("file", type=str, nargs="?")
+
+    parser_search = subparsers.add_parser('search', help='Search for a custom system file or a reason by search term', usage="<term>")
+    parser_search.add_argument("term", type=str, nargs="?")
+
+    parser_edit = subparsers.add_parser('edit', help='Edit notes for a custom system file', usage="<file>")
+    parser_edit.add_argument("file", type=str, nargs="?")
+
+    parser_remove = subparsers.add_parser('remove', help='Remove notes for a custom system file', usage="<file>")
+    parser_remove.add_argument("file", type=str, nargs="?")
+
+    return parser.parse_args(lst_args)
+
+
+def load_notes() -> dict:
+    """Load notes from JSON file"""
+    if not NOTES_FILE.exists():
+        return {}
+    with open(NOTES_FILE, 'r') as f:
+        return json.load(f)
+
+
+def save_notes(notes: dict):
+    """Save notes to JSON file"""
+    NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(NOTES_FILE, 'w') as f:
+        json.dump(notes, f, indent=2)
+
+
+def add_note(file: str, reason: str):
+    """Add or update a note for a custom system file"""
+    notes = load_notes()
+
+    if not file:
+        lst_gum_prompt = ["gum", "input", "--header=Custom system file", "--placeholder=Input..."]
+        file = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+    if not reason:
+        lst_gum_prompt = ["gum", "input", f"--header=Reason for {file}", "--placeholder=Type the reason this custom system file"]
+        reason = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+    notes[file] = {
+        "reason": reason.strip('"')
+    }
+
+    save_notes(notes)
+    print(f"✓ Note added for '{ORANGE}{file}{RESET}'")
+
+
+def remove_note(file):
+    """Remove a note for a custom system file"""
+    notes = load_notes()
+    if not file:
+        sorted_files = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_files]
+        lst_files = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_files == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    for file in lst_files:
+        if file in notes:
+            del notes[file]
+            save_notes(notes)
+            print(f"✓ Note removed for '{ORANGE}{file}{RESET}'")
+        else:
+            print(f"No note found for '{ORANGE}{file}{RESET}'")
+
+
+def query_notes(file: str = None):
+    """Query notes for a specific custom system file or all of them"""
+    notes = load_notes()
+
+    if not notes:
+        print("No custom system file notes found.")
+        return
+
+    if not file:
+        sorted_files = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_files]
+        lst_files = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+
+        if lst_files == [""]:
+            print("Action cancelled")
+            sys.exit(1)
+
+    print(f"\n=== {GREEN}Custom system file Notes{RESET} ===")
+    for file in lst_files:
+        if file in notes:
+            print(f"{ORANGE}{file}{RESET}:")
+            print(f"  {notes[file]['reason']}")
+            print()
+        else:
+            print(f"No note found for '{ORANGE}{file}{RESET}'")
+
+
+def search_notes(term):
+    """Search for a term in custom system file paths or reasons"""
+    notes = load_notes()
+
+    if not term:
+        term = subprocess.run(
+            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True).stdout.strip()
+
+    if term == "":
+        print("Action cancelled")
+        sys.exit(1)
+
+    term_lower = term.lower()
+
+    matches = {
+        file: data for file, data in notes.items()
+        if term_lower in file.lower() or term_lower in data['reason'].lower()
+    }
+
+    if matches:
+        print(f"\n=== {GREEN}Search results for '{ORANGE}{term}{GREEN}'{RESET} ===")
+        for file, data in sorted(matches.items()):
+            print(f"{ORANGE}{file}{RESET}:")
+            print(f"  {data['reason']}")
+            print()
+    else:
+        print(f"No matches found for '{ORANGE}{term}{RESET}'")
+
+
+def edit_note(file: str):
+    """Edit notes for a custom system file"""
+    notes = load_notes()
+    if not file:
+        sorted_files = sorted(notes.keys())
+        lst_gum_filter = ["gum", "filter", "--header=Choose", *sorted_files]
+        file = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
+
+        if file == "":
+            print("Action cancelled")
+            sys.exit(1)
+
+    os.system("clear")
+    current_reason = notes[file]["reason"]
+    subprocess.run(["wl-copy", current_reason])
+    print(f"\n=== {GREEN}Current reason{RESET} ===")
+    print(f"""Reason : {current_reason}""")
+    print()
+    add_note(file=file, reason="")
+
+
+def main():
+    args = parse_args()
+
+    if not (command := args.command):
+        lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove"]
+        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
+        args = parse_args([command])
+
+    if args.command == "":
+        sys.exit(1)
+
+    if args.command == "add":
+        add_note(args.file, args.reason)
+
+    elif args.command == "query":
+        query_notes(args.file)
+
+    elif args.command == "search":
+        search_notes(args.term)
+
+    elif args.command == "edit":
+        edit_note(args.file)
+
+    elif args.command == "remove":
+        remove_note(args.file)
+
+
+if __name__ == "__main__":
+    main()

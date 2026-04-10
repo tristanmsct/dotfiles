@@ -53,7 +53,7 @@ def parse_args(lst_args=None):
     parser_query_app = subparsers.add_parser('query-application', help='Query all or a specific application', usage="<application>")
     parser_query_app.add_argument("application", type=str, nargs="?")
 
-    parser_search = subparsers.add_parser('search', help='Search for a directory or a reason', usage="<term>")
+    parser_search = subparsers.add_parser('search', help='Search for a directory or a reason by search term', usage="<term>")
     parser_search.add_argument("term", type=str, nargs="?")
 
     parser_edit = subparsers.add_parser('edit', help='Edit notes for a directory', usage="<directory>")
@@ -111,7 +111,7 @@ def pick_directory(lst_known_dirs: list):
             print("No directory to annotate", file=sys.stderr)
             sys.exit(1)
 
-        # Pass the package list to gum filter via stdin.
+        # Pass the directories list to gum filter via stdin.
         gum_result = subprocess.run(
             ["gum", "filter", "--placeholder", "Search directories...", *lst_res],
             stdout=subprocess.PIPE,
@@ -136,7 +136,7 @@ def pick_directory(lst_known_dirs: list):
 
 
 def add_note(directory: str):
-    """Add or update a note for a package"""
+    """Add or update a note for a directory"""
     notes = load_notes()
 
     if not directory:
@@ -180,11 +180,11 @@ def add_note(directory: str):
 
 
 def query_notes(directory: str = None):
-    """Query notes for a specific package or all packages"""
+    """Query notes for a specific directory or all directories"""
     notes = load_notes()
 
     if not notes:
-        print("No package notes found.")
+        print("No directory notes found.")
         return
 
     if not directory:
@@ -221,11 +221,11 @@ def get_all_dir_for_app(application: str, notes: dict, col_width: int = 20) -> l
 
 
 def query_application(application: str = None):
-    """Query notes for a specific package or all packages"""
+    """Query notes for a specific directory or all directories"""
     notes = load_notes()
 
     if not notes:
-        print("No package notes found.")
+        print("No directory notes found.")
         return
 
     sorted_directories = sorted(set([app for elt in notes.values() for app in elt["applications"]]))
@@ -252,7 +252,7 @@ def query_application(application: str = None):
 
 
 def search_notes(term: str):
-    """Search for a term in package names or reasons"""
+    """Search for a term in directory names or reasons"""
     notes = load_notes()
 
     if not term:
@@ -303,7 +303,7 @@ def edit_note(directory: str):
 
 
 def remove_note(directory: str):
-    """Remove a note for a package"""
+    """Remove a note for a directory"""
     notes = load_notes()
     if not directory:
         sorted_directories = sorted(notes.keys())

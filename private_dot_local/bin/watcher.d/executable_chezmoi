@@ -67,7 +67,7 @@ chezmoi-sync() {
 			*M*)
 				echo -e "File was ${PURPLE}MODIFIED${RESET}"
 				# chezmoi diff "$abs_target_file" 2>/dev/null || echo "(Could not show diff)".
-				echo -n "Apply source->target [a], re-add target->source [r], skip [s], quit [q]? "
+				echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
 				;;
 		esac
 
@@ -156,9 +156,14 @@ chezmoi-sync() {
 							chezmoi re-add "$abs_target_file"
 							break
 							;;
+						c|C)
+							delta "$source_file" "$target_file"
+							echo
+							echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
+							;;
 						s|S) break ;;
 						q|Q) exit 0 ;;
-						*) echo -n "Invalid. Use a, r, s, or q: " ;;
+						*) echo -n "Invalid. Use a, r, c, s, or q: " ;;
 					esac
 					;;
 			esac

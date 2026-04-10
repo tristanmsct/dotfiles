@@ -42,7 +42,7 @@ def parse_args(lst_args=None):
     parser_query = subparsers.add_parser('query', help='Query all or a specific package', usage="<package>")
     parser_query.add_argument("package", type=str, nargs="?")
 
-    parser_search = subparsers.add_parser('search', help='Search for a package or a reason', usage="<term>")
+    parser_search = subparsers.add_parser('search', help='Search for a package or a reason by search term', usage="<term>")
     parser_search.add_argument("term", type=str, nargs="?")
 
     parser_edit = subparsers.add_parser('edit', help='Edit notes for a package', usage="<package>")
@@ -199,7 +199,7 @@ def search_notes(term):
 
 
 def edit_note(package: str):
-    """Edit notes for a directory"""
+    """Edit notes for a package"""
     notes = load_notes()
     if not package:
         sorted_packages = sorted(notes.keys())
