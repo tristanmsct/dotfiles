@@ -32,7 +32,8 @@ BASE_PATHS = {
     "config": "~/.config",
     "cache": "~/.cache",
     "share": "~/.local/share",
-    "state": "~/.local/state"
+    "state": "~/.local/state",
+    "fakehome": "~/.local/state/fake_home"
 }
 
 NOTES_FILE = Path.home() / ".local/share/watcher/xdgnotes" / "db.json"
