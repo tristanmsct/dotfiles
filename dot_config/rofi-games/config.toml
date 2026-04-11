@@ -40,3 +40,7 @@ launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
 [[entries]]
 title = "FTL: Faster Than Light"
 launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+
+[[entries]]
+title = "Don't Starve"
+launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
