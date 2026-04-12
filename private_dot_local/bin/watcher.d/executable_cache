@@ -48,7 +48,7 @@ colorize() {
 }
 
 show_commands() {
-    bat --language=bash --style=plain --color=always <<EOF
+bat --language=bash --style=plain --color=always <<EOF
 $1
 EOF
 }
@@ -57,97 +57,99 @@ EOF
 
 if [[ "$#" -ge 1 ]] && ([[ "$1" == "--tips" ]] || [[ "$1" == "-t" ]]); then
 
-subsection "System"
-subsubsection "Pacman / AUR"
-echo "Remove orphaned packages"
-show_commands "    yay -Yc"
+    subsection "System"
+    subsubsection "Pacman / AUR"
+    echo "Remove orphaned packages"
+    show_commands "    yay -Yc"
 
-echo "Clean package cache"
-show_commands "    yay -Sc"
+    echo "Clean package cache"
+    show_commands "    yay -Sc"
 
-echo "Keep only the 2 most recent versions of each package"
-show_commands "    sudo paccache -rk2"
+    echo "Keep only the 2 most recent versions of each package"
+    show_commands "    sudo paccache -rk2"
 
-echo "Remove cache for uninstalled packages entirely"
-show_commands "    sudo paccache -ruk0"
+    echo "Remove cache for uninstalled packages entirely"
+    show_commands "    sudo paccache -ruk0"
 
-subsubsection "Hyprland / hyprpm"
-echo "Clean hyprpm cache"
-show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
-echo "⚠ This removes the plugins themselves as they are used directly from this cache, use with caution"
+    subsubsection "Hyprland / hyprpm"
+    echo "Clean hyprpm cache"
+    show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
+    echo "⚠ This removes the plugins themselves as they are used directly from this cache, use with caution"
 
-subsubsection "Systemd journal"
-echo "Clean the journal"
-show_commands "    # keep only last 2 weeks"
-show_commands "    sudo journalctl --vacuum-time=2weeks"
-show_commands "    # or cap by size"
-show_commands "    sudo journalctl --vacuum-size=200M"
+    subsubsection "Systemd journal"
+    echo "Clean the journal"
+    show_commands "    # keep only last 2 weeks"
+    show_commands "    sudo journalctl --vacuum-time=2weeks"
+    show_commands "    # or cap by size"
+    show_commands "    sudo journalctl --vacuum-size=200M"
 
-subsubsection "Docker"
-echo "Prune docker system"
-show_commands "    docker system prune"
-echo "Or clean individual components"
-show_commands "    docker image prune"
-show_commands "    docker container prune"
-show_commands "    docker network prune"
-show_commands "    docker volume prune"
-show_commands "    docker builder prune"
-
-
-subsection "Applications"
-
-subsubsection "Main cache (~/.cache)"
-echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
-
-subsubsection "Brave"
-echo "Clean Brave caches from brave://settings/clearBrowserData or with cli"
-show_commands "rm -rf ~/.cache/brave-cache"
-
-subsubsection "Slack"
-echo "Clean Slack caches"
-show_commands "rm -rf ~/.local/share/slack-data/Service\ Worker/CacheStorage"
-
-subsubsection "VSCodium"
-echo "Clean VSCodium caches"
-show_commands "rm -rf ~/.config/VSCodium/Cache ~/.cache/electron"
+    subsubsection "Docker"
+    echo "Prune docker system"
+    show_commands "    docker system prune"
+    echo "Or clean individual components"
+    show_commands "    docker image prune"
+    show_commands "    docker container prune"
+    show_commands "    docker network prune"
+    show_commands "    docker volume prune"
+    show_commands "    docker builder prune"
 
 
-subsection "Dev tools"
+    subsection "Applications"
 
-subsubsection "Python (pip / uv / pyenv)"
-echo "Purge pip cache"
-show_commands "    pip cache purge"
+    subsubsection "Main cache (~/.cache)"
+    echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
 
-echo "Prune uv cache"
-show_commands "    uv cache prune"
+    subsubsection "Brave"
+    echo "Clean Brave caches from brave://settings/clearBrowserData or with cli"
+    show_commands "    rm -rf ~/.cache/brave-cache"
 
-echo "Uninstall unused pyenv versions"
-show_commands "    pyenv uninstall <version>"
+    subsubsection "Slack"
+    echo "Clean Slack caches"
+    show_commands "    rm -rf ~/.local/share/slack-data/Service\ Worker/CacheStorage"
 
-subsubsection "Go"
-echo "Clean go cache"
-
-show_commands "    go clean -cache"
-show_commands "    go clean -modcache"
-
-subsubsection "Rust / Cargo"
-echo "Clean rust cache"
-show_commands "    cargo-cache -a  # cargo install cargo-cache"
-
-subsubsection "Node / npm"
-echo "Clean npm cache"
-show_commands "    npm cache clean --force"
-
-subsubsection "Pre-commit"
-echo "Clean pre-commit environments"
-show_commands "    pre-commit clean"
+    subsubsection "VSCodium"
+    echo "Clean VSCodium caches"
+    show_commands "    rm -rf ~/.config/VSCodium/Cache ~/.cache/electron"
+    echo "⚠ ~/.cache/electron may contain other VSCodium cached files"
 
 
-subsection "Trash"
-echo "Empty the trash directory either graphically or using trash-cli"
-show_commands "    trash-empty 60"
+    subsection "Dev tools"
 
-exit
+    subsubsection "Python (pip / uv / pyenv)"
+    echo "Purge pip cache"
+    show_commands "    pip cache purge"
+
+    echo "Prune and clean uv cache"
+    show_commands "    uv cache prune"
+    show_commands "    uv cache clean"
+
+    echo "Uninstall unused pyenv versions"
+    show_commands "    pyenv uninstall <version>"
+
+    subsubsection "Go"
+    echo "Clean go cache"
+
+    show_commands "    go clean -cache"
+    show_commands "    go clean -modcache"
+
+    subsubsection "Rust / Cargo"
+    echo "Clean rust cache"
+    show_commands "    cargo-cache -a  # cargo install cargo-cache"
+
+    subsubsection "Node / npm"
+    echo "Clean npm cache"
+    show_commands "    npm cache clean --force"
+
+    subsubsection "Pre-commit"
+    echo "Clean pre-commit environments"
+    show_commands "    pre-commit clean"
+
+
+    subsection "Trash"
+    echo "Empty the trash directory either graphically or using trash-cli"
+    show_commands "    trash-empty 60"
+
+    exit
 fi
 
 # == System =============================================================================
@@ -162,7 +164,8 @@ PKG_CACHE="/var/cache/pacman/pkg"
 if PKG_SIZE=$(sudo du -sh "$PKG_CACHE" 2>/dev/null | awk '{print $1}'); then
     # stale partial downloads
     STALE_DL=$(sudo find "$PKG_CACHE" -maxdepth 1 -name 'download-*' 2>/dev/null | wc -l)
-    row "pacman pkg cache" "$(colorize "$PKG_SIZE" 2048 4096)"
+
+    row "pacman pkg cache" "$(colorize "$PKG_SIZE" 2048 4096) \t ${DIM}(${PKG_CACHE})${RESET}"
     if (( STALE_DL > 0 )); then
         warn "$STALE_DL stale download-* dir(s) in $PKG_CACHE  → sudo rm -rf ${PKG_CACHE}/download-*"
     fi
@@ -173,7 +176,7 @@ fi
 # yay build cache.
 YAY_CACHE="${HOME}/.cache/yay"
 if [[ -d "$YAY_CACHE" ]]; then
-    row "yay build cache" "$(colorize "$(duh "$YAY_CACHE")" 512 1024)"
+    row "yay build cache" "$(colorize "$(duh "$YAY_CACHE")" 512 1024)\t ${DIM}(${YAY_CACHE})${RESET}"
 fi
 
 # orphaned packages.
@@ -207,7 +210,7 @@ else
     DOCKER_CACHE="/var/lib/docker"
 
     if [[ -d "$DOCKER_CACHE" ]]; then
-        row "Docker cache" "$(colorize "$(sduh "$DOCKER_CACHE")" 500 1500)\t ${DIM}(${DOCKER_CACHE})${RESET}"
+        row "Docker cache" "$(colorize "$(sduh "$DOCKER_CACHE")" 5000 10000)\t ${DIM}(${DOCKER_CACHE})${RESET}"
     else
         echo -e "  ${DIM}Docker not running or not installed${RESET}"
     fi
@@ -220,7 +223,7 @@ subsection "Applications"
 # -- ~/.cache ---------------------------------------------------------------------------
 
 subsubsection "Main cache (~/.cache)"
-other_caches="uv brave-cache pre-commit"
+other_caches="uv brave-cache pre-commit go-build npm"
 
 CACHE_THRESHOLD_MB=300  # only show dirs above this size.
 
@@ -277,7 +280,6 @@ VSCODIUM_CACHE="${HOME}/.local/share/VSCodium/user-data"
 if [[ -d "$VSCODIUM_CACHE" ]]; then
     subsubsection "VSCodium"
     row "VSCodium cache" "$(colorize "$(duh "$VSCODIUM_CACHE")" 500 1500)\t ${DIM}(${VSCODIUM_CACHE})${RESET}"
-    echo -e "  ${DIM}~/.cache/electron may contain other VSCodium cached files${RESET}"
 fi
 
 # == Dev tools ==========================================================================
@@ -305,9 +307,10 @@ fi
 
 # pyenv.
 PYENV_ROOT="${PYENV_ROOT:-${HOME}/.pyenv}"
+PYENV_CACHE="${PYENV_ROOT:-${HOME}/.pyenv}/cache"
 if [[ -d "$PYENV_ROOT" ]]; then
-    PYENV_SZ=$(duh "$PYENV_ROOT")
-    row "pyenv root" "$(colorize "$PYENV_SZ" 2000 5000)\t ${DIM}(${PYENV_ROOT})${RESET}"
+    PYENV_SZ=$(duh "$PYENV_CACHE")
+    row "pyenv root" "$(colorize "$PYENV_SZ" 1000 2000)\t ${DIM}(${PYENV_CACHE})${RESET}"
     # shims count.
     SHIMS=$(find "${PYENV_ROOT}/shims" -maxdepth 1 -type f 2>/dev/null | wc -l)
     row "pyenv shims" "$SHIMS  ${DIM}\t (run: pyenv rehash if stale)${RESET}"

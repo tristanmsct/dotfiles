@@ -25,6 +25,6 @@ else
     ORANGE='' BLUE='' PURPLE='' CYAN='' GREEN='' BOLD='' DIM='' RESET=''
 fi
 
-section()  { echo -e "=== ${BOLD}${GREEN}$1${RESET} ==="; }
+section()  { echo -e "${BOLD}${GREEN}=== $1 ===${RESET}"; }
 subsection() { echo -e "\n${BOLD}${CYAN}▶ $1${RESET}"; }
 subsubsection()  { echo -e "\n${BOLD}${PURPLE}- $1${RESET}"; }

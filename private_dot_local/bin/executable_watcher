@@ -71,7 +71,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         open)
             xdg-open $HOME/.local/share/watcher > /dev/null 2>&1 & disown
-            exit 1
+            exit 0
             ;;
         all)
             section "Chezmoi files and directories"
@@ -86,19 +86,19 @@ while [[ $# -gt 0 ]]; do
             "$WATCHER_DIR/desktop"
             echo
 
-            if has_flag "$@" -- -c --cache; then
+            if ! has_flag "$@" -- -n --no-cache; then
                 section "System and application caches"
-                "$WATCHER_DIR/cache"
+                "$WATCHER_DIR/_cache" -s
                 echo
             fi
 
-            if ! has_flag "$@" -- -n --nogit; then
+            if has_flag "$@" -- -g --git; then
                 section "Git repositories"
                 "$WATCHER_DIR/git" --aur
                 echo
             fi
 
-            exit 1
+            exit 0
             ;;
         *)
             # Dispatch to watcher plugin.
@@ -107,7 +107,7 @@ while [[ $# -gt 0 ]]; do
             if [[ -x "$target" ]]; then
                 shift
                 exec "$target" "$@"
-                exit 1
+                exit 0
             else
                 echo "Error: $1 not found"
                 echo "Run 'watcher' to see available commands"
