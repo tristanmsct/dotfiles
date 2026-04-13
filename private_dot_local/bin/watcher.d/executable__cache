@@ -168,9 +168,18 @@ def display_system(bl_full: bool = False):
     # Package managers
     cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=2048, thrs_alert=4096)
     cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=512, thrs_alert=1024)
-    bl_display_pkgmanagers = any([cache_pacman.is_gt_thres, cache_yay.is_gt_thres])
-    # TODO : count stale packages
-    # TODO : count orphans
+
+    cmd_stale_downloads = ["sudo", "find", "/var/cache/pacman/pkg", "-maxdepth", "1", "-name", "download-*"]
+    lst_stale_downloads = subprocess.run(cmd_stale_downloads, stdout=subprocess.PIPE, text=True).stdout.split("\n")
+    bl_stale_downloads = not (len(lst_stale_downloads) == 1 and lst_stale_downloads[0] == "")
+
+    lst_orphans = subprocess.run(["pacman", "-Qdtq"], stdout=subprocess.PIPE, text=True)
+    if lst_orphans.returncode == 0:
+        nb_orphans = len(lst_orphans.stdout.split("\n"))
+    else:
+        nb_orphans = 0
+
+    bl_display_pkgmanagers = any([cache_pacman.is_gt_thres, cache_yay.is_gt_thres, bl_stale_downloads])
 
     # Hyprland
     cache_hyprpm = Cache(path="/var/cache/hyprpm", thrs_warn=512, thrs_alert=1024)
@@ -203,22 +212,31 @@ def display_system(bl_full: bool = False):
     if bl_display_system:
         print_section("System", section_type="sub")
 
+    # Package managers
     if bl_display_pkgmanagers or bl_full:
         print_section("Pacman / AUR", section_type="subsub")
         cache_pacman.print_cache_self("pacman pkg cache")
+        if bl_stale_downloads:
+            print_message(
+                f"{len(lst_stale_downloads)} stale download-* dir(s) in {cache_pacman.path}" +
+                f"  → sudo rm -rf {cache_pacman.path}/download-*", msg_type="warn"
+            )
+
         cache_yay.print_cache_self("yay build cache")
+        if nb_orphans > 0:
+            print_message(f"{nb_orphans} orphaned package(s)  → yay -Yc", msg_type="warn")
 
-        # TODO : display stale packages
-        # TODO : display orphans
-
+    # Hyprland
     if bl_display_hyprcache or bl_full:
         print_section("Hyprland / hyprpm", section_type="subsub")
         cache_hyprpm.print_cache_self("Hyprpm cache")
 
+    # Journal
     if bl_display_journal or bl_full:
         print_section("Systemd journal", section_type="subsub")
         cache_journal.print_cache_self("Journal on disk")
 
+    # Docker
     if bl_display_docker or (bl_full and shutil.which("docker")):
         print_section("Docker", section_type="subsub")
         if is_docker_up == 0:
@@ -267,6 +285,7 @@ def display_applications(bl_full: bool = False):
     if bl_display_applications:
         print_section("Applications", section_type="sub")
 
+    # User caches
     if bl_display_usercache or bl_full:
         print_section("Main cache (~/.cache)", section_type="subsub")
 
@@ -279,6 +298,7 @@ def display_applications(bl_full: bool = False):
             for usercache in lst_usercaches:
                 Cache.print_cache("", usercache.colorize_size_self(), usercache.path)
 
+    # Other applications
     if bl_display_otherapps or bl_full:
 
         if brave_main_cache.is_gt_thres or brave_cache.is_gt_thres or (bl_full and shutil.which("brave")):
@@ -302,6 +322,7 @@ def display_applications(bl_full: bool = False):
 def display_devtools(bl_full: bool = False):
     path_home = os.getenv("HOME")
 
+    # Python
     cache_pip_index = Cache(path=f"{path_home}/.cache/pip/http-v2", thrs_warn=500, thrs_alert=1000)
     cache_pip_wheels = Cache(path=f"{path_home}/.cache/pip/wheels", thrs_warn=500, thrs_alert=1000)
     cache_uv = Cache(path=f"{path_home}/.cache/uv", thrs_warn=1000, thrs_alert=2000)
@@ -309,17 +330,22 @@ def display_devtools(bl_full: bool = False):
 
     bl_display_python = any([cache_pip_index.is_gt_thres, cache_pip_wheels.is_gt_thres, cache_uv.is_gt_thres, cache_pyenv.is_gt_thres])
 
+    # Go
     cache_go = Cache(path=f"{path_home}/.cache/go-build", thrs_warn=500, thrs_alert=1500)
     cache_go_modules = Cache(path=f"""{os.getenv("GOPATH")}/pkg/mod""", thrs_warn=500, thrs_alert=1500)
 
     bl_display_go = any([cache_go.is_gt_thres, cache_go_modules.is_gt_thres])
 
+    # Rust
     cache_rust = Cache(path=f"""{os.getenv("CARGO_HOME")}""", thrs_warn=500, thrs_alert=1500)
 
+    # NPM
     cache_npm = Cache(path=f"{path_home}/.cache/nom", thrs_warn=500, thrs_alert=1500)
 
+    # Pre-commit
     cache_precommit = Cache(path=f"{path_home}/.cache/pre-commit", thrs_warn=500, thrs_alert=1500)
 
+    # -- Dev tools Display --------------------------------------------------------------
     bl_display_devtools = any([
         bl_display_python, bl_display_go, cache_rust.is_gt_thres, cache_npm.is_gt_thres, cache_precommit.is_gt_thres
         ]) or bl_full
@@ -327,39 +353,44 @@ def display_devtools(bl_full: bool = False):
     if bl_display_devtools:
         print_section("Dev tools", section_type="sub")
 
-        if bl_display_python or bl_full:
-            print_section("Python", section_type="subsub")
+    # Python
+    if bl_display_python or bl_full:
+        print_section("Python", section_type="subsub")
 
-            if cache_pip_index.is_gt_thres or cache_pip_wheels.is_gt_thres or bl_full:
-                cache_pip_index.print_cache_self("Pip index")
-                cache_pip_wheels.print_cache_self("Pip wheels")
+        if cache_pip_index.is_gt_thres or cache_pip_wheels.is_gt_thres or bl_full:
+            cache_pip_index.print_cache_self("Pip index")
+            cache_pip_wheels.print_cache_self("Pip wheels")
 
-            if cache_uv.is_gt_thres or bl_full:
-                cache_uv.print_cache_self("uv cache")
+        if cache_uv.is_gt_thres or bl_full:
+            cache_uv.print_cache_self("uv cache")
 
-            if cache_pyenv.is_gt_thres or bl_full:
-                cache_pyenv.print_cache_self("pyenv cache")
+        if cache_pyenv.is_gt_thres or bl_full:
+            cache_pyenv.print_cache_self("pyenv cache")
 
-        if bl_display_go or bl_full:
-            print_section("Go", section_type="subsub")
+    # Go
+    if bl_display_go or bl_full:
+        print_section("Go", section_type="subsub")
 
-            if cache_go.is_gt_thres or bl_full:
-                cache_go.print_cache_self("go build cache")
+        if cache_go.is_gt_thres or bl_full:
+            cache_go.print_cache_self("go build cache")
 
-            if cache_go_modules.is_gt_thres or bl_full:
-                cache_go_modules.print_cache_self("go modules cache")
+        if cache_go_modules.is_gt_thres or bl_full:
+            cache_go_modules.print_cache_self("go modules cache")
 
-        if cache_rust.is_gt_thres or bl_full:
-            print_section("Rust", section_type="subsub")
-            cache_rust.print_cache_self("Cargo home")
+    # Rust
+    if cache_rust.is_gt_thres or bl_full:
+        print_section("Rust", section_type="subsub")
+        cache_rust.print_cache_self("Cargo home")
 
-        if cache_npm.is_gt_thres or bl_full:
-            print_section("Node / NPM", section_type="subsub")
-            cache_npm.print_cache_self("Npm cache")
+    # NPM
+    if cache_npm.is_gt_thres or bl_full:
+        print_section("Node / NPM", section_type="subsub")
+        cache_npm.print_cache_self("Npm cache")
 
-        if cache_precommit.is_gt_thres or bl_full:
-            print_section("Pre-commit", section_type="subsub")
-            cache_precommit.print_cache_self("Pre-commit envs")
+    # Pre-commit
+    if cache_precommit.is_gt_thres or bl_full:
+        print_section("Pre-commit", section_type="subsub")
+        cache_precommit.print_cache_self("Pre-commit envs")
 
     return bl_display_devtools
 
@@ -481,7 +512,7 @@ def main(bl_full):
     dsp_trash = display_trash(bl_full)
 
     if not any([dsp_system, dsp_apps, dsp_devtools, dsp_trash]):
-        print_message("Everything is clean", msg_type="ok")
+        print_message("Caches are clean", msg_type="ok")
 
 
 if __name__ == "__main__":
