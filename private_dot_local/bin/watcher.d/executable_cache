@@ -1,370 +1,534 @@
-#!/usr/bin/env bash
-#                _       _                                   _
-# __      ____ _| |_ ___| |__   ___ _ __       ___ __ _  ___| |__   ___
-# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____ / __/ _` |/ __| '_ \ / _ \
-#  \ V  V / (_| | || (__| | | |  __/ | |_____| (_| (_| | (__| | | |  __/
-#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \___\__,_|\___|_| |_|\___|
-#
-# -----------------------------------------------------------------------------------------------------------------------------------------
-# snapshot of cache & disk health
-# -----------------------------------------------------------------------------------------------------------------------------------------
-
-source "$HOME/.config/shell/lib/format"
-
-set -euo pipefail
-
-# -- Helpers ----------------------------------------------------------------------------
-
-ok()       { echo -e "  ${GREEN}✔${RESET}  $1"; }
-warn()     { echo -e "  ${ORANGE}⚠${RESET}  $1"; }
-alert()    { echo -e "  ${RED}✖${RESET}  $1"; }
-row()      { echo -e "  $(printf '%-35s' "$1") $2"; }
-
-duh() {
-    du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "0k"
-}
-
-sduh() {
-    sudo du -sh "$1" 2>/dev/null | awk '{print $1}' || echo "0k"
-}
-
-# Colour-code a size string based on MB thresholds ($2=warn MB, $3=alert MB).
-colorize() {
-    local raw="$1" warn_mb="$2" alert_mb="$3"
-    local mb
-    mb=$(echo "$raw" | awk '
-        /GB$/ { printf "%.0f", $1 * 1024; next }
-        /MB$/ { printf "%.0f", $1;        next }
-        /kB$/ { printf "%.0f", $1 / 1024; next }
-        /G$/  { printf "%.0f", $1 * 1024; next }
-        /M$/  { printf "%.0f", $1;        next }
-        /K$/  { printf "%.0f", $1 / 1024; next }
-               { print 0 }
-    ')
-    if   (( mb >= alert_mb )); then echo -e "${RED}${raw}${RESET}"
-    elif (( mb >= warn_mb  )); then echo -e "${ORANGE}${raw}${RESET}"
-    else                            echo -e "${GREEN}${raw}${RESET}"
-    fi
-}
-
-show_commands() {
-bat --language=bash --style=plain --color=always <<EOF
-$1
-EOF
-}
-
-# -- help section -----------------------------------------------------------------------
-
-if [[ "$#" -ge 1 ]] && ([[ "$1" == "--tips" ]] || [[ "$1" == "-t" ]]); then
-
-    subsection "System"
-    subsubsection "Pacman / AUR"
-    echo "Remove orphaned packages"
-    show_commands "    yay -Yc"
-
-    echo "Clean package cache"
-    show_commands "    yay -Sc"
-
-    echo "Keep only the 2 most recent versions of each package"
-    show_commands "    sudo paccache -rk2"
-
-    echo "Remove cache for uninstalled packages entirely"
-    show_commands "    sudo paccache -ruk0"
-
-    subsubsection "Hyprland / hyprpm"
-    echo "Clean hyprpm cache"
-    show_commands "    sudo rm -r /var/cache/hyprpm/$USER/"
-    echo "⚠ This removes the plugins themselves as they are used directly from this cache, use with caution"
-
-    subsubsection "Systemd journal"
-    echo "Clean the journal"
-    show_commands "    # keep only last 2 weeks"
-    show_commands "    sudo journalctl --vacuum-time=2weeks"
-    show_commands "    # or cap by size"
-    show_commands "    sudo journalctl --vacuum-size=200M"
-
-    subsubsection "Docker"
-    echo "Prune docker system"
-    show_commands "    docker system prune"
-    echo "Or clean individual components"
-    show_commands "    docker image prune"
-    show_commands "    docker container prune"
-    show_commands "    docker network prune"
-    show_commands "    docker volume prune"
-    show_commands "    docker builder prune"
-
-
-    subsection "Applications"
-
-    subsubsection "Main cache (~/.cache)"
-    echo "Generally safe to clean up, do not touch mesa_shader_cache for comfort"
-
-    subsubsection "Brave"
-    echo "Clean Brave caches from brave://settings/clearBrowserData or with cli"
-    show_commands "    rm -rf ~/.cache/brave-cache"
+#!/usr/bin/env python
+"""
+Created on 2026-04-12.
+
+@author: Tristan Muscat
+@email: tristan.muscat@pm.me
+"""
+
+import subprocess
+import sys
+import re
+import argparse
+import os
+import shutil
+
+ORANGE = '\033[38;2;255;158;23m'
+BLUE = '\033[38;2;73;136;252m'
+PURPLE = '\033[38;2;150;85;166m'
+CYAN = "\033[38;2;105;230;245m"
+GREEN = '\033[38;2;125;235;103m'
+RED = "\033[38;2;225;20;20m"
+BOLD = '\033[1m'
+DIM = '\033[2m'
+RESET = '\033[0m'
+
+
+def parse_args(lst_args=None):
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(prog="cache", description="Manage and monitor cache files")
+    parser.add_argument("-s", "--summarize", action="store_true", help="Summarize output to shown only warnings")
+    parser.add_argument("-t", "--tips", action="store_true", help="Display tips on how to manage caches")
+
+    return parser.parse_args(lst_args)
+
+
+class Cache():
+
+    def __init__(self, thrs_warn: str = None, thrs_alert: str = None, path: str = "", sudo: bool = False):
+        self.path = path
+        self.thrs_warn = thrs_warn
+        self.thrs_alert = thrs_alert
+        if path != "":
+            self.set_size(sudo)
+        else:
+            self.size = 0
+            self.is_gt_thres = False
+
+    def set_size(self, sudo: bool = False, size: int = None):
+        """Set size for a cache. Can be provided or computed"""
+        if size:
+            # Proved size when du command cannot be used. For example for the journald log size.
+            self.size = size
+        else:
+            # If no size is provided, we use the du command.
+            self.size = Cache.get_dir_size(self.path, sudo)
+
+        self.is_gt_thres = self.size > self.thrs_warn * 1024
+
+    def colorize_size_self(self):
+        return Cache.colorize_size(self.size, self.thrs_warn, self.thrs_alert)
+
+    def print_cache_self(self, message: str):
+        Cache.print_cache(message, self.colorize_size_self(), self.path)
+
+    @staticmethod
+    def get_dir_size(str_path: str, sudo: bool = False) -> int:
+        """Get the directory's size"""
+        cmd_size_dir = ["du", "-s", str_path]
+        # A few directories need sudo. This need to be minimised in order not to be prompted for sudo password.
+        if sudo:
+            cmd_size_dir.insert(0, "sudo")
+
+        res_du = subprocess.run(cmd_size_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # The directory may not exist for a cache that has been deleted.
+        # We then return -1 so the display function knows how to handle it.
+        if res_du.returncode != 0:
+            res = -1
+        else:
+            res = int(res_du.stdout.split("\t")[0])
+
+        return res
+
+    @staticmethod
+    def colorize_size(int_size: int, threshold_warn: int = None, thresold_alert: int = None) -> str:
+        if int_size < 0:
+            # -1 size for directories that do not exist will be displayed as a dimmed N/A.
+            res = f"{DIM}N/A{RESET}"
+        else:
+            # We the determine the color based on the threshold.
+            color = GREEN
+            if int_size > (threshold_warn * 1024):
+                color = ORANGE
+            elif int_size > (thresold_alert * 1024):
+                color = RED
+
+            # Finally we apply the right unit.
+            if int_size < 1024:
+                res = f"{color}{int_size}K{RESET}"
+            elif int_size < 1024 ** 2:
+                res = f"{color}{int_size / 1024:.1f}M{RESET}"
+            else:
+                res = f"{color}{int_size / (1024 ** 2):.1f}G{RESET}"
 
-    subsubsection "Slack"
-    echo "Clean Slack caches"
-    show_commands "    rm -rf ~/.local/share/slack-data/Service\ Worker/CacheStorage"
+        return res
 
-    subsubsection "VSCodium"
-    echo "Clean VSCodium caches"
-    show_commands "    rm -rf ~/.config/VSCodium/Cache ~/.cache/electron"
-    echo "⚠ ~/.cache/electron may contain other VSCodium cached files"
+    @staticmethod
+    def print_cache(str_cache: str, str_size: str, str_path: str = ""):
+        str_message = "  " + str_cache.ljust(35) + str_size
 
+        if str_path != "":
+            str_message += f"\t{DIM}{str_path}{RESET}"
 
-    subsection "Dev tools"
+        print(str_message)
 
-    subsubsection "Python (pip / uv / pyenv)"
-    echo "Purge pip cache"
-    show_commands "    pip cache purge"
 
-    echo "Prune and clean uv cache"
-    show_commands "    uv cache prune"
-    show_commands "    uv cache clean"
+def print_section(str_title: str, section_type: str = "main"):
+    if section_type == "main":
+        res = f"{BOLD}{GREEN}=== {str_title} ==={RESET}"
+    elif section_type == "sub":
+        res = f"\n{BOLD}{CYAN}▶ {str_title}{RESET}"
+    elif section_type == "subsub":
+        res = f"\n{BOLD}{PURPLE}- {str_title}{RESET}"
 
-    echo "Uninstall unused pyenv versions"
-    show_commands "    pyenv uninstall <version>"
+    print(res)
+
+
+def print_message(str_message: str, msg_type: str = "ok"):
+    d_frmt = {
+        "ok": {
+            "icon": "✔",
+            "color": GREEN
+        },
+        "warn": {
+            "icon": "⚠",
+            "color": ORANGE
+        },
+        "alert": {
+            "icon": "✖",
+            "color": RED
+        }
+    }
+    print(f"""  {d_frmt[msg_type]["color"]}{d_frmt[msg_type]["icon"]}{RESET}  {str_message}""")
+
+
+def get_journal_size():
+    size_journal = subprocess.run(["journalctl", "--disk-usage"], stdout=subprocess.PIPE, text=True).stdout
+
+    size_journal = re.findall(r"[\d]+\.?[\d]+[KMG]?", size_journal)[0]
+
+    size_unit = size_journal[-1]
+    size_value = float(size_journal[0])
+
+    if size_unit == "M":
+        size_value *= 1024
+    elif size_unit == "G":
+        size_value *= (1024 ** 2)
+
+    return round(size_value)
+
+
+def convert_size(str_size: str) -> int:
+    value, unit = re.findall(r"([\d]+\.?[\d]*)([KMG]?B?)", str_size)[0]
+    value = float(value)
+
+    if unit == "MB":
+        value *= 1024
+    elif unit == "GB":
+        value *= 1024 ** 2
+
+    return round(value)
+
+
+def display_system(bl_full: bool = False):
+    # Package managers
+    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=2048, thrs_alert=4096)
+    cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=512, thrs_alert=1024)
+
+    cmd_stale_downloads = ["sudo", "find", "/var/cache/pacman/pkg", "-maxdepth", "1", "-name", "download-*"]
+    lst_stale_downloads = subprocess.run(cmd_stale_downloads, stdout=subprocess.PIPE, text=True).stdout.split("\n")
+    bl_stale_downloads = not (len(lst_stale_downloads) == 1 and lst_stale_downloads[0] == "")
+
+    lst_orphans = subprocess.run(["pacman", "-Qdtq"], stdout=subprocess.PIPE, text=True)
+    if lst_orphans.returncode == 0:
+        nb_orphans = len(lst_orphans.stdout.split("\n"))
+    else:
+        nb_orphans = 0
+
+    bl_display_pkgmanagers = any([cache_pacman.is_gt_thres, cache_yay.is_gt_thres, bl_stale_downloads])
+
+    # Hyprland
+    cache_hyprpm = Cache(path="/var/cache/hyprpm", thrs_warn=512, thrs_alert=1024)
+    bl_display_hyprcache = cache_hyprpm.is_gt_thres
+
+    # Journal
+    cache_journal = Cache(path="", thrs_warn=800, thrs_alert=2000)
+    cache_journal.set_size(size=get_journal_size())
+    bl_display_journal = cache_journal.is_gt_thres
+
+    # Docker
+    bl_display_docker = False
+    if shutil.which("docker"):
+        is_docker_up = subprocess.run(["docker", "info"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True).returncode
+
+        if is_docker_up == 0:
+            cmd_docker_cache = ["docker", "system", "df", "--format", "\"{{.Type}}\t{{.Size}}\""]
+            lst_docker_systems = subprocess.run(cmd_docker_cache, stdout=subprocess.PIPE, text=True).stdout
+            # If there is any number other than 0 then we should display.
+            if len(re.findall(r"[1-9]", lst_docker_systems)) > 0:
+                bl_display_docker = True
+            lst_docker_systems = lst_docker_systems.split("\n")[:-1]
+        else:
+            cache_docker = Cache(path="/var/lib/docker", thrs_warn=5000, thrs_alert=10000, sudo=True)
+
+            bl_display_docker = cache_docker.is_gt_thres
+
+    # -- System Display -----------------------------------------------------------------
+    bl_display_system = any([bl_display_pkgmanagers, bl_display_hyprcache, bl_display_journal]) or bl_full
+    if bl_display_system:
+        print_section("System", section_type="sub")
+
+    # Package managers
+    if bl_display_pkgmanagers or bl_full:
+        print_section("Pacman / AUR", section_type="subsub")
+        cache_pacman.print_cache_self("pacman pkg cache")
+        if bl_stale_downloads:
+            print_message(
+                f"{len(lst_stale_downloads)} stale download-* dir(s) in {cache_pacman.path}" +
+                f"  → sudo rm -rf {cache_pacman.path}/download-*", msg_type="warn"
+            )
+
+        cache_yay.print_cache_self("yay build cache")
+        if nb_orphans > 0:
+            print_message(f"{nb_orphans} orphaned package(s)  → yay -Yc", msg_type="warn")
+
+    # Hyprland
+    if bl_display_hyprcache or bl_full:
+        print_section("Hyprland / hyprpm", section_type="subsub")
+        cache_hyprpm.print_cache_self("Hyprpm cache")
+
+    # Journal
+    if bl_display_journal or bl_full:
+        print_section("Systemd journal", section_type="subsub")
+        cache_journal.print_cache_self("Journal on disk")
+
+    # Docker
+    if bl_display_docker or (bl_full and shutil.which("docker")):
+        print_section("Docker", section_type="subsub")
+        if is_docker_up == 0:
+            for system in lst_docker_systems:
+                name, val = system.strip("\"").split("\t")
+                val = Cache.colorize_size(convert_size(val), 500, 1000)
+                Cache.print_cache(name, val)
+        else:
+            cache_docker.print_cache_self("Docker cache")
+
+    return bl_display_system
+
+
+def display_applications(bl_full: bool = False):
+    # User caches
+    cache_usercache = Cache(path=f"""{os.getenv("HOME")}/.cache""", thrs_warn=3000, thrs_alert=7000)
+
+    # Threshold for user caches to appear in a list under the total.
+    threshold_usercache = 300
+    # Caches that are handled elsewhere and should not appear in this list.
+    other_caches = ["uv", "brave-cache", "pre-commit", "go-build", "npm"]
+    lst_usercaches = list()
+    cmd_get_all_usercaches = ["find", f"""{os.getenv("HOME")}/.cache""", "-mindepth", "1", "-maxdepth", "1", "-type", "d"]
+    lst_all_usercaches = subprocess.run(cmd_get_all_usercaches, stdout=subprocess.PIPE, text=True).stdout.split("\n")[:-1]
+    for usercache in lst_all_usercaches:
+        tmp_usercache = Cache(path=usercache, thrs_warn=1000, thrs_alert=2000)
+        if tmp_usercache.size > threshold_usercache * 1024 and not usercache.split("/")[-1] in other_caches:
+            lst_usercaches.append(tmp_usercache)
+
+    bl_display_usercache = any([cache_usercache.is_gt_thres, lst_usercaches])
+
+    # Other applications
+    path_home = os.getenv("HOME")
+    brave_main_cache = Cache(path=f"{path_home}/.cache/brave-cache", thrs_warn=500, thrs_alert=1500)
+    brave_cache = Cache(path=f"{path_home}/.local/share/brave-data/Default/Service Worker", thrs_warn=500, thrs_alert=1500)
+    slack_cache = Cache(path=f"{path_home}/.local/share/slack-data/Service Worker", thrs_warn=500, thrs_alert=1500)
+    codium_cache = Cache(path=f"{path_home}/.local/share/VSCodium/user-data", thrs_warn=500, thrs_alert=1500)
+
+    bl_display_otherapps = any([
+        brave_main_cache.is_gt_thres, brave_cache.is_gt_thres,
+        slack_cache.is_gt_thres, codium_cache.is_gt_thres
+    ])
+
+    # -- Applications Display -----------------------------------------------------------
+    bl_display_applications = any([bl_display_usercache, bl_display_otherapps]) or bl_full
+    if bl_display_applications:
+        print_section("Applications", section_type="sub")
+
+    # User caches
+    if bl_display_usercache or bl_full:
+        print_section("Main cache (~/.cache)", section_type="subsub")
+
+        if bl_display_usercache or bl_full:
+            Cache.print_cache("Total", cache_usercache.colorize_size_self(), "(includes entries below)")
+
+        if lst_usercaches:
+            print()
+            print_message(f"User caches above {threshold_usercache}MB:", msg_type="warn")
+            for usercache in lst_usercaches:
+                Cache.print_cache("", usercache.colorize_size_self(), usercache.path)
+
+    # Other applications
+    if bl_display_otherapps or bl_full:
+
+        if brave_main_cache.is_gt_thres or brave_cache.is_gt_thres or (bl_full and shutil.which("brave")):
+            print_section("Brave", section_type="subsub")
+        if brave_main_cache.is_gt_thres or (bl_full and shutil.which("brave")):
+            brave_main_cache.print_cache_self("Brave main cache")
+        if brave_cache.is_gt_thres or (bl_full and shutil.which("brave")):
+            brave_cache.print_cache_self("Brave user cache")
 
-    subsubsection "Go"
-    echo "Clean go cache"
+        if slack_cache.is_gt_thres or (bl_full and shutil.which("slack")):
+            print_section("Slack", section_type="subsub")
+            slack_cache.print_cache_self("Slack cache")
+
+        if codium_cache.is_gt_thres or (bl_full and shutil.which("vscodium")):
+            print_section("VSCodium", section_type="subsub")
+            codium_cache.print_cache_self("VSCodium cache")
 
-    show_commands "    go clean -cache"
-    show_commands "    go clean -modcache"
+    return bl_display_applications
+
+
+def display_devtools(bl_full: bool = False):
+    path_home = os.getenv("HOME")
+
+    # Python
+    cache_pip_index = Cache(path=f"{path_home}/.cache/pip/http-v2", thrs_warn=500, thrs_alert=1000)
+    cache_pip_wheels = Cache(path=f"{path_home}/.cache/pip/wheels", thrs_warn=500, thrs_alert=1000)
+    cache_uv = Cache(path=f"{path_home}/.cache/uv", thrs_warn=1000, thrs_alert=2000)
+    cache_pyenv = Cache(path=f"""{os.getenv("PYENV_ROOT")}/cache""", thrs_warn=1000, thrs_alert=2000)
 
-    subsubsection "Rust / Cargo"
-    echo "Clean rust cache"
-    show_commands "    cargo-cache -a  # cargo install cargo-cache"
+    bl_display_python = any([cache_pip_index.is_gt_thres, cache_pip_wheels.is_gt_thres, cache_uv.is_gt_thres, cache_pyenv.is_gt_thres])
 
-    subsubsection "Node / npm"
-    echo "Clean npm cache"
-    show_commands "    npm cache clean --force"
+    # Go
+    cache_go = Cache(path=f"{path_home}/.cache/go-build", thrs_warn=500, thrs_alert=1500)
+    cache_go_modules = Cache(path=f"""{os.getenv("GOPATH")}/pkg/mod""", thrs_warn=500, thrs_alert=1500)
+
+    bl_display_go = any([cache_go.is_gt_thres, cache_go_modules.is_gt_thres])
 
-    subsubsection "Pre-commit"
-    echo "Clean pre-commit environments"
-    show_commands "    pre-commit clean"
+    # Rust
+    cache_rust = Cache(path=f"""{os.getenv("CARGO_HOME")}""", thrs_warn=500, thrs_alert=1500)
+
+    # NPM
+    cache_npm = Cache(path=f"{path_home}/.cache/nom", thrs_warn=500, thrs_alert=1500)
+
+    # Pre-commit
+    cache_precommit = Cache(path=f"{path_home}/.cache/pre-commit", thrs_warn=500, thrs_alert=1500)
+
+    # -- Dev tools Display --------------------------------------------------------------
+    bl_display_devtools = any([
+        bl_display_python, bl_display_go, cache_rust.is_gt_thres, cache_npm.is_gt_thres, cache_precommit.is_gt_thres
+        ]) or bl_full
+
+    if bl_display_devtools:
+        print_section("Dev tools", section_type="sub")
+
+    # Python
+    if bl_display_python or bl_full:
+        print_section("Python", section_type="subsub")
+
+        if cache_pip_index.is_gt_thres or cache_pip_wheels.is_gt_thres or bl_full:
+            cache_pip_index.print_cache_self("Pip index")
+            cache_pip_wheels.print_cache_self("Pip wheels")
+
+        if cache_uv.is_gt_thres or bl_full:
+            cache_uv.print_cache_self("uv cache")
+
+        if cache_pyenv.is_gt_thres or bl_full:
+            cache_pyenv.print_cache_self("pyenv cache")
+
+    # Go
+    if bl_display_go or bl_full:
+        print_section("Go", section_type="subsub")
+
+        if cache_go.is_gt_thres or bl_full:
+            cache_go.print_cache_self("go build cache")
+
+        if cache_go_modules.is_gt_thres or bl_full:
+            cache_go_modules.print_cache_self("go modules cache")
+
+    # Rust
+    if cache_rust.is_gt_thres or bl_full:
+        print_section("Rust", section_type="subsub")
+        cache_rust.print_cache_self("Cargo home")
+
+    # NPM
+    if cache_npm.is_gt_thres or bl_full:
+        print_section("Node / NPM", section_type="subsub")
+        cache_npm.print_cache_self("Npm cache")
+
+    # Pre-commit
+    if cache_precommit.is_gt_thres or bl_full:
+        print_section("Pre-commit", section_type="subsub")
+        cache_precommit.print_cache_self("Pre-commit envs")
+
+    return bl_display_devtools
+
+
+def display_trash(bl_full: bool = False):
+    cache_trash = Cache(path=f"""{os.getenv("HOME")}/.local/share/Trash""", thrs_warn=2000, thrs_alert=4000)
+
+    if cache_trash.is_gt_thres or bl_full:
+        print_section("Trash", section_type="sub")
+        cache_trash.print_cache_self("Trash directory")
+
+    return cache_trash.is_gt_thres or bl_full
+
+
+def display_command(command: str) -> None:
+    import subprocess
+    subprocess.run(
+        ["bat", "--language=bash", "--style=plain", "--color=always"],
+        input=command.encode(),
+        check=True,
+    )
+
+
+def print_tips():
+    print_section("System", section_type="sub")
+    print_section("Pacman / AUR", section_type="subsub")
+    print("Remove orphaned packages")
+    display_command("    yay -Yc")
 
+    print("Clean package cache")
+    display_command("    yay -Sc")
 
-    subsection "Trash"
-    echo "Empty the trash directory either graphically or using trash-cli"
-    show_commands "    trash-empty 60"
-
-    exit
-fi
-
-# == System =============================================================================
+    print("Keep only the 2 most recent versions of each package")
+    display_command("    sudo paccache -rk2")
 
-subsection "System"
+    print("Remove cache for uninstalled packages entirely")
+    display_command("    sudo paccache -ruk0")
 
-# -- Pacakge Manager --------------------------------------------------------------------
+    print_section("Hyprland / hyprpm", section_type="subsub")
+    print("Clean hyprpm cache")
+    display_command("    sudo rm -r /var/cache/hyprpm/$USER/")
+    print_message("This removes the plugins themselves as they are used directly from this cache, use with caution", msg_type="warn")
 
-subsubsection "Pacman / AUR"
-# pacman pkg cache (sudo may be needed; fallback gracefully).
-PKG_CACHE="/var/cache/pacman/pkg"
-if PKG_SIZE=$(sudo du -sh "$PKG_CACHE" 2>/dev/null | awk '{print $1}'); then
-    # stale partial downloads
-    STALE_DL=$(sudo find "$PKG_CACHE" -maxdepth 1 -name 'download-*' 2>/dev/null | wc -l)
+    print_section("Systemd journal", section_type="subsub")
+    print("Clean the journal")
+    display_command("    # keep only last 2 weeks")
+    display_command("    sudo journalctl --vacuum-time=2weeks")
+    display_command("    # or cap by size")
+    display_command("    sudo journalctl --vacuum-size=200M")
 
-    row "pacman pkg cache" "$(colorize "$PKG_SIZE" 2048 4096) \t ${DIM}(${PKG_CACHE})${RESET}"
-    if (( STALE_DL > 0 )); then
-        warn "$STALE_DL stale download-* dir(s) in $PKG_CACHE  → sudo rm -rf ${PKG_CACHE}/download-*"
-    fi
-else
-    row "pacman pkg cache" "${DIM}(needs sudo)${RESET}"
-fi
+    print_section("Docker", section_type="subsub")
+    print("Prune docker system")
+    display_command("    docker system prune")
+    print("Or clean individual components")
+    display_command("    docker image prune")
+    display_command("    docker container prune")
+    display_command("    docker network prune")
+    display_command("    docker volume prune")
+    display_command("    docker builder prune")
 
-# yay build cache.
-YAY_CACHE="${HOME}/.cache/yay"
-if [[ -d "$YAY_CACHE" ]]; then
-    row "yay build cache" "$(colorize "$(duh "$YAY_CACHE")" 512 1024)\t ${DIM}(${YAY_CACHE})${RESET}"
-fi
+    print_section("Applications", section_type="sub")
 
-# orphaned packages.
-ORPHANS=$(pacman -Qdtq 2>/dev/null | wc -l) || true
-if (( ORPHANS == 0 )); then ok "No orphaned packages"
-elif (( ORPHANS < 5 )); then warn "$ORPHANS orphaned package(s)  → yay -Yc"
-else alert "$ORPHANS orphaned package(s)  → yay -Yc"
-fi
+    print_section("Main cache (~/.cache)", section_type="subsub")
+    print("Generally safe to clean up, do not touch mesa_shader_cache for comfort")
 
-# -- Hyprland / Hyprpm ------------------------------------------------------------------
+    print_section("Brave", section_type="subsub")
+    print("Clean Brave caches from brave://settings/clearBrowserData or with cli")
+    display_command("    rm -rf ~/.cache/brave-cache")
 
-subsubsection "Hyprland / hyprpm"
-HYPRPM_CACHE="/var/cache/hyprpm"
-row "Hyprpm cache" "$(colorize $(duh "$HYPRPM_CACHE") 800 2000)\t ${DIM}(${HYPRPM_CACHE})${RESET}"
+    print_section("Slack", section_type="subsub")
+    print("Clean Slack caches")
+    display_command("    rm -rf ~/.local/share/slack-data/Service Worker/CacheStorage")
 
-# -- Journal ----------------------------------------------------------------------------
+    print_section("VSCodium", section_type="subsub")
+    print("Clean VSCodium caches")
+    display_command("    rm -rf ~/.config/VSCodium/Cache ~/.cache/electron")
+    print_message("~/.cache/electron may contain other VSCodium cached files", msg_type="warn")
 
-subsubsection "Systemd journal"
-JOURNAL_SZ=$(journalctl --disk-usage 2>/dev/null \
-    | grep -oP '[\d.]+[KMGT]? ' | tail -1 || echo "n/a")
-row "journal on disk" "$(colorize $JOURNAL_SZ 800 2000)"
+    print_section("Dev tools", section_type="sub")
 
-# -- Docker -----------------------------------------------------------------------------
+    print_section("Python (pip / uv / pyenv)", section_type="subsub")
+    print("Purge pip cache")
+    display_command("    pip cache purge")
 
-subsubsection "Docker"
-if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
-    docker system df --format "{{.Type}}\t{{.Size}}" 2>/dev/null | while IFS=$'\t' read -r type size; do
-        row "$type" "$(colorize "$size" 500 1000)"
-    done
-else
-    DOCKER_CACHE="/var/lib/docker"
-
-    if [[ -d "$DOCKER_CACHE" ]]; then
-        row "Docker cache" "$(colorize "$(sduh "$DOCKER_CACHE")" 5000 10000)\t ${DIM}(${DOCKER_CACHE})${RESET}"
-    else
-        echo -e "  ${DIM}Docker not running or not installed${RESET}"
-    fi
-fi
-
-# == Applications =======================================================================
-
-subsection "Applications"
-
-# -- ~/.cache ---------------------------------------------------------------------------
-
-subsubsection "Main cache (~/.cache)"
-other_caches="uv brave-cache pre-commit go-build npm"
-
-CACHE_THRESHOLD_MB=300  # only show dirs above this size.
-
-CACHE_TOTAL=$(duh "${HOME}/.cache")
-row "total" "$(colorize "$CACHE_TOTAL" 3000 7000)\t ${DIM}(includes entries below)${RESET}"
-
-echo -e "\n  ${DIM}Dirs above ${CACHE_THRESHOLD_MB}MB:${RESET}"
-while IFS=$'\t' read -r sz name; do
-    if [[ " ${other_caches} " != *" $name "* ]]; then
-        row "  $name" "$(colorize "$sz" 1000 2000)"
-    fi
-done < <(
-    find "${HOME}/.cache" -mindepth 1 -maxdepth 1 -type d \
-        | xargs -I{} du -sh {} 2>/dev/null \
-        | sort -rh \
-        | awk -v thresh="$CACHE_THRESHOLD_MB" '
-            /^[0-9.]+G/ { print; next }
-            /^[0-9.]+M/ { if ($1+0 >= thresh) print; next }
-        ' \
-        | while IFS= read -r line; do
-            sz=$(echo "$line" | awk '{print $1}')
-            name=$(basename "$(echo "$line" | awk '{print $2}')")
-            printf '%s\t%s\n' "$sz" "$name"
-        done
-)
-
-# -- Other applications -----------------------------------------------------------------
-
-PNPM_CACHE="${HOME}/.local/share/pnpm/store"
-
-if [[ -d "$PNPM_CACHE" ]]; then
-    subsubsection "PNPM"
-    row "pnpm cache" "$(colorize "$(duh "$PNPM_CACHE")" 500 1500)\t ${DIM}(${PNPM_CACHE})${RESET}"
-fi
-
-BRAVE_MAIN_CACHE="${HOME}/.cache/brave-cache"
-BRAVE_CACHE="${HOME}/.local/share/brave-data/Default/Service Worker"
-
-if [[ -d "$BRAVE_CACHE" ]]; then
-    subsubsection "Brave"
-    row "Brave main cache" "$(colorize "$(duh "$BRAVE_MAIN_CACHE")" 500 1500)\t ${DIM}(${BRAVE_MAIN_CACHE})${RESET}"
-    row "Brave user cache" "$(colorize "$(duh "$BRAVE_CACHE")" 500 1500)\t ${DIM}(${BRAVE_CACHE})${RESET}"
-fi
-
-SLACK_CACHE="${HOME}/.local/share/slack-data/Service Worker"
-
-if [[ -d "$SLACK_CACHE" ]]; then
-    subsubsection "Slack"
-    row "Slack cache" "$(colorize "$(duh "$SLACK_CACHE")" 500 1500)\t ${DIM}(${SLACK_CACHE})${RESET}"
-fi
-
-VSCODIUM_CACHE="${HOME}/.local/share/VSCodium/user-data"
-
-if [[ -d "$VSCODIUM_CACHE" ]]; then
-    subsubsection "VSCodium"
-    row "VSCodium cache" "$(colorize "$(duh "$VSCODIUM_CACHE")" 500 1500)\t ${DIM}(${VSCODIUM_CACHE})${RESET}"
-fi
-
-# == Dev tools ==========================================================================
-
-subsection "Dev tools"
-
-# -- Python ecosystem -------------------------------------------------------------------
-
-subsubsection "Python"
-# pip.
-if command -v pip &>/dev/null; then
-    PIP_INFO=$(pip cache info 2>/dev/null | grep "index page cache size" | grep -oP "[\d.]+ [KMGT]B" | sed 's/ //g') || true
-    if [[ -z $PIP_INFO ]]; then
-        PIP_INFO="0k"
-    fi
-    row "pip cache (index / wheels)" "$(colorize ${PIP_INFO} 500 1500)"
-fi
-
-# uv.
-if command -v uv &>/dev/null; then
-    UV_DIR=$(uv cache dir 2>/dev/null || echo "${HOME}/.cache/uv")
-    UV_SZ=$(duh "$UV_DIR")
-    row "uv cache" "$(colorize "$UV_SZ" 1000 2000)\t ${DIM}(${UV_DIR})${RESET}"
-fi
-
-# pyenv.
-PYENV_ROOT="${PYENV_ROOT:-${HOME}/.pyenv}"
-PYENV_CACHE="${PYENV_ROOT:-${HOME}/.pyenv}/cache"
-if [[ -d "$PYENV_ROOT" ]]; then
-    PYENV_SZ=$(duh "$PYENV_CACHE")
-    row "pyenv root" "$(colorize "$PYENV_SZ" 1000 2000)\t ${DIM}(${PYENV_CACHE})${RESET}"
-    # shims count.
-    SHIMS=$(find "${PYENV_ROOT}/shims" -maxdepth 1 -type f 2>/dev/null | wc -l)
-    row "pyenv shims" "$SHIMS  ${DIM}\t (run: pyenv rehash if stale)${RESET}"
-fi
-
-# -- Go ---------------------------------------------------------------------------------
-
-subsubsection "Go"
-GO_BUILD="${HOME}/.cache/go-build"
-GO_MOD="${GOPATH:-${HOME}/go}/pkg/mod"
-
-if [[ -d "$GO_BUILD" ]]; then
-    row "go build cache" "$(colorize "$(duh "$GO_BUILD")" 500 1500)\t ${DIM}(${GO_BUILD})${RESET}"
-fi
-if [[ -d "$GO_MOD" ]]; then
-    row "go module cache" "$(colorize "$(duh "$GO_MOD")" 500 2000)\t ${DIM}(${GO_MOD})${RESET}"
-fi
-
-# -- Rust / Cargo -----------------------------------------------------------------------
-
-subsubsection "Rust / Cargo"
-CARGO_HOME="${CARGO_HOME:-${HOME}/.local/share/cargo}"
-if [[ -d "$CARGO_HOME" ]]; then
-    row "cargo home" "$(colorize "$(duh "$CARGO_HOME")" 500 1500)\t ${DIM}(${CARGO_HOME})${RESET}"
-    for pair in "registry (crate sources):registry" "git checkouts:git"; do
-        label="${pair%%:*}"
-        subdir="${pair##*:}"
-        path="${CARGO_HOME}/${subdir}"
-        [[ -d "$path" ]] && row "  $label" "$(colorize $(duh "$path") 500 1500)"
-    done
-else
-    row "cargo home" "${DIM}absent${RESET}"
-fi
-
-# -- Node / npm -------------------------------------------------------------------------
-
-subsubsection "Node / npm"
-NPM_CACHE=$(npm config get cache 2>/dev/null || echo "${HOME}/.cache/npm")
-row "npm cache" "$(colorize "$(duh "$NPM_CACHE")" 400 1000)\t ${DIM}(${NPM_CACHE})${RESET}"
-
-# -- Pre-commit -------------------------------------------------------------------------
-
-subsubsection "Pre-commit"
-PRECOMMIT="${HOME}/.cache/pre-commit"
-if [[ -d "$PYENV_ROOT" ]]; then
-    PRECOMMIT_SZ=$(duh "$PRECOMMIT")
-    row "pre-commit envs" "$(colorize "$PRECOMMIT_SZ" 500 2000)\t ${DIM}(${PRECOMMIT})${RESET}"
-fi
-
-# == Trash ==============================================================================
-
-subsection "Trash"
-TRASH_DIR="${HOME}/.local/share/Trash"
-
-if [[ -d "$TRASH_DIR" ]]; then
-    row "Trash directory" "$(colorize "$(duh "$TRASH_DIR")" 2000 4000)\t ${DIM}(${TRASH_DIR})${RESET}"
-fi
+    print("Prune and clean uv cache")
+    display_command("    uv cache prune")
+    display_command("    uv cache clean")
+
+    print("Uninstall unused pyenv versions")
+    display_command("    pyenv uninstall <version>")
+
+    print_section("Go", section_type="subsub")
+    print("Clean go cache")
+
+    display_command("    go clean -cache")
+    display_command("    go clean -modcache")
+
+    print_section("Rust / Cargo", section_type="subsub")
+    print("Clean rust cache")
+    display_command("    cargo-cache -a  # cargo install cargo-cache")
+
+    print_section("Node / npm", section_type="subsub")
+    print("Clean npm cache")
+    display_command("    npm cache clean --force")
+
+    print_section("Pre-commit", section_type="subsub")
+    print("Clean pre-commit environments")
+    display_command("    pre-commit clean")
+
+    print_section("Trash", section_type="sub")
+    print("Empty the trash directory either graphically or using trash-cli")
+    display_command("    trash-empty 60")
+
+
+def main(bl_full):
+    dsp_system = display_system(bl_full)
+    dsp_apps = display_applications(bl_full)
+    dsp_devtools = display_devtools(bl_full)
+    dsp_trash = display_trash(bl_full)
+
+    if not any([dsp_system, dsp_apps, dsp_devtools, dsp_trash]):
+        print_message("Caches are clean", msg_type="ok")
+
+
+if __name__ == "__main__":
+    args = parse_args()
+
+    if args.tips:
+        print_tips()
+        sys.exit(0)
+
+    bl_full = not args.summarize
+
+    main(bl_full)

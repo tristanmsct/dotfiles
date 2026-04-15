@@ -88,7 +88,7 @@ while [[ $# -gt 0 ]]; do
 
             if ! has_flag "$@" -- -n --no-cache; then
                 section "System and application caches"
-                "$WATCHER_DIR/_cache" -s
+                "$WATCHER_DIR/cache" -s
                 echo
             fi
 
