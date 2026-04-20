@@ -34,8 +34,6 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
     sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
     sed -i -E "s/(background:) @background-theme;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
 
-    rm $HOME/.cache/wallpaper/blurred_wallpaper.png
-
     /usr/bin/nextcloud --quit
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
         dunstify "Gamemode activated" "Decorations, blur, wallpaper and bar disabled"

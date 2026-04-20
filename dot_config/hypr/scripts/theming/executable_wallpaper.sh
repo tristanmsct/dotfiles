@@ -20,7 +20,6 @@ force_generate=0
 cache_directory="$HOME/.cache/wallpaper"
 cache_file="$cache_directory/current_wallpaper"
 square_wallpaper="$cache_directory/square_wallpaper.png"
-blurred_wallpaper="$cache_directory/blurred_wallpaper.png"
 
 if [ ! -d $cache_directory ]; then
     mkdir $cache_directory
@@ -91,6 +90,4 @@ jq 'del(.theme.saturation.level)' $CONFIG_FILE | sponge $CONFIG_FILE
 # Created specific wallpapers
 # ---------------------------------------------------------------------------------------
 
-magick $wallpaper -resize 75% $blurred_wallpaper
-magick $blurred_wallpaper -blur "50x30" $blurred_wallpaper
 magick $wallpaper -gravity Center -extent 1:1 $square_wallpaper
