@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=FTL: Faster Than Light
 Comment=Play this game on Steam
-Exec=/home/tristan/.config/hypr/settings/steam.sh steam://rungameid/212680
+Exec=steam.sh steam://rungameid/212680
 Icon=steam_icon_212680
 Terminal=false
 Type=Application

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Crow Country
 Comment=Play this game on Steam
-Exec=/home/tristan/.config/hypr/settings/steam.sh steam://rungameid/1996010
+Exec=steam.sh steam://rungameid/1996010
 Icon=steam_icon_1996010
 Terminal=false
 Type=Application

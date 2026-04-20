@@ -9,8 +9,8 @@
 
 (defpoll sink-list
   :interval "2s"
-  :initial "~/.config/eww/sound/scripts/get-sink-list.sh"
-  "~/.config/eww/sound/scripts/get-sink-list.sh"
+  :initial "$HOME/.config/eww/sound/scripts/get-sink-list.sh"
+  "$HOME/.config/eww/sound/scripts/get-sink-list.sh"
 )
 
 
@@ -30,7 +30,7 @@
         :cursor "pointer"
         (button
           :class "switch-item"
-          :onclick '~/.config/eww/sound/scripts/switch-sink.sh "${entry}"'
+          :onclick '$HOME/.config/eww/sound/scripts/switch-sink.sh "${entry}"'
           (label :markup "${entry}")
         )
       )

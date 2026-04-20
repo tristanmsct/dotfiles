@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Gunpoint
 Comment=Play this game on Steam
-Exec=/home/tristan/.config/hypr/settings/steam.sh steam://rungameid/206190
+Exec=steam.sh steam://rungameid/206190
 Icon=steam_icon_206190
 Terminal=false
 Type=Application

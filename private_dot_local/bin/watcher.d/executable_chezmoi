@@ -45,6 +45,10 @@ chezmoi-sync() {
 		# Try to get the source path.
 		source_file=$(chezmoi source-path "$abs_target_file" 2>/dev/null)
 
+		# Getting extension to manage tempalte files properly.
+		filename=$(basename "$source_file")
+		extension="${filename##*.}"
+
 		echo
 		echo -e "=== File: ${ORANGE}$target_file${RESET} (status: ${GREEN}$status${RESET}) ==="
 		if [ -n "$source_file" ]; then
@@ -65,9 +69,17 @@ chezmoi-sync() {
 				echo -n "Apply source->target [a], remove from source [d], skip [s], quit [q]? "
 				;;
 			*M*)
-				echo -e "File was ${PURPLE}MODIFIED${RESET}"
-				# chezmoi diff "$abs_target_file" 2>/dev/null || echo "(Could not show diff)".
-				echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
+				if [[ "$extension" = "tmpl" && "$status" = "MM" ]]; then
+					echo -e "File was ${PURPLE}MODIFIED${RESET} - ${ORANGE}⚠${RESET} source is a ${ORANGE}template${RESET}," \
+					 	"target should not be modified directly"
+					echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
+				elif [[ "$extension" = "tmpl" && "$status" = " M" ]]; then
+					echo -e "Template was ${PURPLE}MODIFIED${RESET}"
+					echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
+				else
+					echo -e "File was ${PURPLE}MODIFIED${RESET}"
+					echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
+				fi
 				;;
 		esac
 
@@ -144,26 +156,42 @@ chezmoi-sync() {
 						*) echo -n "Invalid. Use a, d, i, s, or q: " ;;
 					esac
 					;;
-				*)
+				*)  # Should always be M
 					case $choice in
 						a|A)
+
 							echo "Applying $target_file..."
 							chezmoi apply "$abs_target_file"
 							break
 							;;
 						r|R)
-							echo "Re-adding $target_file..."
-							chezmoi re-add "$abs_target_file"
-							break
+							if [[ "$extension" = "tmpl" ]]; then
+								echo -e "Cannot re-add a modified target to a ${ORANGE}template${RESET}"
+								echo -n "Use a, c, s, or q: "
+							else
+								echo "Re-adding $target_file..."
+								chezmoi re-add "$abs_target_file"
+								break
+							fi
 							;;
 						c|C)
-							delta "$source_file" "$target_file"
+							chezmoi diff "$target_file"
 							echo
-							echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
+							if [[ "$extension" = "tmpl" ]]; then
+								echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
+							else
+								echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
+							fi
 							;;
 						s|S) break ;;
 						q|Q) exit 0 ;;
-						*) echo -n "Invalid. Use a, r, c, s, or q: " ;;
+						*)
+							if [[ "$extension" = "tmpl" ]]; then
+								echo -n "Invalid. Use a, c, s, or q: "
+							else
+								echo -n "Invalid. Use a, r, c, s, or q: "
+							fi
+							;;
 					esac
 					;;
 			esac

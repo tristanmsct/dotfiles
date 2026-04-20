@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Exec=/home/tristan/.config/hypr/launchers/firefox.sh %u
+Exec=firefox.sh %u
 Terminal=false
 X-MultipleArgs=false
 Icon=firefox
@@ -568,7 +568,7 @@ X-GNOME-FullName[zh_CN]=Mozilla Firefox
 X-GNOME-FullName[zh_TW]=Mozilla Firefox
 
 [Desktop Action new-window]
-Exec=/home/tristan/.config/hypr/launchers/firefox.sh --new-window %u
+Exec=firefox.sh --new-window %u
 Name=New Window
 Name[ach]=New Window
 Name[af]=New Window
@@ -682,7 +682,7 @@ Name[zh_CN]=新建窗口
 Name[zh_TW]=開新視窗
 
 [Desktop Action new-private-window]
-Exec=/home/tristan/.config/hypr/launchers/firefox.sh --private-window %u
+Exec=firefox.sh --private-window %u
 Name=New Private Window
 Name[ach]=New Private Window
 Name[af]=New Private Window
@@ -796,7 +796,7 @@ Name[zh_CN]=新建隐私窗口
 Name[zh_TW]=開新隱私視窗
 
 [Desktop Action open-profile-manager]
-Exec=/home/tristan/.config/hypr/launchers/firefox.sh --ProfileManager
+Exec=firefox.sh --ProfileManager
 Name=Open Profile Manager
 Name[ach]=Open Profile Manager
 Name[af]=Open Profile Manager

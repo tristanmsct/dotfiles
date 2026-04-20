@@ -1,7 +1,7 @@
 # Allows hiding any entries which don't have box art images defined
 hide_entries_without_box_art = false
 # Directory to find box art in if an absolute path is not given
-box_art_dir = "/home/tristan/Media/Pictures/rofi-games/box-art"
+box_art_dir = "{{ .chezmoi.homeDir }}/Media/Pictures/rofi-games/box-art"
 # If the box art for a game is not found, fallback to using the icon
 fallback_to_icons = true
 # Show the source launcher next to the title of each entry
@@ -23,7 +23,7 @@ reverse = false
 
 [[entries]]
 title = "The Legend of Zelda: Majora's Mask"
-launch_command = "mupen64plus /home/tristan/Nextcloud/99-Documents/07-Games/ROMs/TloZ-majoras_mask.n64"
+launch_command = "mupen64plus {{ .chezmoi.homeDir }}/Nextcloud/99-Documents/07-Games/ROMs/TloZ-majoras_mask.n64"
 # launch_env = { LOG_LEVEL = "info", "can_quote_key_too" = "some_value"}
 # launch_env = { SDL_VIDEODRIVER = "x11" }
 # path_game_dir = "/opt/GDLauncher"
@@ -31,16 +31,16 @@ path_box_art = "majoras_mask.png"
 
 [[entries]]
 title = "Thronefall"
-launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+launch_env = { HOME = "{{ .chezmoi.homeDir }}/.local/state/fake_home"}
 
 [[entries]]
 title = "Slay the Spire"
-launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+launch_env = { HOME = "{{ .chezmoi.homeDir }}/.local/state/fake_home"}
 
 [[entries]]
 title = "FTL: Faster Than Light"
-launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+launch_env = { HOME = "{{ .chezmoi.homeDir }}/.local/state/fake_home"}
 
 [[entries]]
 title = "Don't Starve"
-launch_env = { HOME = "/home/tristan/.local/state/fake_home"}
+launch_env = { HOME = "{{ .chezmoi.homeDir }}/.local/state/fake_home"}

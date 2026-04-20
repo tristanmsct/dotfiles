@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=RimWorld
 Comment=Play this game on Steam
-Exec=/home/tristan/.config/hypr/settings/steam.sh steam://rungameid/294100
+Exec=steam.sh steam://rungameid/294100
 Icon=steam_icon_294100
 Terminal=false
 Type=Application

@@ -9,8 +9,8 @@
 
 (defpoll pywal-colors
   :interval "2s"
-  :initial "~/.config/eww/themes/scripts/spit-hot-colors.sh"
-  "~/.config/eww/themes/scripts/spit-hot-colors.sh"
+  :initial "$HOME/.config/eww/themes/scripts/spit-hot-colors.sh"
+  "$HOME/.config/eww/themes/scripts/spit-hot-colors.sh"
 )
 
 (defpoll borders-on
@@ -23,14 +23,14 @@
 ; this is why I'm using eww borders as an indicator here.
 ; (defpoll borders-decorations-on
 ;   :interval "2s"
-;   :initial "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
-;   "if (grep -q 'border: 2px solid rgba' ~/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+;   :initial "if (grep -q 'border: 2px solid rgba' $HOME/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
+;   "if (grep -q 'border: 2px solid rgba' $HOME/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
 ; )
 
 (defpoll borders-decorations-on
   :interval "2s"
-  :initial "if (grep -q '$border-theme: 0px' ~/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
-  "if (grep -q '$border-theme: 0px' ~/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
+  :initial "if (grep -q '$border-theme: 0px' $HOME/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q '$border-theme: 0px' $HOME/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
 )
 
 (defvar saturation-value 0.5)
@@ -65,7 +65,7 @@
             :class "color-item"
             ; The nohup command is to detach the execution of the script since there is a sleep in the function
             ; otherwise the execution is killed when the sleep occurs.
-            :onclick "nohup ~/.config/eww/themes/scripts/set-hot-colors.sh '${entry}' &"
+            :onclick "nohup $HOME/.config/eww/themes/scripts/set-hot-colors.sh '${entry}' &"
             :tooltip "Click to select a color theme"
             (label :markup "${entry}")
           )
@@ -84,7 +84,7 @@
         :cursor "pointer"
         (button
           :class {borders-on == "true" ? "control-button-active" : "control-button"}
-          :onclick "~/.config/eww/themes/scripts/switch-borders.sh ${borders-on}"
+          :onclick "$HOME/.config/eww/themes/scripts/switch-borders.sh ${borders-on}"
           :tooltip "Enable / disable borders on main windows"
           "Main borders"
         )
@@ -95,7 +95,7 @@
         :cursor "pointer"
         (button
           :class {borders-decorations-on == "true" ? "control-button-active" : "control-button"}
-          :onclick "~/.config/eww/themes/scripts/switch-borders-decorations.sh ${borders-decorations-on}"
+          :onclick "$HOME/.config/eww/themes/scripts/switch-borders-decorations.sh ${borders-decorations-on}"
           :tooltip "Enable / disable borders on decorations"
           "Decorations borders"
         )
@@ -114,7 +114,7 @@
         :cursor "pointer"
         (button
           :class "control-button"
-          :onclick "~/.config/eww/themes/scripts/saturate.sh ${saturation-value}"
+          :onclick "$HOME/.config/eww/themes/scripts/saturate.sh ${saturation-value}"
           :tooltip "Click to apply chosen saturation"
           "Saturate"
         )
@@ -146,7 +146,7 @@
       :cursor "pointer"
       (button
         :class "control-button-active"
-        :onclick "~/.config/eww/themes/scripts/switch-theme.sh"
+        :onclick "$HOME/.config/eww/themes/scripts/switch-theme.sh"
         :tooltip "Click to switch between dark and light theme"
         (label :markup "Dark / Light Theme")
       )

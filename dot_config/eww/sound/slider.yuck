@@ -9,8 +9,8 @@
 
 (defpoll sound-icon
   :interval "100ms"
-  :initial "~/.config/eww/sound/scripts/get-icon.sh"
-  "~/.config/eww/sound/scripts/get-icon.sh"
+  :initial "$HOME/.config/eww/sound/scripts/get-icon.sh"
+  "$HOME/.config/eww/sound/scripts/get-icon.sh"
 )
 
 (defpoll sound-slider-value
@@ -50,8 +50,8 @@
       :cursor "pointer"
       (button
         :class "mute-button"
-        :onclick "~/.config/eww/sound/scripts/set-sound.sh mute"
-        :onrightclick "~/.config/eww/sound/scripts/open-sink-switcher.sh"
+        :onclick "$HOME/.config/eww/sound/scripts/set-sound.sh mute"
+        :onrightclick "$HOME/.config/eww/sound/scripts/open-sink-switcher.sh"
 
         :tooltip
 "Left click to mute / unmute
@@ -72,7 +72,7 @@ Right click to switch main audio output"
           :max 21
           :timeout 1000
           :value sound-slider-value
-          :onchange "~/.config/eww/sound/scripts/set-sound.sh $(( {} * 5 ))"
+          :onchange "$HOME/.config/eww/sound/scripts/set-sound.sh $(( {} * 5 ))"
 
           :tooltip "Drag to change value (0-100)"
         )

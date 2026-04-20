@@ -9,25 +9,25 @@
 # ---------------------------------------------------------------------------------------
 # General
 # ---------------------------------------------------------------------------------------
-alias ls='eza --icons=always'
-alias lh='eza --icons=always --sort=type --oneline'
-alias la='eza --icons=always --sort=type --oneline --all'
-alias ll='eza --icons=always --sort=type --long'
-alias l='eza --icons=always --sort=type --long --all'
-alias lt='eza --tree --level=1 --icons=always --sort=type --all'
-alias lg='eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions'
+alias ls="eza --icons=always"
+alias lh="eza --icons=always --sort=type --oneline"
+alias la="eza --icons=always --sort=type --oneline --all"
+alias ll="eza --icons=always --sort=type --long"
+alias l="eza --icons=always --sort=type --long --all"
+alias lt="eza --tree --level=1 --icons=always --sort=type --all"
+alias lg="eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions"
 
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias grep="grep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias egrep="egrep --color=auto"
 
 # Enable aliases to be sudo’ed.
-alias sudo='sudo '
+alias sudo="sudo "
 
-alias shutdown='systemctl poweroff'
-alias wifi='nmtui'
+alias shutdown="systemctl poweroff"
+alias wifi="nmtui"
 alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"
-alias ff='fastfetch'
+alias ff="fastfetch"
 alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"
 alias open-dotfiles="xdg-open $HOME/.local/share/dotfiles > /dev/null 2>&1 & disown"
 alias dufl="duf --only local"
@@ -40,48 +40,42 @@ alias icat="kitten icat"
 # ---------------------------------------------------------------------------------------
 # System
 # ---------------------------------------------------------------------------------------
-alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
-
-# ---------------------------------------------------------------------------------------
-# Qtile
-# ---------------------------------------------------------------------------------------
-alias res1='xrandr --output DisplayPort-0 --mode 2560x1440 --rate 120'
-alias res2='xrandr --output DisplayPort-0 --mode 1920x1080 --rate 120'
-alias setkb='setxkbmap de;echo "Keyboard set back to de."'
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 
 # ---------------------------------------------------------------------------------------
 # Python
 # ---------------------------------------------------------------------------------------
-alias sba='source .venv/bin/activate'
-alias poetry='nice poetry'
+alias sba="source .venv/bin/activate"
+alias poetry="nice poetry"
 
 # ---------------------------------------------------------------------------------------
 # Docker
 # ---------------------------------------------------------------------------------------
-alias dstart='sudo systemctl start docker containerd'
-alias dc='docker compose'
-alias dcu='docker compose up'
-alias dcd='docker compose down'
-alias dcr='docker compose restart'
-alias dki='docker kill'
-alias dps='docker container ls'
-alias dcl='docker compose logs -f'
+alias dstart="sudo systemctl start docker containerd"
+alias dc="docker compose"
+alias dcu="docker compose up"
+alias dcd="docker compose down"
+alias dcr="docker compose restart"
+alias dki="docker kill"
+alias dps="docker container ls"
+alias dcl="docker compose logs -f"
 alias dpsf="docker ps --format 'table {{.Image}}\t{{.Names}}\t{{.Status}}'"
-alias dstats='docker stats --no-stream'
-alias dcstats='docker compose stats --no-stream'
+alias dstats="docker stats --no-stream"
+alias dcstats="docker compose stats --no-stream"
 
 # ---------------------------------------------------------------------------------------
 # Git
 # ---------------------------------------------------------------------------------------
-alias gad='git add .'
-alias gcm='git commit'
-alias gcmm='git commit -m'
-alias gp='git push'
-alias gdi='git diff'
-alias gst='git status'
+alias gad="git add ."
+alias gci="git commit"
+alias gcm="git commit -m"
+alias gph="git push"
+alias gpl="git pull"
+alias gdi="git diff"
+alias gst="git status"
 alias glo='git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
-alias gma='git checkout main'
-alias gco='git checkout'
+alias gma="git checkout main"
+alias gco="git checkout"
 
 if [ -n "$BASH_VERSION" ]; then
 	source /usr/share/bash-completion/completions/git
@@ -92,21 +86,21 @@ fi
 # Kubernetes
 # ---------------------------------------------------------------------------------------
 alias ke="kubectl get events --sort-by='.lastTimestamp'"
-alias kppr='gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster --region europe-west9 --project ino-it-s-kroko-ppr'
+alias kppr="gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster --region europe-west9 --project ino-it-s-kroko-ppr"
 
 # ---------------------------------------------------------------------------------------
 # Custom launchers
 # ---------------------------------------------------------------------------------------
 # Custom launchers for apps that need to be run with spcial flags and environment variables.
-alias brave="~/.config/hypr/launchers/brave.sh"
-alias firefox="~/.config/hypr/launchers/firefox.sh"
-alias typora="~/.config/hypr/launchers/typora.sh"
-alias feishin="~/.config/hypr/launchers/feishin.sh"
-alias slack="~/.config/hypr/launchers/slack.sh"
-alias codium="~/.config/hypr/launchers/codium.sh"
-alias vscodium="~/.config/hypr/launchers/codium.sh"
-alias nextcloud="~/.config/hypr/launchers/nextcloud.sh"
-alias steam="~/.config/hypr/launchers/steam.sh"
+alias brave="brave.sh"
+alias firefox="firefox.sh"
+alias typora="typora.sh"
+alias feishin="feishin.sh"
+alias slack="slack.sh"
+alias codium="codium.sh"
+alias vscodium="codium.sh"
+alias nextcloud="nextcloud.sh"
+alias steam="steam.sh"
 
 # These script are about starting the app with the right cursor.
-alias vlc="~/.config/hypr/launchers/vlc.sh"  # For VLC, it's because it is a Qt app and otherwise it does not have the right cursor.
+alias vlc="vlc.sh"  # For VLC, it's because it is a Qt app and otherwise it does not have the right cursor.

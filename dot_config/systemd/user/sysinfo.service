@@ -3,4 +3,4 @@ Description=Gather system information
 
 [Service]
 Type=oneshot
-ExecStart=/home/tristan/.local/bin/watcher.d/sysinfo
+ExecStart=%h/.local/bin/watcher.d/sysinfo

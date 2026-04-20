@@ -1,7 +1,8 @@
 [Desktop Entry]
 Name=Typora
 GenericName=Markdown Editor
-Exec=/home/tristan/.config/hypr/launchers/typora.sh %U
+#Exec=typora.sh %U
+Exec=typora.sh
 Icon=typora
 Type=Application
 StartupNotify=true

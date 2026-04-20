@@ -10,14 +10,14 @@
 ;; Variables
 (defpoll hyprsunset-active
   :interval "1s"
-  :initial "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.filter_on' )"
-  "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.filter_on' )"
+  :initial "echo $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.filter_on' )"
+  "echo $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.filter_on' )"
 )
 
 (defpoll hyprsunset-timer-active
   :interval "1s"
-  :initial "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.auto_timer' )"
-  "echo $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.auto_timer' )"
+  :initial "echo $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.auto_timer' )"
+  "echo $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.auto_timer' )"
 )
 
 (defpoll brightness-value
@@ -34,8 +34,8 @@
 
 (defpoll sunset-value
   :interval "200ms"
-  :initial "echo $(( $( cat /home/tristan/.local/state/desktop/state.jsonn|jq '.hyprsunset.temperature' ) / 50 ))"
-  "echo $(( $( cat /home/tristan/.local/state/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
+  :initial "echo $(( $( cat $HOME/.local/state/desktop/state.jsonn|jq '.hyprsunset.temperature' ) / 50 ))"
+  "echo $(( $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
 )
 
 ;; Widget Definition
@@ -83,7 +83,7 @@
               :max 21
               :timeout 1000
               :value brightness-slider-value
-              :onchange "~/.config/eww/brightness/scripts/set-brightness.sh $(({} * 5))"
+              :onchange "$HOME/.config/eww/brightness/scripts/set-brightness.sh $(({} * 5))"
               :tooltip "Drag to change value (20-100)"
             )
           )
@@ -138,8 +138,8 @@
           :cursor "pointer"
           (button
             :class {hyprsunset-active == "true" ? "control-button-active" : "control-button"}
-            :onclick "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh"
-            :onrightclick "~/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh 6500"
+            :onclick "$HOME/.config/hypr/scripts/hyprsunset/hyprsunset.sh"
+            :onrightclick "$HOME/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh 6500"
             :tooltip "Click to toogle hyprsunset manually"
             "Hyprsunset"
           )
@@ -162,7 +162,7 @@
               :max 400
               :timeout 1000
               :value sunset-value
-              :onchange "~/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh $(({} * 50))"
+              :onchange "$HOME/.config/eww/brightness/scripts/menu-hyprsunset-slider.sh $(({} * 50))"
               :tooltip "Drag to change value (1000 - 20000)"
             )
           )
@@ -179,7 +179,7 @@
           :cursor "pointer"
           (button
             :class {hyprsunset-timer-active == "true" ? "control-button-active" : "control-button"}
-            :onclick "~/.config/eww/brightness/scripts/menu-hyprsunset-timer-button.sh"
+            :onclick "$HOME/.config/eww/brightness/scripts/menu-hyprsunset-timer-button.sh"
             :tooltip "Click to toogle hyprsunset auto timer"
             "Hyprsunset Auto Timer"
           )

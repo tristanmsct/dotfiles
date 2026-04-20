@@ -34,8 +34,6 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
     sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
     sed -i -E "s/(background:) @background-theme;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
 
-    sed -i -E "s|(background: url.*;$)|/\* \1 \*/|" $HOME/.config/wlogout/style.css
-
     rm $HOME/.cache/wallpaper/blurred_wallpaper.png
 
     /usr/bin/nextcloud --quit
@@ -53,8 +51,6 @@ if (grep -q "border-theme: 2px" "$HOME/.config/eww/eww.scss"); then
     sed -i -E "s/(border: 2px solid) rgba\(0,0,0,0\);/\1 @accent-color;/" $HOME/.config/waybar/style.css
 fi
 sed -i -E "s/(background:) rgba\(0,0,0,0\);/\1 @background-theme;/" $HOME/.config/waybar/style.css
-
-sed -i -E "s|/\* (background: url.*) \*/|\1|" $HOME/.config/wlogout/style.css
 
 $HOME/.config/hypr/launchers/nextcloud.sh --background &
 

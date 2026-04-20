@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Proton 9.0
 Comment=Play this game on Steam
-Exec=/home/tristan/.config/hypr/settings/steam.sh steam://rungameid/2805730
+Exec=steam.sh steam://rungameid/2805730
 Icon=steam
 Terminal=false
 Type=Application

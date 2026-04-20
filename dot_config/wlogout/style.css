@@ -13,7 +13,8 @@
  * Import Pywal colors
  * --------------------------------------------------------------------------------------
  */
-@import '/home/tristan/.cache/wal/colors-wlogout.css';
+@import 'colors-wlogout.css';
+
 
 /*
  * General
@@ -28,8 +29,7 @@
 }
 
 window {
-    background: url("/home/tristan/.cache/wallpaper/blurred_wallpaper.png");
-    background-color: #111111;
+    background-color: rgba(0, 0, 0, 0);
     background-size: cover;
 }
 

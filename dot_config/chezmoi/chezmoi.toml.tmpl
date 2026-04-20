@@ -1,10 +1,10 @@
-sourceDir = "/home/tristan/.local/share/dotfiles"
+sourceDir = "{{ .chezmoi.homeDir }}/.local/share/dotfiles"
 encryption = "age"
 editor = "codium --wait"
-persistentState = "/home/tristan/.local/share/chezmoi/chezmoistate.boltdb"
+persistentState = "{{ .chezmoi.homeDir }}/.local/share/chezmoi/chezmoistate.boltdb"
 
 [age]
-    identity = "~/.config/chezmoi/key.txt"
+    identity = "{{ .chezmoi.homeDir }}/.config/chezmoi/key.txt"
     symmetric = true
 
 [diff]

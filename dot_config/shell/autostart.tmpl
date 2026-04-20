@@ -15,12 +15,12 @@ if [[ $(tty) == *"pts"* ]]; then
     if (( width >= 110 && height >= 40 )); then
         fastfetch
     elif (( width >= 85 && height >= 20 )); then
-        fastfetch -c $HOME/.config/fastfetch/config_small.jsonc
+        fastfetch -c "$HOME/.config/fastfetch/config_small.jsonc"
     fi
 
     # Codium lives in its fake home, this export is needed so the integrated terminal use the right home otherwise some programs break.
     if [[ "$TERM_PROGRAM" == "vscode" ]]; then
-        export HOME=/home/tristan
+        export HOME={{- .chezmoi.homeDir }}
     fi
 else
     echo "Start Hyprland with command Hyprland"
