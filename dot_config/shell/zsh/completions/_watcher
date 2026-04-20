@@ -27,43 +27,43 @@ _watcher() {
             done
             commands+=("open:Open the system notes directory")
             commands+=("all:Run main watchers")
-            _describe 'watcher command' commands
+            _describe "watcher command" commands
             ;;
         3)
             # Second argument: subcommands based on first arg
             case ${words[2]} in
                 all)
-                    _arguments '2:command:_watcher-all'
+                    _arguments "2:command:_watcher-all"
                     ;;
                 desktop)
-                    _arguments '2:command:_watcher-desktop'
+                    _arguments "2:command:_watcher-desktop"
                     ;;
                 xdg)
-                    _arguments '2:command:_watcher-xdg'
+                    _arguments "2:command:_watcher-xdg"
                     ;;
                 chezmoi)
-                    _arguments '2:command:_watcher-chezmoi'
+                    _arguments "2:command:_watcher-chezmoi"
                     ;;
                 pkglog)
-                    _arguments '2:command:_watcher-pkglog'
+                    _arguments "2:command:_watcher-pkglog"
                     ;;
                 cache)
-                    _arguments '2:command:_watcher-cache'
+                    _arguments "2:command:_watcher-cache"
                     ;;
                 sysinfo)
-                    _arguments '2:command:_watcher-sysinfo'
+                    _arguments "2:command:_watcher-sysinfo"
                     ;;
             esac
             ;;
         4)
             if [[ ${words[2]} == "xdg" ]] && [[ ${words[3]} == "notes" ]]; then
-                 _arguments '3:command:_watcher-xdgnotes'
+                 _arguments "3:command:_watcher-xdgnotes"
             elif
                 [[ ${words[2]} == "pkglog" ]] && [[ ${words[3]} == "notes" ]]; then
-                 _arguments '3:command:_watcher-pkgnotes'
+                 _arguments "3:command:_watcher-pkgnotes"
             elif
                 [[ ${words[2]} == "sysinfo" ]] && [[ ${words[3]} == "notes" ]]; then
-                 _arguments '3:command:_watcher-sysnotes'
+                 _arguments "3:command:_watcher-sysnotes"
             fi
             ;;
     esac

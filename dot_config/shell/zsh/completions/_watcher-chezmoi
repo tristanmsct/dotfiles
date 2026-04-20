@@ -3,12 +3,12 @@
 _watcher-chezmoi() {
     local -a options
     options=(
-        ':Check for untracked files'
-        'sync:Run chezmoi synchronisation script'
-        'update:Update the baseline file'
+        ":Check for untracked files"
+        "sync:Run chezmoi synchronisation script"
+        "update:Update the baseline file"
     )
 
-    _describe 'watcher-chezmoi commands' options
+    _describe "watcher-chezmoi commands" options
 }
 
 _watcher-chezmoi "$@"

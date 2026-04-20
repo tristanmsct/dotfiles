@@ -3,11 +3,11 @@
 _watcher-sysinfo() {
     local -a options
     options=(
-        ':Collect system information'
-        'notes:Manage notes for system custom file reasons'
+        ":Collect system information"
+        "notes:Manage notes for system custom file reasons"
     )
 
-    _describe 'watcher-sysinfo commands' options
+    _describe "watcher-sysinfo commands" options
 }
 
 _watcher-sysinfo "$@"

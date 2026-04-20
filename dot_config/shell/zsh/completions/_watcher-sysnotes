@@ -3,14 +3,14 @@
 _watcher-sysnotes() {
     local -a options
     options=(
-      'add:Add a custom system file and its reason'
-      'query:Query all or a specific custom sytem file'
-      'search:Search for a custom system file or a reason by search term'
-      'edit:Edit notes for a custom system file'
-      'remove:Remove notes for a custom system file'
+      "add:Add a custom system file and its reason"
+      "query:Query all or a specific custom sytem file"
+      "search:Search for a custom system file or a reason by search term"
+      "edit:Edit notes for a custom system file"
+      "remove:Remove notes for a custom system file"
     )
 
-    _describe 'watcher-sysnotes commands' options
+    _describe "watcher-sysnotes commands" options
 }
 
 _watcher-sysnotes "$@"

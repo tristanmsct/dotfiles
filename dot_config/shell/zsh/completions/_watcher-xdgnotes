@@ -3,15 +3,15 @@
 _watcher-xdgnotes() {
     local -a options
     options=(
-      'add:Add a directory and its reason'
-      'query:Query all or a specific directory'
-      'query-application:Query all or a specific application'
-      'search:Search for a directory or a reason by search term'
-      'edit:Edit notes for a directory'
-      'remove:Remove notes for a directory'
+      "add:Add a directory and its reason"
+      "query:Query all or a specific directory"
+      "query-application:Query all or a specific application"
+      "search:Search for a directory or a reason by search term"
+      "edit:Edit notes for a directory"
+      "remove:Remove notes for a directory"
     )
 
-    _describe 'watcher-xdgnotes commands' options
+    _describe "watcher-xdgnotes commands" options
 }
 
 _watcher-xdgnotes "$@"

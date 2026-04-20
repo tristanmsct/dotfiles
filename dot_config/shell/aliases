@@ -73,7 +73,7 @@ alias gph="git push"
 alias gpl="git pull"
 alias gdi="git diff"
 alias gst="git status"
-alias glo='git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+alias glo="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gma="git checkout main"
 alias gco="git checkout"
 

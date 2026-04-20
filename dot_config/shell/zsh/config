@@ -58,4 +58,4 @@ eval "$(uvx --generate-shell-completion zsh)"
 # -----------------------------------------------------
 bindkey "^?" backward-delete-char    # Backspace deletes a single character
 bindkey "^W" backward-kill-word      # Ctrl + W (or remapped Ctrl + Backspace) deletes a word
-bindkey '^D' kill-whole-line         # Ctrl + G to clear the line
+bindkey "^D" kill-whole-line         # Ctrl + G to clear the line

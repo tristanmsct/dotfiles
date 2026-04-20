@@ -3,12 +3,12 @@
 _watcher-all() {
     local -a options
     options=(
-        ':Run main watchers'
-        '--git:Performs a git check'
-        '--no-cache:Omits cache check'
+        ":Run main watchers"
+        "--git:Performs a git check"
+        "--no-cache:Omits cache check"
     )
 
-    _describe 'watcher-all commands' options
+    _describe "watcher-all commands" options
 }
 
 _watcher-all "$@"

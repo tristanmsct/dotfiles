@@ -3,13 +3,13 @@
 _jaccuse() {
     local -a options
     options=(
-      '--reverse:Show reverse dependencies'
-      '--deep:Deep search'
-      '--quiet:Quiet mode'
-      '--help:Display help message'
+      "--reverse:Show reverse dependencies"
+      "--deep:Deep search"
+      "--quiet:Quiet mode"
+      "--help:Display help message"
     )
 
-    _describe 'jaccuse commands' options
+    _describe "jaccuse commands" options
 }
 
 _jaccuse "$@"
