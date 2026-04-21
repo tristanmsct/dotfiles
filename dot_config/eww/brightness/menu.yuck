@@ -28,13 +28,13 @@
 
 (defpoll keyboard-backlight-value
   :interval "200ms"
-  :initial "brightnessctl get -d samsung-galaxybook::kbd_backlight"
-  "brightnessctl get -d samsung-galaxybook::kbd_backlight"
+  :initial "brightnessctl get -d '*kbd_backlight*'"
+  "brightnessctl get -d '*kbd_backlight*'"
 )
 
 (defpoll sunset-value
   :interval "200ms"
-  :initial "echo $(( $( cat $HOME/.local/state/desktop/state.jsonn|jq '.hyprsunset.temperature' ) / 50 ))"
+  :initial "echo $(( $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
   "echo $(( $( cat $HOME/.local/state/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
 )
 
@@ -113,7 +113,7 @@
               :max 4
               :timeout 1000
               :value keyboard-backlight-value
-              :onchange "brightnessctl set {} -d samsung-galaxybook::kbd_backlight "
+              :onchange "brightnessctl set {} -d '*kbd_backlight*' "
               :tooltip "Drag to change value (0-3)"
             )
           )
