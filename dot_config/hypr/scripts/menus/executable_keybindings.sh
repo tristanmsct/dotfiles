@@ -8,7 +8,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-config_file="/home/$USER/.config/hypr/conf/keybindings.conf"
+config_file="$HOME/.config/hypr/conf/keybindings.conf"
 
 keybinds=""
 

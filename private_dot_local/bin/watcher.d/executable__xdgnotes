@@ -94,11 +94,11 @@ def pick_directory(lst_known_dirs: list):
     """Pick a directory interactively using gum filter."""
     try:
         # Get list of directories.
-        user = os.getenv("USER")
-        config_res = subprocess.run(["ls", f"""/home/{user}/.config"""], stdout=subprocess.PIPE, text=True, check=True).stdout
-        cache_res = subprocess.run(["ls", f"""/home/{user}/.cache"""], stdout=subprocess.PIPE, text=True, check=True).stdout
-        share_res = subprocess.run(["ls", f"""/home/{user}/.local/share"""], stdout=subprocess.PIPE, text=True, check=True).stdout
-        state_res = subprocess.run(["ls", f"""/home/{user}/.local/state"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        path_home = os.getenv("HOME")
+        config_res = subprocess.run(["ls", f"""{path_home}/.config"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        cache_res = subprocess.run(["ls", f"""{path_home}/.cache"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        share_res = subprocess.run(["ls", f"""{path_home}/.local/share"""], stdout=subprocess.PIPE, text=True, check=True).stdout
+        state_res = subprocess.run(["ls", f"""{path_home}/.local/state"""], stdout=subprocess.PIPE, text=True, check=True).stdout
 
         config_res = [f"config:{elt}" for elt in config_res.split("\n") if elt != ""]
         cache_res = [f"cache:{elt}" for elt in cache_res.split("\n") if elt != ""]

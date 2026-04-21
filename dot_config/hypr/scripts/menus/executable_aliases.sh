@@ -9,8 +9,8 @@
 
 source "$HOME/.config/shell/lib/format"
 
+config_file="$HOME/.config/shell/aliases"
 
-config_file="/home/$USER/.config/shell/aliases"
 aliases=""
 
 while read -r line; do
