@@ -19,6 +19,7 @@ application/wps-office.xlsx=onlyoffice-desktopeditors.desktop
 application/wps-office.docx=onlyoffice-desktopeditors.desktop
 application/wps-office.pptx=onlyoffice-desktopeditors.desktop
 x-scheme-handler/slack=slack.desktop
+video/x-matroska=io.github.celluloid_player.Celluloid.desktop
 
 [Added Associations]
 application/x-zerosize=typora.desktop;sublime_text.desktop;vscodium.desktop;nvim.desktop;
@@ -32,3 +33,4 @@ application/pdf=onlyoffice-desktopeditors.desktop;brave-browser.desktop;org.gnom
 application/wps-office.xlsx=onlyoffice-desktopeditors.desktop;
 application/wps-office.docx=onlyoffice-desktopeditors.desktop;
 application/wps-office.pptx=onlyoffice-desktopeditors.desktop;
+video/x-matroska=io.github.celluloid_player.Celluloid.desktop;

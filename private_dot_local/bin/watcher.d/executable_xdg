@@ -14,6 +14,7 @@ CONFIG_BASELINE=$HOME/.local/share/watcher/xdg/config-baseline.txt
 STATE_BASELINE=$HOME/.local/share/watcher/xdg/state-baseline.txt
 SHARE_BASELINE=$HOME/.local/share/watcher/xdg/share-baseline.txt
 CACHE_BASELINE=$HOME/.local/share/watcher/xdg/cache-baseline.txt
+HOME_BASELINE=$HOME/.local/share/watcher/xdg/home-baseline.txt
 
 display_diff() {
 	ADDITIONS=$(echo "$1" | grep "^>" | sed 's/^> //')
@@ -50,13 +51,23 @@ if [[ -z $1 ]]; then
 	subsection "       .cache      "
 	DIFF_OUTPUT=$(diff <(cat $CACHE_BASELINE) <(/usr/bin/ls -1 ~/.cache/))
 	display_diff "$DIFF_OUTPUT"
+
+	DIFF_OUTPUT=$(diff <(cat $HOME_BASELINE) <(/usr/bin/ls -1a $HOME))
+	if [[ -n "$DIFF_OUTPUT" ]]; then
+		subsection "       home      "
+		ADDITIONS=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> /+ /')
+		DELETIONS=$(echo "$DIFF_OUTPUT" | grep "^<" | sed 's/^< /- /')
+		[ -n "$ADDITIONS" ] && echo -e "${RED}$ADDITIONS${RESET}"
+		[ -n "$DELETIONS" ] && echo -e "${RED}$DELETIONS${RESET}"
+	fi
 else
 	if [[ $1 == "update" ]]; then
 		if gum confirm "Confirm XDG baseline update"; then
-			/usr/bin/ls -1 ~/.config/ > $CONFIG_BASELINE
-			/usr/bin/ls -1 ~/.local/state/ > $STATE_BASELINE
-			/usr/bin/ls -1 ~/.local/share/ > $SHARE_BASELINE
-			/usr/bin/ls -1 ~/.cache/ > $CACHE_BASELINE
+			/usr/bin/ls -1 "$HOME/.config" > $CONFIG_BASELINE
+			/usr/bin/ls -1 "$HOME/.local/state" > $STATE_BASELINE
+			/usr/bin/ls -1 "$HOME/.local/share" > $SHARE_BASELINE
+			/usr/bin/ls -1 "$HOME/.cache" > $CACHE_BASELINE
+			/usr/bin/ls -1a "$HOME" > $HOME_BASELINE
 		fi
 	elif [[ $1 == "notes" ]]; then
 		shift
