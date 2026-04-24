@@ -24,6 +24,7 @@ rofi_cmd() {
 	rofi -theme-str "window {width: 680px;}" \
 		-theme-str "listview {columns: 1; lines: 6;}" \
 		-theme-str 'textbox-prompt-colon {str: "";}' \
+		-disable-history \
 		-dmenu \
 		-mesg "$mesg" \
 		-markup-rows \

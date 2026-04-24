@@ -34,4 +34,4 @@ while read -r line; do
 done < "$config_file"
 
 sleep 0.2
-rofi -dmenu -i -markup -eh 2 -replace -p "Aliases" -config ~/.config/rofi/config-search.rasi <<< "$aliases"
+rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Aliases" -config ~/.config/rofi/config-search.rasi <<< "$aliases"
