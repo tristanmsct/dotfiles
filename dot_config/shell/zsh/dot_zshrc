@@ -19,7 +19,7 @@ if [[ $(tty) == *"pts"* ]]; then
   fi
   source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
-  [[ ! -f "$ZDOTDIR/prompt/p10k.zsh" ]] || source "$ZDOTDIR/prompt/p10k.zsh"
+  [[ -f "$ZDOTDIR/prompt/p10k.zsh" ]] && source "$ZDOTDIR/prompt/p10k.zsh"
 else
-  [[ ! -f "$ZDOTDIR/prompt/zsh_tty_prompt.zsh" ]] || source "$ZDOTDIR/prompt/zsh_tty_prompt.zsh"
+  [[ -f "$ZDOTDIR/prompt/zsh_tty_prompt.zsh" ]] && source "$ZDOTDIR/prompt/zsh_tty_prompt.zsh"
 fi

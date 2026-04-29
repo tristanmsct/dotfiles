@@ -20,4 +20,4 @@ eval "$(ssh-agent)" &>/dev/null
 # -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-[[ ! -f $HOME/.config/shell/bash/completion ]] || source $HOME/.config/shell/bash/completion
+[[ -f $HOME/.config/shell/bash/completion ]] && source $HOME/.config/shell/bash/completion
