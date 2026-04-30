@@ -7,18 +7,41 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# TODO
+# This script should use a game mode indicator from state.
+# Then write to colors-waybar.css instead of waybar/style.css directly.
+# apply-theme, through pywal-enhance.sh, should adapt its behaviour depending on game mode.
+# Restore.sh should use the same process.
+# Check for config_file, state_file is a better name.
+
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
+
+# Running the clean up games scripts : will add NoDisplay=true for games and use steam.sh instead of steam in Exec.
+source $HOME/.config/hypr/scripts/game-mode/cleanup-games.sh
 
 if [ $THEME_TYPE = "light" ]; then
     $HOME/.config/hypr/scripts/theming/switch-theme.sh
 fi
 
-HYPRGAMEMODE=$(hyprctl getoption decoration:shadow:enabled | awk 'NR==1{print $2}')
-if [ "$HYPRGAMEMODE" = 1 ] ; then
+if $FOCUSMODE_ENABLED; then
+    # If focus mode is on, then we restore everything and disable it.
+    hyprctl reload
+    waypaper --restore
+
+    $HOME/.config/hypr/launchers/nextcloud.sh --background &
+
+    if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
+        dunstify "Gamemode deactivated" "Decorations, blur, wallpaper, etc. enabled"
+    fi
+
+    jq '.focusmode.enabled = false' $STATE_FILE | sponge $STATE_FILE
+else
+    # If focus mode is off, then start it.
     hyprctl --batch "\
         keyword animations:enabled 1;\
         keyword decoration:shadow:enabled 0;\
@@ -31,27 +54,13 @@ if [ "$HYPRGAMEMODE" = 1 ] ; then
 
     awww kill
 
-    sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
-    sed -i -E "s/(background:) @background-theme;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
+    sed -i -E "s/(background-theme) rgba\(0, 0, 0, 0.4\);/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
+    sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
 
     /usr/bin/nextcloud --quit
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
-        dunstify "Gamemode activated" "Decorations, blur, wallpaper and bar disabled"
+        dunstify "Gamemode activated" "Decorations, blur, wallpaper, etc. disabled"
     fi
-    exit
-fi
 
-source $HOME/.config/hypr/scripts/game-mode/cleanup-games.sh
-hyprctl reload
-waypaper --restore
-
-if (grep -q "border-theme: 2px" "$HOME/.config/eww/eww.scss"); then
-    sed -i -E "s/(border: 2px solid) rgba\(0,0,0,0\);/\1 @accent-color;/" $HOME/.config/waybar/style.css
-fi
-sed -i -E "s/(background:) rgba\(0,0,0,0\);/\1 @background-theme;/" $HOME/.config/waybar/style.css
-
-$HOME/.config/hypr/launchers/nextcloud.sh --background &
-
-if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
-    dunstify "Gamemode deactivated" "Decorations, blur, wallpaper and bar enabled"
+    jq '.focusmode.enabled = true' $STATE_FILE | sponge $STATE_FILE
 fi

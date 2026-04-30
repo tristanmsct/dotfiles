@@ -11,10 +11,10 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/battery.json
+STATE_FILE=$HOME/.local/state/desktop/battery.json
 
 BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
-PREVIOUS_LEVEL=$(jq -r '.battery_level' $CONFIG_FILE)
+PREVIOUS_LEVEL=$(jq -r '.battery_level' $STATE_FILE)
 
 if [ "$BATTERY_LEVEL" -gt "$PREVIOUS_LEVEL" ]; then
     if [ $BATTERY_LEVEL = 100 ]; then
@@ -32,4 +32,4 @@ elif [ "$PREVIOUS_LEVEL" -gt "$BATTERY_LEVEL" ]; then
     fi
 fi
 
-jq --argjson battery_level $BATTERY_LEVEL -r '.battery_level = $battery_level' $CONFIG_FILE | sponge $CONFIG_FILE
+jq --argjson battery_level $BATTERY_LEVEL -r '.battery_level = $battery_level' $STATE_FILE | sponge $STATE_FILE

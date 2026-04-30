@@ -1,6 +1,6 @@
 [General]
 
-Background="Backgrounds/CURRENTWALLPAPER"
+Background="Backgrounds/${CURRENTWALLPAPER}"
 ## Path relative to the theme root directory. Most standard image file formats are allowed including support for transparency. (e.g. background.jpeg/illustration.GIF/Foto.png/undraw.svgz)
 
 DimBackgroundImage="0.0"
@@ -40,7 +40,7 @@ MainColour="white"
 ## Used for all elements when not focused/hovered etc. Usually the best effect is achieved by having this be either white or a very dark grey like #444 (not black for smoother antialias)
 ## Colours can be HEX or Qt names (e.g. red/salmon/blanchedalmond). See https://doc.qt.io/qt-5/qml-colour.html
 
-AccentColour="ACCENTCOLOR"
+AccentColour="${ACCENTCOLOR}"
 ## Used for elements in focus/hover/pressed. Should be contrasting to the background and the MainColour to achieve the best effect.
 
 BackgroundColour="#444"

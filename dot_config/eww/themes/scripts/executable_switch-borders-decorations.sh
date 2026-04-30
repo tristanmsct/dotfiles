@@ -7,12 +7,13 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
+STATE_FILE=$HOME/.local/state/desktop/state.json
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
 
 if [ $1 == true ]; then
-    if [ "$HYPRGAMEMODE" = 1 ] ; then
-        # Waybar, disabled in focus mode.
-        sed -i -E "s/(border: 2px solid) @accent-color;/\1 rgba(0,0,0,0);/" $HOME/.config/waybar/style.css
+    if ! $FOCUSMODE_ENABLED; then
+        # Waybar border disabled in focus mode.
+        sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
     fi
 
     # Eww
@@ -26,12 +27,10 @@ if [ $1 == true ]; then
     sed -i -E "s/(border:) 2px/\1 0px/" $HOME/.config/nwg-panel/menu-start.css
 
     # Dunst is excluded because it just looks weird without borders
-    # sed -i -E "s/( frame_width =) 2/\1 0/" $HOME/.config/dunst/dunstrc
-    # sed -i -E "s/( frame_width =) 2/\1 0/" $HOME/.config/dunst/dunstrc.tpl
 else
-    if [ "$HYPRGAMEMODE" = 1 ] ; then
-        # Waybar, disabled in focus mode.
-        sed -i -E "s/(border: 2px solid) rgba\(0,0,0,0\);/\1 @accent-color;/" $HOME/.config/waybar/style.css
+    if ! $FOCUSMODE_ENABLED; then
+        # Waybar border disabled in focus mode.
+        sed -i -E "s/(border-color) rgba\(0, 0, 0, 0\);/\1 @accent-color;/" $HOME/.cache/wal/colors-waybar.css
     fi
 
     # Eww
@@ -43,10 +42,4 @@ else
     # NWG
     sed -i -E "s/(border:) 0px/\1 2px/" $HOME/.config/nwg-drawer/drawer.css
     sed -i -E "s/(border:) 0px/\1 2px/" $HOME/.config/nwg-panel/menu-start.css
-
-    # sed -i -E "s/( frame_width =) 0/\1 2/" $HOME/.config/dunst/dunstrc
-    # sed -i -E "s/( frame_width =) 0/\1 2/" $HOME/.config/dunst/dunstrc.tpl
 fi
-
-# pkill dunst
-# dunstctl reload

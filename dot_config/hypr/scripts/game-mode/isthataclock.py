@@ -13,13 +13,13 @@ import signal
 from datetime import datetime
 
 # Cava color syncs up with the theme so its a good source.
-CAVA_CONFIG_FILE = "~/.config/cava/config_mini"
+CAVA_CONFIG_FILE = os.getenv("HOME") + "/.config/cava/config_mini"
 
 
 def get_cava_color():
     """Read cava main color from its config file."""
     config = configparser.ConfigParser()
-    config.read(os.path.expanduser(CAVA_CONFIG_FILE))
+    config.read(CAVA_CONFIG_FILE)
 
     try:
         color = config.get("color", "gradient_color_1").strip("'")

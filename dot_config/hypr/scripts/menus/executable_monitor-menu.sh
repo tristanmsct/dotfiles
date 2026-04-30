@@ -11,7 +11,7 @@
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
 CONFIG_DIR="$HOME/.config/hypr/conf"
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$HOME/.local/state/desktop/state.json
 source $HOME/.config/hypr/scripts/monitors/monitor-helpers.sh
 
 default="Default"
@@ -20,7 +20,7 @@ external="External Only"
 mirror="Mirror Main Screen"
 
 monitor_cmd() {
-    rofi -disable-history -dmenu -replace -config ~/.config/rofi/config-simple.rasi -i -no-show-icons -l $1 -p "Choose a monitor setup"
+    rofi -disable-history -dmenu -replace -config "$HOME/.config/rofi/config-simple.rasi" -i -no-show-icons -l $1 -p "Choose a monitor setup"
 }
 
 monitor_menu() {
@@ -36,21 +36,21 @@ selected_setup="$(monitor_menu)"
 case $selected_setup in
     $default)
         # log_message "Manually triggering default conf"
-        jq '.display.monitor_external_only = false' $CONFIG_FILE | sponge $CONFIG_FILE
+        jq '.display.monitor_external_only = false' $STATE_FILE | sponge $STATE_FILE
         cp "$CONFIG_DIR/monitors/mono.conf" "$MONITOR_FILE"
         sed -i 's/"\*": [0-9]/"\*": 4/g' "$HOME/.config/waybar/modules.jsonc"
         hyprctl reload
         ;;
     $auto_detect)
         # log_message "Manually triggering auto detect"
-        jq '.display.monitor_external_only = false' $CONFIG_FILE | sponge $CONFIG_FILE
+        jq '.display.monitor_external_only = false' $STATE_FILE | sponge $STATE_FILE
         $HOME/.config/hypr/scripts/monitors/monitor-check.sh
         ;;
     $external)
         # log_message "Manually triggering external only conf"
         monitor_count=$(hyprctl monitors -j | jq length)
         if [[ $monitor_count -ge 2 ]]; then
-            jq '.display.monitor_external_only = true' $CONFIG_FILE | sponge $CONFIG_FILE
+            jq '.display.monitor_external_only = true' $STATE_FILE | sponge $STATE_FILE
             sed -i "s|^monitor=eDP-1.*$|monitor=eDP-1,disabled|g" "$MONITOR_FILE"
             sed -i "s|^bindl = , switch:on:Lid Switch, exec, hyprlock$||g" "$MONITOR_FILE"
             sed -i 's/"\*": [0-9]/"\*": 4/g' "$HOME/.config/waybar/modules.jsonc"

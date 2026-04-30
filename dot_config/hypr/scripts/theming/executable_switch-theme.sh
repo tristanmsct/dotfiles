@@ -10,26 +10,27 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
 
 if [ $THEME_TYPE = "dark" ]; then
-    HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
-    if [ "$HYPRGAMEMODE" = 0 ] ; then
+
+    FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
+    if $FOCUSMODE_ENABLED; then
         dunstify "Game mode enabled, cannot switch to light theme"
         exit
     fi
-    jq '.theme.mode = "light"' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.theme.mode = "light"' $STATE_FILE | sponge $STATE_FILE
 else
-    jq '.theme.mode = "dark"' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.theme.mode = "dark"' $STATE_FILE | sponge $STATE_FILE
 fi
 
-ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $CONFIG_FILE)
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $STATE_FILE)
 
 if [ $ACCENT_COLOR_STATUS = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    COLOR=$(jq -r '.theme.accent_color.hex' $CONFIG_FILE)
-    COLOR_NB=$(jq -r '.theme.accent_color.index' $CONFIG_FILE)
+    COLOR=$(jq -r '.theme.accent_color.hex' $STATE_FILE)
+    COLOR_NB=$(jq -r '.theme.accent_color.index' $STATE_FILE)
 
     $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB
 else

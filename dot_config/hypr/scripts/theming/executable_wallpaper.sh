@@ -15,14 +15,13 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-force_generate=0
-cache_directory="$HOME/.cache/wallpaper"
-cache_file="$cache_directory/current_wallpaper"
-square_wallpaper="$cache_directory/square_wallpaper.png"
+STATE_FILE=$HOME/.local/state/desktop/state.json
+CACHE_DIRECTORY="$HOME/.cache/wallpaper"
+CACHE_FILE="$CACHE_DIRECTORY/current_wallpaper"
+SQUARE_WALLPAPER="$CACHE_DIRECTORY/square_wallpaper.png"
 
-if [ ! -d $cache_directory ]; then
-    mkdir $cache_directory
+if [ ! -d $CACHE_DIRECTORY ]; then
+    mkdir $CACHE_DIRECTORY
 fi
 
 # ---------------------------------------------------------------------------------------
@@ -30,35 +29,29 @@ fi
 # ---------------------------------------------------------------------------------------
 
 if [ -z $1 ]; then
-    wallpaper=$(cat $cache_file)
+    WALLPAPER=$(cat $CACHE_FILE)
 else
-    wallpaper=$1
+    WALLPAPER=$1
 fi
 
 # When changing wallpaper, the accent-color cache file need to be reset, otherwise
 # accent colors from previous wallpapers might get mixed.
-if ! [ "$wallpaper" = "$(cat $cache_file)" ]; then
-    jq 'del(.theme.accent_color.hex)' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
-    jq 'del(.theme.accent_color.index)' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
-    jq '.theme.accent_color.enabled = false' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
+if ! [ "$WALLPAPER" = "$(cat $CACHE_FILE)" ]; then
+    jq 'del(.theme.accent_color.hex)' "$STATE_FILE" | sponge "$STATE_FILE"
+    jq 'del(.theme.accent_color.index)' "$STATE_FILE" | sponge "$STATE_FILE"
+    jq '.theme.accent_color.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
 fi
 
-echo ":: Setting wallpaper with source image $wallpaper"
-
-if [ ! -f $cache_file ]; then
-    touch $cache_file
+if [ ! -f $CACHE_FILE ]; then
+    touch $CACHE_FILE
 fi
-echo "$wallpaper" > $cache_file
-echo ":: Path of current wallpaper copied to $cache_file"
-
-wallpaperfilename=$(basename $wallpaper)
-echo ":: Wallpaper Filename: $wallpaperfilename"
+echo "$WALLPAPER" > $CACHE_FILE
 
 # ---------------------------------------------------------------------------------------
 # Execute pywal
 # ---------------------------------------------------------------------------------------
 
-$HOME/.config/hypr/scripts/theming/create-theme.sh $wallpaper
+$HOME/.config/hypr/scripts/theming/create-theme.sh $WALLPAPER
 
 # ---------------------------------------------------------------------------------------
 # Apply created theme
@@ -70,12 +63,12 @@ source "$HOME/.cache/wal/colors.sh"
 # Should cover all basis.
 # At boot or when refreshing waypapr (meta + W) if an accent color was selected, the cache file will be here, otherwise it will not exist.
 # When switching wallpaper, the cache file is deleted right before so no problem.
-ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $CONFIG_FILE)
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $STATE_FILE)
 
 if [ $ACCENT_COLOR_STATUS = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    COLOR=$(jq -r '.theme.accent_color.hex' $CONFIG_FILE)
-    COLOR_NB=$(jq -r '.theme.accent_color.index' $CONFIG_FILE)
+    COLOR=$(jq -r '.theme.accent_color.hex' $STATE_FILE)
+    COLOR_NB=$(jq -r '.theme.accent_color.index' $STATE_FILE)
 
     $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB
 else
@@ -83,11 +76,11 @@ else
 fi
 
 # Remove any custom saturation
-jq '.theme.saturation.enabled = false' $CONFIG_FILE | sponge $CONFIG_FILE
-jq 'del(.theme.saturation.level)' $CONFIG_FILE | sponge $CONFIG_FILE
+jq '.theme.saturation.enabled = false' $STATE_FILE | sponge $STATE_FILE
+jq 'del(.theme.saturation.level)' $STATE_FILE | sponge $STATE_FILE
 
 # ---------------------------------------------------------------------------------------
 # Created specific wallpapers
 # ---------------------------------------------------------------------------------------
 
-magick $wallpaper -gravity Center -extent 1:1 $square_wallpaper
+magick $WALLPAPER -gravity Center -extent 1:1 $SQUARE_WALLPAPER

@@ -26,4 +26,4 @@ find "$base_apps" -type f -name "*.desktop" -print0 | while IFS= read -r -d '' f
     fi
 done
 
-update-desktop-database ~/.local/share/applications/
+update-desktop-database "$HOME/.local/share/applications/"

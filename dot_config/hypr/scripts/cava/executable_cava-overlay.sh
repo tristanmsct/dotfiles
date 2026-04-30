@@ -44,4 +44,3 @@ else
         kitty +kitten panel --edge=background -o font_size=5 -o background_opacity=0 cava &
     fi
 fi
-

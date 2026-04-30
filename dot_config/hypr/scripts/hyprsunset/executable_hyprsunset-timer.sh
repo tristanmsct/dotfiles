@@ -11,19 +11,19 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$HOME/.local/state/desktop/state.json
 CALENDAR_FILE=$HOME/.config/hypr/scripts/hyprsunset/hyprsunset-calendar.json
-manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
-autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
+MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' $STATE_FILE)
+AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' $STATE_FILE)
 
 logger -t hyprsunset "Running hyprsunset script"
 
-# The timer does not have priority over the manual filter, is the manual filter is on, or the auto timer is off, the script stops.
-if [[ $manual_filter_on = "true" ]]; then
+# The timer does not have priority over the manual filter, IF either the manual filter is on, or the auto timer is off, the script stops.
+if $MANUAL_FILTER_ON; then
     logger -t hyprsunset "Manual filter is on, exiting"
     exit
 fi
-if [[ $autotimer_state = "false" ]]; then
+if ! $AUTOTIMER_STATE; then
     logger -t hyprsunset "Auto timer is off, exiting"
     exit
 fi

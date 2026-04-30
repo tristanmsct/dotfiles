@@ -10,7 +10,7 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$HOME/.local/state/desktop/state.json
 
 # Maybe the saturation function should work even in focus mode but it would be a pain to implement for almost nothing.
 if hyprctl getoption animations:enabled | grep -q "int: 0"; then
@@ -22,14 +22,14 @@ SATURATION_VALUE=$1
 
 WALLPAPER=$(cat $HOME/.cache/wallpaper/current_wallpaper)
 wal -q -i $WALLPAPER --saturate $SATURATION_VALUE &
-jq '.theme.saturation.enabled = true' $CONFIG_FILE | sponge $CONFIG_FILE
-jq --argjson saturation_level "$SATURATION_VALUE" -r '.theme.saturation.level = $saturation_level' $CONFIG_FILE | sponge $CONFIG_FILE
-ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $CONFIG_FILE)
+jq '.theme.saturation.enabled = true' $STATE_FILE | sponge $STATE_FILE
+jq --argjson saturation_level "$SATURATION_VALUE" -r '.theme.saturation.level = $saturation_level' $STATE_FILE | sponge $STATE_FILE
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $STATE_FILE)
 
 if [ $ACCENT_COLOR_STATUS = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    COLOR=$(jq -r '.theme.accent_color.hex' $CONFIG_FILE)
-    COLOR_NB=$(jq -r '.theme.accent_color.index' $CONFIG_FILE)
+    COLOR=$(jq -r '.theme.accent_color.hex' $STATE_FILE)
+    COLOR_NB=$(jq -r '.theme.accent_color.index' $STATE_FILE)
 
     $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB &
 else

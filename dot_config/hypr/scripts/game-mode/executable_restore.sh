@@ -8,9 +8,12 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-file="$HOME/.config/waybar/style.css"
-pattern="#custom-appmenu {\n\s*background: rgba\(0,0,0,0\);"
+STATE_FILE=$HOME/.local/state/desktop/state.json
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
 
-if grep -Pzl "$pattern" "$file" > /dev/null 2>&1; then
-    $HOME/.config/hypr/scripts/game-mode/activate.sh
+if $FOCUSMODE_ENABLED; then
+    # If focus mode is supposed to be enabled, we put the flag as false and run the script which will put it at true again.
+    jq '.focusmode.enabled = false' $STATE_FILE | sponge $STATE_FILE
+
+    $HOME/.config/hypr/scripts/game-mode/activate.sh quiet
 fi

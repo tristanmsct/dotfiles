@@ -11,14 +11,14 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
-autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' $STATE_FILE)
+AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' $STATE_FILE)
 
-if [ $manual_filter_on = "true" ]; then
+if $MANUAL_FILTER_ON; then
     echo '{"class": "filter_on"}'
 else
-    if [ $autotimer_state = "true" ]; then
+    if $AUTOTIMER_STATE; then
         echo '{"class": "auto_timer"}'
     else
         echo '{"class": "filter_off"}'

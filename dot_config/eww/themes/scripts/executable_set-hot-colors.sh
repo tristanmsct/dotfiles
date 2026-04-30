@@ -10,13 +10,13 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$HOME/.local/state/desktop/state.json
 
 COLOR=$(echo $1 | awk -F'#' '{print "#" $2}' | cut -c 1-7)
 COLOR_NB=$(echo $1 | grep -o "^[0-9]")
 
 # If focus mode was activated we need to reactivate it after setting the colors.
-HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
 
 $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB &
 
@@ -25,12 +25,12 @@ jq --arg color "$COLOR" --arg color_nb "$COLOR_NB" '
   .theme.accent_color.enabled = true |
   .theme.accent_color.hex = $color |
   .theme.accent_color.index = $color_nb
-' "$CONFIG_FILE" | sponge "$CONFIG_FILE"
+' "$STATE_FILE" | sponge "$STATE_FILE"
 
 # We need to wait a bit otherwise we reactivate focus mode before the borders are back on.
-timeout 0.5 sleep 0.5 || true
-if [ "$HYPRGAMEMODE" = 0 ] ; then
-    $HOME/.config/hypr/scripts/game-mode/activate.sh quiet
+if $FOCUSMODE_ENABLED; then
+  timeout 1.5 sleep 1.5 || true
+  $HOME/.config/hypr/scripts/game-mode/restore.sh
 fi
 
 eww close theme-menu-window-closer

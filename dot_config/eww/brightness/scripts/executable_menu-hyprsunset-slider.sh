@@ -12,10 +12,10 @@ new_value=$1
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-manual_filter_on=$(jq '.hyprsunset.filter_on' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+manual_filter_on=$(jq '.hyprsunset.filter_on' $STATE_FILE)
 
-jq '.hyprsunset.temperature ='$new_value $CONFIG_FILE | sponge $CONFIG_FILE
+jq '.hyprsunset.temperature ='$new_value $STATE_FILE | sponge $STATE_FILE
 
 if [[ ($manual_filter_on = "true") ]]; then
     hyprctl hyprsunset temperature $new_value

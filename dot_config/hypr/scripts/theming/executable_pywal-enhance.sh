@@ -54,8 +54,9 @@ enhance_templates () {
         sed -i -E "s/(highlight-color )rgba\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},1\)/\1$saturated_color/" $HOME/.cache/wal/colors-waybar.css
         sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $HOME/.cache/wal/colors-waybar.css
         sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $HOME/.cache/wal/colors-waybar.css
-        cp ~/.config/waybar/style.css ~/.config/waybar/style.css.tmp
-        mv ~/.config/waybar/style.css.tmp ~/.config/waybar/style.css
+        # border-color tracks accent-color and does not need to be changed.
+        cp "$HOME/.config/waybar/style.css" "$HOME/.config/waybar/style.css.tmp"
+        mv "$HOME/.config/waybar/style.css.tmp" "$HOME/.config/waybar/style.css"
 
         # SCSS / EWW
         sed -i -E "s/(\\\$accent-color: \\\$color)[0-9]{1,2}/\1$COLOR_NB/" $HOME/.cache/wal/colors.scss
@@ -102,8 +103,10 @@ enhance_templates () {
         echo "@define-color highlight-color $saturated_color;" >> "$HOME/.cache/wal/colors-waybar.css"
         echo "@define-color background-theme $BG_COLOR;" >> "$HOME/.cache/wal/colors-waybar.css"
         echo "@define-color foreground-theme $TXT_COLOR;" >> "$HOME/.cache/wal/colors-waybar.css"
-        cp ~/.config/waybar/style.css ~/.config/waybar/style.css.tmp
-        mv ~/.config/waybar/style.css.tmp ~/.config/waybar/style.css
+        # Border color is used as a trick so focus mode can disable borders from waybar without modifying waybar config itself.
+        echo "@define-color border-color @accent-color;" >> "$HOME/.cache/wal/colors-waybar.css"
+        cp "$HOME/.config/waybar/style.css" "$HOME/.config/waybar/style.css.tmp"
+        mv "$HOME/.config/waybar/style.css.tmp" "$HOME/.config/waybar/style.css"
 
         # SCSS / EWW
         printf "\n" >> "$HOME/.cache/wal/colors.scss"

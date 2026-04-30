@@ -10,18 +10,18 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-autotimer_state=$(jq '.hyprsunset.auto_timer' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' $STATE_FILE)
 
-if [[ $autotimer_state = "true" ]]; then
+if $AUTOTIMER_STATE; then
     # When turning off the auto timer, we restore the last known config.
     # It is a bit redundant because manual hyprsunset should have priority.
-    jq '.hyprsunset.auto_timer = false' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.hyprsunset.auto_timer = false' $STATE_FILE | sponge $STATE_FILE
     $HOME/.config/hypr/scripts/hyprsunset/hyprsunset.sh restore
     dunstify "Hyprsunset auto-timer off"
-elif [[ $autotimer_state = "false" ]]; then
+elif ! $AUTOTIMER_STATE; then
     # If we activate the auto timer, then the script is run once to catch up.
-    jq '.hyprsunset.auto_timer = true' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.hyprsunset.auto_timer = true' $STATE_FILE | sponge $STATE_FILE
     $HOME/.config/hypr/scripts/hyprsunset/hyprsunset-timer.sh
     dunstify "Hyprsunset auto-timer on"
 fi

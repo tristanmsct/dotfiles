@@ -20,8 +20,8 @@ sleep 0.2
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-THEME_TYPE=$(jq -r '.theme.mode' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
 
 # Import enhance_templates
 source $HOME/.config/hypr/scripts/theming/pywal-enhance.sh
@@ -53,7 +53,7 @@ sed -i "s|^cursor-theme=.*$|cursor-theme=Vimix-white-cursors|" $HOME/.local/shar
 
 GTK2_RC_FILES="$HOME"/.config/gtk-2.0/gtkrc nwg-look -a -x
 
-# The gtk-4.0 part has to be done by hand. the `nwg-look -a -x` command can only find themes in ~/.themes
+# The gtk-4.0 part has to be done by hand. the `nwg-look -a -x` command can only find themes in $HOME/.themes
 # although running the nwg-look utility from the terminal does not have this issue.
 # Might be able to delete that if this is ever fixed, anyway, all the tool does is create the symlinks as I do it manually.
 rm "$HOME/.config/gtk-4.0/assets"
@@ -139,8 +139,9 @@ eww reload
 # Dunst
 # ---------------------------------------------------------------------------------------
 
-cp $HOME/.config/dunst/dunstrc.tpl $HOME/.config/dunst/dunstrc
-sed -i "s/<COLOR_FRAME>/$WAL_COLOR/" "$HOME/.config/dunst/dunstrc"
+export COLOR_FRAME=$WAL_COLOR
+envsubst < "$HOME/.config/dunst/dunstrc.template" > "$HOME/.config/dunst/dunstrc"
+
 pkill dunst
 dunstctl reload
 
@@ -148,16 +149,18 @@ dunstctl reload
 # Cava
 # ---------------------------------------------------------------------------------------
 
-cp $HOME/.config/cava/templates/config.tpl $HOME/.config/cava/config
-cp $HOME/.config/cava/templates/config_mini.tpl $HOME/.config/cava/config_mini
+colors=($(sed -n '2,8p' "$HOME/.cache/wal/colors"))
+export COLOR1="${colors[0]}"
+export COLOR2="${colors[1]}"
+export COLOR3="${colors[2]}"
+export COLOR4="${colors[3]}"
+export COLOR5="${colors[4]}"
+export COLOR6="${colors[5]}"
+export COLOR7="${colors[6]}"
+export COLOR="${WAL_COLOR}"
 
-colors=($(sed -n '2,8p' ~/.cache/wal/colors))
-for i in {1..7}; do
-    sed -i "s/<COLOR$i>/'${colors[$((i-1))]}'/" "$HOME/.config/cava/config"
-    sed -i "s/<COLOR$i>/'${colors[$((i-1))]}'/" "$HOME/.config/cava/config_mini"
-done
-sed -i "s/<COLOR>/'$WAL_COLOR'/" "$HOME/.config/cava/config"
-sed -i "s/<COLOR>/'$WAL_COLOR'/" "$HOME/.config/cava/config_mini"
+envsubst < "$HOME/.config/cava/templates/config.template" > "$HOME/.config/cava/config"
+envsubst < "$HOME/.config/cava/templates/config_mini.template" > "$HOME/.config/cava/config_mini"
 
 # Live reload config
 if pgrep -f "kitty.*kitten.*panel.*cava" > /dev/null; then
@@ -172,3 +175,9 @@ fi
 if pgrep -f "isthataclock.py" > /dev/null; then
     pkill -USR1 -f isthataclock.py
 fi
+
+# ---------------------------------------------------------------------------------------
+# Clock overlay
+# ---------------------------------------------------------------------------------------
+
+

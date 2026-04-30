@@ -10,13 +10,13 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-SATURATE_STATE=$(jq '.theme.saturation.enabled' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+SATURATE_STATE=$(jq '.theme.saturation.enabled' $STATE_FILE)
 
 
 # Reset saturation value from cache before opening.
 if [ $SATURATE_STATE = "true" ]; then
-    CACHED_SAT=$(jq '.theme.saturation.level' $CONFIG_FILE)
+    CACHED_SAT=$(jq '.theme.saturation.level' $STATE_FILE)
 else
     CACHED_SAT=0.5
 fi

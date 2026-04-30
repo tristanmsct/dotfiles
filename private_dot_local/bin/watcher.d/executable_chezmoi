@@ -175,13 +175,13 @@ chezmoi-sync() {
 							fi
 							;;
 						c|C)
-							chezmoi diff "$abs_target_file"
+							chezmoi diff --reverse "$abs_target_file"
 							echo
 							if [[ "$extension" = "tmpl" ]]; then
-								echo -e "delta: ${ORANGE}target${RESET} vs ${ORANGE}source${RESET}."
+								echo -e "delta: ${ORANGE}source${RESET} vs ${ORANGE}target${RESET}."
 								echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
 							else
-								echo -e "delta: ${ORANGE}target${RESET} vs ${ORANGE}source${RESET}."
+								echo -e "delta: ${ORANGE}source${RESET} vs ${ORANGE}target${RESET}."
 								echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
 							fi
 							;;

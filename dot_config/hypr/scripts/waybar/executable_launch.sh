@@ -11,8 +11,8 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-WAYBAR_STATUS=$(jq '.waybar.enabled' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+WAYBAR_STATUS=$(jq '.waybar.enabled' $STATE_FILE)
 
 # Quit all running waybar instances.
 pkill waybar
@@ -20,5 +20,5 @@ sleep 0.5
 
 # Restart waybar
 if [ $WAYBAR_STATUS = "true" ] ;then
-    waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css &
+    waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" &
 fi

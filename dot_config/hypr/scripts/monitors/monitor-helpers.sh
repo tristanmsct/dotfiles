@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 CONFIG_DIR="$HOME/.config/hypr/conf"
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$HOME/.local/state/desktop/state.json
 MONITOR_FILE="$CONFIG_DIR/monitor.conf"
 HOME_MONITOR="Acer Technologies QG241Y TLAEE001854A"
 LOG_FILE="/tmp/hyprland-monitor.log"
@@ -44,7 +44,7 @@ update_monitor_config() {
             # log_message "DEBUG : $monitor_count is the monitor count"
         fi
 
-        MONITOR_EXTERNAL_ONLY=$(jq '.display.monitor_external_only' $CONFIG_FILE)
+        MONITOR_EXTERNAL_ONLY=$(jq '.display.monitor_external_only' $STATE_FILE)
 
         if [ $MONITOR_EXTERNAL_ONLY = "false" ]; then
             if [ "$monitor_count" -eq 1 ]; then

@@ -11,12 +11,12 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$HOME/.local/state/desktop/state.json
 INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
 
 if [[ $INTERFACE == "" ]]; then
-    jq '.vpn.connected = false' $CONFIG_FILE | sponge $CONFIG_FILE
-    jq 'del(.vpn.interface)' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.vpn.connected = false' $STATE_FILE | sponge $STATE_FILE
+    jq 'del(.vpn.interface)' $STATE_FILE | sponge $STATE_FILE
 else
     # Usually there should be an argument there because we should always set-up the VPN using the menu
     # But if the VPN is set up using CLI, then the state can still be updated.
@@ -25,6 +25,6 @@ else
     if [[ -n "$*" ]]; then
         INTERFACE="$*"
     fi
-    jq '.vpn.connected = true' $CONFIG_FILE | sponge $CONFIG_FILE
-    jq --arg interface "$INTERFACE" '.vpn.interface = $interface' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.vpn.connected = true' $STATE_FILE | sponge $STATE_FILE
+    jq --arg interface "$INTERFACE" '.vpn.interface = $interface' $STATE_FILE | sponge $STATE_FILE
 fi

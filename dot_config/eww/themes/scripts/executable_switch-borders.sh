@@ -7,8 +7,10 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-HYPRGAMEMODE=$(hyprctl getoption animations:enabled | awk 'NR==1{print $2}')
-if [ "$HYPRGAMEMODE" = 0 ] ; then
+STATE_FILE=$HOME/.local/state/desktop/state.json
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
+
+if $FOCUSMODE_ENABLED; then
     dunstify "Cannot enable main borders" "Main borders are disabled in focus mode."
     exit
 fi

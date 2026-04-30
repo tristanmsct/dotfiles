@@ -37,7 +37,7 @@ NB_INTERFACE=$((NB_INTERFACE>=8 ? 8 : NB_INTERFACE))
 
 SELECTION=$(
     echo -e "$LST_INTERFACES" | rofi -disable-history -dmenu -font "Fira Sans,Fira Sans Medium 14" \
-        -config ~/.config/rofi/config-simple-entry.rasi -markup-rows -l $NB_INTERFACE -p "Select:"
+        -config "$HOME/.config/rofi/config-simple-entry.rasi" -markup-rows -l $NB_INTERFACE -p "Select:"
     )
 CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
 

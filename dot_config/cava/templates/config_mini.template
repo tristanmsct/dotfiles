@@ -21,32 +21,31 @@ sensitivity = 60
 # The number of bars (0-512). 0 sets it to auto (fill up console).
 # Bars' width and space between bars in number of characters.
 ; bars = 0
-bar_width = 3
+bar_width = 1
 ; bar_spacing = 1
 # bar_height is only used for output in "noritake" format
 ; bar_height = 32
 
 [color]
-
 # Gradient mode, only hex defined colors are supported,
 # background must also be defined in hex or remain commented out. 1 = on, 0 = off.
 # You can define as many as 8 different colors. They range from bottom to top of screen
 # include $HOME/.cache/wal/colors-cava.conf
-; foreground = <COLOR>
+; foreground = '${COLOR}'
 gradient = 1
 gradient_count = 2
-gradient_color_1 = <COLOR>
+gradient_color_1 = '${COLOR}'
 gradient_color_2 = '#ffffff'
 
 ; Not used, kept just in case.
-; gradient_color_1 = <COLOR1>
-; gradient_color_2 = <COLOR2>
-; gradient_color_3 = <COLOR3>
-; gradient_color_4 = <COLOR4>
-; gradient_color_5 = <COLOR5>
-; gradient_color_6 = <COLOR6>
-; gradient_color_7 = <COLOR7>
-; gradient_color_8 = <COLOR8>
+; gradient_color_1 = '${COLOR1}'
+; gradient_color_2 = '${COLOR2}'
+; gradient_color_3 = '${COLOR3}'
+; gradient_color_4 = '${COLOR4}'
+; gradient_color_5 = '${COLOR5}'
+; gradient_color_6 = '${COLOR6}'
+; gradient_color_7 = '${COLOR7}'
+; gradient_color_8 = '${COLOR8}'
 
 [output]
 orientation = horizontal

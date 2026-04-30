@@ -36,6 +36,9 @@ cat > $STATE_FILE << 'EOF'
     "auto_timer": true,
     "temperature": 6500,
     "filter_on": false
+  },
+  "focusmode": {
+    "enabled": fale
   }
 }
 EOF

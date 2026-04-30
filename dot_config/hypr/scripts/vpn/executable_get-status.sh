@@ -12,12 +12,12 @@
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
 # Read the VPN status file.
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-STATUS=$(jq '.vpn.connected' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+STATUS=$(jq '.vpn.connected' $STATE_FILE)
 
 if [[ "$STATUS" = "false" ]]; then
     echo "{\"text\": \"\", \"alt\": \"off\"}"
 else
-    INTERFACE=$(jq '.vpn.interface' $CONFIG_FILE)
+    INTERFACE=$(jq '.vpn.interface' $STATE_FILE)
     echo "{\"text\": \" 󰒃  \", \"tooltip\": $INTERFACE, \"alt\": \"connected\"}"
 fi

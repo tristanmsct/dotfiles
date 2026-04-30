@@ -35,4 +35,4 @@ do
 done < "$config_file"
 
 sleep 0.2
-rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Keybinds" -config ~/.config/rofi/config-search.rasi <<< "$keybinds"
+rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Keybinds" -config "$HOME/.config/rofi/config-search.rasi" <<< "$keybinds"

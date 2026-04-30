@@ -11,13 +11,13 @@
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
-CONFIG_FILE=$HOME/.local/state/desktop/state.json
-WAYBAR_STATUS=$(jq '.waybar.enabled' $CONFIG_FILE)
+STATE_FILE=$HOME/.local/state/desktop/state.json
+WAYBAR_STATUS=$(jq '.waybar.enabled' $STATE_FILE)
 
 if [ $WAYBAR_STATUS = "true" ] ;then
-    jq '.waybar.enabled = false' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.waybar.enabled = false' $STATE_FILE | sponge $STATE_FILE
 else
-    jq '.waybar.enabled = true' $CONFIG_FILE | sponge $CONFIG_FILE
+    jq '.waybar.enabled = true' $STATE_FILE | sponge $STATE_FILE
 fi
 
-~/.config/hypr/scripts/waybar/launch.sh &
+$HOME/.config/hypr/scripts/waybar/launch.sh &

@@ -21,8 +21,13 @@ sudo rm $sddm_asset_folder/current_wallpaper.*
 sudo cp $WALLPAPER $sddm_asset_folder/current_wallpaper.$extension
 
 # Adding the SDDM template and replacing the wallpaper and accent color.
-sddm_theme_tpl="$HOME/.config/sddm-themes/theme-eucalyptus-drop.tpl"
-sudo cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/theme.conf
-sudo sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.$extension"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+# sddm_theme_tpl="$HOME/.config/sddm-themes/theme-eucalyptus-drop.tpl"
+# sudo cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+# sudo sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.$extension"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+# sudo sed -i 's/ACCENTCOLOR/'"$COLOR"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
 
-sudo sed -i 's/ACCENTCOLOR/'"$COLOR"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+export CURRENTWALLPAPER="current_wallpaper.$extension"
+export ACCENTCOLOR="$COLOR"
+envsubst '${CURRENTWALLPAPER} ${ACCENTCOLOR}' \
+  < "$HOME/.config/sddm-themes/theme-eucalyptus-drop.template" \
+  | sudo tee /usr/share/sddm/themes/$sddm_theme_name/theme.conf > /dev/null
