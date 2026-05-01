@@ -38,7 +38,7 @@ cat > $STATE_FILE << 'EOF'
     "filter_on": false
   },
   "focusmode": {
-    "enabled": fale
+    "enabled": false
   }
 }
 EOF

@@ -17,18 +17,21 @@ plugins=(
     sudo
     web-search
     archlinux
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-    fast-syntax-highlighting
     copyfile
     copybuffer
     dirhistory
 )
 
 # -----------------------------------------------------
+# Other plugins
+# -----------------------------------------------------
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+# -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-
 # Initialize completion system
 # /!\ Moving these instructions down can break the config.
 fpath=("$XDG_CONFIG_HOME/shell/zsh/completions" $fpath)
