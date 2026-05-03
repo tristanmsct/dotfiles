@@ -4,7 +4,6 @@ Encoding=UTF-8
 Type=Application
 Exec=waypaper
 Name=Waypaper
-#Icon=waypaper
 Icon=/usr/share/icons/Tela-circle-blue/scalable/apps/style.svg
 Terminal=false
 GenericName=Waypaper wallpaper setter

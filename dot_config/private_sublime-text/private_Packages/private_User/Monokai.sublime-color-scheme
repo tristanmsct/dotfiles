@@ -1,0 +1,14 @@
+{
+  "variables":
+{
+},
+  "globals":
+{
+},
+  "rules":
+  [{
+    "name": "Comment",
+    "scope": "comment",
+    "foreground": "var(blue)"
+  }]
+}

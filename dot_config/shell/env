@@ -17,7 +17,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # Default applications
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
-export PAGER="less"
+export PAGER="bat"
 
 # Locale
 export LANG=en_US.utf8
