@@ -74,9 +74,17 @@ fi
 
 # Then nextcloud and repo directories get a specific folder icon in the current theme.
 gio set $HOME/Nextcloud metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-cloud.svg"
+gio set $HOME/Downloads metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-downloads.svg"
+gio set $HOME/Documents metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-documents.svg"
+gio set $HOME/Documents/Desktop metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-desktop.svg"
+gio set $HOME/Documents/Public metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-public.svg"
+gio set $HOME/Documents/Templates metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-templates.svg"
 gio set $HOME/Media/Movies metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
 gio set $HOME/Media/Series metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
 gio set $HOME/Media/Games metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-games.svg"
+gio set $HOME/Media/Music metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-music.svg"
+gio set $HOME/Media/Pictures metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-pictures.svg"
+gio set $HOME/Media/Videos metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
 
 # Getting all repos
 # Main repo, config files and such.

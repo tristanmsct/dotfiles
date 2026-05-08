@@ -34,5 +34,8 @@
     },
     "workbench.colorCustomizations" : {
         "terminal.background" : "#1b1b1b"
+    },
+    "workbench.editorAssociations": {
+        "*.svg": "default"
     }
 }
