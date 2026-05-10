@@ -1,3 +1,10 @@
-#/usr/bin/env bash
-subl $(zoxide query $1) > /dev/null 2>&1 & disown
-
+#!/usr/bin/env bash
+if [ $# -eq 0 ]; then
+    target="$HOME"
+else
+    target=$(zoxide query "$@" 2>/dev/null)
+    if [ -z "$target" ]; then
+        target="$HOME"
+    fi
+fi
+subl $target > /dev/null 2>&1 & disown

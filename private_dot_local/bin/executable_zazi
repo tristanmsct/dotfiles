@@ -7,4 +7,4 @@ else
         target="$HOME"
     fi
 fi
-xdg-open "$target" > /dev/null 2>&1 & disown
+kitty --app-id yazi -e yazi "$target" > /dev/null 2>&1 & disown
