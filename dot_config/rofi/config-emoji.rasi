@@ -11,6 +11,8 @@
  * ----------------------------------------------------------------------------------------------------------------------------------------
  */
 
+@import "config-base.rasi"
+
 // Configuration --------------------------------------------------------------------------------------------------------------------------
 configuration {
     modi:                           "drun";
@@ -19,8 +21,6 @@ configuration {
     me-select-entry:                "";
     me-accept-entry:                "MousePrimary";
 }
-
-@import "config-base.rasi"
 
 // Overwriting font size.
 configuration {
