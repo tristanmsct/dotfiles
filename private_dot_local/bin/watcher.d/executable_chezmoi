@@ -49,7 +49,7 @@ chezmoi-sync() {
 		filename=$(basename "$source_file")
 		extension="${filename##*.}"
 
-		echo
+		clear
 		echo -e "=== File: ${ORANGE}$target_file${RESET} (status: ${GREEN}$status${RESET}) ==="
 		if [ -n "$source_file" ]; then
 			echo "Source: $source_file"
@@ -178,10 +178,10 @@ chezmoi-sync() {
 							chezmoi diff --reverse "$abs_target_file"
 							echo
 							if [[ "$extension" = "tmpl" ]]; then
-								echo -e "delta: ${ORANGE}source${RESET} vs ${ORANGE}target${RESET}."
+								echo -e "delta: ${ORANGE}source${RESET} on the left vs ${ORANGE}target${RESET} on the right."
 								echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
 							else
-								echo -e "delta: ${ORANGE}source${RESET} vs ${ORANGE}target${RESET}."
+								echo -e "delta: ${ORANGE}source${RESET} on the left vs ${ORANGE}target${RESET} on the right."
 								echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
 							fi
 							;;

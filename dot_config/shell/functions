@@ -32,3 +32,8 @@ show-colors() {
 fdxdg() {
     fd --exact-depth=1 $1 .config/ .cache .local/share .local/state
 }
+
+# Open a directory using zoxide.
+zopen() {
+    xdg-open $(zoxide query $1) > /dev/null 2>&1 & disown
+}
