@@ -31,8 +31,6 @@ require("conf/keyboard")
 -- --------------------------------------------------------------------------------------
 -- Load pywal color file
 -- --------------------------------------------------------------------------------------
--- NOTE: colors-hyprland.conf is hyprlang — can't require() it directly.
--- If it sets env vars, move to a shell exec. If it sets hl.config values, needs manual migration.
 require("conf/colors-hyprland")
 
 -- --------------------------------------------------------------------------------------

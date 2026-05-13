@@ -163,11 +163,11 @@ end)
 
 -- Lid switch → hyprlock
 hl.bind("switch:on:Lid Switch", function()
-  local monitors = hl.get_monitors()
-  for _, mon in ipairs(monitors) do
-    if mon.name == "eDP-1" then
-      hl.dispatch(hl.dsp.exec_cmd("hyprlock"))
-      return
+    local monitors = hl.get_monitors()
+    for _, mon in ipairs(monitors) do
+        if mon.name == "eDP-1" then
+            hl.dispatch(hl.dsp.exec_cmd("hyprlock"))
+            return
+        end
     end
-  end
 end, { locked = true })
