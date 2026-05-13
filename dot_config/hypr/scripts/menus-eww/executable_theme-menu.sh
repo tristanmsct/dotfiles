@@ -24,6 +24,7 @@ fi
 eww update saturation-value="$CACHED_SAT"
 
 monitor_id=$(hyprctl activeworkspace -j | jq '.monitorID')
+monitor_model=$(hyprctl monitors -j | jq -r --argjson id "$monitor_id" '.[] | select(.id == $id) | .model')
 
-eww open theme-menu-window-closer --screen $monitor_id
-eww open theme-menu-window --screen $monitor_id
+eww open theme-menu-window-closer --screen $monitor_model
+eww open theme-menu-window --screen $monitor_model

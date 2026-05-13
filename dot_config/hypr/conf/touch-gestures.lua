@@ -1,0 +1,25 @@
+--  _                   _                           _
+-- | |_ ___  _   _  ___| |__         __ _  ___  ___| |_ _   _ _ __ ___  ___
+-- | __/ _ \| | | |/ __| '_ \ _____ / _` |/ _ \/ __| __| | | | '__/ _ \/ __|
+-- | || (_) | |_| | (__| | | |_____| (_| |  __/\__ \ |_| |_| | | |  __/\__ \
+--  \__\___/ \__,_|\___|_| |_|      \__, |\___||___/\__|\__,_|_|  \___||___/
+--                                  |___/
+--
+-- ----------------------------------------------------------------------------------------------------------------------------------------
+
+-- Most workspace_swipe_* options removed in 0.55 — no equivalent in new gesture system
+-- workspace_swipe_distance, workspace_swipe_invert, workspace_swipe_min_speed_to_force,
+-- workspace_swipe_cancel_ratio, workspace_swipe_forever, workspace_swipe_direction_lock
+-- are not available. workspace_swipe_create_new may still exist under gestures config.
+
+hl.config({
+    gestures = {
+        workspace_swipe_create_new = true,
+    },
+})
+
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+hl.gesture({ fingers = 3, direction = "up",         action = "float" })
+hl.gesture({ fingers = 3, direction = "down", action = "close" })
+hl.gesture({ fingers = 3, direction = "swipe", mods = "SUPER", action = "resize" })
+hl.gesture({ fingers = 3, direction = "swipe", mods = "SHIFT", action = "move" })

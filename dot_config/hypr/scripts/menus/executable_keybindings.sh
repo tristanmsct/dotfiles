@@ -8,31 +8,31 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-config_file="$HOME/.config/hypr/conf/keybindings.conf"
+decode_mods() {
+  local mask=$1
+  local mods=""
+  (( mask & 64 )) && mods+="󰌽  + "
+  (( mask & 1  )) && mods+="SHIFT + "
+  (( mask & 4  )) && mods+="CTRL + "
+  (( mask & 8  )) && mods+="ALT + "
+  echo "${mods% + }"
+}
 
 keybinds=""
 
-# Detect Start String.
-while read -r line
-do
-    if [[ "$line" == "bind"* ]]; then
+while IFS= read -r bind; do
+  desc=$(echo "$bind" | jq -r '.description')
+  key=$(echo "$bind" | jq -r '.key')
+  mask=$(echo "$bind" | jq -r '.modmask')
+  has_desc=$(echo "$bind" | jq -r '.has_description')
 
-        line="$(echo "$line" | sed 's/$mainMod/󰌽 /g')"
-        line="$(echo "$line" | sed 's/bind = //g')"
-        line="$(echo "$line" | sed 's/bindm = //g')"
+  [[ "$has_desc" != "true" || -z "$desc" || "$key" == "" ]] && continue
 
-        IFS='#'
-        read -a strarr <<< "$line"
-        kb_str=${strarr[0]}
-        cm_str=${strarr[1]}
+  mods=$(decode_mods "$mask")
+  [[ -n "$mods" ]] && combo="$mods + $key" || combo="$key"
 
-        IFS=','
-        read -a kbarr <<< "$kb_str"
+  keybinds+="${combo}"$'\r'"${desc}"$'\n'
+done < <(hyprctl binds -j | jq -c '.[]')
 
-        item="${kbarr[0]}  + ${kbarr[1]}"$'\r'"${cm_str:1}"
-        keybinds=$keybinds$item$'\n'
-    fi
-done < "$config_file"
-
-sleep 0.2
-rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Keybinds" -config "$HOME/.config/rofi/config-search.rasi" <<< "$keybinds"
+rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Keybinds" \
+  -config "$HOME/.config/rofi/config-search.rasi" <<< "$keybinds"

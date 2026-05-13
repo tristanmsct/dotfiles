@@ -35,3 +35,9 @@ $color5-tr: rgba({color5.rgb}, 0.5);
 $color6-tr: rgba({color6.rgb}, 0.5);
 $color7-tr: rgba({color7.rgb}, 0.5);
 $color8-tr: rgba({color8.rgb}, 0.5);
+
+$accent-color: $color1;
+$accent-color-transparent: $color1-tr;
+$highlight-color: rgba(0,0,0,1);
+$background-theme: rgba(0, 0, 0, 0.4);
+$foreground-theme: #eeeeee;

@@ -9,6 +9,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 monitor_id=$(hyprctl activeworkspace -j | jq '.monitorID')
+monitor_model=$(hyprctl monitors -j | jq -r --argjson id "$monitor_id" '.[] | select(.id == $id) | .model')
 
-eww open brightness-menu-window-closer --screen $monitor_id
-eww open brightness-menu-window --screen $monitor_id
+eww open brightness-menu-window-closer --screen $monitor_model
+eww open brightness-menu-window --screen $monitor_model

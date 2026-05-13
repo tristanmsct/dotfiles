@@ -57,7 +57,7 @@ $HOME/.config/hypr/scripts/theming/create-theme.sh $WALLPAPER
 # Apply created theme
 # ---------------------------------------------------------------------------------------
 
-# Changing folders / directories icons
+# Changing folders / directories icons.
 source "$HOME/.cache/wal/colors.sh"
 
 # Should cover all basis.
@@ -75,7 +75,7 @@ else
     $HOME/.config/hypr/scripts/theming/apply-theme.sh
 fi
 
-# Remove any custom saturation
+# Remove any custom saturation.
 jq '.theme.saturation.enabled = false' $STATE_FILE | sponge $STATE_FILE
 jq 'del(.theme.saturation.level)' $STATE_FILE | sponge $STATE_FILE
 

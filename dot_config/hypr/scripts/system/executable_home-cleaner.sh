@@ -7,8 +7,6 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-[ -f "$HOME/.cache/monitor-config-running" ] && rm "$HOME/.cache/monitor-config-running"
-
 # Remove Brave crash reports from home, where they do not belong.
 find "$HOME/.config/BraveSoftware/Brave-Browser/Crash Reports/completed" -name "*.dmp" -delete
 find "$HOME/.config/BraveSoftware/Brave-Browser/Crash Reports/completed" -name "*.meta" -delete

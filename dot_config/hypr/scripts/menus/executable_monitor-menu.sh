@@ -7,15 +7,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set up state file if necessary.
-$HOME/.config/hypr/scripts/system/setup-state.sh
-
-CONFIG_DIR="$HOME/.config/hypr/conf"
-STATE_FILE=$HOME/.local/state/desktop/state.json
-source $HOME/.config/hypr/scripts/monitors/monitor-helpers.sh
-
 default="Default"
-auto_detect="Auto Detect"
 external="External Only"
 mirror="Mirror Main Screen"
 
@@ -26,34 +18,22 @@ monitor_cmd() {
 monitor_menu() {
     monitor_count=$(hyprctl monitors -j | jq length)
     if [[ $monitor_count -ge 2 ]]; then
-        echo -e "$default\n$auto_detect\n$external\n$mirror" | monitor_cmd 4
+        echo -e "$external\n$mirror" | monitor_cmd 2
     else
-        echo -e "$default\n$auto_detect" | monitor_cmd 2
+        echo -e "$default" | monitor_cmd 1
     fi
 }
 
 selected_setup="$(monitor_menu)"
 case $selected_setup in
     $default)
-        # log_message "Manually triggering default conf"
-        jq '.display.monitor_external_only = false' $STATE_FILE | sponge $STATE_FILE
-        cp "$CONFIG_DIR/monitors/mono.conf" "$MONITOR_FILE"
-        sed -i 's/"\*": [0-9]/"\*": 4/g' "$HOME/.config/waybar/modules.jsonc"
         hyprctl reload
-        ;;
-    $auto_detect)
-        # log_message "Manually triggering auto detect"
-        jq '.display.monitor_external_only = false' $STATE_FILE | sponge $STATE_FILE
-        $HOME/.config/hypr/scripts/monitors/monitor-check.sh
         ;;
     $external)
         # log_message "Manually triggering external only conf"
         monitor_count=$(hyprctl monitors -j | jq length)
         if [[ $monitor_count -ge 2 ]]; then
-            jq '.display.monitor_external_only = true' $STATE_FILE | sponge $STATE_FILE
-            sed -i "s|^monitor=eDP-1.*$|monitor=eDP-1,disabled|g" "$MONITOR_FILE"
-            sed -i "s|^bindl = , switch:on:Lid Switch, exec, hyprlock$||g" "$MONITOR_FILE"
-            sed -i 's/"\*": [0-9]/"\*": 4/g' "$HOME/.config/waybar/modules.jsonc"
+            hyprctl eval "hl.monitor({ output = 'eDP-1', disabled = true })"
             exit 1
         else
             dunstify "Cannot disable the main monitor: need at least another one."
@@ -61,7 +41,7 @@ case $selected_setup in
         fi
         ;;
     $mirror)
-        sed -i 's/^monitor=DP-[0-9].*/&,mirror,eDP-1/' "$MONITOR_FILE"
+        hyprctl eval "hl.monitor({ output = 'DP-1', mode = '1920x1080@120', position = '0x0', scale = 1, mirror = 'eDP-1' })"
         ;;
     *)
         echo "Unknown command."

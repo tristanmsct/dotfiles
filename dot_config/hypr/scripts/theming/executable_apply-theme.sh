@@ -140,7 +140,6 @@ $HOME/.config/hypr/scripts/theming/sddm.sh $WALLPAPER $WAL_COLOR
 
 enhance_templates
 
-hyprctl reload
 eww reload
 
 # ---------------------------------------------------------------------------------------

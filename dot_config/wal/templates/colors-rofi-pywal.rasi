@@ -24,4 +24,9 @@
     color6-tr: rgba({color6.rgb}, 0.3);
     color7-tr: rgba({color7.rgb}, 0.3);
     color8-tr: rgba({color8.rgb}, 0.3);
+
+    accent-color: @color1;
+    accent-color-transparent: @color1-tr;
+    foreground: #eeeeee;
+    background: rgba(0, 0, 0, 0.4);
 }}

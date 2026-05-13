@@ -9,7 +9,6 @@
 
 wallpaper=$1
 
-echo ":: Execute pywal with $wallpaper"
 wal -q -i $wallpaper
 
 # If theme is too dark, we generate a more saturated one.
@@ -38,7 +37,7 @@ for color in "${colors[@]}"; do
     is_dark "$color" && ((dark_count++))
 done
 
-# If at least 3 out of 4 colors are dark, rerun with --saturate 0.4
+# If at least 3 out of 4 colors are dark, rerun with --saturate 0.6
 if [[ $dark_count -ge 3 ]]; then
-    wal -q -i "$wallpaper" --saturate 0.4
+    wal -q -i "$wallpaper" --saturate 0.6
 fi

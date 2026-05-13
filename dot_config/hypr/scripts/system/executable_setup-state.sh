@@ -23,9 +23,6 @@ cat > $STATE_FILE << 'EOF'
       "enabled": false
     }
   },
-  "display": {
-    "monitor_external_only": false
-  },
   "waybar": {
     "enabled": true
   },

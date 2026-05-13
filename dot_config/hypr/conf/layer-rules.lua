@@ -1,0 +1,23 @@
+--  _                                       _
+-- | | __ _ _   _  ___ _ __      _ __ _   _| | ___  ___
+-- | |/ _` | | | |/ _ \ '__|____| '__| | | | |/ _ \/ __|
+-- | | (_| | |_| |  __/ | |_____| |  | |_| | |  __/\__ \
+-- |_|\__,_|\__, |\___|_|       |_|   \__,_|_|\___||___/
+--          |___/
+--
+-- ----------------------------------------------------------------------------------------------------------------------------------------
+
+hl.layer_rule({
+    name  = "blurred-layers",
+    match = { namespace = "waybar|rofi|gtk-layer-shell|gtk4-layer-shell|notifications|nwg-drawer" },
+    blur        = true,
+    blur_popups = true,
+    ignore_alpha = 0,
+})
+
+hl.layer_rule({
+    name  = "logout-animation",
+    match = { namespace = "logout_dialog" },
+    blur      = true,
+    animation = "fade",
+})

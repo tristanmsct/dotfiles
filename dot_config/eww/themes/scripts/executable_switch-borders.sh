@@ -16,7 +16,7 @@ if $FOCUSMODE_ENABLED; then
 fi
 
 if [ $1 == true ]; then
-    sed -i -E "s/(border_size =) 2/\1 0/" $HOME/.config/hypr/conf/windows.conf
+    sed -i -E "s/(border_size\s*=) 2/\1 0/" $HOME/.config/hypr/conf/windows.lua
 else
-    sed -i -E "s/(border_size =) 0/\1 2/" $HOME/.config/hypr/conf/windows.conf
+    sed -i -E "s/(border_size\s*=) 0/\1 2/" $HOME/.config/hypr/conf/windows.lua
 fi

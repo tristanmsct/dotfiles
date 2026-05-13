@@ -50,10 +50,10 @@ def get_hyprctl_windows():
 def move_window_to_workspace(workspace_number, window_address):
     """Simply and safely moves a window to a target workspace."""
     # Format the argument properly
-    arg = f"{workspace_number},address:{window_address}"
+    arg = f"""hl.dsp.window.move({{window='address:{window_address}',workspace={workspace_number},follow=false}})"""
 
     # Run the command with separate arguments
-    result = subprocess.run(["hyprctl", "dispatch", "movetoworkspacesilent", arg])
+    result = subprocess.run(["hyprctl", "dispatch", arg])
 
     return result.returncode == 0
 

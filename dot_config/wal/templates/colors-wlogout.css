@@ -23,3 +23,6 @@
 @define-color colorbtn1 rgba({color1.rgb}, 0.5);
 @define-color colorbtn2 rgba({color2.rgb}, 0.5);
 @define-color colorbtn3 rgba({color3.rgb}, 0.5);
+
+@define-color background-theme rgba(0, 0, 0, 0.4);
+@define-color foreground-theme #eeeeee;

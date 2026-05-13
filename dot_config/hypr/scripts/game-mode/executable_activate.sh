@@ -7,13 +7,6 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# TODO
-# This script should use a game mode indicator from state.
-# Then write to colors-waybar.css instead of waybar/style.css directly.
-# apply-theme, through pywal-enhance.sh, should adapt its behaviour depending on game mode.
-# Restore.sh should use the same process.
-# Check for config_file, state_file is a better name.
-
 # Set up state file if necessary.
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
@@ -42,15 +35,13 @@ if $FOCUSMODE_ENABLED; then
     jq '.focusmode.enabled = false' $STATE_FILE | sponge $STATE_FILE
 else
     # If focus mode is off, then start it.
-    hyprctl --batch "\
-        keyword animations:enabled 1;\
-        keyword decoration:shadow:enabled 0;\
-        keyword decoration:blur:enabled 0;\
-        keyword decoration:inactive_opacity 1;\
-        keyword general:gaps_in 0;\
-        keyword general:gaps_out 0;\
-        keyword general:border_size 0;\
-        keyword decoration:rounding 0"
+    hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
+    hyprctl eval "hl.config({decoration = {blur = {enabled = false}}})"
+    hyprctl eval "hl.config({decoration = {inactive_opacity = 1}})"
+    hyprctl eval "hl.config({decoration = {rounding = 1}})"
+    hyprctl eval "hl.config({general = {gaps_in = 0}})"
+    hyprctl eval "hl.config({general = {gaps_out = 0}})"
+    hyprctl eval "hl.config({general = {border_size = 0}})"
 
     awww kill
 
