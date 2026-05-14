@@ -28,6 +28,7 @@ text/markdown=typora.desktop;sublime_text.desktop;
 application/yaml=sublime_text.desktop;vscodium.desktop;nvim.desktop;
 application/toml=sublime_text.desktop;vscodium.desktop;nvim.desktop;
 application/x-shellscript=sublime_text.desktop;vscodium.desktop;nvim.desktop;
+image/svg+xml=brave-browser.desktop;sublime_text.desktop;
 text/x-python3=sublime_text.desktop;vscodium.desktop;nvim.desktop;
 application/pdf=onlyoffice-desktopeditors.desktop;brave-browser.desktop;org.gnome.Evince.desktop;
 application/wps-office.xlsx=onlyoffice-desktopeditors.desktop;

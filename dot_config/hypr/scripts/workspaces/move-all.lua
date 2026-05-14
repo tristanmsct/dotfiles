@@ -8,8 +8,8 @@
 
 return function(target)
     local win = hl.get_active_window()
-    local windows = hl.get_windows({ workspace = win.workspace.id})
     if not win then return end
+    local windows = hl.get_windows({ workspace = win.workspace.id})
 
     for _, w in ipairs(windows) do
         local ws_per_monitor = 3

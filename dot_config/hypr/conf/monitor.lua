@@ -24,6 +24,7 @@ hl.monitor({
 })
 
 -- Base split_monitor_workspaces plugin configuration
+local smw = hl.plugin.split_monitor_workspaces
 hl.config({
     plugin = {
         split_monitor_workspaces = {
@@ -80,8 +81,6 @@ local function integrated_monitor_enabled()
     end
     return false
 end
-
-local smw = hl.plugin.split_monitor_workspaces
 
 local last_setup = nil
 local function setup_workspaces()

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+brave.sh &
+kitty &
+codium.sh &
+typora.sh &
+networkmanager.sh &
+office.sh &
+slack.sh &
+celluloid &
+nmrs &
+evince &
+viewnoir &
+gnome-disk &
+gnome-calculator &
+gnome-podcast &
+gnome-calendar &
+kitty --app-id btop -e btop &
+kitty --app-id yazi -e yazi &
+nautilus &
+simple-scan &
+firefox.sh &
+nwg-look &
+missioncenter &
+meld &
+subl &
+pika-backup &
+adw-bluetooth &
+qt6ct &
+pavucontrol &
+waypaper &
+pdfarranger &
+kwalletmanager5 &

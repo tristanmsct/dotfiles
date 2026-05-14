@@ -132,3 +132,8 @@ hl.bind("XF86MonBrightnessUp", e("brightnessctl -q s +10%"), { description = "In
 hl.bind("XF86AudioMute", e("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { description = "Toggle mute" })
 hl.bind("XF86AudioLowerVolume", e("pactl set-sink-volume @DEFAULT_SINK@ -5%"), { description = "Decrease volume" })
 hl.bind("XF86AudioRaiseVolume", e("pactl set-sink-volume @DEFAULT_SINK@ +5%"), { description = "Increase volume" })
+
+-- --------------------------------------------------------------------------------------
+-- Other
+-- --------------------------------------------------------------------------------------
+hl.bind(mainMod .. " + O", e(SCRIPTS .. "/openall.sh"))

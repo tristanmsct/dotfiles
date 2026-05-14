@@ -32,6 +32,6 @@ return function()
      local relative_target = last.id - (win.monitor.id * ws_per_monitor)
      smw.move_to_workspace_silent(relative_target)
    else
-     hl.dsp.window.move({ workspace = last.id })
+     hl.dispatch(hl.dsp.window.move({ workspace = last.id, follow = false }))
    end
 end

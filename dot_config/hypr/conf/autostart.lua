@@ -29,6 +29,7 @@ hl.on("hyprland.start", function()
     -- Start waybar and waypaper
     exec("waypaper --restore")
     exec(HYPRSCRIPTS .. "/waybar/launch.sh")
+    exec("hyprsunset -i")
 
     -- Polkit
     -- Gnome polkit is not supported anymore. If it stops working, switch to hyprpolkitagent.
