@@ -160,6 +160,16 @@ hl.on("monitor.layout_changed", function()
     setup_workspaces()
 end)
 
+-- So new monitor get the new wallpaper. No need to do it on remove.
+hl.on("monitor.added", function()
+    hl.dispatch(hl.dsp.exec_cmd("waypaper --restore"))
+end)
+
+-- On remove, maxworkspace is not updated correctly for some reason, that fixes it but it is a bit hacky.
+hl.on("monitor.removed", function()
+    hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
+end)
+
 -- Lid switch → hyprlock
 hl.bind("switch:on:Lid Switch", function()
     local monitors = hl.get_monitors()

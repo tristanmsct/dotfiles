@@ -16,6 +16,9 @@ if [ $1 == true ]; then
         sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
     fi
 
+    # Waypaper
+    sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waypaper.css
+
     # Eww
     sed -i -E "s/(border-theme:) 2px/\1 0px/" $HOME/.config/eww/eww.scss
 
@@ -32,6 +35,9 @@ else
         # Waybar border disabled in focus mode.
         sed -i -E "s/(border-color) rgba\(0, 0, 0, 0\);/\1 @accent-color;/" $HOME/.cache/wal/colors-waybar.css
     fi
+
+    # Waypaper
+    sed -i -E "s/(border-color) rgba\(0, 0, 0, 0\);/\1 @accent-color;/" $HOME/.cache/wal/colors-waypaper.css
 
     # Eww
     sed -i -E "s/(border-theme:) 0px/\1 2px/" $HOME/.config/eww/eww.scss

@@ -55,6 +55,12 @@ enhance_templates () {
     cp "$HOME/.config/waybar/style.css" "$HOME/.config/waybar/style.css.tmp"
     mv "$HOME/.config/waybar/style.css.tmp" "$HOME/.config/waybar/style.css"
 
+    # Waypaper
+    sed -i -E "s/(accent-color @color)[0-9]{1,2}/\1$COLOR_NB/" $HOME/.cache/wal/colors-waypaper.css
+    sed -i -E "s/(highlight-color )rgba\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3},1\)/\1$saturated_color/" $HOME/.cache/wal/colors-waypaper.css
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $HOME/.cache/wal/colors-waypaper.css
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $HOME/.cache/wal/colors-waypaper.css
+
     # SCSS / EWW
     sed -i -E "s/(\\\$accent-color: \\\$color)[0-9]{1,2}/\1$COLOR_NB/" $HOME/.cache/wal/colors.scss
     sed -i -E "s/(\\\$accent-color-transparent: \\\$color)[0-9]{1,2}-tr/\1$COLOR_NB-tr/" $HOME/.cache/wal/colors.scss

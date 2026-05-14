@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------------------------------------------------------------------------------
  */
 
- @import '.config/waypaper/colors-waybar.css';
+ @import '.config/waypaper/colors-waypaper.css';
 
 window {
     background-color: @background-theme;

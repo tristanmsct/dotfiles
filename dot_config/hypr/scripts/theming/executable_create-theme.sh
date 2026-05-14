@@ -39,5 +39,5 @@ done
 
 # If at least 3 out of 4 colors are dark, rerun with --saturate 0.6
 if [[ $dark_count -ge 3 ]]; then
-    wal -q -i "$wallpaper" --saturate 0.6
+    wal -q -i "$wallpaper" --saturate 0.5
 fi

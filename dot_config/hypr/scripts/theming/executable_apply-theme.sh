@@ -23,7 +23,7 @@ $HOME/.config/hypr/scripts/system/setup-state.sh
 STATE_FILE=$HOME/.local/state/desktop/state.json
 THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
 
-# Import enhance_templates
+# Import enhance_templates.
 source $HOME/.config/hypr/scripts/theming/pywal-enhance.sh
 
 COLOR=${1:-"DEFAULT"}
@@ -33,6 +33,7 @@ read icons_color theme_color _ <<< $(python $HOME/.config/hypr/scripts/theming/c
 COLOR_NB_INC=$((COLOR_NB + 1))
 WAL_COLOR=$(sed -n "${COLOR_NB_INC}p" $HOME/.cache/wal/colors)
 
+# Used in enhance_templates.
 read saturated_color <<< $(python $HOME/.config/hypr/scripts/theming/increase_saturation.py -c $WAL_COLOR -t rgba -s 0.2)
 
 # ---------------------------------------------------------------------------------------
@@ -182,9 +183,3 @@ fi
 if pgrep -f "isthataclock.py" > /dev/null; then
     pkill -USR1 -f isthataclock.py
 fi
-
-# ---------------------------------------------------------------------------------------
-# Clock overlay
-# ---------------------------------------------------------------------------------------
-
-
