@@ -93,9 +93,9 @@ alias kppr="gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster
 # ---------------------------------------------------------------------------------------
 # Custom launchers for apps that need to be run with spcial flags and environment variables.
 alias brave="brave.sh"
-alias firefox="firefox.sh"
 alias typora="typora.sh"
 alias feishin="feishin.sh"
+alias firefox="firefox.sh"
 alias slack="slack.sh"
 alias codium="codium.sh"
 alias vscodium="codium.sh"

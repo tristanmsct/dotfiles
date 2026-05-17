@@ -19,7 +19,7 @@ clock_running=$(pgrep -f "kitty \+kitten panel.*isthataclock" || true)
 
 
 if [ -n "$clock_running" ]; then
-    # Kill all running kitty panel cava processes
+    # Kill all running kitty panel clock processes
     pkill -f "kitty \+kitten panel.*isthataclock"
 else
     kitty +kitten panel --edge=center --layer=overlay -o background_opacity=0 -o font_size=24 \

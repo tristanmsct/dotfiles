@@ -52,7 +52,7 @@ hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "u" }), { description = "
 hl.bind(mainMod .. " + down", hl.dsp.focus({ direction = "d" }), { description = "Move focus down" })
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { description = "Move window with mouse", mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { description = "Resize window with mouse", mouse = true })
-hl.bind(mainMod .. " + ALT + G", hl.dsp.group.toggle(), { description = "Toggle window group" })
+-- hl.bind(mainMod .. " + ALT + G", hl.dsp.group.toggle(), { description = "Toggle window group" })
 hl.bind(mainMod .. " + J", hl.dsp.layout("orientationcycle left right"), { description = "Cycle master orientation" })
 hl.bind(mainMod .. " + K", hl.dsp.layout("swapwithmaster"), { description = "Swap focused window with master" })
 
@@ -83,6 +83,7 @@ hl.bind(mainMod .. " + SHIFT + B", e(HYPRSCRIPTS .. "/waybar/launch.sh"), { desc
 hl.bind(mainMod .. " + CTRL + B", e(HYPRSCRIPTS .. "/waybar/toggle.sh"), { description = "Toggle Waybar" })
 hl.bind(mainMod .. " + CTRL + G", e(HYPRSCRIPTS .. "/game-mode/activate.sh"), { description = "Toggle game mode" })
 hl.bind(mainMod .. " + SHIFT + G", e("rofi -disable-history -modi games -show games -theme games"), { description = "Open game launcher" })
+hl.bind(mainMod .. " + ALT + G", e(HYPRSCRIPTS .. "/game-mode/btop-overlay.sh"), { description = "Display btop overlay" })
 
 hl.bind(mainMod .. " + H", e(HYPRSCRIPTS .. "/hyprsunset/hyprsunset.sh"), { description = "Toggle Hyprsunset" })
 
@@ -136,4 +137,5 @@ hl.bind("XF86AudioRaiseVolume", e("pactl set-sink-volume @DEFAULT_SINK@ +5%"), {
 -- --------------------------------------------------------------------------------------
 -- Other
 -- --------------------------------------------------------------------------------------
-hl.bind(mainMod .. " + O", e(SCRIPTS .. "/openall.sh"))
+-- hl.bind(mainMod .. " + O", e(SCRIPTS .. "/openall.sh"))
+-- hl.bind(mainMod .. " + O", e(HYPRSCRIPTS .. "/game-mode/btop-overlay.sh"))
