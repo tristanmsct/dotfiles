@@ -77,7 +77,7 @@ apply_accent_colors () {
     sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $HOME/.config/wlogout/colors-wlogout.css
 
     # Dunst
-    export COLOR_FRAME=$WAL_COLOR
+    export COLOR_FRAME=$ACCENT_COLOR
     envsubst < "$HOME/.config/dunst/dunstrc.template" > "$HOME/.config/dunst/dunstrc"
 
     # Cava
@@ -89,7 +89,7 @@ apply_accent_colors () {
     export COLOR5="${colors[4]}"
     export COLOR6="${colors[5]}"
     export COLOR7="${colors[6]}"
-    export COLOR="${WAL_COLOR}"
+    export COLOR="${ACCENT_COLOR}"
 
     envsubst < "$HOME/.config/cava/templates/config.template" > "$HOME/.config/cava/config"
     envsubst < "$HOME/.config/cava/templates/config_mini.template" > "$HOME/.config/cava/config_mini"
@@ -196,7 +196,7 @@ apply_sddm_theme () {
     # Adding the SDDM template and replacing the wallpaper and accent color.
 
     export CURRENTWALLPAPER="current_wallpaper.$extension"
-    export ACCENTCOLOR="$COLOR"
+    export ACCENTCOLOR="$ACCENT_COLOR"
     envsubst '${CURRENTWALLPAPER} ${ACCENTCOLOR}' \
     < "$HOME/.config/sddm-themes/theme-eucalyptus-drop.template" \
     | sudo tee /usr/share/sddm/themes/$sddm_theme_name/theme.conf > /dev/null

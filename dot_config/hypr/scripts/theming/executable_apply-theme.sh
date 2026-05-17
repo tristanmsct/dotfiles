@@ -32,7 +32,7 @@ COLOR=${1:-"DEFAULT"}
 COLOR_NB=${2:-"1"}
 read icons_color theme_color _ <<< $(python $HOME/.config/hypr/scripts/theming/convert_colors.py -c $COLOR -d)
 
-WAL_COLOR=$(sed -n "${COLOR_NB}p" $HOME/.local/state/desktop/colors)
+ACCENT_COLOR=$(sed -n "${COLOR_NB}p" $HOME/.local/state/desktop/colors)
 
 # ---------------------------------------------------------------------------------------
 # Applying theme to Icons and GTK applications
