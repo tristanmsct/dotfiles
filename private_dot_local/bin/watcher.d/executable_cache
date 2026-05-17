@@ -89,10 +89,10 @@ class Cache():
         else:
             # We the determine the color based on the threshold.
             color = GREEN
-            if int_size > (threshold_warn * 1024):
-                color = ORANGE
-            elif int_size > (thresold_alert * 1024):
+            if int_size > (thresold_alert * 1024):
                 color = RED
+            elif int_size > (threshold_warn * 1024):
+                color = ORANGE
 
             # Finally we apply the right unit.
             if int_size < 1024:
@@ -173,8 +173,8 @@ def convert_size(str_size: str) -> int:
 
 def display_system(bl_full: bool = False):
     # Package managers
-    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=2048, thrs_alert=4096)
-    cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=512, thrs_alert=1024)
+    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=5120, thrs_alert=10240)
+    cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=1024, thrs_alert=2048)
 
     cmd_stale_downloads = ["sudo", "find", "/var/cache/pacman/pkg", "-maxdepth", "1", "-name", "download-*"]
     lst_stale_downloads = subprocess.run(cmd_stale_downloads, stdout=subprocess.PIPE, text=True).stdout.split("\n")
@@ -469,7 +469,7 @@ def print_tips():
 
     print_section("Slack", section_type="subsub")
     print("Clean Slack caches")
-    display_command("    rm -rf ~/.local/share/slack-data/Service Worker/CacheStorage")
+    display_command("    rm -rf ~/.local/share/slack-data/Service\\ Worker/CacheStorage")
 
     print_section("VSCodium", section_type="subsub")
     print("Clean VSCodium caches")

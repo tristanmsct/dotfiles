@@ -16,8 +16,8 @@ hl.config({
         resize_on_border  = true,
         hover_icon_on_border = true,
         col = {
-            active_border   = { colors = { accent_color, highlight_color }},
-            inactive_border = accent_color_transparent,
+            active_border   = { colors = { border_color, border_color_bright }},
+            inactive_border = border_color_tranparent,
         },
 
         snap = {
@@ -29,8 +29,8 @@ hl.config({
 
     group = {
         col = {
-            border_active   = { colors = { accent_color, highlight_color }},
-            border_inactive = accent_color_transparent,
+            border_active   = { colors = { border_color, border_color_bright }},
+            border_inactive = border_color_tranparent,
         },
 
         groupbar = {
@@ -47,8 +47,8 @@ hl.config({
             text_color            = "0xffffffff",
 
             col = {
-                active   = { colors = { accent_color, highlight_color }},
-                inactive = accent_color_transparent,
+                active   = { colors = { border_color, border_color_bright }},
+                inactive = border_color_tranparent,
             },
         },
     },

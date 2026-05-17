@@ -45,37 +45,6 @@ ORCHIS_COLORS = {
 }
 
 
-def increase_saturation(hex_color, res_type="hex", sat_increase=0.5, brightness_adjust=0.1):
-    """Increase the saturation and birghtness of a hex color."""
-    # Remove '#' if present.
-    hex_color = hex_color.lstrip("#")
-
-    # Convert hex to RGB (0-1 range).
-    red = int(hex_color[0:2], 16) / 255.0
-    green = int(hex_color[2:4], 16) / 255.0
-    blue = int(hex_color[4:6], 16) / 255.0
-
-    # Convert RGB to HLS.
-    hue, lightness, saturation = colorsys.rgb_to_hls(red, green, blue)
-
-    # Increase saturation (clamping to 1.0 maximum).
-    saturation = min(1.0, saturation + sat_increase)
-    lightness = min(1.0, lightness + brightness_adjust)
-
-    # Convert back to RGB.
-    red, green, blue = colorsys.hls_to_rgb(hue, lightness, saturation)
-
-    result = None
-    if res_type == "hex":
-        result = "#{:02x}{:02x}{:02x}".format(int(red * 255), int(green * 255), int(blue * 255))
-    elif res_type == "rgba":
-        result = f"rgba({int(red * 255)},{int(green * 255)},{int(blue * 255)},1)"
-    else:
-        print("Wrong result type provided.")
-
-    return result
-
-
 def hex_to_rgb(hex_color):
     """Convert a hex color string to a (R, G, B) tuple."""
     hex_color = hex_color.lstrip("#")

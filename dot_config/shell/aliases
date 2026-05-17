@@ -30,7 +30,7 @@ alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"
 alias ff="fastfetch"
 alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"
 alias open-dotfiles="xdg-open $HOME/.local/share/dotfiles > /dev/null 2>&1 & disown"
-alias dufl="duf --only local"
+alias dufl="duf --only local"  # Show disk usage
 
 # ---------------------------------------------------------------------------------------
 # Kitty

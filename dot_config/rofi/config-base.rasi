@@ -19,8 +19,6 @@ configuration {
 
 * {
     border-width:                   0.2%;
-    main-color:                     @accent-color;
-    main-color-tr:                  @accent-color-transparent;
 }
 
 // Window / Mainbox -----------------------------------------------------------------------------------------------------------------------
@@ -29,7 +27,7 @@ window {
     text-color:                     @foreground;
 
     border:                         @border-width;
-    border-color:                   @main-color;
+    border-color:                   @border-color;
     border-radius:                  1.5%;
     background-color:               @background;
 }
@@ -42,7 +40,7 @@ inputbar {
     expand:                         false;
 	border:							0% 0% 0.3% 0.2%;
     border-radius:                  1.5% 1.0% 1.5% 1.5%;
-	border-color:					@main-color;
+	border-color:					@accent-color;
     margin:                         0% 0% 0% 0%;
     padding:                        1%;
     position:                       center;
@@ -112,11 +110,11 @@ element alternate.active {
 }
 
 element selected.normal {
-    background-color:               @main-color-tr;
+    background-color:               @accent-color-transparent;
     text-color:                     @foreground;
 	border:							0% 0% 0.3% 0.2%;
     border-radius:                  1.0% 1.5% 1.0% 1.5%;
-    border-color:                  	@main-color;
+    border-color:                  	@accent-color;
 }
 
 element selected.urgent,

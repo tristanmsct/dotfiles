@@ -45,10 +45,11 @@ else
 
     awww kill
 
-    sed -i -E "s/(background-theme) rgba\(0, 0, 0, 0.4\);/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
-    sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
+    sed -i -E "s/(background-theme) rgba\(0, 0, 0, 0.4\);/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
+    sed -i -E "s/(border-color) @accent-color;/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
 
     /usr/bin/nextcloud --quit
+
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
         dunstify "Gamemode activated" "Decorations, blur, wallpaper, etc. disabled"
     fi

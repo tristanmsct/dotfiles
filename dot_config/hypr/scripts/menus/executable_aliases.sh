@@ -22,16 +22,33 @@ while read -r line; do
         alias_name="${line%%=*}"
         alias_cmd="${line#*=}"
 
+        # Split comment from command
+        comment=""
+        if [[ "$alias_cmd" == *" #"* ]]; then
+            comment="${alias_cmd#*" # "}"
+            alias_cmd="${alias_cmd%%" #"*}"
+        fi
+
         # Strip surrounding quotes from command
+        alias_cmd="${alias_cmd%"${alias_cmd##*[![:space:]]}"}"
         alias_cmd="${alias_cmd#\'}"
         alias_cmd="${alias_cmd%\'}"
         alias_cmd="${alias_cmd#\"}"
         alias_cmd="${alias_cmd%\"}"
 
-        item="${alias_name}"$'\r'"${alias_cmd}"
+        if [[ -n "$comment" ]]; then
+            item="${alias_name} -> ${alias_cmd}"$'\r'"${comment}"
+        else
+            item="${alias_name} -> ${alias_cmd}"
+
+        fi
+
         aliases="${aliases}${item}"$'\n'
     fi
 done < "$config_file"
 
 sleep 0.2
-rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Aliases" -config "$HOME/.config/rofi/config-search.rasi" <<< "$aliases"
+selected=$(rofi -disable-history -dmenu -i -eh 2 -replace -p "Aliases" -config "$HOME/.config/rofi/config-search.rasi" <<< "$aliases")
+
+alias_name="${selected%%' ->'*}"
+echo -n "$alias_name" | wl-copy

@@ -23,19 +23,19 @@
 @import 'colors-waybar.css';
 
 /* workspace text colors */
-@define-color act_wrk_fg rgba(0, 0, 0, 1);
+@define-color act-wrk-fg rgba(0, 0, 0, 1);
 
 /* taskbar button-background colors */
-@define-color taskbar_bg rgba(255, 255, 255, 0.2);
+@define-color taskbar-bg rgba(255, 255, 255, 0.2);
 
 /* element colours */
 @define-color accent-color-element @accent-color;
 @define-color background-theme-element @background-theme;
 
 /* updates-widget icon+text colors */
-@define-color updates_green #a3be8c;
-@define-color updates_yellow #ff9a3c;
-@define-color updates_red #dc2f2f;
+@define-color updates-green #a3be8c;
+@define-color updates-yellow #ff9a3c;
+@define-color updates-red #dc2f2f;
 
 /*
  *   ____                           _
@@ -153,7 +153,7 @@ tooltip label {
 
 /* Only focused workspace*/
 #workspaces button.active {
-    color: @act_wrk_fg;
+    color: @act-wrk-fg;
     background: @accent-color;
     border-radius: 10px 5px;
     padding: 1px 2px;
@@ -200,7 +200,7 @@ tooltip label {
 
 #taskbar button.active {
     border-radius: 10px 5px;
-    background: @taskbar_bg;
+    background: @taskbar-bg;
     transition: all 0.3s ease-in-out;
 }
 
@@ -372,16 +372,16 @@ tooltip label {
 
 /*
 #custom-updates.green {
-    color: @updates_green;
+    color: @updates-green;
 }
 */
 
 #custom-updates.yellow {
-    color: @updates_yellow;
+    color: @updates-yellow;
 }
 
 #custom-updates.red {
-    color: @updates_red;
+    color: @updates-red;
 }
 
 /* -----------------------------------------------------

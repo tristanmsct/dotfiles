@@ -23,3 +23,7 @@ hl.gesture({ fingers = 3, direction = "up",         action = "float" })
 hl.gesture({ fingers = 3, direction = "down", action = "close" })
 hl.gesture({ fingers = 3, direction = "swipe", mods = "SUPER", action = "resize" })
 hl.gesture({ fingers = 3, direction = "swipe", mods = "SHIFT", action = "move" })
+hl.gesture({ fingers = 2, direction = "pinch", action = "cursorZoom", zoom_level = 1, mode = "live" })
+
+hl.gesture({ fingers = 4, direction = "up", action = function() hl.exec_cmd("kitty") end })
+hl.gesture({ fingers = 4, direction = "down", action = function() hl.exec_cmd("pkill rofi || rofi -show drun -replace -i -disable-history") end })

@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
+#               _
+#  ______ _ ___(_)
+# |_  / _` |_  / |
+#  / / (_| |/ /| |
+# /___\__,_/___|_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
 if [ $# -eq 0 ]; then
     target="$HOME"
 else
-    target=$(zoxide query "$@" 2>/dev/null)
+    target=$(zoxide query --list | fzf --filter "$@" | head -1 2>/dev/null)
     if [ -z "$target" ]; then
         target="$HOME"
     fi

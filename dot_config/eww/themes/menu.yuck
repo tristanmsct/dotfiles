@@ -7,7 +7,7 @@
 ;
 ; -----------------------------------------------------------------------------------------------------------------------------------------
 
-(defpoll pywal-colors
+(defpoll wallust-colors
   :interval "2s"
   :initial "$HOME/.config/eww/themes/scripts/spit-hot-colors.sh"
   "$HOME/.config/eww/themes/scripts/spit-hot-colors.sh"
@@ -15,8 +15,8 @@
 
 (defpoll borders-on
   :interval "2s"
-  :initial "if (hyprctl getoption general:border_size | grep -q 'int: 0'); then echo 'false'; else echo 'true'; fi"
-  "if (hyprctl getoption general:border_size | grep -q 'int: 0'); then echo 'false'; else echo 'true'; fi"
+  :initial "if (hyprctl getoption general:col:active_border | grep -q 'gradient data: 0 0 0deg'); then echo 'false'; else echo 'true'; fi"
+  "if (hyprctl getoption general:col:active_border | grep -q 'gradient data: 0 0 0deg'); then echo 'false'; else echo 'true'; fi"
 )
 
 ; Since waybar borders are disabled in focus mode, it is not reliable to know if borders are on or not
@@ -29,8 +29,8 @@
 
 (defpoll borders-decorations-on
   :interval "2s"
-  :initial "if (grep -q '$border-theme: 0px' $HOME/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
-  "if (grep -q '$border-theme: 0px' $HOME/.config/eww/eww.scss); then echo 'false'; else echo 'true'; fi"
+  :initial "if (grep -q '$border-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q '$border-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
 )
 
 (defvar saturation-value 0.5)
@@ -53,12 +53,12 @@
       :text "Theme menu"
     )
 
-    ;; List of accent colors from pywal
+    ;; List of accent colors from wallust
     (box
       :class "color-chooser"
       :orientation "v"
 
-      (for entry in pywal-colors
+      (for entry in wallust-colors
         (eventbox
           :cursor "pointer"
           (button
@@ -129,7 +129,7 @@
           :cursor "pointer"
           (scale
             :class  "brightness-slider"
-            :min 0
+            :min 0.01
             :max 2
             :round-digits 2
             :timeout 1000

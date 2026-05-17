@@ -18,8 +18,10 @@ cat > $STATE_FILE << 'EOF'
     "accent_color": {
       "enabled": false
     },
-      "mode": "dark",
-      "saturation": {
+    "mode": "dark",
+    "border_main": true,
+    "border_decorations": true,
+    "saturation": {
       "enabled": false
     }
   },

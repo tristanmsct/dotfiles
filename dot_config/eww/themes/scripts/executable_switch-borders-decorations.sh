@@ -13,39 +13,43 @@ FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
 if [ $1 == true ]; then
     if ! $FOCUSMODE_ENABLED; then
         # Waybar border disabled in focus mode.
-        sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waybar.css
+        sed -i -E "s/(border-color) @accent-color;/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
     fi
 
     # Waypaper
-    sed -i -E "s/(border-color) @accent-color;/\1 rgba\(0, 0, 0, 0\);/" $HOME/.cache/wal/colors-waypaper.css
+    sed -i -E "s/(border-color) @accent-color;/\1 transparent;/" $HOME/.config/waypaper/colors-waypaper.css
 
     # Eww
-    sed -i -E "s/(border-theme:) 2px/\1 0px/" $HOME/.config/eww/eww.scss
+    sed -i -E "s/(border-color:) \\\$accent-color/\1 transparent/" $HOME/.config/eww/colors-eww.scss
 
     # Rofi
-    sed -i -E "s/(border-width:\s*) 0.2%/\1 0%/" $HOME/.config/rofi/config-base.rasi
+    sed -i -E "s/(border-color:) @accent-color/\1 transparent/" $HOME/.config/rofi/colors-rofi.rasi
 
     # NWG
-    sed -i -E "s/(border:) 2px/\1 0px/" $HOME/.config/nwg-drawer/drawer.css
-    sed -i -E "s/(border:) 2px/\1 0px/" $HOME/.config/nwg-panel/menu-start.css
+    sed -i -E "s/(border-color) @accent-color/\1 transparent/" $HOME/.config/nwg-drawer/colors-nwg.css
+    sed -i -E "s/(border-color) @accent-color/\1 transparent/" $HOME/.config/nwg-panel/colors-nwg.css
 
     # Dunst is excluded because it just looks weird without borders
+
+    jq '.theme.border_decorations = false' $STATE_FILE | sponge $STATE_FILE
 else
     if ! $FOCUSMODE_ENABLED; then
         # Waybar border disabled in focus mode.
-        sed -i -E "s/(border-color) rgba\(0, 0, 0, 0\);/\1 @accent-color;/" $HOME/.cache/wal/colors-waybar.css
+        sed -i -E "s/(border-color) transparent;/\1 @accent-color;/" $HOME/.config/waybar/colors-waybar.css
     fi
 
     # Waypaper
-    sed -i -E "s/(border-color) rgba\(0, 0, 0, 0\);/\1 @accent-color;/" $HOME/.cache/wal/colors-waypaper.css
+    sed -i -E "s/(border-color) transparent;/\1 @accent-color;/" $HOME/.config/waypaper/colors-waypaper.css
 
     # Eww
-    sed -i -E "s/(border-theme:) 0px/\1 2px/" $HOME/.config/eww/eww.scss
+    sed -i -E "s/(border-color:) transparent/\1 \\\$accent-color/" $HOME/.config/eww/colors-eww.scss
 
     # Rofi
-    sed -i -E "s/(border-width:\s*) 0%/\1 0.2%/" $HOME/.config/rofi/config-base.rasi
+    sed -i -E "s/(border-color:) transparent/\1 @accent-color/" $HOME/.config/rofi/colors-rofi.rasi
 
     # NWG
-    sed -i -E "s/(border:) 0px/\1 2px/" $HOME/.config/nwg-drawer/drawer.css
-    sed -i -E "s/(border:) 0px/\1 2px/" $HOME/.config/nwg-panel/menu-start.css
+    sed -i -E "s/(border-color) transparent/\1 @accent-color/" $HOME/.config/nwg-drawer/colors-nwg.css
+    sed -i -E "s/(border-color) transparent/\1 @accent-color/" $HOME/.config/nwg-panel/color-nwg.css
+
+    jq '.theme.border_decorations = true' $STATE_FILE | sponge $STATE_FILE
 fi

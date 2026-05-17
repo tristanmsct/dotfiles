@@ -10,7 +10,7 @@
 # Restore last wallpaper
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-cachefile="$HOME/.cache/wallpaper/current_wallpaper"
+cachefile="$HOME/.local/state/desktop/wallpaper"
 
 if [ -f $cachefile ] && [ -f $(cat $cachefile) ]; then
     echo ":: Wallpaper $(cat $cachefile) exists"

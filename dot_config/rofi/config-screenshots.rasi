@@ -26,7 +26,7 @@ window {
     location:         center;
     anchor:           center;
     fullscreen:       false;
-    width:            1000px;
+    width:            300px;
     height:           380px;
     x-offset:         0px;
     y-offset:         0px;
@@ -39,17 +39,17 @@ window {
 mainbox {
     enabled:          true;
     spacing:          15px;
+    padding:          0 20px;
     margin:           0px;
     background-color: transparent;
     orientation:      horizontal;
-    children:         [ "imagebox", "listview" ];
+    children:         [ "listview" ];
 }
 
 // Imagebox --------------------------------------------------------------------------------------------------------------------------------
 imagebox {
     border-radius:    20px 0px 0px 20px;
     background-color: transparent;
-    background-image: url("~/.cache/wallpaper/square_wallpaper.png", height);
 }
 
 // Listview --------------------------------------------------------------------------------------------------------------------------------

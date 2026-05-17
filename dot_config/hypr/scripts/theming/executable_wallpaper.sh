@@ -16,49 +16,47 @@
 $HOME/.config/hypr/scripts/system/setup-state.sh
 
 STATE_FILE=$HOME/.local/state/desktop/state.json
-CACHE_DIRECTORY="$HOME/.cache/wallpaper"
-CACHE_FILE="$CACHE_DIRECTORY/current_wallpaper"
-SQUARE_WALLPAPER="$CACHE_DIRECTORY/square_wallpaper.png"
-
-if [ ! -d $CACHE_DIRECTORY ]; then
-    mkdir $CACHE_DIRECTORY
-fi
+CACHE_FILE="$HOME/.local/state/desktop/wallpaper"
 
 # ---------------------------------------------------------------------------------------
 # Get selected wallpaper
 # ---------------------------------------------------------------------------------------
 
-if [ -z $1 ]; then
-    WALLPAPER=$(cat $CACHE_FILE)
-else
-    WALLPAPER=$1
-fi
+WALLPAPER=$1
 
 # When changing wallpaper, the accent-color cache file need to be reset, otherwise
 # accent colors from previous wallpapers might get mixed.
-if ! [ "$WALLPAPER" = "$(cat $CACHE_FILE)" ]; then
+if [ ! "$WALLPAPER" = "$(cat $CACHE_FILE)" ]; then
     jq 'del(.theme.accent_color.hex)' "$STATE_FILE" | sponge "$STATE_FILE"
     jq 'del(.theme.accent_color.index)' "$STATE_FILE" | sponge "$STATE_FILE"
     jq '.theme.accent_color.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
 fi
-
-if [ ! -f $CACHE_FILE ]; then
-    touch $CACHE_FILE
-fi
 echo "$WALLPAPER" > $CACHE_FILE
 
 # ---------------------------------------------------------------------------------------
-# Execute pywal
+# Execute Wallust
 # ---------------------------------------------------------------------------------------
 
-$HOME/.config/hypr/scripts/theming/create-theme.sh $WALLPAPER
+wallust run "$WALLPAPER" --skip-sequences
+
+# ---------------------------------------------------------------------------------------
+# Restore border config
+# ---------------------------------------------------------------------------------------
+
+BORDER_MAIN=$(jq '.theme.border_main' $STATE_FILE)
+BORDER_DECORATIONS=$(jq '.theme.border_decorations' $STATE_FILE)
+
+if [ $BORDER_MAIN = "false" ]; then
+    "$HOME/.config/eww/themes/scripts/switch-borders.sh" true
+fi
+
+if [ $BORDER_DECORATIONS = "false" ]; then
+    "$HOME/.config/eww/themes/scripts/switch-borders-decorations.sh" true
+fi
 
 # ---------------------------------------------------------------------------------------
 # Apply created theme
 # ---------------------------------------------------------------------------------------
-
-# Changing folders / directories icons.
-source "$HOME/.cache/wal/colors.sh"
 
 # Should cover all basis.
 # At boot or when refreshing waypapr (meta + W) if an accent color was selected, the cache file will be here, otherwise it will not exist.
@@ -78,9 +76,3 @@ fi
 # Remove any custom saturation.
 jq '.theme.saturation.enabled = false' $STATE_FILE | sponge $STATE_FILE
 jq 'del(.theme.saturation.level)' $STATE_FILE | sponge $STATE_FILE
-
-# ---------------------------------------------------------------------------------------
-# Created specific wallpapers
-# ---------------------------------------------------------------------------------------
-
-magick $WALLPAPER -gravity Center -extent 1:1 $SQUARE_WALLPAPER

@@ -18,10 +18,11 @@ if hyprctl getoption animations:enabled | grep -q "int: 0"; then
     exit
 fi
 
-SATURATION_VALUE=$1
+SATURATION_VALUE=$(awk "BEGIN {printf \"%d\", $1 * 100}")
 
-WALLPAPER=$(cat $HOME/.cache/wallpaper/current_wallpaper)
-wal -q -i $WALLPAPER --saturate $SATURATION_VALUE &
+WALLPAPER=$(cat $HOME/.local/state/desktop/wallpaper)
+wallust run $WALLPAPER --skip-sequences -q --saturation $SATURATION_VALUE &
+
 jq '.theme.saturation.enabled = true' $STATE_FILE | sponge $STATE_FILE
 jq --argjson saturation_level "$SATURATION_VALUE" -r '.theme.saturation.level = $saturation_level' $STATE_FILE | sponge $STATE_FILE
 ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $STATE_FILE)
@@ -35,6 +36,3 @@ if [ $ACCENT_COLOR_STATUS = "true" ]; then
 else
     $HOME/.config/hypr/scripts/theming/apply-theme.sh &
 fi
-
-# eww reload
-# eww update saturation-value="$SATURATION_VALUE"

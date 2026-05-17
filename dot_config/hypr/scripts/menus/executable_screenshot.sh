@@ -21,7 +21,7 @@ option_6="󱎫    Capture in 10s"
 
 # Rofi CMD
 rofi_cmd() {
-	rofi -theme-str "window {width: 680px;}" \
+	rofi -theme-str "window {width: 380px;}" \
 		-theme-str "listview {columns: 1; lines: 6;}" \
 		-theme-str 'textbox-prompt-colon {str: "";}' \
 		-disable-history \

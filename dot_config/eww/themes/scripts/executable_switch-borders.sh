@@ -16,7 +16,15 @@ if $FOCUSMODE_ENABLED; then
 fi
 
 if [ $1 == true ]; then
-    sed -i -E "s/(border_size\s*=) 2/\1 0/" $HOME/.config/hypr/conf/windows.lua
+    sed -i -E "s/(border_color =) accent_color/\1 'rgba(00000000)'/" $HOME/.config/hypr/conf/colors-hyprland.lua
+    sed -i -E "s/(border_color_bright =) highlight_color/\1 'rgba(00000000)'/" $HOME/.config/hypr/conf/colors-hyprland.lua
+    sed -i -E "s/(border_color_tranparent =) accent_color_transparent/\1 'rgba(00000000)'/" $HOME/.config/hypr/conf/colors-hyprland.lua
+
+    jq '.theme.border_main = false' $STATE_FILE | sponge $STATE_FILE
 else
-    sed -i -E "s/(border_size\s*=) 0/\1 2/" $HOME/.config/hypr/conf/windows.lua
+    sed -i -E "s/(border_color =) 'rgba\(00000000\)'/\1 accent_color/" $HOME/.config/hypr/conf/colors-hyprland.lua
+    sed -i -E "s/(border_color_bright =) 'rgba\(00000000\)'/\1 highlight_color/" $HOME/.config/hypr/conf/colors-hyprland.lua
+    sed -i -E "s/(border_color_tranparent =) 'rgba\(00000000\)'/\1 accent_color_transparent/" $HOME/.config/hypr/conf/colors-hyprland.lua
+
+    jq '.theme.border_main = true' $STATE_FILE | sponge $STATE_FILE
 fi

@@ -4,7 +4,7 @@ Created on 2025-02-05.
 
 @author: Tristan
 
-This script converts pywal colors to "human" colors corresponding to Tela Circle icons theme and Orchis Theme.
+This script converts wallust colors to "human" colors corresponding to Tela Circle icons theme and Orchis Theme.
 """
 import argparse
 import os
@@ -33,10 +33,9 @@ if __name__ == "__main__":
     if args.color and validate_hex_format(args.color):
         tela_theme = get_closest_color(args.color, TELA_COLORS)
     else:
-        # Read the main color from the .cache/wal/colors file.
-        with open(os.environ["HOME"] + "/.cache/wal/colors", "r") as f:
-            # Colors start at 0, but color 0 is for backgrounds.
-            first_color = f.read().splitlines()[1]
+        # Read the main color from the .local/state/desktop/colors file.
+        with open(os.environ["HOME"] + "/.local/state/desktop/colors", "r") as f:
+            first_color = f.read().splitlines()[0]
             tela_theme = get_closest_color(first_color, TELA_COLORS)
 
     orchis_theme = TELA_COLORS[tela_theme].orchis_match

@@ -29,7 +29,7 @@ require("conf/cursor")
 require("conf/keyboard")
 
 -- --------------------------------------------------------------------------------------
--- Load pywal color file
+-- Load wallust color file
 -- --------------------------------------------------------------------------------------
 require("conf/colors-hyprland")
 

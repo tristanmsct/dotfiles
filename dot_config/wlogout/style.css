@@ -10,7 +10,7 @@
  */
 
 /*
- * Import Pywal colors
+ * Import Wallust colors
  * --------------------------------------------------------------------------------------
  */
 @import 'colors-wlogout.css';
@@ -52,15 +52,15 @@ button {
 }
 
 button:focus {
-    background-color: @colorbtn2;
+    background-color: @color-btn-2;
 }
 
 button:hover {
-    background-color: @colorbtn1;
+    background-color: @color-btn-1;
 }
 
 button:active {
-    background-color: @colorbtn3;
+    background-color: @color-btn-3;
 }
 
 
@@ -72,23 +72,19 @@ button:active {
 #lock {
     margin: 50px 0 0 300px;
     border-radius: 80px 0 0 0;
-    background-image: image(url("icons/lock-dark.png"));
 }
 
 #logout {
     margin: 0 0 50px 300px;
     border-radius: 0 0 0 80px;
-    background-image: image(url("icons/logout-dark.png"));
 }
 
 #shutdown {
     margin: 50px 300px 0 0;
     border-radius: 0 80px 0 0;
-    background-image: image(url("icons/shutdown-dark.png"));
 }
 
 #reboot {
     margin: 0 300px 50px 0;
     border-radius: 0 0 80px 0;
-    background-image: image(url("icons/reboot-dark.png"));
 }

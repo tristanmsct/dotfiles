@@ -1,0 +1,55 @@
+# wallust v3.5
+
+# Global section - values below can be overwritten by command line flags
+
+# How the image is parse, in order to get the colors:
+# full - resized - wal - thumb -  fastresize - kmeans
+backend = "wal"
+
+# What color space to use to produce and select the most prominent colors:
+# lab - labmixed - lch - lchmixed - salience
+color_space = "salience"
+
+# Use the most prominent colors in a way that makes sense, a scheme color palette:
+# dark - dark16 - darkcomp - darkcomp16
+# light - light16 - lightcomp - lightcomp16
+# harddark - harddark16 - harddarkcomp - harddarkcomp16
+# softdark - softdark16 - softdarkcomp - softdarkcomp16
+# softlight - softlight16 - softlightcomp - softlightcomp16
+# saliencedark - saliencedarkbalanced - saliencedarkdistributed - saliencedarklow (each has the 16 variations)
+# salienceligh - saliencelightbalanced - saliencelightdistributed - saliencelightlow (each has the 16 variations)
+palette = "saliencedark"
+
+# Ensures a "readable contrast" (OPTIONAL, disabled by default)
+# Should only be enabled when you notice an unreadable contrast frequently happening
+# with your images. The reference color for the contrast is the background color.
+check_contrast = true
+
+# Color saturation, between [1% and 100%] (OPTIONAL, disabled by default)
+# usually something higher than 50 increases the saturation and below
+# decreases it (on a scheme with strong and vivid colors)
+saturation = 50
+
+# Alpha value for templating, by default 100 (no other use whatsoever)
+# alpha = 100
+
+# Disables hooks completly
+# no_hooks = true
+
+[templates]
+base_colors = { template = 'colors', target = '~/.local/state/desktop/colors' }
+current_wallpaper = { template = 'wallpaper', target = '~/.local/state/desktop/wallpaper' }
+hyprland = { template = 'colors-hyprland.lua', target = '~/.config/hypr/conf/colors-hyprland.lua' }
+hyprlock = { template = 'colors-hyprlock.conf', target = '~/.config/hypr/conf/colors-hyprlock.conf' }
+eww = { template = 'colors-eww.scss', target = '~/.config/eww/colors-eww.scss' }
+waybar = { template = 'colors-base.css', target = '~/.config/waybar/colors-waybar.css' }
+waypaper = { template = 'colors-base.css', target = '~/.config/waypaper/colors-waypaper.css' }
+wlogout = { template = 'colors-wlogout.css', target = '~/.config/wlogout/colors-wlogout.css' }
+nwg_panel = { template = 'colors-base.css', target = '~/.config/nwg-panel/colors-nwg.css' }
+nwg_drawer = { template = 'colors-base.css', target = '~/.config/nwg-drawer/colors-nwg.css' }
+nmrs = { template = 'colors-base.css', target = '~/.config/nmrs/colors-nmrs.css' }
+rofi = { template = 'colors-rofi.rasi', target = '~/.config/rofi/colors-rofi.rasi' }
+kitty = { template = 'colors-kitty.conf', target = '~/.config/kitty/colors-kitty.conf' }
+
+[hooks]
+# Run commands when wallust is invoked. Useful to avoid scripting.
