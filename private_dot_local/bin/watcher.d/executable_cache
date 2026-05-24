@@ -424,17 +424,17 @@ def display_command(command: str) -> None:
 def print_tips():
     print_section("System", section_type="sub")
     print_section("Pacman / AUR", section_type="subsub")
-    print("Remove orphaned packages")
-    display_command("    yay -Yc")
-
-    print("Clean package cache")
-    display_command("    yay -Sc")
-
     print("Keep only the 2 most recent versions of each package")
     display_command("    sudo paccache -rk2")
 
     print("Remove cache for uninstalled packages entirely")
     display_command("    sudo paccache -ruk0")
+
+    print("Remove orphaned packages")
+    display_command("    yay -Yc")
+
+    print("Clean package cache")
+    display_command("    yay -Sc")
 
     print_section("Hyprland / hyprpm", section_type="subsub")
     print("Clean hyprpm cache")

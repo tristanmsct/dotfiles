@@ -98,6 +98,17 @@ while [[ $# -gt 0 ]]; do
                 echo
             fi
 
+            if has_flag "$@" -- -u --updates; then
+                section "Available updates"
+                output=$(checkupdates)
+                if [ -n "$output" ]; then
+                    echo "$output"
+                else
+                    echo -e "${GREEN}✓${RESET} No updates"
+                fi
+                echo
+            fi
+
             exit 0
             ;;
         *)

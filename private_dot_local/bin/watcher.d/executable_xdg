@@ -31,7 +31,7 @@ display_diff() {
 	fi
 
 	if [[ -z $ADDITIONS && -z $DELETIONS ]]; then
-		echo "No changes"
+		echo -e "${GREEN}✓${RESET} No change"
 	fi
 }
 

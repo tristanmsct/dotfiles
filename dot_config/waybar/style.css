@@ -144,6 +144,8 @@ tooltip label {
     border-radius: 25px 15px;
     border: 2px solid @border-color;
     padding: 2px 13px;
+
+    margin-left: 5px;
 }
 
 /* ALL workspace buttons (Focused + Unfocused) */
@@ -314,6 +316,7 @@ tooltip label {
     background: @background-theme;
     border-radius: 15px 25px;
     border: 2px solid @border-color;
+    margin-right: 5px;
 }
 
 #pulseaudio:hover, #bluetooth:hover, #backlight:hover, #network:hover, #battery:hover,

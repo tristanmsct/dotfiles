@@ -10,3 +10,6 @@
 # Remove Brave crash reports from home, where they do not belong.
 find "$HOME/.config/BraveSoftware/Brave-Browser/Crash Reports/completed" -name "*.dmp" -delete
 find "$HOME/.config/BraveSoftware/Brave-Browser/Crash Reports/completed" -name "*.meta" -delete
+
+# Clean old Nextcloud config backups.
+/usr/bin/ls -t "$HOME/.config/Nextcloud/nextcloud.cfg.backup_"* | tail -n +2 | xargs rm

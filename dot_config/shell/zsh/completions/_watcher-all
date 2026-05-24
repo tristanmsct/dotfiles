@@ -5,10 +5,14 @@ _watcher-all() {
     options=(
         ":Run main watchers"
         "--git:Performs a git check"
+        "-g:Performs a git check"
+        "--update:Check for updates"
+        "-u:Check for updates"
         "--no-cache:Omits cache check"
+        "-n:Omits cache check"
     )
 
-    _describe "watcher-all commands" options
+    _describe "watcher-all options" options
 }
 
 _watcher-all "$@"

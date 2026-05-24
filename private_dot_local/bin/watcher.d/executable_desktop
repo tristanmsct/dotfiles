@@ -41,7 +41,7 @@ if [[ -z "$1" ]]; then
     done <<< "$monitor_list"
 
     if ! $has_changes; then
-        echo "No changes"
+        echo -e "${GREEN}✓${RESET} No change"
     fi
 elif [[ "$1" == "resolve" ]]; then
     # Resolve differences.
@@ -58,7 +58,7 @@ elif [[ "$1" == "resolve" ]]; then
     done <<< "$monitor_list"
 
     if ! $has_changes; then
-        echo "No changes"
+        echo -e "${GREEN}✓${RESET} No change"
     else
         if gum confirm "Update desktop baseline ?"; then
             while IFS= read -r app_file; do

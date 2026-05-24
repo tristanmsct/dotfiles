@@ -5,10 +5,12 @@ _watcher-cache() {
     options=(
         ":Check for caches accros the computer"
         "--tips:Gives tips on how to handle each cache"
+        "-t:Gives tips on how to handle each cache"
         "--summarize:Summarize output to shown only warnings"
+        "-s:Summarize output to shown only warnings"
     )
 
-    _describe "watcher-cache commands" options
+    _describe "watcher-cache options" options
 }
 
 _watcher-cache "$@"

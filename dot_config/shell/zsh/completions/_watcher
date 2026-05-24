@@ -27,6 +27,8 @@ _watcher() {
             done
             commands+=("open:Open the system notes directory")
             commands+=("all:Run main watchers")
+            commands+=("--help:Display help message")
+            commands+=("-h:Display help message")
             _describe "watcher command" commands
             ;;
         3)
