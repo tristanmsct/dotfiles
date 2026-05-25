@@ -26,6 +26,7 @@ _watcher() {
                 commands+=("$cmd:$desc")
             done
             commands+=("open:Open the system notes directory")
+            commands+=("updates:Check for updates")
             commands+=("all:Run main watchers")
             commands+=("--help:Display help message")
             commands+=("-h:Display help message")

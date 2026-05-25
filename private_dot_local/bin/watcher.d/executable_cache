@@ -140,7 +140,7 @@ def print_message(str_message: str, msg_type: str = "ok"):
             "color": RED
         }
     }
-    print(f"""  {d_frmt[msg_type]["color"]}{d_frmt[msg_type]["icon"]}{RESET}  {str_message}""")
+    print(f"""{d_frmt[msg_type]["color"]}{d_frmt[msg_type]["icon"]}{RESET} {str_message}""")
 
 
 def get_journal_size():
