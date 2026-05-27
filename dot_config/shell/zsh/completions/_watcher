@@ -6,7 +6,7 @@ _watcher() {
 
     case $CURRENT in
         2)
-            # First argument: command names
+            # First argument: command names.
             for script in "$watcher_dir"/*; do
                 [[ -x "$script" ]] || continue
                 local cmd=$(basename "$script")
@@ -33,7 +33,7 @@ _watcher() {
             _describe "watcher command" commands
             ;;
         3)
-            # Second argument: subcommands based on first arg
+            # Second argument: subcommands based on first arg.
             case ${words[2]} in
                 all)
                     _arguments "2:command:_watcher-all"
@@ -58,15 +58,15 @@ _watcher() {
                     ;;
             esac
             ;;
-        4)
+        *)
             if [[ ${words[2]} == "xdg" ]] && [[ ${words[3]} == "notes" ]]; then
                  _arguments "3:command:_watcher-xdgnotes"
-            elif
-                [[ ${words[2]} == "pkglog" ]] && [[ ${words[3]} == "notes" ]]; then
+            elif [[ ${words[2]} == "pkglog" ]] && [[ ${words[3]} == "notes" ]]; then
                  _arguments "3:command:_watcher-pkgnotes"
-            elif
-                [[ ${words[2]} == "sysinfo" ]] && [[ ${words[3]} == "notes" ]]; then
+            elif [[ ${words[2]} == "sysinfo" ]] && [[ ${words[3]} == "notes" ]]; then
                  _arguments "3:command:_watcher-sysnotes"
+            elif [[ ${words[2]} == "all" ]]; then
+                _arguments "*:command:_watcher-all"
             fi
             ;;
     esac

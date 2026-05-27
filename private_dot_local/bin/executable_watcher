@@ -36,30 +36,6 @@ show_help() {
     exit 0
 }
 
-has_flag() {
-    local args=("$@")
-    local flags=()
-    local divider_found=false
-
-    for arg in "${args[@]}"; do
-        if [[ "$arg" == "--" ]]; then
-            divider_found=true
-            continue
-        fi
-        if $divider_found; then
-            flags+=("$arg")
-        fi
-    done
-
-    for passed in "${args[@]}"; do
-        [[ "$passed" == "--" ]] && break
-        for flag in "${flags[@]}"; do
-            [[ "$passed" == "$flag" ]] && return 0
-        done
-    done
-    return 1
-}
-
 if [[ $# -eq 0 ]]; then
     show_help
 fi
@@ -83,6 +59,23 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         all)
+            LONGOPTS="git,no-cache,updates"
+            OPTIONS="gnu"
+
+            PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$script_name" -- "$@") || exit 2
+            eval set -- "$PARSED"
+
+            flag_git=n; flag_nocache=n; flag_updates=n;
+            while true; do
+                case "$1" in
+                    -g|--git) flag_git=y; shift ;;
+                    -n|--no-cache) flag_nocache=y; shift ;;
+                    -u|--updates) flag_updates=y; shift ;;
+                    --) shift; break ;;
+                    *) echo "Error"; exit 1 ;;
+                esac
+            done
+
             section "Chezmoi files and directories"
             "$WATCHER_DIR/chezmoi"
             echo
@@ -95,19 +88,19 @@ while [[ $# -gt 0 ]]; do
             "$WATCHER_DIR/desktop"
             echo
 
-            if ! has_flag "$@" -- -n --no-cache; then
+            if [ $flag_nocache == "n" ]; then
                 section "System and application caches"
                 "$WATCHER_DIR/cache" -s
                 echo
             fi
 
-            if has_flag "$@" -- -g --git; then
+            if [ $flag_git == "y" ]; then
                 section "Git repositories"
                 "$WATCHER_DIR/git" --aur
                 echo
             fi
 
-            if has_flag "$@" -- -u --updates; then
+            if [ $flag_updates == "y" ]; then
                 section "Available updates"
                 output=$(checkupdates)
                 if [ -n "$output" ]; then

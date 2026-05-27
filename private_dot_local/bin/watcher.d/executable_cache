@@ -215,7 +215,7 @@ def display_system(bl_full: bool = False):
             bl_display_docker = cache_docker.is_gt_thres
 
     # -- System Display -----------------------------------------------------------------
-    bl_display_system = any([bl_display_pkgmanagers, bl_display_hyprcache, bl_display_journal]) or bl_full
+    bl_display_system = any([bl_display_pkgmanagers, bl_display_hyprcache, bl_display_journal, bl_display_docker]) or bl_full
     if bl_display_system:
         print_section("System", section_type="sub")
 

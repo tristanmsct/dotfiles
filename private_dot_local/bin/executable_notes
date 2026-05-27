@@ -198,7 +198,6 @@ if [[ -z $1 ]]; then
     open_notes_day
 else
     case $1 in
-
         -c|--clean)
             clean_notes
             ;;

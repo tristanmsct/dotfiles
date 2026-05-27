@@ -3,10 +3,15 @@
 local -a options
 options=(
   "--clean:Clean the day to day note directory"
+  "-c:Clean the day to day note directory"
   "--month:Open notes for the current month"
+  "-m:Open notes for the current month"
   "--archive:Archive old monthly notes"
+  "-a:Archive old monthly notes"
   "--location:Open note location in a file explorer"
+  "-l:Open note location in a file explorer"
   "--help:Display the help message for this function"
+  "-h:Display the help message for this function"
 )
 
 _describe "values" options
