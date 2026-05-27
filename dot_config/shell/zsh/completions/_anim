@@ -7,6 +7,7 @@ options=(
   "matrix:Starts cmatrix with potential optionnal parameters"
   "bonsai:Starts cbonsai with potential optionnal parameters"
   "--help:Display the help message for this function"
+  "-h:Display the help message for this function"
 )
 
 _describe "values" options

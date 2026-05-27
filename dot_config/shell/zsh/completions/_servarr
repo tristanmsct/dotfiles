@@ -9,6 +9,7 @@ options=(
   "logs:Print logs for containers"
   "shutdown:Stops containers and docker"
   "--help:Display the help message for this function"
+  "-h:Display the help message for this function"
 )
 
 _describe "values" options

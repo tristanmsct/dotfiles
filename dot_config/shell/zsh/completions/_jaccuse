@@ -4,9 +4,13 @@ _jaccuse() {
     local -a options
     options=(
       "--reverse:Show reverse dependencies"
+      "-r:Show reverse dependencies"
       "--deep:Deep search"
+      "-d:Deep search"
       "--quiet:Quiet mode"
+      "-q:Quiet mode"
       "--help:Display help message"
+      "-h:Display help message"
     )
 
     _describe "jaccuse commands" options
