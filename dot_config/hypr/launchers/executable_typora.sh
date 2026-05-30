@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-exec /usr/bin/typora \
+
+# Get XDG variables and create the fake home if it does not exists.
+source $HOME/.config/hypr/launchers/setup-fake-home.sh
+
+HOME="$FAKE_HOME" exec /usr/bin/typora \
     --enable-features=UseOzonePlatform \
     --ozone-platform=wayland \
     --enable-wayland-ime \
