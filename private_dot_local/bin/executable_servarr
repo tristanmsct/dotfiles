@@ -8,23 +8,23 @@
 # Wrapper for servarr commands.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+source "$HOME/.config/shell/lib/format"
 
 script_name=$(basename "$0")
 SERVARR_HOME=$HOME/Nextcloud/07-Servarr
 
-
 show_help() {
-    echo "Usage: $script_name [up] [down] [restart] [pull] [logs] [shutdown] [-h | --help]"
-    echo "A simple wrapper for servarr commands."
-    echo
-    echo "Options:"
-    echo "  up                 Start containers."
-    echo "  down               Stop containers."
-    echo "  restart            Restart containers."
-    echo "  pull               Update containers."
-    echo "  logs               Print logs for containers."
-    echo "  shutdown           Stops containers and docker."
-    echo "  -h, --help         Display this help message."
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}$script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "$script_name - A simple wrapper for servarr commands\n\n"
+    printf "${BOLD}${COLOR_TERM_5}options:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "up" "Start containers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "down" "Stop containers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "restart" "Restart containers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "pull" "Update containers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "logs" "Print logs for containers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "shutdown" "Stop containers and docker"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
     exit 0
 }
 

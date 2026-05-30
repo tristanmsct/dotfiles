@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+#                             _
+#      __  ____ _ _ __   ___ | |_ ___  ___
+#      \ \/ / _` | '_ \ / _ \| __/ _ \/ __|
+#       >  < (_| | | | | (_) | ||  __/\__ \
+#  ____/_/\_\__, |_| |_|\___/ \__\___||___/
+# |_____|   |___/
+#
 """
 Directories Notes Manager - Track reasons for application directories in the XDG places
 
@@ -199,7 +206,6 @@ def query_notes(directory: str = None):
 
     col_width = max(len(get_full_path(path)) for path in notes.keys()) + 4
 
-    print(f"\n=== {GREEN}Directories Notes{RESET} ===")
     for directory in lst_directories:
         if directory in notes:
             display_apps = " - ".join(notes[directory].get("applications", []))
@@ -240,7 +246,6 @@ def query_application(application: str = None):
 
     col_width = max(len(get_full_path(path)) for path in notes.keys()) + 4
 
-    print(f"\n=== {GREEN}Applications Notes{RESET} ===")
     for application in lst_applications:
         if application in sorted_directories:
             lst_dirs = get_all_dir_for_app(application, notes, col_width)

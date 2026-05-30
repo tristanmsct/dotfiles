@@ -7,110 +7,52 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# TODO :
+# 1) Issue with the parsing of options. Options are parsed for the first command that needs it
+# -> watcher sysinfo notes -h
+# sysinfo parses options, so sysinfo will eat the -h
+#
+# 2) Create a completion for watcher pkglog query (with the -r repo, and such), also for watcher pkglog diff
+#
+# 3) General clean up and checks
+
+# --- Base set up -----------------------------------------------------------------------
+
 source "$HOME/.config/shell/lib/format"
 
-# Get the script name.
 script_name=$(basename "$0")
-
 WATCHER_DIR="$HOME/.local/bin/watcher.d"
 
-# Message to be displayed as help.
 show_help() {
-    echo "watcher - System monitoring toolkit"
-    echo "Usage: $script_name <command> [args]"
-    echo
-    echo "Available commands:"
-    echo -e "  all\t\t -- Run main watchers"
-    echo -e "  aur\t\t -- Check for custom AUR packages changes"
-    echo -e "  cache\t\t -- Check for caches"
-    echo -e "  chezmoi\t -- Track chezmoi-managed files"
-    echo -e "  desktop\t -- Monitor .desktop file changes"
-    echo -e "  git\t\t -- Check git repositories status"
-    echo -e "  open\t\t -- Open the system notes directory"
-    echo -e "  pacnotes\t -- Manage package notes"
-    echo -e "  pkglog\t -- Collect packages logs"
-    echo -e "  sysinfo\t -- Collect system information"
-    echo -e "  xdg\t\t -- Monitor xdg directories"
-    echo -e "  -h, --help\t -- Display this help message"
-    echo
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}$script_name${RESET}"
+    printf " <${COLOR_TERM_3}command${RESET}> [${COLOR_TERM_3}options${RESET}] [${COLOR_TERM_3}...${RESET}]\n\n"
+    printf "$script_name - System monitoring toolkit\n\n"
+    printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "all" "Run main watchers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "aur" "Check for custom AUR packages changes"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "cache" "Check for caches"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "chezmoi" "Track chezmoi-managed files"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "desktop" "Monitor .desktop file changes"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "git" "Check git repositories status"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "open" "Open the system notes directory"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "pacnotes" "Manage package notes"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "pkglog" "Collect packages logs"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "sysinfo" "Collect system information"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "updates" "Check for available updates"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "xdg" "Monitor xdg directories"
     exit 0
 }
 
-if [[ $# -eq 0 ]]; then
-    show_help
-fi
+# --- Running watcher -------------------------------------------------------------------
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -h|--help)
+        -h|--help|help)
             show_help
             ;;
         open)
             xdg-open $HOME/.local/share/watcher > /dev/null 2>&1 & disown
-            exit 0
-            ;;
-        updates)
-            output=$(checkupdates)
-            if [ -n "$output" ]; then
-                echo "$output"
-            else
-                echo -e "${GREEN}✓${RESET} No updates"
-            fi
-            exit 0
-            ;;
-        all)
-            LONGOPTS="git,no-cache,updates"
-            OPTIONS="gnu"
-
-            PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$script_name" -- "$@") || exit 2
-            eval set -- "$PARSED"
-
-            flag_git=n; flag_nocache=n; flag_updates=n;
-            while true; do
-                case "$1" in
-                    -g|--git) flag_git=y; shift ;;
-                    -n|--no-cache) flag_nocache=y; shift ;;
-                    -u|--updates) flag_updates=y; shift ;;
-                    --) shift; break ;;
-                    *) echo "Error"; exit 1 ;;
-                esac
-            done
-
-            section "Chezmoi files and directories"
-            "$WATCHER_DIR/chezmoi"
-            echo
-
-            section "XDG directories"
-            "$WATCHER_DIR/xdg"
-            echo
-
-            section ".destkop files"
-            "$WATCHER_DIR/desktop"
-            echo
-
-            if [ $flag_nocache == "n" ]; then
-                section "System and application caches"
-                "$WATCHER_DIR/cache" -s
-                echo
-            fi
-
-            if [ $flag_git == "y" ]; then
-                section "Git repositories"
-                "$WATCHER_DIR/git" --aur
-                echo
-            fi
-
-            if [ $flag_updates == "y" ]; then
-                section "Available updates"
-                output=$(checkupdates)
-                if [ -n "$output" ]; then
-                    echo "$output"
-                else
-                    echo -e "${GREEN}✓${RESET} No updates"
-                fi
-                echo
-            fi
-
             exit 0
             ;;
         *)
@@ -122,9 +64,12 @@ while [[ $# -gt 0 ]]; do
                 exec "$target" "$@"
                 exit 0
             else
-                echo "Error: $1 not found"
-                echo "Run 'watcher' to see available commands"
+        		echo "error: invalid command '$1'"
+                echo "run 'watcher --help' to see available commands"
                 exit 1
             fi
     esac
 done
+
+# If we reach here, no command or option was provided.
+show_help

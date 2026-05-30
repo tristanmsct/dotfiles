@@ -33,6 +33,8 @@ alias open-dotfiles="xdg-open $HOME/.local/share/dotfiles > /dev/null 2>&1 & dis
 alias dufl="duf --only local"  # Show disk usage
 alias dust="dust -b"
 
+alias pkgi="watcher pkglog notes query"
+
 # ---------------------------------------------------------------------------------------
 # Kitty
 # ---------------------------------------------------------------------------------------

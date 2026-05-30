@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+#                _       _                                    _       _
+# __      ____ _| |_ ___| |__   ___ _ __      _   _ _ __   __| | __ _| |_ ___  ___
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____| | | | '_ \ / _` |/ _` | __/ _ \/ __|
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| |_| | |_) | (_| | (_| | ||  __/\__ \
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \__,_| .__/ \__,_|\__,_|\__\___||___/
+#                                                  |_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# --- Base set up -----------------------------------------------------------------------
+
+source "$HOME/.config/shell/lib/format"
+
+script_name=$(basename "$0")
+
+show_help() {
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
+    printf " [${COLOR_TERM_3}options${RESET}]\n\n"
+    printf "watcher $script_name - Check for available updates\n\n"
+    printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "List available updates"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-e, --explain" "Explain selected packages"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-a, --explain-all" "Explain all updatable packages"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    exit 0
+}
+
+# --- Handling options ------------------------------------------------------------------
+
+LONGOPTS="explain,explain-all,help,sync"
+OPTIONS="eahs"
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$script_name" -- "$@") || exit 2
+eval set -- "$PARSED"
+
+explain=n; explain_all=n; sync=n
+while true; do
+    case "$1" in
+        -e|--explain) explain=y; shift ;;
+        -a|--explain-all) explain_all=y; shift ;;
+        -h|--help) show_help ;;
+        -s|--sync) sync=y; shift ;;
+        --) shift; break ;;
+        *) echo "Error"; exit 1 ;;
+    esac
+done
+
+if [ $# -ge 1 ]; then
+	echo "error: invalid option or command '$1'"
+    exit 1
+fi
+
+# --- Running main script ---------------------------------------------------------------
+
+if [ $sync == "y" ]; then
+    yay
+    exit 0
+elif [ $explain_all == "y" ]; then
+    while IFS= read -r line; do
+        pkg=$(sed 's/\x1b\[[0-9;]*m//g' <<< "$line" | awk '{print $1}')
+        versions=$(echo "$line" | awk '{print $2, $3, $4}')
+        echo "$versions"
+        watcher pkglog notes query "$pkg"
+        echo
+    done <<< "$(checkupdates)"
+elif [ $explain == "y" ]; then
+    declare -A pkg_versions
+
+    while IFS= read -r line; do
+        clean=$(sed 's/\x1b\[[0-9;]*m//g' <<< "$line")
+        pkg=$(awk '{print $1}' <<< "$clean")
+        ver=$(awk '{print $2, $3, $4}' <<< "$line")
+        pkg_versions[$pkg]="$ver"
+    done <<< "$(checkupdates)"
+
+    choice_packages=$(printf '%s\n' "${!pkg_versions[@]}" | gum filter --no-limit --header="Choose")
+
+    while IFS= read -r package; do
+        echo "${pkg_versions[$package]}"
+        watcher pkglog notes query "$package"
+        echo
+    done <<< "$choice_packages"
+else
+    output=$(checkupdates)
+    if [ -n "$output" ]; then
+        echo "$output"
+    else
+        echo -e "${GREEN}✓${RESET} No updates"
+    fi
+fi

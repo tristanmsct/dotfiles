@@ -17,17 +17,17 @@ BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
 PREVIOUS_LEVEL=$(jq -r '.battery_level' $STATE_FILE)
 
 if [ "$BATTERY_LEVEL" -gt "$PREVIOUS_LEVEL" ]; then
-    if [ $BATTERY_LEVEL = 100 ]; then
+    if [ $BATTERY_LEVEL -eq 100 ]; then
         dunstify "Battery fully charged"
     fi
 elif [ "$PREVIOUS_LEVEL" -gt "$BATTERY_LEVEL" ]; then
-    if [ $BATTERY_LEVEL = 50 ]; then
+    if [ $BATTERY_LEVEL -eq 50 ]; then
         dunstify "Battery at 50% level"
-    elif [ $BATTERY_LEVEL = 20 ]; then
+    elif [ $BATTERY_LEVEL -eq 20 ]; then
         dunstify "Battery at 20% level"
-    elif [ $BATTERY_LEVEL = 10 ]; then
+    elif [ $BATTERY_LEVEL -eq 10 ]; then
         dunstify -u critical "Battery at critical 10% level"
-    elif [ $BATTERY_LEVEL = 5 ]; then
+    elif [ $BATTERY_LEVEL -eq 5 ]; then
         dunstify -u critical "Battery at critical 5% level, shutting down soon"
     fi
 fi

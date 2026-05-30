@@ -1,14 +1,32 @@
-#compdef watcher-xdg
+#compdef watcher xdg
 
 _watcher-xdg() {
     local -a options
     options=(
         ":Check for new files and directories in xdg directories"
+        "--help:Display help message"
+        "-h:Display help message"
         "notes:Manage notes for xdg directories reasons"
         "update:Update the baseline file"
     )
 
-    _describe "watcher-xdg commands" options
+    _describe "watcher xdg commands" options
+}
+
+_watcher-xdg-notes() {
+    local -a options
+    options=(
+      "add:Add a directory and its reason"
+      "edit:Edit notes for a directory"
+      "--help:Display help message"
+      "-h:Display help message"
+      "query:Query all or a specific directory"
+      "query-application:Query all or a specific application"
+      "remove:Remove notes for a directory"
+      "search:Search for a directory or a reason by search term"
+    )
+
+    _describe "watcher xdg notes commands" options
 }
 
 _watcher-xdg "$@"

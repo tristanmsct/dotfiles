@@ -1,0 +1,19 @@
+#compdef watcher updates
+
+_watcher-updates() {
+    local -a options
+    options=(
+      "--explain:Explain selected packages"
+      "-e:Explain selected packages"
+      "--explain-all:Explain all updatable packages"
+      "-a:Explain all updatable packages"
+      "--help:Display this help message"
+      "-h:Display this help message"
+      "--sync:Run update through yay"
+      "-s:Run update through yay"
+    )
+
+    _describe "watcher updates commands" options
+}
+
+_watcher-updates "$@"

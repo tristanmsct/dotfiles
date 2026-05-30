@@ -56,3 +56,8 @@ require("conf/animations")
 -- xdg-desktop-portal-hyprland
 -- --------------------------------------------------------------------------------------
 hl.dispatch(hl.dsp.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"))
+
+-- --------------------------------------------------------------------------------------
+-- HyprMod managed settings
+-- --------------------------------------------------------------------------------------
+dofile("/home/tristan/.config/hypr/hyprland-gui.lua")

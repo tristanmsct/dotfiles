@@ -1,4 +1,4 @@
-#compdef watcher-all
+#compdef watcher all
 
 _watcher-all() {
     local -a options
@@ -6,13 +6,15 @@ _watcher-all() {
         ":Run main watchers"
         "--git:Performs a git check"
         "-g:Performs a git check"
-        "--update:Check for updates"
-        "-u:Check for updates"
+        "--help:Display help message"
+        "-h:Display help message"
         "--no-cache:Omits cache check"
         "-n:Omits cache check"
+        "--updates:Check for updates"
+        "-u:Check for updates"
     )
 
-    _describe "watcher-all options" options
+    _describe "watcher all options" options
 }
 
 _watcher-all "$@"

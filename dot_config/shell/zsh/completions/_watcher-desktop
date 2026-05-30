@@ -1,14 +1,16 @@
-#compdef watcher-desktop
+#compdef watcher desktop
 
 _watcher-desktop() {
     local -a options
     options=(
         ":Check for changes in the .desktop files."
-        "update:Update the baseline file"
+        "--help:Display this help message"
+        "-h:Display this help message"
         "resolve:Resolve differences between custom and baseline files"
+        "update:Update the baseline file"
     )
 
-    _describe "watcher-desktop commands" options
+    _describe "watcher desktop commands" options
 }
 
 _watcher-desktop "$@"

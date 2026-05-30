@@ -28,6 +28,8 @@
 # Search and replace in string using regular expression with bash.
 # https://stackoverflow.com/questions/13043344/search-and-replace-in-bash-using-regular-expressions
 
+source "$HOME/.config/shell/lib/format"
+
 # Get the script name.
 script_name=$(basename "$0")
 
@@ -35,23 +37,22 @@ PATH_NOTES="${HOME}/Nextcloud/03-Notes"
 
 
 show_help() {
-    echo "Usage: $script_name [-c | --clean] [-m | --month] [-a | --archive] [-l | --location] [-h | --help]"
-    echo "Note manager to reach notes more easily and clean them."
-    echo "Without option, opens today's notes."
-    echo
-    echo "Options:"
-    echo "  -c, --clean             Clean the day to day note directory."
-    echo "  -m, --month             Open notes for the current month."
-    echo "  -a, --archive           Archive old monthly notes."
-    echo "  -l, --location          Open note location in a file explorer."
-    echo "  -h, --help              Display this help message."
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}$script_name${RESET}"
+    printf " [${COLOR_TERM_3}options${RESET}]\n\n"
+    printf "$script_name - Simple markdown note manager\n\n"
+    printf "${BOLD}${COLOR_TERM_5}options:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Open today's notes"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-c, --clean" "Clean the day to day note directory"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-m, --month" "Open notes for the current month"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-a, --archive" "Archive old monthly notes"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-l, --location" "Open note location in a file explorer"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
     exit 0
 }
 
-
 open_location () {
     # Open the notes directory.
-    xdg-open $PATH_NOTES &
+    xdg-open $PATH_NOTES > /dev/null 2>&1 & disown
 }
 
 
@@ -65,7 +66,7 @@ open_notes_day () {
     fi
 
     # xdg-open $file
-    $HOME/.config/hypr/settings/typora.sh $file &
+    $HOME/.config/hypr/launchers/typora.sh $file > /dev/null 2>&1 & disown
 }
 
 
@@ -79,7 +80,7 @@ open_notes_month () {
     fi
 
     # xdg-open $file
-    $HOME/.config/hypr/settings/typora.sh $file &
+    $HOME/.config/hypr/launchers/typora.sh $file > /dev/null 2>&1 & disown
 }
 
 

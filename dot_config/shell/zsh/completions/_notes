@@ -2,6 +2,7 @@
 
 local -a options
 options=(
+  ":Open today's notes"
   "--clean:Clean the day to day note directory"
   "-c:Clean the day to day note directory"
   "--month:Open notes for the current month"

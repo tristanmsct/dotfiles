@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+#                _       _                                   _
+# __      ____ _| |_ ___| |__   ___ _ __       ___ __ _  ___| |__   ___
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____ / __/ _` |/ __| '_ \ / _ \
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| (_| (_| | (__| | | |  __/
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \___\__,_|\___|_| |_|\___|
+#
 """
 Created on 2026-04-12.
 
@@ -26,7 +32,7 @@ RESET = '\033[0m'
 
 def parse_args(lst_args=None):
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(prog="cache", description="Manage and monitor cache files")
+    parser = argparse.ArgumentParser(prog="cache", description="watcher cache - Manage and monitor cache files")
     parser.add_argument("-s", "--summarize", action="store_true", help="Summarize output to shown only warnings")
     parser.add_argument("-t", "--tips", action="store_true", help="Display tips on how to manage caches")
 
@@ -249,7 +255,7 @@ def display_system(bl_full: bool = False):
         if is_docker_up == 0:
             for system in lst_docker_systems:
                 name, val = system.strip("\"").split("\t")
-                val = Cache.colorize_size(convert_size(val), 500, 1000)
+                val = Cache.colorize_size(convert_size(val), 4000, 8000)
                 Cache.print_cache(name, val)
         else:
             cache_docker.print_cache_self("Docker cache")

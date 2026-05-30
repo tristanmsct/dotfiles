@@ -21,8 +21,19 @@ if [[ -t 1 ]]; then
     BOLD="\033[1m"
     DIM="\033[2m"
     RESET="\033[0m"
+
+    COLOR_TERM_1="\033[30m"
+    COLOR_TERM_2="\033[31m"
+    COLOR_TERM_3="\033[32m"
+    COLOR_TERM_4="\033[33m"
+    COLOR_TERM_5="\033[34m"
+    COLOR_TERM_6="\033[35m"
+    COLOR_TERM_7="\033[36m"
+    COLOR_TERM_8="\033[37m"
 else
     ORANGE="" BLUE="" PURPLE="" CYAN="" GREEN="" BOLD="" DIM="" RESET=""
+
+    COLOR_TERM_1="" COLOR_TERM_2="" COLOR_TERM_3="" COLOR_TERM_4="" COLOR_TERM_5="" COLOR_TERM_6="" COLOR_TERM_7="" COLOR_TERM_8=""
 fi
 
 section()  { echo -e "${BOLD}${GREEN}=== $1 ===${RESET}"; }

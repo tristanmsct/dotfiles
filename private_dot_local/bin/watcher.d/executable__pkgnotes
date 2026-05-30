@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+#              _                     _
+#        _ __ | | ____ _ _ __   ___ | |_ ___  ___
+#       | '_ \| |/ / _` | '_ \ / _ \| __/ _ \/ __|
+#       | |_) |   < (_| | | | | (_) | ||  __/\__ \
+#  _____| .__/|_|\_\__, |_| |_|\___/ \__\___||___/
+# |_____|_|        |___/
+#
 """
 Package Notes Manager - Track reasons for installed packages
 
@@ -20,14 +27,26 @@ import json
 from pathlib import Path
 import sys
 import argparse
+import re
 import os
+
 
 # ANSI color codes.
 ORANGE = "\033[38;2;255;158;23m"
 GREEN = "\033[38;2;125;235;103m"
+DIM = "\033[2m"
 RESET = "\033[0m"
 
 NOTES_FILE = Path.home() / ".local/share/watcher/pkgnotes" / "db.json"
+XDG_NOTES_FILE = Path.home() / ".local/share/watcher/xdgnotes" / "db.json"
+
+BASE_PATHS = {
+    "config": "~/.config",
+    "cache": "~/.cache",
+    "share": "~/.local/share",
+    "state": "~/.local/state",
+    "fakehome": "~/.local/state/fake_home"
+}
 
 
 def parse_args(lst_args=None):
@@ -60,6 +79,34 @@ def load_notes() -> dict:
         return {}
     with open(NOTES_FILE, 'r') as f:
         return json.load(f)
+
+
+def load_xdg_notes() -> dict:
+    """Load notes from JSON file"""
+    if not XDG_NOTES_FILE.exists():
+        return {}
+    with open(XDG_NOTES_FILE, 'r') as f:
+        return json.load(f)
+
+
+def get_full_path(str_path: str) -> str:
+    lst_path = str_path.split(":")
+    lst_path[0] = BASE_PATHS[lst_path[0]]
+
+    res = "/".join(lst_path)
+
+    return res
+
+
+def get_all_dir_for_app(application: str, notes: dict, col_width: int = 20) -> list:
+    # For an application, get all its directories and format it cleanly.
+    # ~/.config/rofi     Used for rofi config files.
+    res = [
+        f"""{get_full_path(key).ljust(col_width)}{DIM}{val.get("reason", "")}{RESET}"""
+        for key, val in notes.items() if application in val["applications"]
+    ]
+
+    return res
 
 
 def save_notes(notes: dict):
@@ -142,27 +189,74 @@ def remove_note(package):
             print(f"No note found for '{ORANGE}{package}{RESET}'")
 
 
+def get_pacman_info(package):
+    pacman_result = subprocess.run(["pacman", "-Qi", package], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if pacman_result.returncode == 0:
+        package_name = re.search(r"Name\s+: (.*)", pacman_result.stdout).groups()[0]
+        package_desc = re.search(r"Description\s+: (.*)", pacman_result.stdout).groups()[0]
+        package_reason = re.search(r"Install Reason\s+: (.*)", pacman_result.stdout).groups()[0]
+        package_reason = "dependency" if "dependency" in package_reason else "explicit"
+        package_required_by = re.search(r"Required By\s+: (.*)", pacman_result.stdout).groups()[0]
+        package_optional_for = re.search(r"Optional For\s+: (.*)", pacman_result.stdout).groups()[0]
+
+        pacman_result = f"{GREEN}{package_name.capitalize()}{RESET} - ({package_reason})\n"
+        pacman_result += f"{package_desc.capitalize()}\n"
+        if package_required_by != "None":
+            pacman_result += f"{GREEN}Required by{RESET} : {package_required_by}\n"
+        if package_optional_for != "None":
+            pacman_result += f"{GREEN}Optional for{RESET} : {package_optional_for}\n"
+    else:
+        pacman_result = ""
+
+    return pacman_result
+
+
 def query_notes(package: str = None):
     """Query notes for a specific package or all packages"""
     notes = load_notes()
+    xdg_notes = load_xdg_notes()
 
-    if not notes:
+    if not notes or not xdg_notes:
         print("No package notes found.")
         return
 
     if not package:
-        sorted_packages = sorted(notes.keys())
+        lst_packages = list(notes.keys())
+        pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True).stdout.split("\n")
+        pacman_result = sorted(list(set(pacman_result)))[1:]
+        lst_packages.extend(pacman_result)
+
+        sorted_packages = sorted(lst_packages)
+
         lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_packages]
         lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
 
         if lst_packages == [""]:
             print("Action cancelled")
             sys.exit(1)
+    else:
+        lst_packages = [package]
 
-    print(f"\n=== {GREEN}Package Notes{RESET} ===")
     for package in lst_packages:
+        pkg_info = get_pacman_info(package)
+        if pkg_info:
+            print(pkg_info)
+
+        col_width = max(len(get_full_path(path)) for path in xdg_notes.keys()) + 4
+        lst_dirs = get_all_dir_for_app(package, xdg_notes, col_width)
+
+        if lst_dirs:
+            print(f"{GREEN}Directories{RESET}")
+            for subdir in lst_dirs:
+                print(f"  {subdir}")
+            print("")
+
         if package in notes:
-            print(f"{ORANGE}{package}{RESET}:")
+            if pkg_info:
+                print(f"{GREEN}Reason{RESET}")
+            else:
+                print(f"{GREEN}{package.capitalize()}{RESET}")
+
             print(f"  {notes[package]['reason']}")
             print()
         else:

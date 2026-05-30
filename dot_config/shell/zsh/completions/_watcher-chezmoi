@@ -1,14 +1,16 @@
-#compdef watcher-chezmoi
+#compdef watcher chezmoi
 
 _watcher-chezmoi() {
     local -a options
     options=(
-        ":Check for untracked files"
+        ":Check for chezmoi managed and unamanged files"
+        "--help:Display help message"
+        "-h:Display help message"
         "sync:Run chezmoi synchronisation script"
         "update:Update the baseline file"
     )
 
-    _describe "watcher-chezmoi commands" options
+    _describe "watcher chezmoi commands" options
 }
 
 _watcher-chezmoi "$@"

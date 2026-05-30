@@ -225,7 +225,7 @@ refresh_applications () {
     fi
 
     # Clock overlay
-    if pgrep -f "isthataclock.py" > /dev/null; then
-        pkill -USR1 -f isthataclock.py
+    if pgrep -f "clock_display.py" > /dev/null; then
+        pkill -USR1 -f clock_display.py
     fi
 }

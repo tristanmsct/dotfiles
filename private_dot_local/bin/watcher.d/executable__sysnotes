@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+#                                 _
+#       ___ _   _ ___ _ __   ___ | |_ ___  ___
+#      / __| | | / __| '_ \ / _ \| __/ _ \/ __|
+#      \__ \ |_| \__ \ | | | (_) | ||  __/\__ \
+#  ____|___/\__, |___/_| |_|\___/ \__\___||___/
+# |_____|   |___/
+#
 """
 System Notes Manager - Track reasons for system custom files
 
@@ -140,7 +147,6 @@ def query_notes(file: str = None):
             print("Action cancelled")
             sys.exit(1)
 
-    print(f"\n=== {GREEN}Custom system file Notes{RESET} ===")
     for file in lst_files:
         if file in notes:
             print(f"{ORANGE}{file}{RESET}:")

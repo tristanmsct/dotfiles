@@ -1,11 +1,16 @@
 #!/usr/bin/env python
+#            _                  _   _ _
+#   ___ ___ | | ___  _ __ _   _| |_(_) |
+#  / __/ _ \| |/ _ \| '__| | | | __| | |
+# | (_| (_) | | (_) | |  | |_| | |_| | |
+#  \___\___/|_|\___/|_|___\__,_|\__|_|_|
+#                    |_____|
+#
 """
 Created on 2025-03-22.
 
 @author: Tristan Muscat
 """
-
-import colorsys
 import math
 from collections import namedtuple
 

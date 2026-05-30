@@ -8,23 +8,28 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# --- Base set up -----------------------------------------------------------------------
+
 source "$HOME/.config/shell/lib/format"
 
+script_name=$(basename "$0")
+PACKAGE_INFO_DIR="$HOME/.local/share/watcher/pkglog/"
+
 show_help() {
-    echo "Usage: $script_name [save] [query] [diff] [-h | --help]"
-    echo "Keep track of packages from different repos and installation types."
-    echo
-    echo "Options:"
-    echo "  delete                  Delete a package info file."
-    echo "  diff                    Display the difference between two states (default is last two, -c for choice)."
-    echo "  query                   Query the package list (Repo -r, Name -n, Version -v, Installation type -t)."
-    echo "  notes                   Manage notes for packages reasons."
-    echo "  save                    Save the current state, used as a pacman hook."
-    echo "  -h, --help              Display this help message."
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "watcher $script_name - Monitor packages meta data\n\n"
+    printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "delete" "Delete a package info file"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "diff" "Display the difference between two states"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "notes" "Manage notes for packages reasons"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "query" "Query the package list"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "save" "Save the current state, used as a pacman hook"
     exit 0
 }
 
-PACKAGE_INFO_DIR="$HOME/.local/share/watcher/pkglog/"
+# -- Helper functions -------------------------------------------------------------------
 
 get_file() {
     local options=""
@@ -98,32 +103,32 @@ delete_file () {
 }
 
 query_package_list () {
-    shift
-    original_file=$(get_file --header "Choose a file")
+    LONGOPTS="repo:,name:,version:,type:"
+    OPTIONS="r:n:v:t:"
 
+    PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name query" -- "$@") || exit 2
+    eval set -- "$PARSED"
+
+    target_repo=all
+    target_type=all
     QUERY=""
-    while [[ $# -gt 0 ]]; do
+    while true; do
         case "$1" in
-            -r|--repo|--repository)
-                QUERY+="\$1==\"$2\"&&"
-                shift 2
-                ;;
-            -n|--name|--package)
-                QUERY+="\$2==\"$2\"&&"
-                shift 2
-                ;;
-            -v|--version)
-                QUERY+="\$3==\"$2\"&&"
-                shift 2
-                ;;
-            -t|--type)
-                QUERY+="\$4==\"$2\"&&"
-                shift 2
-                ;;
-            *)
-                echo "$script_name: Unknown option '$1'. Use --help for usage."; exit 1 ;;
+            -r|--repo) QUERY+="\$1==\"$2\"&&"; shift 2;;
+            -n|--name) QUERY+="\$2==\"$2\"&&"; shift 2;;
+            -v|--version) QUERY+="\$3==\"$2\"&&"; shift 2;;
+            -t|--type) QUERY+="\$4==\"$2\"&&"; shift 2;;
+            --) shift; break ;;
+            *) echo "Error"; exit 1 ;;
         esac
     done
+    shift
+
+    if [ $# -ge 1 ]; then
+        echo "error: invalid command '$1'"
+        exit 1
+    fi
+    original_file=$(get_file --header "Choose a file")
 
     if [[ ! -z "$QUERY" ]]; then
         awk -F',' "${QUERY::-2}" $original_file |
@@ -134,9 +139,28 @@ query_package_list () {
 }
 
 show_diff () {
+    LONGOPTS="choice"
+    OPTIONS="c"
+
+    PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name diff" -- "$@") || exit 2
+    eval set -- "$PARSED"
+
+    choice="n"
+    while true; do
+        case "$1" in
+            -c|--choice) choice="y"; shift ;;
+            --) shift; break ;;
+            *) echo "Error"; exit 1 ;;
+        esac
+    done
     shift
 
-    if [[ $1 = "-c" ]]; then
+    if [ $# -ge 1 ]; then
+        echo "error: invalid command '$1'"
+        exit 1
+    fi
+
+    if [[ $choice = "y" ]]; then
         readarray -t paths < <(get_file --compare --header "Pick two states to compare")
 
         if [[ ${#paths[@]} -ne 2 ]]; then
@@ -182,28 +206,32 @@ show_diff () {
     done | gum table -s',' --columns="Repository,Name,Old Type,New Type" --print
 }
 
+# -- Running main script ----------------------------------------------------------------
 
-case $1 in
-    ""|"help"|"-h"|"--help")
-        show_help
-        ;;
-    save)
-        save_package_list
-        ;;
-    query)
-        query_package_list "$@"
-        ;;
-    diff)
-        show_diff "$@"
-        ;;
-    delete)
-        delete_file
-        ;;
-    notes)
-        shift
-        "$HOME/.local/bin/watcher.d/_pkgnotes" "$@"
-        ;;
-    *)
-        echo "Unkown command."
-        ;;
-esac
+if [[ $1 == "notes" ]]; then
+    shift
+    "$HOME/.local/bin/watcher.d/_pkgnotes" "$@"
+elif [[ $# -eq 0 ]]; then
+    echo "error: command expected"
+    exit 1
+else
+    case $1 in
+        -h|--help) show_help ;;
+        save)
+            save_package_list
+            ;;
+        query)
+            query_package_list "$@"
+            ;;
+        diff)
+            show_diff "$@"
+            ;;
+        delete)
+            delete_file
+            ;;
+        *)
+            echo "error: invalid option or command '$1'"
+            exit 1
+            ;;
+    esac
+fi

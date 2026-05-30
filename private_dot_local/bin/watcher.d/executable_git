@@ -10,7 +10,42 @@
 # Check all local repos for local and remote changes.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# --- Base set up -----------------------------------------------------------------------
+
 source "$HOME/.config/shell/lib/format"
+
+script_name=$(basename "$0")
+
+show_help() {
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "watcher $script_name - Check git repositories status\n\n"
+    printf "${BOLD}${COLOR_TERM_5}available commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check git repositories status"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    exit 0
+}
+
+# --- Handling options ------------------------------------------------------------------
+
+LONGOPTS="help"
+OPTIONS="h"
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name" -- "$@") || exit 2
+eval set -- "$PARSED"
+
+while true; do
+    case "$1" in
+        -h|--help) show_help ;;
+        --) shift; break ;;
+        *) echo "Error"; exit 1 ;;
+    esac
+done
+
+if [ $# -ge 1 ]; then
+	echo "error: invalid option or command '$1'"
+    exit 1
+fi
 
 # -- Gathering the lists of all repositories to check -----------------------------------
 

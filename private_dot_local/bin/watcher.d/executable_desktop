@@ -8,11 +8,45 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# --- Base set up -----------------------------------------------------------------------
+
 source "$HOME/.config/shell/lib/format"
+
+script_name=$(basename "$0")
 
 SYSTEM_DIR="/usr/share/applications"
 LOCAL_DIR="$HOME/.local/share/applications"
 NOTES_DIR="$HOME/.local/share/watcher/desktop"
+
+show_help() {
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "watcher $script_name - Monitor .desktop file changes\n\n"
+    printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check for changes in managed .desktop files"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "resolve" "Resolve differences between managed and source files"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "update" "Update the baseline file"
+    exit 0
+}
+
+# --- Handling options ------------------------------------------------------------------
+
+LONGOPTS="help"
+OPTIONS="h"
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name" -- "$@") || exit 2
+eval set -- "$PARSED"
+
+while true; do
+    case "$1" in
+        -h|--help) show_help ;;
+        --) shift; break ;;
+        *) echo "Error"; exit 1 ;;
+    esac
+done
+
+# --- Running main script ---------------------------------------------------------------
 
 # Ensure notes directory exists.
 mkdir -p "$NOTES_DIR"
@@ -20,7 +54,7 @@ mkdir -p "$NOTES_DIR"
 # Find .desktop files in both directories.
 monitor_list=$(comm -12 <(ls "$SYSTEM_DIR" 2>/dev/null | sort) <(ls "$LOCAL_DIR" 2>/dev/null | sort))
 
-if [[ -z "$1" ]]; then
+if [[ $# -eq 0 ]]; then
     # Show differences.
     has_changes=false
     while IFS= read -r app_file; do
@@ -43,36 +77,44 @@ if [[ -z "$1" ]]; then
     if ! $has_changes; then
         echo -e "${GREEN}✓${RESET} No change"
     fi
-elif [[ "$1" == "resolve" ]]; then
-    # Resolve differences.
-    has_changes=false
-    while IFS= read -r app_file; do
-        source_file="$SYSTEM_DIR/$app_file"
-        baseline_file="$NOTES_DIR/$app_file"
-        local_file="$LOCAL_DIR/$app_file"
+elif [[ $# -eq 1 ]]; then
+    if [[ "$1" == "resolve" ]]; then
+        # Resolve differences.
+        has_changes=false
+        while IFS= read -r app_file; do
+            source_file="$SYSTEM_DIR/$app_file"
+            baseline_file="$NOTES_DIR/$app_file"
+            local_file="$LOCAL_DIR/$app_file"
 
-        if ! cmp -s "$baseline_file" "$source_file"; then
-            has_changes=true
-            meld "$source_file" "$local_file"
+            if ! cmp -s "$baseline_file" "$source_file"; then
+                has_changes=true
+                meld "$source_file" "$local_file"
+            fi
+        done <<< "$monitor_list"
+
+        if ! $has_changes; then
+            echo -e "${GREEN}✓${RESET} No change"
+        else
+            if gum confirm "Update desktop baseline ?"; then
+                while IFS= read -r app_file; do
+                    cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
+                done <<< "$monitor_list"
+                echo "✓ Tracked files updated"
+            fi
         fi
-    done <<< "$monitor_list"
-
-    if ! $has_changes; then
-        echo -e "${GREEN}✓${RESET} No change"
-    else
-        if gum confirm "Update desktop baseline ?"; then
+    elif [[ "$1" == "update" ]]; then
+        # Update tracked files.
+        if gum confirm "Confirm desktop baseline update"; then
             while IFS= read -r app_file; do
                 cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
             done <<< "$monitor_list"
             echo "✓ Tracked files updated"
         fi
+    else
+		echo "error: invalid command '$1'"
+        exit 1
     fi
-elif [[ "$1" == "update" ]]; then
-    # Update tracked files.
-    if gum confirm "Confirm desktop baseline update"; then
-        while IFS= read -r app_file; do
-            cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
-        done <<< "$monitor_list"
-        echo "✓ Tracked files updated"
-    fi
+else
+	echo "error: only one operation may be used at a time"
+    exit 1
 fi

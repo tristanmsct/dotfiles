@@ -9,23 +9,22 @@
 # Wrapper for common terminal animations.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+source "$HOME/.config/shell/lib/format"
 
 script_name=$(basename "$0")
 
-
 show_help() {
-    echo "Usage: $script_name [cava] [aqua] [matrix] [bonsai] [-h | --help]"
-    echo "A simple wrapper for terminal animations."
-    echo
-    echo "Options:"
-    echo "  cava                 Starts cava audio visualiser."
-    echo "  aqua                 Starts asciiquarium."
-    echo "  matrix               Starts cmatrix with potential optionnal parameters."
-    echo "  bonsai               Starts cbonsai with potential optionnal parameters."
-    echo "  -h, --help           Display this help message."
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}$script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "$script_name - A simple wrapper for terminal animations\n\n"
+    printf "${BOLD}${COLOR_TERM_5}options:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "cava" "Starts cava audio visualiser"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "aqua" "Starts asciiquarium"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "matrix" "Starts cmatrix with optional parameters"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "bonsai" "Starts cbonsai with optional parameters"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
     exit 0
 }
-
 
 if [[ -z $1 ]]; then
     choice=$(gum choose "cava" "aqua" "matrix" "bonsai")

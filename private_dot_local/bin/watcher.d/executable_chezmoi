@@ -7,9 +7,40 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# --- Base set up -----------------------------------------------------------------------
+
 source "$HOME/.config/shell/lib/format"
 
+script_name=$(basename "$0")
 BASELINE_FILE=$HOME/.local/share/watcher/chezmoi/baseline.txt
+
+show_help() {
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "watcher $script_name - Track chezmoi-managed files\n\n"
+    printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check for chezmoi managed and unmanaged files"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "sync" "Run chezmoi synchronisation script"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "update" "Update the baseline file"
+    exit 0
+}
+
+# --- Handling options ------------------------------------------------------------------
+
+LONGOPTS="help"
+OPTIONS="h"
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name" -- "$@") || exit 2
+eval set -- "$PARSED"
+
+while true; do
+    case "$1" in
+        -h|--help) show_help ;;
+        --) shift; break ;;
+        *) echo "Error"; exit 1 ;;
+    esac
+done
 
 # -- Main syncing function --------------------------------------------------------------
 
@@ -203,7 +234,7 @@ chezmoi-sync() {
 
 # -- Checking and syncing chezmoi managed directories -----------------------------------
 
-if [[ -z $1 ]]; then
+if [[ $# -eq 0 ]]; then
 	DIFF_OUTPUT=$(diff <(cat $BASELINE_FILE) <(chezmoi unmanaged $HOME))
 
 	NOT_TRACKED=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> //')
@@ -229,10 +260,16 @@ if [[ -z $1 ]]; then
 			echo "$line"
 		done
 	fi
-else
+elif [[ $# -eq 1 ]]; then
 	if [[ $1 == "update" ]]; then
 		gum confirm "Confirm chezmoi baseline update" && chezmoi unmanaged $HOME > $BASELINE_FILE
 	elif [[ $1 == "sync" ]]; then
 		chezmoi-sync
+	else
+		echo "error: invalid option or command '$1'"
+		exit 1
 	fi
+else
+	echo "error: only one operation may be used at a time"
+	exit 1
 fi

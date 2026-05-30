@@ -1,0 +1,14 @@
+#compdef watcher git
+
+_watcher-git() {
+    local -a options
+    options=(
+        ":Check git repositories status"
+        "--help:Display help message"
+        "-h:Display help message"
+    )
+
+    _describe "watcher git options" options
+}
+
+_watcher-git "$@"

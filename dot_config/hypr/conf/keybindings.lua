@@ -64,7 +64,7 @@ hl.bind(mainMod .. " + CTRL + V", e(HYPRSCRIPTS .. "/menus/cliphist.sh"), { desc
 hl.bind(mainMod .. " + CTRL + K", e(HYPRSCRIPTS .. "/menus/keybindings.sh"), { description = "Show keybindings" })
 hl.bind(mainMod .. " + SHIFT + K", e(HYPRSCRIPTS .. "/menus/aliases.sh"), { description = "Show aliases" })
 hl.bind(mainMod .. " + CTRL + RETURN", e("pkill rofi || rofi -show drun -replace -i -disable-history"), { description = "Open application launcher" })
-hl.bind(mainMod .. " + SHIFT + RETURN", e('pkill rofi || rofi -show run -disable-history -config "' .. os.getenv("HOME") .. '/.config/rofi/config-run.rasi"'), { description = "Open command runner" })
+hl.bind(mainMod .. " + SHIFT + RETURN", e('pkill rofi || rofi -show drun -disable-history -config "' .. os.getenv("HOME") .. '/.config/rofi/config-run.rasi"'), { description = "Open command runner" })
 
 hl.bind("CTRL + Escape", e("hyprlock --grace 3"), { description = "Lock screen" })
 hl.bind(mainMod .. " + L", e("hyprlock --grace 3"), { description = "Lock screen" })
