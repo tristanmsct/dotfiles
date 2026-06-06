@@ -85,7 +85,7 @@ hl.bind(mainMod .. " + CTRL + G", e(HYPRSCRIPTS .. "/game-mode/activate.sh"), { 
 hl.bind(mainMod .. " + SHIFT + G", e("rofi -disable-history -modi games -show games -theme games"), { description = "Open game launcher" })
 hl.bind(mainMod .. " + ALT + G", e(HYPRSCRIPTS .. "/game-mode/btop-overlay.sh"), { description = "Display btop overlay" })
 
-hl.bind(mainMod .. " + H", e(HYPRSCRIPTS .. "/hyprsunset/hyprsunset.sh"), { description = "Toggle Hyprsunset" })
+hl.bind(mainMod .. " + Y", e(HYPRSCRIPTS .. "/hyprsunset/hyprsunset.sh"), { description = "Toggle Hyprsunset" })
 
 hl.bind(mainMod .. " + P", e(HYPRSCRIPTS .. "/menus/monitor-menu.sh"), { description = "Monitor configuration menu" })
 hl.bind(mainMod .. " + CTRL + F", e(HYPRSCRIPTS .. "/media/audio-helper.sh"), { description = "Fix audio device" })
@@ -121,6 +121,21 @@ hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.focus({ workspace = "m-1" }), { desc
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m+1" }), { description = "Next workspace", mouse = true })
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace", mouse = true })
 hl.bind(mainMod .. " + CTRL + down", hl.dsp.focus({ workspace = "empty" }), { description = "Next empty workspace" })
+
+-- Toggle the special workspace visibility.
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.workspace.toggle_special("minimize"))
+
+-- Move focused window into it.
+hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.move({ workspace = "special:minimize", follow = false }))
+
+-- Put a single window in a minimized state and get it back.
+hl.bind(mainMod .. " + H", function ()
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+    hl.dispatch(hl.dsp.window.move({workspace = "+0"}))
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+    hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+end)
 
 -- --------------------------------------------------------------------------------------
 -- Fn keys

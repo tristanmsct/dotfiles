@@ -105,7 +105,7 @@ apply_gtk_theme () {
     # Setting general themes.
     sed -i "s/^icon-theme=.*$/icon-theme=Tela-circle-${icons_color}/" $HOME/.local/share/nwg-look/gsettings
     sed -i "s|^gtk-theme=.*$|gtk-theme=Orchis-${theme_color}-Compact|" $HOME/.local/share/nwg-look/gsettings
-    sed -i "s|^font-name=.*$|font-name=Cantarell 11|" $HOME/.local/share/nwg-look/gsettings
+    sed -i "s|^font-name=.*$|font-name=Noto Sans 11|" $HOME/.local/share/nwg-look/gsettings
     sed -i "s|^cursor-theme=.*$|cursor-theme=Vimix-white-cursors|" $HOME/.local/share/nwg-look/gsettings
 
     GTK2_RC_FILES="$HOME"/.config/gtk-2.0/gtkrc nwg-look -a -x
