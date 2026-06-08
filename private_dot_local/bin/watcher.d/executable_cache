@@ -179,7 +179,7 @@ def convert_size(str_size: str) -> int:
 
 def display_system(bl_full: bool = False):
     # Package managers
-    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=5120, thrs_alert=10240)
+    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=10000, thrs_alert=20000)
     cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=1024, thrs_alert=2048)
 
     cmd_stale_downloads = ["sudo", "find", "/var/cache/pacman/pkg", "-maxdepth", "1", "-name", "download-*"]
@@ -211,12 +211,16 @@ def display_system(bl_full: bool = False):
         if is_docker_up == 0:
             cmd_docker_cache = ["docker", "system", "df", "--format", "\"{{.Type}}\t{{.Size}}\""]
             lst_docker_systems = subprocess.run(cmd_docker_cache, stdout=subprocess.PIPE, text=True).stdout
+
+            lst_sizes = re.findall(r"[\d]+\.?[\d]*[KMG]?B?", lst_docker_systems)
+            docker_total_size = sum([convert_size(size) for size in lst_sizes])
+
             # If there is any number other than 0 then we should display.
-            if len(re.findall(r"[1-9]", lst_docker_systems)) > 0:
+            if docker_total_size > (10000 * 1024):
                 bl_display_docker = True
             lst_docker_systems = lst_docker_systems.split("\n")[:-1]
         else:
-            cache_docker = Cache(path="/var/lib/docker", thrs_warn=5000, thrs_alert=10000, sudo=True)
+            cache_docker = Cache(path="/var/lib/docker", thrs_warn=10000, thrs_alert=15000, sudo=True)
 
             bl_display_docker = cache_docker.is_gt_thres
 
@@ -255,8 +259,11 @@ def display_system(bl_full: bool = False):
         if is_docker_up == 0:
             for system in lst_docker_systems:
                 name, val = system.strip("\"").split("\t")
-                val = Cache.colorize_size(convert_size(val), 4000, 8000)
+                val = Cache.colorize_size(convert_size(val), 5000, 8000)
                 Cache.print_cache(name, val)
+
+            val = Cache.colorize_size(docker_total_size, 5000, 10000)
+            Cache.print_cache("Total", val)
         else:
             cache_docker.print_cache_self("Docker cache")
 
@@ -265,7 +272,7 @@ def display_system(bl_full: bool = False):
 
 def display_applications(bl_full: bool = False):
     # User caches
-    cache_usercache = Cache(path=f"""{os.getenv("HOME")}/.cache""", thrs_warn=3000, thrs_alert=7000)
+    cache_usercache = Cache(path=f"""{os.getenv("HOME")}/.cache""", thrs_warn=5000, thrs_alert=10000)
 
     # Threshold for user caches to appear in a list under the total.
     threshold_usercache = 300
@@ -283,7 +290,7 @@ def display_applications(bl_full: bool = False):
 
     # Other applications
     path_home = os.getenv("HOME")
-    brave_main_cache = Cache(path=f"{path_home}/.cache/brave-cache", thrs_warn=500, thrs_alert=1500)
+    brave_main_cache = Cache(path=f"{path_home}/.cache/brave-cache", thrs_warn=2000, thrs_alert=2500)
     brave_cache = Cache(path=f"{path_home}/.local/share/brave-data/Default/Service Worker", thrs_warn=500, thrs_alert=1500)
     slack_cache = Cache(path=f"{path_home}/.local/share/slack-data/Service Worker", thrs_warn=500, thrs_alert=1500)
     codium_cache = Cache(path=f"{path_home}/.local/share/VSCodium/user-data", thrs_warn=500, thrs_alert=1500)
