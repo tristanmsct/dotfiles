@@ -1,5 +1,3 @@
-#compdef watcher pkglog
-
 _watcher-pkglog-query() {
   local -a options
   options=(
@@ -57,5 +55,3 @@ _watcher-pkglog() {
 
   _describe "watcher pkglog commands" options
 }
-
-_watcher-pkglog "$@"

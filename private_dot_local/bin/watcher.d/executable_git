@@ -16,10 +16,12 @@ source "$HOME/.config/shell/lib/format"
 
 script_name=$(basename "$0")
 
+DESC="Check git repositories status"
+
 show_help() {
     printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
     printf " [${COLOR_TERM_3}command${RESET}]\n\n"
-    printf "watcher $script_name - Check git repositories status\n\n"
+    printf "watcher $script_name - $DESC\n\n"
     printf "${BOLD}${COLOR_TERM_5}available commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check git repositories status"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"

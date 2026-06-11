@@ -1,5 +1,3 @@
-#compdef watcher xdg
-
 _watcher-xdg() {
     local -a options
     options=(
@@ -28,5 +26,3 @@ _watcher-xdg-notes() {
 
     _describe "watcher xdg notes commands" options
 }
-
-_watcher-xdg "$@"

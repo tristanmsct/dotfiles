@@ -1,5 +1,3 @@
-#compdef watcher all
-
 _watcher-all() {
     local -a options
     options=(
@@ -16,5 +14,3 @@ _watcher-all() {
 
     _describe "watcher all options" options
 }
-
-_watcher-all "$@"

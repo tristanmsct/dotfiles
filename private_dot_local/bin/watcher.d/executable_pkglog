@@ -15,10 +15,12 @@ source "$HOME/.config/shell/lib/format"
 script_name=$(basename "$0")
 PACKAGE_INFO_DIR="$HOME/.local/share/watcher/pkglog/"
 
+DESC="Monitor packages meta data"
+
 show_help() {
     printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
     printf " [${COLOR_TERM_3}command${RESET}]\n\n"
-    printf "watcher $script_name - Monitor packages meta data\n\n"
+    printf "watcher $script_name - $DESC\n\n"
     printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "delete" "Delete a package info file"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "diff" "Display the difference between two states"

@@ -1,5 +1,3 @@
-#compdef watcher updates
-
 _watcher-updates() {
     local -a options
     options=(
@@ -15,5 +13,3 @@ _watcher-updates() {
 
     _describe "watcher updates commands" options
 }
-
-_watcher-updates "$@"

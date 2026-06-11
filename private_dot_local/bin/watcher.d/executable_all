@@ -14,10 +14,12 @@ source "$HOME/.config/shell/lib/format"
 script_name=$(basename "$0")
 WATCHER_DIR="$HOME/.local/bin/watcher.d"
 
+DESC="Run main watchers"
+
 show_help() {
     printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
     printf " [${COLOR_TERM_3}options${RESET}]\n\n"
-    printf "watcher $script_name - Run main watchers\n\n"
+    printf "watcher $script_name - $DESC\n\n"
     printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Run main watchers"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-g, --git" "Performs a git check"

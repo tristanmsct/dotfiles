@@ -20,8 +20,8 @@ show_help() {
     printf "${BOLD}${COLOR_TERM_5}options:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "cava" "Starts cava audio visualiser"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "aqua" "Starts asciiquarium"
-    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "matrix" "Starts cmatrix with optional parameters"
-    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "bonsai" "Starts cbonsai with optional parameters"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "matrix" "Starts cmatrix"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "bonsai" "Starts cbonsai"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
     exit 0
 }
@@ -35,13 +35,13 @@ fi
 
 case $choice in
     cava)
-        cava
+        cava ${@:2}
         ;;
     aqua)
-        asciiquarium
+        asciiquarium -t ${@:2}
         ;;
     matrix)
-        cmatrix -s ${@:2}
+        neo-matrix -D --charset=ascii ${@:2}
         ;;
     bonsai)
         cbonsai -li ${@:2}

@@ -1,5 +1,3 @@
-#compdef watcher git
-
 _watcher-git() {
     local -a options
     options=(
@@ -10,5 +8,3 @@ _watcher-git() {
 
     _describe "watcher git options" options
 }
-
-_watcher-git "$@"

@@ -29,10 +29,12 @@ BOLD = '\033[1m'
 DIM = '\033[2m'
 RESET = '\033[0m'
 
+DESC = "Manage and monitor cache files"
+
 
 def parse_args(lst_args=None):
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(prog="cache", description="watcher cache - Manage and monitor cache files")
+    parser = argparse.ArgumentParser(prog="cache", description=f"watcher cache - {DESC}")
     parser.add_argument("-s", "--summarize", action="store_true", help="Summarize output to shown only warnings")
     parser.add_argument("-t", "--tips", action="store_true", help="Display tips on how to manage caches")
 
@@ -179,7 +181,7 @@ def convert_size(str_size: str) -> int:
 
 def display_system(bl_full: bool = False):
     # Package managers
-    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=10000, thrs_alert=20000)
+    cache_pacman = Cache(path="/var/cache/pacman/pkg", thrs_warn=10000, thrs_alert=20000, sudo=True)
     cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=1024, thrs_alert=2048)
 
     cmd_stale_downloads = ["sudo", "find", "/var/cache/pacman/pkg", "-maxdepth", "1", "-name", "download-*"]
@@ -188,7 +190,7 @@ def display_system(bl_full: bool = False):
 
     lst_orphans = subprocess.run(["pacman", "-Qdtq"], stdout=subprocess.PIPE, text=True)
     if lst_orphans.returncode == 0:
-        nb_orphans = len(lst_orphans.stdout.split("\n"))
+        nb_orphans = len(lst_orphans.stdout.split("\n")) - 1
     else:
         nb_orphans = 0
 
@@ -235,7 +237,7 @@ def display_system(bl_full: bool = False):
         cache_pacman.print_cache_self("pacman pkg cache")
         if bl_stale_downloads:
             print_message(
-                f"{len(lst_stale_downloads)} stale download-* dir(s) in {cache_pacman.path}" +
+                f"{len(lst_stale_downloads) - 1} stale download-* dir(s) in {cache_pacman.path}" +
                 f"  → sudo rm -rf {cache_pacman.path}/download-*", msg_type="warn"
             )
 
@@ -360,7 +362,7 @@ def display_devtools(bl_full: bool = False):
     cache_rust = Cache(path=f"""{os.getenv("CARGO_HOME")}""", thrs_warn=500, thrs_alert=1500)
 
     # NPM
-    cache_npm = Cache(path=f"{path_home}/.cache/nom", thrs_warn=500, thrs_alert=1500)
+    cache_npm = Cache(path=f"{path_home}/.cache/npm", thrs_warn=500, thrs_alert=1500)
 
     # Pre-commit
     cache_precommit = Cache(path=f"{path_home}/.cache/pre-commit", thrs_warn=500, thrs_alert=1500)

@@ -1,5 +1,3 @@
-#compdef watcher-sysinfo
-
 _watcher-sysinfo-notes() {
     local -a options
     options=(
@@ -28,5 +26,3 @@ _watcher-sysinfo() {
 
     _describe "watcher-sysinfo commands" options
 }
-
-_watcher-sysinfo "$@"

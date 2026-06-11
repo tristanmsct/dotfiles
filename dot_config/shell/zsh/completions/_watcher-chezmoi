@@ -1,5 +1,3 @@
-#compdef watcher chezmoi
-
 _watcher-chezmoi() {
     local -a options
     options=(
@@ -12,5 +10,3 @@ _watcher-chezmoi() {
 
     _describe "watcher chezmoi commands" options
 }
-
-_watcher-chezmoi "$@"

@@ -1,5 +1,3 @@
-#compdef watcher desktop
-
 _watcher-desktop() {
     local -a options
     options=(
@@ -12,5 +10,3 @@ _watcher-desktop() {
 
     _describe "watcher desktop commands" options
 }
-
-_watcher-desktop "$@"

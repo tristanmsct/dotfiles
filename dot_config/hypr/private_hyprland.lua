@@ -16,7 +16,7 @@ hl.exec_cmd("hyprpm reload -n")
 require("conf/monitor")
 
 -- For IIO
--- hl.dispatch(hl.dsp.exec_cmd("iio-hyprland"))
+hl.dispatch(hl.dsp.exec_cmd("iio-hyprland"))
 
 -- --------------------------------------------------------------------------------------
 -- Cursor

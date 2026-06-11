@@ -1,5 +1,3 @@
-#compdef watcher cache
-
 _watcher-cache() {
     local -a options
     options=(
@@ -14,5 +12,3 @@ _watcher-cache() {
 
     _describe "watcher cache options" options
 }
-
-_watcher-cache "$@"

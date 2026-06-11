@@ -14,10 +14,12 @@ source "$HOME/.config/shell/lib/format"
 
 script_name=$(basename "$0")
 
+DESC="Check for available updates"
+
 show_help() {
     printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
     printf " [${COLOR_TERM_3}options${RESET}]\n\n"
-    printf "watcher $script_name - Check for available updates\n\n"
+    printf "watcher $script_name - $DESC\n\n"
     printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "List available updates"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-e, --explain" "Explain selected packages"
@@ -76,11 +78,13 @@ elif [ $explain == "y" ]; then
 
     choice_packages=$(printf '%s\n' "${!pkg_versions[@]}" | gum filter --no-limit --header="Choose")
 
-    while IFS= read -r package; do
-        echo "${pkg_versions[$package]}"
-        watcher pkglog notes query "$package"
-        echo
-    done <<< "$choice_packages"
+    if [ "$choice_packages" != "" ]; then
+        while IFS= read -r package; do
+            echo "${pkg_versions[$package]}"
+            watcher pkglog notes query "$package"
+            echo
+        done <<< "$choice_packages"
+    fi
 else
     output=$(checkupdates)
     if [ -n "$output" ]; then

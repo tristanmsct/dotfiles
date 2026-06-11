@@ -18,10 +18,12 @@ SYSTEM_DIR="/usr/share/applications"
 LOCAL_DIR="$HOME/.local/share/applications"
 NOTES_DIR="$HOME/.local/share/watcher/desktop"
 
+DESC="Monitor .desktop file changes"
+
 show_help() {
     printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
     printf " [${COLOR_TERM_3}command${RESET}]\n\n"
-    printf "watcher $script_name - Monitor .desktop file changes\n\n"
+    printf "watcher $script_name - $DESC\n\n"
     printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check for changes in managed .desktop files"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
