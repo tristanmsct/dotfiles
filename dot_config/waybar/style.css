@@ -146,6 +146,7 @@ tooltip label {
     padding: 2px 13px;
 
     margin-left: 5px;
+    margin-right: 1px;
 }
 
 /* ALL workspace buttons (Focused + Unfocused) */
@@ -192,6 +193,8 @@ tooltip label {
     background: @background-theme;
     border-radius: 25px 15px;
     border: 2px solid @border-color;
+
+    margin-left: 1px;
 }
 
 #taskbar button {
@@ -258,6 +261,8 @@ tooltip label {
     background: @background-theme;
     border-radius: 15px 25px;
     border: 2px solid @border-color;
+
+    margin-right: 1px;
 }
 
 #idle_inhibitor:hover, #idle_inhibitor.activated:hover, #custom-theme_switch:hover, #custom-cliphist:hover, #custom-hyprsunset:hover,
@@ -316,6 +321,8 @@ tooltip label {
     background: @background-theme;
     border-radius: 15px 25px;
     border: 2px solid @border-color;
+
+    margin-left: 1px;
     margin-right: 5px;
 }
 
