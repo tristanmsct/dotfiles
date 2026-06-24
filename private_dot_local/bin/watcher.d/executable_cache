@@ -284,7 +284,7 @@ def display_applications(bl_full: bool = False):
     cmd_get_all_usercaches = ["find", f"""{os.getenv("HOME")}/.cache""", "-mindepth", "1", "-maxdepth", "1", "-type", "d"]
     lst_all_usercaches = subprocess.run(cmd_get_all_usercaches, stdout=subprocess.PIPE, text=True).stdout.split("\n")[:-1]
     for usercache in lst_all_usercaches:
-        tmp_usercache = Cache(path=usercache, thrs_warn=1000, thrs_alert=2000)
+        tmp_usercache = Cache(path=usercache, thrs_warn=300, thrs_alert=1000)
         if tmp_usercache.size > threshold_usercache * 1024 and not usercache.split("/")[-1] in other_caches:
             lst_usercaches.append(tmp_usercache)
 

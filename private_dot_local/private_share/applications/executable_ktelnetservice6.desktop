@@ -8,6 +8,7 @@ NoDisplay=true
 Hidden=true
 
 Name=KTelnetService
+Name[am]=KTelnetService
 Name[ar]=KTelnetService
 Name[ast]=KTelnetService
 Name[az]=KTelnetService
