@@ -20,6 +20,7 @@ local e = hl.dsp.exec_cmd
 -- Importing lua functions
 -- --------------------------------------------------------------------------------------
 local toggle_allfloat = dofile(HYPRSCRIPTS .. "/workspaces/all-float.lua")
+local toggle_float_window = dofile(HYPRSCRIPTS .. "/workspaces/float-window.lua")
 local move_to_empty = dofile(HYPRSCRIPTS .. "/workspaces/move-to-empty.lua")
 local move_to_end = dofile(HYPRSCRIPTS .. "/workspaces/move-to-end.lua")
 
@@ -44,8 +45,8 @@ hl.bind(mainMod .. " + G", e(HYPRLAUNCHERS .. "/steam.sh"), { description = "Ope
 -- --------------------------------------------------------------------------------------
 hl.bind(mainMod .. " + Q", hl.dsp.window.close(), { description = "Kill active window" })
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen(), { description = "Fullscreen active window" })
-hl.bind(mainMod .. " + T", hl.dsp.window.float({ action = "toggle" }), { description = "Toggle floating" })
-hl.bind(mainMod .. " + SHIFT + T", toggle_allfloat)
+hl.bind(mainMod .. " + T", toggle_float_window, { description = "Toggle floating" })
+hl.bind(mainMod .. " + SHIFT + T", toggle_allfloat, { description = "Float all window in a workspace"})
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "l" }), { description = "Move focus left" })
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "r" }), { description = "Move focus right" })
 hl.bind(mainMod .. " + up", hl.dsp.focus({ direction = "u" }), { description = "Move focus up" })
