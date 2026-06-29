@@ -46,42 +46,36 @@
     {
       "type": "os",
       "key": "├─",
-      "format": "{3} ({12})",
-      "keyColor": "31"
-    },
-    {
-      "type": "host",
-      "key": "├─󰟀",
-      "format": "{1}",
-      "keyColor": "31"
-    },
-    {
-      "type": "locale",
-      "key": "├─󰇧",
+      "format": "{pretty-name}",
       "keyColor": "31"
     },
     {
       "type": "kernel",
       "key": "├─󰒔",
-      "format": "{1} {2}",
+      "format": "{sysname} {release}",
       "keyColor": "31"
     },
     {
       "type": "shell",
       "key": "├─$",
-      "format": "{1} {4}",
       "keyColor": "31"
     },
-    // {
-    //   "type": "packages",
-    //   "key": "├─",
-    //   "keyColor": "31"
-    // },
     {
       "type": "command",
       "key": "├─",
       "keyColor": "31",
       "text": "TOTAL=$(pacman -Q | wc -l); EXPLICIT=$(pacman -Qe | wc -l); AUR=$(pacman -Qm | wc -l); DEPS=$((TOTAL-EXPLICIT-AUR)); echo \"$TOTAL (explicit: $EXPLICIT, AUR: $AUR, deps: $DEPS)\""
+    },
+    {
+        "type": "localip",
+        "key": "├─󰩟",
+        "format": "{ipv4} ({ifname})",
+        "keyColor": "31"
+    },
+    {
+      "type": "locale",
+      "key": "├─󰇧",
+      "keyColor": "31"
     },
     {
       "type": "uptime",
@@ -94,31 +88,21 @@
         "format": "Hardware"
     },
     {
+      "type": "host",
+      "key": "├─󰟀",
+      "format": "{family}",
+      "keyColor": "32"
+    },
+    {
       "type": "cpu",
       "key": "├─󰻠",
       "keyColor": "32",
       "freqNdigits": 1
     },
-    // {
-    //   "type": "board",
-    //   "key": "├─󱤓",
-    //   "keyColor": "32"
-    // },
     {
       "type": "gpu",
       "key": "├─󰢮",
-      "format": "{1} {2} ({3})",
-      "keyColor": "32"
-    },
-    {
-      "type": "sound",
-      "key": "├─󰓃",
-      "format": "{2}",
-      "keyColor": "32"
-    },
-    {
-      "type": "battery",
-      "key": "├─󰁹",
+      "format": "{vendor} {name} ({driver})",
       "keyColor": "32"
     },
     {
@@ -133,7 +117,23 @@
     },
     {
       "type": "disk",
-      "key": "╰─󰋊",
+      "key": "├─󰋊",
+      "keyColor": "32"
+    },
+    {
+      "type": "sound",
+      "key": "├─󰓃",
+      "format": "{platform-api} - {name}",
+      "keyColor": "32"
+    },
+    {
+      "type": "display",
+      "key": "├─󰹑",
+      "keyColor": "32"
+    },
+    {
+      "type": "battery",
+      "key": "╰─󱊣",
       "keyColor": "32"
     },
     "break",
@@ -142,20 +142,14 @@
         "format": "Environment"
     },
     {
-      "type": "display",
-      "key": "├─󰹑",
-      "keyColor": "33",
-      "compactType": "original"
-    },
-    {
-      "type": "de",
-      "key": "├─󰧨",
-      "keyColor": "33"
-    },
-    {
       "type": "wm",
       "key": "├─",
       "keyColor": "33"
+    },
+    {
+        "type": "lm",
+        "key": "├─󰧨",
+        "keyColor": "33"
     },
     {
       "type": "theme",
@@ -175,13 +169,12 @@
     {
       "type": "font",
       "key": "├─",
-      "format": "{2}",
+      "format": "{font1}",
       "keyColor": "33"
     },
     {
       "type": "terminal",
       "key": "╰─",
-      "format": "{3}",
       "keyColor": "33"
     },
     "break",
