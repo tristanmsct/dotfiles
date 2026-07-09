@@ -59,6 +59,9 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 export GOPATH="$XDG_DATA_HOME/go"
 export GOTELEMETRYDIR="$XDG_CACHE_HOME/go-telemetry"
 
+# Kube
+export MINIKUBE_HOME="$XDG_DATA_HOME/minikube"
+
 # Rust
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"

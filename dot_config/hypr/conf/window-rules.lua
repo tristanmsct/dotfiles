@@ -86,6 +86,15 @@ hl.window_rule({
     move  = "(monitor_w/2)-window_w/2 monitor_h*0.15",
 })
 
+-- Gnome Weather
+hl.window_rule({
+    name  = "gnome-weather",
+    match = { class = "org.gnome.Weather" },
+    float = true,
+    size  = "monitor_w*0.55 monitor_h*0.65",
+    move  = "(monitor_w/4)-window_w/2 monitor_h*0.15",
+})
+
 -- Smile emoji picker
 hl.window_rule({
     name  = "smile",
@@ -137,6 +146,15 @@ hl.window_rule({
     match = { class = "^(nmtui)$" },
     float  = true,
     size   = "1000 700",
+    center = true,
+})
+
+-- Localsend
+hl.window_rule({
+    name  = "localsend",
+    match = { title = "LocalSend" },
+    float  = true,
+    size   = "700 800",
     center = true,
 })
 

@@ -2,13 +2,16 @@
 
 _jaccuse() {
     local -a options
+
     options=(
-      "--reverse:Show reverse dependencies"
-      "-r:Show reverse dependencies"
+      "-c:Get a dependency chain"
+      "--chain:Get a dependency chain"
       "--deep:Deep search"
       "-d:Deep search"
       "--quiet:Quiet mode"
       "-q:Quiet mode"
+      "--reverse:Show reverse dependencies"
+      "-r:Show reverse dependencies"
       "--help:Display help message"
       "-h:Display help message"
     )

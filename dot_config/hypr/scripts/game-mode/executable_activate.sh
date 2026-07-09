@@ -36,7 +36,7 @@ if $FOCUSMODE_ENABLED; then
 else
     # If focus mode is off, then start it.
     hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
-    hyprctl eval "hl.config({decoration = {blur = {enabled = false}}})"
+    # hyprctl eval "hl.config({decoration = {blur = {enabled = false}}})"
     hyprctl eval "hl.config({decoration = {inactive_opacity = 1}})"
     hyprctl eval "hl.config({decoration = {rounding = 1}})"
     hyprctl eval "hl.config({general = {gaps_in = 0}})"

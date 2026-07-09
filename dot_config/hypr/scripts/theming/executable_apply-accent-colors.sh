@@ -78,7 +78,7 @@ apply_accent_colors () {
 
     # Dunst
     export COLOR_FRAME=$ACCENT_COLOR
-    envsubst < "$HOME/.config/dunst/dunstrc.template" > "$HOME/.config/dunst/dunstrc"
+    envsubst < "$HOME/.config/dunst/dunstrc.envsubst" > "$HOME/.config/dunst/dunstrc"
 
     # Cava
     colors=($(sed -n '1,7p' "$HOME/.local/state/desktop/colors"))
@@ -91,8 +91,8 @@ apply_accent_colors () {
     export COLOR7="${colors[6]}"
     export COLOR="${ACCENT_COLOR}"
 
-    envsubst < "$HOME/.config/cava/templates/config.template" > "$HOME/.config/cava/config"
-    envsubst < "$HOME/.config/cava/templates/config_mini.template" > "$HOME/.config/cava/config_mini"
+    envsubst < "$HOME/.config/cava/templates/config.envsubst" > "$HOME/.config/cava/config"
+    envsubst < "$HOME/.config/cava/templates/config_mini.envsubst" > "$HOME/.config/cava/config_mini"
 }
 
 apply_gtk_theme () {
@@ -198,7 +198,7 @@ apply_sddm_theme () {
     export CURRENTWALLPAPER="current_wallpaper.$extension"
     export ACCENTCOLOR="$ACCENT_COLOR"
     envsubst '${CURRENTWALLPAPER} ${ACCENTCOLOR}' \
-    < "$HOME/.config/sddm-themes/theme-eucalyptus-drop.template" \
+    < "$HOME/.config/sddm-themes/theme-eucalyptus-drop.envsubst" \
     | sudo tee /usr/share/sddm/themes/$sddm_theme_name/theme.conf > /dev/null
 }
 

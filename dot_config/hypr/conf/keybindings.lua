@@ -39,6 +39,7 @@ hl.bind(mainMod .. " + S", e("subl"), { description = "Open Sublime Text" })
 hl.bind(mainMod .. " + X", e(HYPRLAUNCHERS .. "/codium.sh"), { description = "Open VSCodium" })
 hl.bind(mainMod .. " + CTRL + E", e(HYPRSCRIPTS .. "/menus/emoji-picker.sh"), { description = "Open emoji picker" })
 hl.bind(mainMod .. " + G", e(HYPRLAUNCHERS .. "/steam.sh"), { description = "Open Steam" })
+hl.bind(mainMod .. " + M", e("gapplication launch org.gnome.Weather"))
 
 -- --------------------------------------------------------------------------------------
 -- Windows
@@ -103,9 +104,9 @@ hl.bind(mainMod .. " + SHIFT + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini"
 hl.bind(mainMod .. " + CTRL + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini title"), { description = "Toggle Cava mini overlay with title" })
 hl.bind(mainMod .. " + I", e(HYPRSCRIPTS .. "/game-mode/clock-overlay.sh"), { description = "Toggle clock overlay" })
 
-hl.bind(mainMod .. " + M", e("kitty --app-id btop -e btop"), { description = "Open btop" })
-hl.bind(mainMod .. " + CTRL + M", e("missioncenter"), { description = "Open Mission Center" })
-hl.bind(mainMod .. " + SHIFT + M", e("kitty --session " .. os.getenv("HOME") .. "/.config/kitty/sessions/dev-layout.conf"), { description = "Open kitty dev layout" })
+hl.bind(mainMod .. " + comma", e("kitty --app-id btop -e btop"), { description = "Open btop" })
+hl.bind(mainMod .. " + CTRL + comma", e("missioncenter"), { description = "Open Mission Center" })
+hl.bind(mainMod .. " + SHIFT + comma", e("kitty --session " .. os.getenv("HOME") .. "/.config/kitty/sessions/dev-layout.conf"), { description = "Open kitty dev layout" })
 hl.bind(mainMod .. " + A", e("kitty --session " .. os.getenv("HOME") .. "/.config/kitty/sessions/animation-layout.conf"), { description = "Open kitty animation layout" })
 
 hl.bind(mainMod .. " + SHIFT + D", e("dunstctl history-pop"), { description = "Replay last notification" })
@@ -153,5 +154,5 @@ hl.bind("XF86AudioRaiseVolume", e("pactl set-sink-volume @DEFAULT_SINK@ +5%"), {
 -- --------------------------------------------------------------------------------------
 -- Other
 -- --------------------------------------------------------------------------------------
--- hl.bind(mainMod .. " + O", e(SCRIPTS .. "/openall.sh"))
+-- hl.bind(mainMod .. " + O", e("gapplication launch org.gnome.Weather"))
 -- hl.bind(mainMod .. " + O", e(HYPRSCRIPTS .. "/game-mode/btop-overlay.sh"))
