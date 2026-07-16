@@ -149,6 +149,15 @@ hl.window_rule({
     center = true,
 })
 
+-- Network password utility
+hl.window_rule({
+    name  = "networkpwd",
+    match = { class = "^(networkpwd)$" },
+    float  = true,
+    size   = "600 600",
+    center = true,
+})
+
 -- Localsend
 hl.window_rule({
     name  = "localsend",
