@@ -147,6 +147,9 @@ def query_notes(file: str = None):
             print("Action cancelled")
             sys.exit(1)
 
+    else:
+        lst_files = [file]
+
     for file in lst_files:
         if file in notes:
             print(f"{ORANGE}{file}{RESET}:")

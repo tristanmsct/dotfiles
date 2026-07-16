@@ -1,14 +1,232 @@
 #compdef watcher
+# Only one file, otherwise side loading them can go wrong
+# Main issue is when opening a new terminal if writting a whole command instead of using auto-complete then the
+# auto-complete scripts might not be loaded at all.
 
-_watcher_load_helpers() {
-    local f
-    for f in ${^fpath}/_watcher-*(N); do
-        autoload -Uz ${f:t}
-    done
+_watcher-all() {
+    local -a options
+    options=(
+        ":Run main watchers"
+        "--git:Performs a git check"
+        "-g:Performs a git check"
+        "--help:Display help message"
+        "-h:Display help message"
+        "--no-cache:Omits cache check"
+        "-n:Omits cache check"
+        "--updates:Check for updates"
+        "-u:Check for updates"
+    )
+
+    _describe "watcher all options" options
 }
-_watcher_load_helpers
-unfunction _watcher_load_helpers
 
+_watcher-cache() {
+    local -a options
+    options=(
+        ":Check for caches accros the computer"
+        "--help:Display help message"
+        "-h:Display help message"
+        "--summarize:Summarize output to shown only warnings"
+        "-s:Summarize output to shown only warnings"
+        "--tips:Gives tips on how to handle each cache"
+        "-t:Gives tips on how to handle each cache"
+    )
+
+    _describe "watcher cache options" options
+}
+
+_watcher-chezmoi() {
+    local -a options
+    options=(
+        ":Check for chezmoi managed and unamanged files"
+        "--help:Display help message"
+        "-h:Display help message"
+        "sync:Run chezmoi synchronisation script"
+        "update:Update the baseline file"
+    )
+
+    _describe "watcher chezmoi commands" options
+}
+
+_watcher-desktop() {
+    local -a options
+    options=(
+        ":Check for changes in the .desktop files."
+        "--help:Display this help message"
+        "-h:Display this help message"
+        "resolve:Resolve differences between custom and baseline files"
+        "update:Update the baseline file"
+    )
+
+    _describe "watcher desktop commands" options
+}
+
+_watcher-git() {
+    local -a options
+    options=(
+        ":Check git repositories status"
+        "--help:Display help message"
+        "-h:Display help message"
+    )
+
+    _describe "watcher git options" options
+}
+
+_watcher-pkglog() {
+  local -a options
+  options=(
+    "delete:Delete a package info file"
+    "diff:Display the difference between two states"
+    "--help:Display help message"
+    "-h:Display help message"
+    "notes:Manage notes for packages reasons"
+    "query:Query the package list"
+    "save:Save the current state, used as a pacman hook"
+  )
+
+  _describe "watcher pkglog commands" options
+}
+
+_watcher-pkglog-diff() {
+  local -a options
+  options=(
+      ":Difference between last two backups"
+      "--choice:Choose two dates to compare"
+      "-c:Choose two dates to compare"
+  )
+
+  _describe "watcher pkglog diff commands" options
+}
+
+_watcher-pkglog-query() {
+  local -a options
+  options=(
+      ":Query full data base"
+      "--repo:Filter by repo"
+      "-r:Filter by repo"
+      "--name:Filter by name"
+      "-n:Filter by name"
+      "--version:Filter by version"
+      "-v:Filter by version"
+      "--type:Filter by installation type"
+      "-t:Filter by installation type"
+  )
+
+  _describe "watcher pkglog query commands" options
+}
+
+_watcher-pkglog-notes() {
+    local -a options
+    options=(
+      "add:Add a package and its reason"
+      "edit:Edit notes for a package"
+      "--help:Display help message"
+      "-h:Display help message"
+      "query:Query all or a specific package"
+      "remove:Remove notes for a package"
+      "search:Search for a package or a reason by search term"
+    )
+
+    _describe "watcher pkglog notes commands" options
+}
+
+_watcher-pkglog-notes-query() {
+  local -a pkgs
+  pkgs=(${(f)"$(pacman -Qq)"})
+  _describe 'pkgs' pkgs
+}
+
+_watcher-sysinfo() {
+    local -a options
+    options=(
+        ":Collect system information"
+        "--help:Display help message"
+        "-h:Display help message"
+        "--no-confirm:Does not ask before saving system info"
+        "-n:Does not ask before saving system info"
+        "notes:Manage notes for system custom file reasons"
+    )
+
+    _describe "watcher-sysinfo commands" options
+}
+
+_watcher-sysinfo-notes() {
+    local -a options
+    options=(
+      "add:Add a custom system file and its reason"
+      "--help:Display help message"
+      "-h:Display help message"
+      "edit:Edit notes for a custom system file"
+      "query:Query all or a specific custom sytem file"
+      "remove:Remove notes for a custom system file"
+      "search:Search for a custom system file or a reason by search term"
+    )
+
+    _describe "watcher sysinfo notes commands" options
+}
+
+_watcher-sysinfo-notes-query() {
+  local -a pkgs
+  pkgs=(${(f)"$(jq -r 'keys[]' /home/tristan/.local/share/watcher/sysnotes/db.json)"})
+  _describe 'pkgs' pkgs
+}
+
+_watcher-updates() {
+    local -a options
+    options=(
+      "--explain:Explain selected packages"
+      "-e:Explain selected packages"
+      "--explain-all:Explain all updatable packages"
+      "-a:Explain all updatable packages"
+      "--help:Display this help message"
+      "-h:Display this help message"
+      "--sync:Run update through yay"
+      "-s:Run update through yay"
+    )
+
+    _describe "watcher updates commands" options
+}
+
+_watcher-xdg() {
+    local -a options
+    options=(
+        ":Check for new files and directories in xdg directories"
+        "--help:Display help message"
+        "-h:Display help message"
+        "notes:Manage notes for xdg directories reasons"
+        "update:Update the baseline file"
+    )
+
+    _describe "watcher xdg commands" options
+}
+
+_watcher-xdg-notes() {
+    local -a options
+    options=(
+      "add:Add a directory and its reason"
+      "edit:Edit notes for a directory"
+      "--help:Display help message"
+      "-h:Display help message"
+      "query:Query all or a specific directory"
+      "query-application:Query all or a specific application"
+      "remove:Remove notes for a directory"
+      "search:Search for a directory or a reason by search term"
+    )
+
+    _describe "watcher xdg notes commands" options
+}
+
+_watcher-xdg-notes-query() {
+  local -a pkgs
+  pkgs=(${(f)"$(jq -r 'keys[]' /home/tristan/.local/share/watcher/xdgnotes/db.json | sed -e 's|:|/|g')"})
+  _describe 'pkgs' pkgs
+}
+
+_watcher-xdg-notes-query-application() {
+  local -a pkgs
+  pkgs=(${(f)"$(jq -r '.[].applications[]' /home/tristan/.local/share/watcher/xdgnotes/db.json)"})
+  _describe 'pkgs' pkgs
+}
 
 _watcher() {
     local -a commands
@@ -33,15 +251,15 @@ _watcher() {
         3)
             # Second argument: subcommands based on first arg.
             case ${words[2]} in
-                all) _watcher-all ;;
-                cache) _watcher-cache ;;
-                chezmoi) _watcher-chezmoi ;;
-                desktop) _watcher-desktop ;;
-                git) _watcher-git ;;
-                pkglog) _watcher-pkglog ;;
-                sysinfo) _watcher-sysinfo ;;
-                updates) _watcher-updates ;;
-                xdg) _watcher-xdg ;;
+                all)        _watcher-all ;;
+                cache)      _watcher-cache ;;
+                chezmoi)    _watcher-chezmoi ;;
+                desktop)    _watcher-desktop ;;
+                git)        _watcher-git ;;
+                pkglog)     _watcher-pkglog ;;
+                sysinfo)    _watcher-sysinfo ;;
+                updates)    _watcher-updates ;;
+                xdg)        _watcher-xdg ;;
                 open) ;; # no subcommands
             esac
             ;;
@@ -53,6 +271,16 @@ _watcher() {
                 sysinfo/notes)  _watcher-sysinfo-notes ;;
                 pkglog/query)   _watcher-pkglog-query ;;
                 all/*)          _watcher-all ;;
+            esac
+            ;;
+        5)
+           case "${words[2]}/${words[3]}/${words[4]}" in
+                pkglog/notes/query)             _watcher-pkglog-notes-query ;;
+                xdg/notes/query-application)    _watcher-xdg-notes-query-application ;;
+                xdg/notes/query)                _watcher-xdg-notes-query ;;
+                sysinfo/notes/query)            _watcher-sysinfo-notes-query ;;
+                pkglog/query/*)                 _watcher-pkglog-query ;;
+                all/*/*)                        _watcher-all ;;
             esac
             ;;
         *)

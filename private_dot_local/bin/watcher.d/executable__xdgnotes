@@ -203,6 +203,8 @@ def query_notes(directory: str = None):
         if lst_directories == [""]:
             print("Action cancelled")
             sys.exit(1)
+    else:
+        lst_directories = [directory.replace("/", ":")]
 
     col_width = max(len(get_full_path(path)) for path in notes.keys()) + 4
 
@@ -243,6 +245,8 @@ def query_application(application: str = None):
         if lst_applications == [""]:
             print("Action cancelled")
             sys.exit(1)
+    else:
+        lst_applications = [application]
 
     col_width = max(len(get_full_path(path)) for path in notes.keys()) + 4
 
