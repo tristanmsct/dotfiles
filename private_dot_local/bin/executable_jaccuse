@@ -192,7 +192,20 @@ def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uni
         print(str_output)
 
 
-def get_dependency_chain(package, target):
+def keep_maximal_paths(list_of_paths):
+    as_sets = [frozenset(x) for x in list_of_paths]
+    result = []
+    for i, s in enumerate(as_sets):
+        is_subset = any(
+            s < as_sets[j] or (s == as_sets[j] and i > j)
+            for j in range(len(as_sets)) if j != i
+        )
+        if not is_subset:
+            result.append(list_of_paths[i])
+    return result
+
+
+def get_dependency_chain(package, target, deep_search=False):
     """Get a dependency chain for a package to a target"""
     try:
         dep_chain = subprocess.run(["pactree", "-g", package], stdout=subprocess.PIPE, text=True, check=True)
@@ -215,24 +228,16 @@ def get_dependency_chain(package, target):
     try:
         lst_paths = nx.all_simple_paths(graph_deps, "START", target, 10)
 
-        # Creating a list of smallest paths between the package and the target with only once each direct dependency.
-        # This way, these two paths are considered duplicates and we only keep the shortest.
+        # Creating a list of longest paths between the package and the target with only once each direct dependency.
+        # This way, these two paths are considered duplicates and we only keep the longest which inlcude the shortest.
         # nmrs -> gtk4 -> xdg-desktop-portal-gtk -> xdg-desktop-portal -> systemd
         # nmrs -> libadwaita -> gtk4 -> xdg-desktop-portal-gtk -> xdg-desktop-portal -> systemd
-        dict_paths = dict()
-        for path in lst_paths:
-            direct_dep = path[-2]
-            direct_dep_current_path = dict_paths.get(direct_dep)
+        lst_paths = [path[1:] for path in lst_paths]
+        if not deep_search:
+            lst_paths = keep_maximal_paths(lst_paths)
 
-            if not direct_dep_current_path:
-                dict_paths[direct_dep] = path[1:]
-            else:
-                if len(path) < len(direct_dep_current_path):
-                    dict_paths[direct_dep] = path[1:]
-
-        # Finally displaying the chains.
-        if dict_paths:
-            for k, v in dict_paths.items():
+        if lst_paths:
+            for v in lst_paths:
                 v[0] = f"""{GREEN}{v[0]}{RESET}"""
                 v[-1] = f"""{ORANGE}{v[-1]}{RESET}"""
                 print(" -> ".join(v))
@@ -253,7 +258,7 @@ def main(args):
     if args.chain:
         if not args.target:
             args.target = pick_package()[0]
-        get_dependency_chain(lst_packages[0], args.target)
+        get_dependency_chain(lst_packages[0], args.target, deep_search=args.deep)
     elif args.reverse:
         get_explicit_dependents(lst_packages)
     else:

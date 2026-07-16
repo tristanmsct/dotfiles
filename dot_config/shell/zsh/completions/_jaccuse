@@ -1,22 +1,44 @@
 #compdef jaccuse
 
 _jaccuse() {
-    local -a options
 
-    options=(
-      "-c:Get a dependency chain"
-      "--chain:Get a dependency chain"
-      "--deep:Deep search"
-      "-d:Deep search"
-      "--quiet:Quiet mode"
-      "-q:Quiet mode"
-      "--reverse:Show reverse dependencies"
-      "-r:Show reverse dependencies"
-      "--help:Display help message"
-      "-h:Display help message"
-    )
+    case ${#words} in
+      2)
+        local -a options
+        options=(
+          "-c:Get a dependency chain"
+          "--chain:Get a dependency chain"
+          "--deep:Deep search"
+          "-d:Deep search"
+          "--quiet:Quiet mode"
+          "-q:Quiet mode"
+          "--reverse:Show reverse dependencies"
+          "-r:Show reverse dependencies"
+          "--help:Display help message"
+          "-h:Display help message"
+        )
 
-    _describe "jaccuse commands" options
+        _describe "jaccuse commands" options
+        ;;
+      3)
+        case ${words[2]} in
+          -c|--chain|-d|--deep|-r|--reverse|-rd|-dr)
+            local -a pkgs
+            pkgs=(${(f)"$(pacman -Qq)"})
+            _describe 'pkgs' pkgs
+            ;;
+        esac
+        ;;
+      4)
+        case ${words[2]} in
+          -c|--chain)
+            local -a pkgs
+            pkgs=(${(f)"$(pacman -Qq)"})
+            _describe 'pkgs' pkgs
+            ;;
+        esac
+        ;;
+      esac
 }
 
 _jaccuse "$@"
