@@ -22,6 +22,7 @@ x-scheme-handler/slack=slack.desktop
 video/x-matroska=io.github.celluloid_player.Celluloid.desktop
 image/webp=viewnior.desktop
 font/ttf=org.gnome.font-viewer.desktop
+video/mp4=io.github.celluloid_player.Celluloid.desktop
 
 [Added Associations]
 application/x-zerosize=typora.desktop;sublime_text.desktop;vscodium.desktop;nvim.desktop;
@@ -39,3 +40,4 @@ application/wps-office.pptx=onlyoffice-desktopeditors.desktop;
 video/x-matroska=io.github.celluloid_player.Celluloid.desktop;
 image/webp=viewnior.desktop;
 font/ttf=org.gnome.font-viewer.desktop;
+video/mp4=io.github.celluloid_player.Celluloid.desktop;

@@ -7,15 +7,6 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# TODO :
-# 1) Issue with the parsing of options. Options are parsed for the first command that needs it
-# -> watcher sysinfo notes -h
-# sysinfo parses options, so sysinfo will eat the -h
-#
-# 2) Create a completion for watcher pkglog query (with the -r repo, and such), also for watcher pkglog diff
-#
-# 3) General clean up and checks
-
 # --- Base set up -----------------------------------------------------------------------
 
 source "$HOME/.config/shell/lib/format"

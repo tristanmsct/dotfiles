@@ -122,8 +122,8 @@ hl.bind(mainMod .. " + CTRL + Z", e("python " .. HYPRSCRIPTS .. "/workspaces/com
 
 hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "m+1" }), { description = "Next workspace" })
 hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace" })
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m+1" }), { description = "Next workspace", mouse = true })
-hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace", mouse = true })
+hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "m+1" }), { description = "Next workspace", mouse = true })
+hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace", mouse = true })
 hl.bind(mainMod .. " + CTRL + down", hl.dsp.focus({ workspace = "empty" }), { description = "Next empty workspace" })
 
 -- Toggle the special workspace visibility.

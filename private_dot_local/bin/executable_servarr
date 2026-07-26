@@ -29,13 +29,23 @@ show_help() {
 }
 
 if [[ -z $1 ]]; then
-    choice=$(gum choose "up" "down" "restart" "pull" "logs" "shutdown")
+    if [ -t 1 ]; then
+        choice=$(gum choose "up" "down" "restart" "pull" "logs" "shutdown")
+    else
+        dunstify "Use up, down, restart or shutdown commands"
+    fi
 else
     choice=$1
 fi
 
 if ! systemctl is-active --quiet docker; then
-    sudo systemctl start docker
+    if [ -t 1 ]; then
+        # terminal
+        sudo systemctl start docker
+    else
+        # rofi/drun, no tty
+        pkexec systemctl start docker
+    fi
     pkill -RTMIN+10 waybar
 fi
 
@@ -57,7 +67,13 @@ case $choice in
         ;;
     shutdown)
         docker compose --file $SERVARR_HOME/compose.yaml down
-        sudo systemctl stop docker.socket
+        if [ -t 1 ]; then
+            # terminal
+            sudo systemctl stop docker.socket
+        else
+            # rofi/drun, no tty
+            pkexec systemctl stop docker.socket
+        fi
         pkill -RTMIN+10 waybar
         ;;
     -h|--help)
