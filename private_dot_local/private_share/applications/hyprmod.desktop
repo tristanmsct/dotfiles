@@ -7,3 +7,5 @@ Terminal=false
 Type=Application
 Categories=Settings;GTK;
 StartupNotify=true
+Hidden=true
+NoDisplay=true

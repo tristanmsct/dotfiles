@@ -1,13 +1,12 @@
 [Desktop Entry]
-
 Name=pacseek
 Comment=A terminal user interface for searching and installing Arch Linux packages
-
 Icon=pacseek
 Type=Application
 Categories=Utility;
 Keywords=terminal;package;
-
 Exec=kitty --app-id pacseek -e pacseek
 StartupNotify=false
 Terminal=false
+Hidden=true
+NoDisplay=true
