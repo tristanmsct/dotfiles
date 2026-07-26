@@ -20,6 +20,17 @@ _watcher-all() {
     _describe "watcher all options" options
 }
 
+_watcher-ansible-check() {
+    local -a options
+    options=(
+        ":Check for difference in wanted and installed packages"
+        "--help:Display help message"
+        "-h:Display help message"
+    )
+
+    _describe "watcher cache options" options
+}
+
 _watcher-cache() {
     local -a options
     options=(
@@ -251,15 +262,16 @@ _watcher() {
         3)
             # Second argument: subcommands based on first arg.
             case ${words[2]} in
-                all)        _watcher-all ;;
-                cache)      _watcher-cache ;;
-                chezmoi)    _watcher-chezmoi ;;
-                desktop)    _watcher-desktop ;;
-                git)        _watcher-git ;;
-                pkglog)     _watcher-pkglog ;;
-                sysinfo)    _watcher-sysinfo ;;
-                updates)    _watcher-updates ;;
-                xdg)        _watcher-xdg ;;
+                all)            _watcher-all ;;
+                ansible-check)  _watcher-ansible-check ;;
+                cache)          _watcher-cache ;;
+                chezmoi)        _watcher-chezmoi ;;
+                desktop)        _watcher-desktop ;;
+                git)            _watcher-git ;;
+                pkglog)         _watcher-pkglog ;;
+                sysinfo)        _watcher-sysinfo ;;
+                updates)        _watcher-updates ;;
+                xdg)            _watcher-xdg ;;
                 open) ;; # no subcommands
             esac
             ;;

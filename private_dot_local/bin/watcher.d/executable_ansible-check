@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+#                _       _                                    _ _     _                 _               _
+# __      ____ _| |_ ___| |__   ___ _ __       __ _ _ __  ___(_) |__ | | ___        ___| |__   ___  ___| | __
+# \ \ /\ / / _` | __/ __| '_ \ / _ \ '__|____ / _` | '_ \/ __| | '_ \| |/ _ \_____ / __| '_ \ / _ \/ __| |/ /
+#  \ V  V / (_| | || (__| | | |  __/ | |_____| (_| | | | \__ \ | |_) | |  __/_____| (__| | | |  __/ (__|   <
+#   \_/\_/ \__,_|\__\___|_| |_|\___|_|        \__,_|_| |_|___/_|_.__/|_|\___|      \___|_| |_|\___|\___|_|\_\
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+# Compare ansible-declared packages vs actually installed packages.
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# --- Base set up -----------------------------------------------------------------------
+
+source "$HOME/.config/shell/lib/format"
+
+set -euo pipefail
+
+script_name=$(basename "$0")
+ANSIBLE_DIR="$HOME/.local/share/ansible-archlinux/roles"
+EXCLUDE_FILE="$HOME/.local/share/watcher/ansible-check/pkglist"
+
+DESC="Check for difference in wanted and installed packages"
+
+show_help() {
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}watcher $script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}]\n\n"
+    printf "watcher $script_name - $DESC\n\n"
+    printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "$DESC"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    exit 0
+}
+
+if [[ ! -d "$ANSIBLE_DIR" ]]; then
+  echo "Dir not found: $ANSIBLE_DIR" >&2
+  exit 1
+fi
+
+# --- Handling options ------------------------------------------------------------------
+
+LONGOPTS="help"
+OPTIONS="h"
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name" -- "$@") || exit 2
+eval set -- "$PARSED"
+
+while true; do
+    case "$1" in
+        -h|--help) show_help ;;
+        --) shift; break ;;
+        *) echo "Error"; exit 1 ;;
+    esac
+done
+
+# -- Main package extraction function ---------------------------------------------------
+
+extract() {
+  # $1 = module regex (pacman or aur task type)
+  local module="$1"
+  find "$ANSIBLE_DIR" -type f \( -name '*.yml' -o -name '*.yaml' \) -print0 |
+    xargs -0 awk -v mod="$module" '
+      $0 ~ mod { capture=0; inmod=1; next }
+      inmod && /name:[[:space:]]*$/ { capture=1; next }
+      /^[[:space:]]*- / && capture {
+        line=$0
+        sub(/^[[:space:]]*- */, "", line)
+        sub(/[[:space:]]+#.*$/, "", line)
+        gsub(/"/, "", line)
+        gsub(/[[:space:]]+$/, "", line)
+        print line
+        next
+      }
+      capture && /^[[:space:]]*[a-zA-Z_]+:/ { capture=0; inmod=0 }
+    '
+}
+
+# -- Checking differences between ansible and actually installed packages ---------------
+
+wanted_pacman="$(extract 'community.general.pacman:')"
+wanted_aur="$(extract 'kewlfft.aur.aur:')"
+wanted_all="$(printf '%s\n%s\n' "$wanted_pacman" "$wanted_aur" | grep -v '^$' | sort -u)"
+
+installed="$(pacman -Qqe | sort -u)"
+
+missing="$(comm -23 <(echo "$wanted_all") <(echo "$installed"))"
+
+excluded="$(printf '%s\n%s\n' "$wanted_all" "$(sort -u "$EXCLUDE_FILE" 2>/dev/null || true)" | grep -v '^$' | sort -u)"
+untracked="$(comm -13 <(echo "$excluded") <(echo "$installed"))"
+
+if [[ -z "$missing" ]] && [[ -z "$untracked" ]]; then
+  echo -e "${GREEN}✓${RESET} All packages are accounted for"
+
+else
+  subsection "Wanted (ansible) but NOT installed"
+  if [[ -z "$missing" ]]; then
+    echo -e "${GREEN}✓${RESET} No package missing"
+  else
+    echo "$missing"
+  fi
+
+  subsection "Installed (explicit) but NOT in ansible"
+  if [[ -z "$untracked" ]]; then
+    echo -e "${GREEN}✓${RESET} No package untracked"
+  else
+    echo "$untracked"
+  fi
+fi

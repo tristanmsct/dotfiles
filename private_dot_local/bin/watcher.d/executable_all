@@ -63,6 +63,10 @@ section ".destkop files"
 "$WATCHER_DIR/desktop"
 echo
 
+section "Ansible check"
+"$WATCHER_DIR/ansible-check"
+echo
+
 if [ $flag_nocache == "n" ]; then
     section "System and application caches"
     "$WATCHER_DIR/cache" -s

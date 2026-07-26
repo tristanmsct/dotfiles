@@ -20,6 +20,7 @@ show_help() {
     printf "$script_name - System monitoring toolkit\n\n"
     printf "${BOLD}${COLOR_TERM_5}commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "all" "Run main watchers"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "ansible-check" "Check for difference in wanted and installed packages"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "aur" "Check for custom AUR packages changes"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "cache" "Check for caches"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "chezmoi" "Track chezmoi-managed files"
