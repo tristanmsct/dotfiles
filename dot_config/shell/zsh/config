@@ -20,6 +20,7 @@ plugins=(
     copyfile
     copybuffer
     dirhistory
+    uv
 )
 
 # -----------------------------------------------------
@@ -47,7 +48,6 @@ source "$ZSH/oh-my-zsh.sh"
 source <(task --completion zsh | sed 's/go_task/task/g; s/go-task/task/g')
 # Set-up FZF key bindings (CTRL R for fuzzy history finder).
 source <(fzf --zsh)
-eval "$(pyenv init - zsh)"
 eval "$(glow completion zsh)"
 eval "$(eww shell-completions --shell zsh)"
 eval "$(zoxide init zsh)"

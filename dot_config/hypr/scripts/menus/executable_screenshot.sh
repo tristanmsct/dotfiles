@@ -15,7 +15,7 @@ mesg="Saved At: $(xdg-user-dir PICTURES)/Screenshots"
 option_1="󰍺    Capture All"
 option_2="    Capture Active"
 option_3="    Capture Window"
-option_4="    Capture Area"
+option_4="󰆞    Capture Area"
 option_5="󱎫    Capture in 5s"
 option_6="󱎫    Capture in 10s"
 

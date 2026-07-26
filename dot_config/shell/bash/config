@@ -10,7 +10,6 @@
 # -----------------------------------------------------
 # Tools
 # -----------------------------------------------------
-eval "$(pyenv init - bash)"
 eval "$(glow completion bash)"
 eval "$(eww shell-completions --shell bash)"
 eval "$(zoxide init bash)"

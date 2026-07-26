@@ -2,8 +2,8 @@
 
 def is_vanilla() -> bool:
     """Return whether running "vanilla" Python"""
-    import sys
-    return not hasattr(__builtins__, "__IPYTHON__") and "bpython" not in sys.argv[0]
+    import os
+    return os.environ.get("UV") is None
 
 
 def setup_history():
@@ -17,19 +17,25 @@ def setup_history():
     else:
         state_home = Path.home() / ".local" / "state"
 
-    history: Path = state_home / "python" / "history"
+    # libedit and GNU readline use incompatible history file formats
+    backend = getattr(readline, "backend", None) or (
+        "editline" if "libedit" in (readline.__doc__ or "") else "readline"
+    )
+
+    history: Path = state_home / "python" / f"history_{backend}"
     history.parent.mkdir(parents=True, exist_ok=True)
 
-    # Override the default ~/.python_history readline picked up
     readline.clear_history()
     if history.exists():
-        readline.read_history_file(str(history))
+        try:
+            readline.read_history_file(str(history))
+        except OSError:
+            # corrupt or wrong-format file, start fresh
+            pass
 
-    # Remove Python's built-in history writer, replace with ours
     import site
     site.write_history = lambda *args, **kwargs: None  # no-op
     atexit.register(readline.write_history_file, str(history))
 
 
-if is_vanilla():
-    setup_history()
+setup_history()
