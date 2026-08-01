@@ -9,7 +9,7 @@
 source "$HOME/.config/shell/env"
 source "$BASHDIR/config"
 source "$SHELLDIR/aliases"
-source "$SHELLDIR/autostart"
+source "$SHELLDIR/startup"
 source "$SHELLDIR/functions"
 
 if [[ $(tty) == *"pts"* ]]; then
