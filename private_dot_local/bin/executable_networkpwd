@@ -8,8 +8,12 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-if [ $# -eq 0 ]; then
-    nmcli device wifi show-password
+if [ -t 1 ]; then
+    if [ $# -eq 0 ]; then
+        nmcli device wifi show-password
+    else
+        nmcli -s -g 802-11-wireless-security.psk connection show $1
+    fi
 else
-    nmcli -s -g 802-11-wireless-security.psk connection show $1
+    kitty --app-id networkpwd -e sh -c "nmcli device wifi show-password; echo; read -n 1 -s -r -p 'Press any key to close'"
 fi

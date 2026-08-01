@@ -2,3 +2,6 @@ README.md
 
 # Template files
 .config/waypaper/config.ini
+
+# Others
+.local/bin/nuke

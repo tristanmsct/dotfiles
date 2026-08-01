@@ -1,0 +1,14 @@
+#compdef zopen
+
+local -a options
+options=(
+  "codium:Open in VSCodium"
+  "files:Open in Nautilus file manager"
+  "kitty:Open in Kitty terminal"
+  "sublime:Open in Sublime Text"
+  "yazi:Open in Yazi file manager"
+  "--help:Display help message"
+  "-h:Display help message"
+)
+
+_describe "values" options

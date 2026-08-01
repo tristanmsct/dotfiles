@@ -7,14 +7,73 @@
 #          |_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# Open a directory (via zoxide + fzf) in the specified application
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
-if [ $# -eq 0 ]; then
-    dunstify "No parameters"
+# --- Base set up -----------------------------------------------------------------------
+
+source "$HOME/.config/shell/lib/format"
+
+script_name=$(basename "$0")
+
+show_help() {
+    printf "${BOLD}${COLOR_TERM_5}usage:${RESET} ${BOLD}${COLOR_TERM_6}$script_name${RESET}"
+    printf " [${COLOR_TERM_3}command${RESET}] path/to/directory\n\n"
+    printf "$script_name - Simply open directories in your preferred application\n\n"
+    printf "${BOLD}${COLOR_TERM_5}options:${RESET}\n"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "codium" "Open in VSCodium"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "files" "Open in Nautilus file manager"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "kitty" "Open in Kitty terminal"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "sublime" "Open in Sublime Text"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "yazi" "Open in Yazi file manager"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    exit 0
+}
+
+# --- Parsing inputs --------------------------------------------------------------------
+
+[[ -z "$1" ]] && show_help
+
+case "$1" in
+    yazi|codium|sublime|kitty|files)
+        APP="$1"
+        shift
+        ;;
+    -h|--help)
+        show_help
+        ;;
+    *)
+        APP="files"
+        ;;
+esac
+
+if [[ $# -eq 0 ]]; then
     target="$HOME"
 else
     target=$(zoxide query --list | fzf --filter "$*" | head -1 2>/dev/null)
-    if [ -z "$target" ]; then
-        target="$HOME"
-    fi
+    [[ -z "$target" ]] && target="$HOME"
 fi
-xdg-open "$target" > /dev/null 2>&1 & disown
+
+# --- Opening directory -----------------------------------------------------------------
+
+case "$APP" in
+    yazi)
+        kitty --app-id yazi -e yazi "$target" > /dev/null 2>&1 & disown
+        ;;
+    codium)
+        codium.sh "$target" > /dev/null 2>&1 & disown
+        ;;
+    sublime)
+        subl "$target" > /dev/null 2>&1 & disown
+        ;;
+    kitty)
+        kitty "$target" > /dev/null 2>&1 & disown
+        ;;
+    files)
+        xdg-open "$target" > /dev/null 2>&1 & disown
+        ;;
+    *)
+        # Not reachable.
+        show_help
+        ;;
+esac

@@ -167,9 +167,9 @@ def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uni
         ct_req = 0
         if not quiet:
             print(f"List of dependencies for {repr_list_package} ({GREEN}would be uninstalled{RESET} and {ORANGE}would remain{RESET}):")
-        for depencency in full_set_dependencies:
+        for dependency in full_set_dependencies:
             lst_reqs_of_dependency = subprocess.run(
-                ["pactree", "-u", "-r", depencency],
+                ["pactree", "-u", "-r", dependency],
                 stdout=subprocess.PIPE,
                 text=True,
                 check=True,
@@ -180,11 +180,11 @@ def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uni
 
             if lst_reqs_of_dependency - full_set_dependencies - set(lst_packages):
                 if not quiet and not only_uninstall:
-                    print(f"{ORANGE}{depencency}{RESET}")
+                    print(f"{ORANGE}{dependency}{RESET}")
                 ct_req += 1
             else:
                 if not quiet:
-                    print(f"{GREEN}{depencency}{RESET}")
+                    print(f"{GREEN}{dependency}{RESET}")
                 ct_orph += 1
 
         str_output = f"Out of {ct_orph + ct_req} dependencies, {GREEN}{ct_orph}{RESET} "

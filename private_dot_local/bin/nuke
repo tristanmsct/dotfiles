@@ -9,7 +9,7 @@
 # Nuke files using shred. DANGEROUS.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-sudo chown -R wbck5927:wbck5927 $1
+sudo chown -R $(whoami):$(whoami) $1
 sudo chmod -R +w $1
 
 # Progress bar function, to run in parallel from the deletion.
