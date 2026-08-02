@@ -7,14 +7,12 @@
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
 local HYPRSCRIPTS   = os.getenv("HOME") .. "/.config/hypr/scripts"
-local HYPRLAUNCHERS = os.getenv("HOME") .. "/.config/hypr/launchers"
+local USERSCRIPTS   = os.getenv("HOME") .. "/.local/bin"
 
 hl.on("hyprland.start", function()
     local function exec(cmd)
         hl.dispatch(hl.dsp.exec_cmd(cmd))
     end
-
-    exec("/home/tristan/.config/hypr/scripts/system/setup-state.sh")
 
     -- Clean Home Directory / Set up state
     exec(HYPRSCRIPTS .. "/system/setup-state.sh")
@@ -56,7 +54,7 @@ hl.on("hyprland.start", function()
     exec(HYPRSCRIPTS .. "/game-mode/restore.sh")
 
     -- Nextcloud
-    exec(HYPRLAUNCHERS .. "/nextcloud.sh --background")
+    exec(USERSCRIPTS .. "/nextcloud --background")
 
     -- VPN status
     exec(HYPRSCRIPTS .. "/vpn/update-status.sh")

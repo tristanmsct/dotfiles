@@ -2,7 +2,7 @@
 Name=VSCodium - URL Handler
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-Exec=codium.sh --open-url %U
+Exec=codium --open-url %U
 Icon=vscodium
 Type=Application
 NoDisplay=true

@@ -32,8 +32,6 @@ show_help() {
 
 # --- Parsing inputs --------------------------------------------------------------------
 
-[[ -z "$1" ]] && show_help
-
 case "$1" in
     yazi|codium|sublime|kitty|files)
         APP="$1"
@@ -61,7 +59,7 @@ case "$APP" in
         kitty --app-id yazi -e yazi "$target" > /dev/null 2>&1 & disown
         ;;
     codium)
-        codium.sh "$target" > /dev/null 2>&1 & disown
+        codium "$target" > /dev/null 2>&1 & disown
         ;;
     sublime)
         subl "$target" > /dev/null 2>&1 & disown

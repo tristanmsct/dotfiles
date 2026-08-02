@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Don't Starve
 Comment=Play this game on Steam
-Exec=steam.sh steam://rungameid/219740
+Exec=steam steam://rungameid/219740
 Icon=dont-starve-together
 Terminal=false
 Type=Application

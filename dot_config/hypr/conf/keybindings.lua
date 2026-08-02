@@ -10,7 +10,6 @@
 local mainMod = "SUPER"
 local SCRIPTS = os.getenv("HOME") .. "/.local/bin"
 local HYPRSCRIPTS = os.getenv("HOME") .. "/.config/hypr/scripts"
-local HYPRLAUNCHERS = os.getenv("HOME") .. "/.config/hypr/launchers"
 
 local TYPORA_FILE = os.getenv("HOME") .. '/Nextcloud/03-Notes/Day-to-day/' .. os.date('%Y-%m-%d') .. '-notes.md'
 
@@ -28,17 +27,17 @@ local move_to_end = dofile(HYPRSCRIPTS .. "/workspaces/move-to-end.lua")
 -- Applications
 -- --------------------------------------------------------------------------------------
 hl.bind(mainMod .. " + RETURN", e("kitty"), { description = "Open Kitty terminal" })
-hl.bind(mainMod .. " + B", e(HYPRLAUNCHERS .. "/brave.sh"), { description = "Open Brave web browser" })
+hl.bind(mainMod .. " + B", e("brave"), { description = "Open Brave web browser" })
 hl.bind(mainMod .. " + E", e("nautilus"), { description = "Open file manager" })
 hl.bind(mainMod .. " + ALT + E", e("nautilus -s " .. os.getenv("HOME") .. "/Nextcloud/03-Notes/Wikis/Computers/Linux"), { description = "Open file manager in wikis" })
 hl.bind(mainMod .. " + SHIFT + E", e("kitty --app-id yazi -e yazi"), { description = "Open Yazi" })
-hl.bind(mainMod .. " + N", e(HYPRLAUNCHERS .. "/typora.sh " .. TYPORA_FILE), { description = "Open Typora with today's notes" })
-hl.bind(mainMod .. " + SHIFT + N", e("[float;size 800 400;move 1000 100] " .. HYPRLAUNCHERS .. "/typora.sh " .. TYPORA_FILE), { description = "Open floating Typora with today's notes" })
-hl.bind(mainMod .. " + CTRL + N", e(HYPRLAUNCHERS .. "/typora.sh " .. os.getenv("HOME") .. "/Nextcloud/03-Notes/Wikis"), { description = "Open Typora with wikis" })
+hl.bind(mainMod .. " + N", e("typora " .. TYPORA_FILE), { description = "Open Typora with today's notes" })
+hl.bind(mainMod .. " + SHIFT + N", e("[float;size 800 400;move 1000 100] typora " .. TYPORA_FILE), { description = "Open floating Typora with today's notes" })
+hl.bind(mainMod .. " + CTRL + N", e("typora " .. os.getenv("HOME") .. "/Nextcloud/03-Notes/Wikis"), { description = "Open Typora with wikis" })
 hl.bind(mainMod .. " + S", e("subl"), { description = "Open Sublime Text" })
-hl.bind(mainMod .. " + X", e(HYPRLAUNCHERS .. "/codium.sh"), { description = "Open VSCodium" })
+hl.bind(mainMod .. " + X", e("codium"), { description = "Open VSCodium" })
 hl.bind(mainMod .. " + CTRL + E", e(HYPRSCRIPTS .. "/menus/emoji-picker.sh"), { description = "Open emoji picker" })
-hl.bind(mainMod .. " + G", e(HYPRLAUNCHERS .. "/steam.sh"), { description = "Open Steam" })
+hl.bind(mainMod .. " + G", e("steam"), { description = "Open Steam" })
 hl.bind(mainMod .. " + M", e("gapplication launch org.gnome.Weather"))
 
 -- --------------------------------------------------------------------------------------
@@ -111,7 +110,7 @@ hl.bind(mainMod .. " + A", e("kitty --session " .. os.getenv("HOME") .. "/.confi
 
 hl.bind(mainMod .. " + SHIFT + D", e("dunstctl history-pop"), { description = "Replay last notification" })
 
-hl.bind(mainMod .. " + ALT + C", e([[kitty --app-id networkpwd -e sh -c "networkpwd; echo; read -n 1 -s -r -p 'Press any key to close'"]]), { description = "Show network password" })
+hl.bind(mainMod .. " + ALT + C", e("networkpwd"), { description = "Show network password" })
 
 -- --------------------------------------------------------------------------------------
 -- Workspaces

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#  _
+# | |_ _   _ _ __   ___  _ __ __ _
+# | __| | | | '_ \ / _ \| '__/ _` |
+# | |_| |_| | |_) | (_) | | | (_| |
+#  \__|\__, | .__/ \___/|_|  \__,_|
+#      |___/|_|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# Get XDG variables and create the fake home if it does not exists.
+source $HOME/.config/hypr/scripts/system/setup-fake-home.sh
+
+HOME="$FAKE_HOME" exec /usr/bin/typora \
+    --enable-features=UseOzonePlatform \
+    --ozone-platform=wayland \
+    --enable-wayland-ime \
+    --wayland-text-input-version=3 \
+    --user-data-dir="${XDG_DATA_HOME:-$HOME/.local/share}/typora-data" \
+    "$@"

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Typora
 GenericName=Markdown Editor
-Exec=typora.sh %U
+Exec=typora %U
 Icon=typora
 Type=Application
 StartupNotify=true

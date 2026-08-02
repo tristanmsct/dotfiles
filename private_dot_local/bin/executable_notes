@@ -66,7 +66,7 @@ open_notes_day () {
     fi
 
     # xdg-open $file
-    $HOME/.config/hypr/launchers/typora.sh $file > /dev/null 2>&1 & disown
+    typora $file > /dev/null 2>&1 & disown
 }
 
 
@@ -80,7 +80,7 @@ open_notes_month () {
     fi
 
     # xdg-open $file
-    $HOME/.config/hypr/launchers/typora.sh $file > /dev/null 2>&1 & disown
+    typora $file > /dev/null 2>&1 & disown
 }
 
 

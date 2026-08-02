@@ -14,7 +14,7 @@ STATE_FILE=$HOME/.local/state/desktop/state.json
 THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
 FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
 
-# Running the clean up games scripts : will add NoDisplay=true for games and use steam.sh instead of steam in Exec.
+# Running the clean up games scripts : will add NoDisplay=true for games.
 source $HOME/.config/hypr/scripts/game-mode/cleanup-games.sh
 
 if [ $THEME_TYPE = "light" ]; then
@@ -26,7 +26,7 @@ if $FOCUSMODE_ENABLED; then
     hyprctl reload
     waypaper --restore
 
-    $HOME/.config/hypr/launchers/nextcloud.sh --background &
+    nextcloud --background &
 
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
         dunstify "Gamemode deactivated" "Decorations, blur, wallpaper, etc. enabled"
@@ -48,7 +48,7 @@ else
     sed -i -E "s/(background-theme) rgba\(0, 0, 0, 0.4\);/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
     sed -i -E "s/(border-color) @accent-color;/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
 
-    /usr/bin/nextcloud --quit
+    nextcloud --quit
 
     if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
         dunstify "Gamemode activated" "Decorations, blur, wallpaper, etc. disabled"

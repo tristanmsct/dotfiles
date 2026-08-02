@@ -1,7 +1,7 @@
 [Desktop Entry]
 Categories=Utility;X-SuSE-SyncUtility;
 Type=Application
-Exec=nextcloud.sh %u
+Exec=nextcloud %u
 Name=Nextcloud Desktop
 Comment=Nextcloud desktop synchronization client
 GenericName=Folder Sync
@@ -205,6 +205,6 @@ BusName=com.nextcloudgmbh.Nextcloud
 ObjectPath=/com/nextcloudgmbh/Nextcloud
 
 [Desktop Action Quit]
-Exec=nextcloud.sh --quit
+Exec=nextcloud --quit
 Name=Quit Nextcloud
 Icon=nextcloud

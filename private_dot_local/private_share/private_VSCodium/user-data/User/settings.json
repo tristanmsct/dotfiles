@@ -38,5 +38,6 @@
     "workbench.editorAssociations": {
         "*.svg": "default"
     },
-    "chat.disableAIFeatures": false
+    "chat.disableAIFeatures": false,
+    "chat.viewSessions.orientation": "stacked"
 }

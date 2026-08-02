@@ -8,6 +8,18 @@
 # https://github.com/b3nj5m1n/xdg-ninja
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# PATH
+path_prepend() {
+  case ":$PATH:" in
+    *":$1:"*) return ;;
+  esac
+  PATH="$1:$PATH"
+}
+
+path_prepend "$HOME/.local/bin"
+path_prepend "$HOME/.config/hypr/launchers"
+export PATH
+
 # XDG Base Directories
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -37,11 +49,8 @@ export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 # export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
-export PATH="$HOME/.local/bin:$HOME/.config/hypr/launchers:$PATH"
 
 # Python
-export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"

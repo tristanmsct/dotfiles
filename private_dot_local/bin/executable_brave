@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#  _
+# | |__  _ __ __ ___   _____
+# | '_ \| '__/ _` \ \ / / _ \
+# | |_) | | | (_| |\ V /  __/
+# |_.__/|_|  \__,_| \_/ \___|
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+exec /usr/bin/brave \
+    --user-data-dir="${XDG_DATA_HOME:-$HOME/.local/share}/brave-data" \
+    --disk-cache-dir="${XDG_CACHE_HOME:-$HOME/.cache}/brave-cache" \
+    --enable-features=UseOzonePlatform \
+    --ozone-platform=wayland \
+    --ozone-platform-hint=auto \
+    "$@"

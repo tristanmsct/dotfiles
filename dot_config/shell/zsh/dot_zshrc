@@ -6,7 +6,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-source "$HOME/.config/shell/env"
+# Env elements come from .zshenv which is loaded before .zshrc. This file is for interactive shell configuration.
 source "$ZDOTDIR/config"
 source "$SHELLDIR/aliases"
 source "$SHELLDIR/startup"

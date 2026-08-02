@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#              _              __  __ _
+#   ___  _ __ | |_   _  ___  / _|/ _(_) ___ ___
+#  / _ \| '_ \| | | | |/ _ \| |_| |_| |/ __/ _ \
+# | (_) | | | | | |_| | (_) |  _|  _| | (_|  __/
+#  \___/|_| |_|_|\__, |\___/|_| |_| |_|\___\___|
+#                |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+# Get XDG variables and create the fake home if it does not exists.
+source $HOME/.config/hypr/scripts/system/setup-fake-home.sh
+
+HOME="$FAKE_HOME" exec /usr/bin/onlyoffice-desktopeditors "$@"

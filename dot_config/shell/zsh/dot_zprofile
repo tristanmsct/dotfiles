@@ -6,5 +6,6 @@
 #      |_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
-
-source $HOME/.config/shell/env
+# It can stay empty because .zshenv handles env variables, not much else is needed here.
+# This file is sourced at login, so it can be used to set up things that need to be initialized once per session.
+# -----------------------------------------------------------------------------------------------------------------------------------------

@@ -40,7 +40,7 @@
 
     "custom/browser": {
         "format": "<span size='x-large'></span>",
-        "on-click": "~/.config/hypr/launchers/brave.sh",
+        "on-click": "brave",
         "tooltip-format": "Open Web Browser - Brave"
         // "tooltip": false
     },
@@ -61,7 +61,7 @@
 
     "custom/typora": {
         "format": " <span size='x-large'>󰊄</span> ",
-        "on-click": "~/.config/hypr/launchers/typora.sh",
+        "on-click": "typora",
         "tooltip-format": "Open Note Application - Typora"
         // "tooltip": false
     },
@@ -91,7 +91,9 @@
           "steam_app_2239150": "Thronefall",
           "steam_app_219740": "Don't Starve",
           "FTL.amd64": "FTL: Faster Than Light",
-          "org.nmrs.ui": "network-wireless"
+          "org.nmrs.ui": "network-wireless",
+          "nmtui": "network-wireless",
+          "networkpwd": "network-wireless"
         },
         "rewrite": {
           "Firefox Web Browser": "Firefox"
@@ -363,7 +365,7 @@
         "interval": 5,
         "max-length": 50,
         "on-click": "nmrs",
-        "on-click-right": "~/.config/hypr/launchers/networkmanager.sh"
+        "on-click-right": "networkmanager"
     },
 
     // Battery
