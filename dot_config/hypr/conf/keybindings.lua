@@ -38,7 +38,7 @@ hl.bind(mainMod .. " + S", e("subl"), { description = "Open Sublime Text" })
 hl.bind(mainMod .. " + X", e("codium"), { description = "Open VSCodium" })
 hl.bind(mainMod .. " + CTRL + E", e(HYPRSCRIPTS .. "/menus/emoji-picker.sh"), { description = "Open emoji picker" })
 hl.bind(mainMod .. " + G", e("steam"), { description = "Open Steam" })
-hl.bind(mainMod .. " + M", e("gapplication launch org.gnome.Weather"))
+hl.bind(mainMod .. " + M", e("gapplication launch org.gnome.Weather"), { description = "Open Weather app" })
 
 -- --------------------------------------------------------------------------------------
 -- Windows
@@ -101,6 +101,7 @@ hl.bind(mainMod .. " + SHIFT + L", e(HYPRSCRIPTS .. "/theming/switch-theme.sh"),
 hl.bind(mainMod .. " + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh"), { description = "Toggle Cava overlay" })
 hl.bind(mainMod .. " + SHIFT + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini"), { description = "Toggle Cava mini overlay" })
 hl.bind(mainMod .. " + CTRL + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini title"), { description = "Toggle Cava mini overlay with title" })
+hl.bind(mainMod .. " + ALT + U", e(HYPRSCRIPTS .. "/cava/cava-input-switcher.sh"), { description = "Switch Cava input source" })
 hl.bind(mainMod .. " + I", e(HYPRSCRIPTS .. "/game-mode/clock-overlay.sh"), { description = "Toggle clock overlay" })
 
 hl.bind(mainMod .. " + comma", e("kitty --app-id btop -e btop"), { description = "Open btop" })
@@ -126,19 +127,30 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "m-1" }), { descr
 hl.bind(mainMod .. " + CTRL + down", hl.dsp.focus({ workspace = "empty" }), { description = "Next empty workspace" })
 
 -- Toggle the special workspace visibility.
-hl.bind(mainMod .. " + SHIFT + H", hl.dsp.workspace.toggle_special("minimize"))
-
--- Move focused window into it.
-hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.move({ workspace = "special:minimize", follow = false }))
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.workspace.toggle_special("minimized"), { description = "Open minimized workspace" })
 
 -- Put a single window in a minimized state and get it back.
 hl.bind(mainMod .. " + H", function ()
-    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
-    hl.dispatch(hl.dsp.window.move({workspace = "+0"}))
-    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
-    hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
-    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
-end)
+    if hl.get_workspace("special:minimized") then
+        hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
+        hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
+    else
+        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+        hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
+    end
+end, { description = "Toggle window minimized state" })
+
+-- Move focused window into it.
+hl.bind(mainMod .. " + CTRL + H", function ()
+    hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
+    hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
+end, { description = "Move window to minimized workspace" })
+
+-- Get a window back from the minimized workspace.
+hl.bind(mainMod .. " + SHIFT + CTRL + H", function ()
+    hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
+    hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
+end, { description = "Move window to minimized workspace" })
 
 -- --------------------------------------------------------------------------------------
 -- Fn keys

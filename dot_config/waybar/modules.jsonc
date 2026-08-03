@@ -181,7 +181,8 @@
             "custom/hyprsunset",
             "custom/gamemode",
             "custom/printer",
-            "custom/docker"
+            "custom/docker",
+            "custom/cava_input"
         ]
     },
 
@@ -261,6 +262,13 @@
         "return-type": "json",
         "interval": "once",
         "signal": 10
+    },
+
+    // Cava input switcher
+    "custom/cava_input": {
+        "format": " <span size='small'>󱡫</span> ",
+        "tooltip-format": "Switcher cava input source",
+        "on-click": "~/.config/hypr/scripts/cava/cava-input-switcher.sh"
     },
 
     // Cava -----------------------------------------------------------------------------

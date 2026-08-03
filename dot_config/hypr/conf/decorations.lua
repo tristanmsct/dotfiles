@@ -8,11 +8,11 @@
 
 hl.config({
     decoration = {
-        rounding          = 18,
-        active_opacity    = 1.0,
-        inactive_opacity  = 0.8,
+        rounding           = 18,
+        active_opacity     = 1.0,
+        inactive_opacity   = 0.8,
         fullscreen_opacity = 1.0,
-        dim_inactive      = false,
+        dim_inactive       = false,
 
         blur = {
             enabled          = true,
