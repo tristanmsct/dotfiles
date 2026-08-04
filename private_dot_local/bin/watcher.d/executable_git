@@ -124,7 +124,7 @@ check-repo() {
 # -- Permorming all checks --------------------------------------------------------------
 
 # Checking if the ssh identity is already added, otherwise it will be prompted everytime.
-if ! (ssh-add -l|grep -q "github (ED25519)"); then ssh-add $HOME/.ssh/github_ed25519; fi;
+if ! (ssh-add -l|grep -q "github (ED25519)"); then ssh-add -t 1h $HOME/.ssh/github_ed25519; fi;
 
 subsection "System repositories"
 for repo in ${lst_repos_system[@]}; do

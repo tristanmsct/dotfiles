@@ -99,6 +99,7 @@ hl.bind(mainMod .. " + CTRL + C", e("hyprpicker -a"), { description = "Open colo
 hl.bind(mainMod .. " + SHIFT + L", e(HYPRSCRIPTS .. "/theming/switch-theme.sh"), { description = "Switch light/dark theme" })
 
 hl.bind(mainMod .. " + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh"), { description = "Toggle Cava overlay" })
+hl.bind(mainMod .. " + CTRL + SHIFT + U", e(HYPRSCRIPTS .. "/cava/turbo-cava-toggle.sh"), { description = "Toggle Turbo Cava" })
 hl.bind(mainMod .. " + SHIFT + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini"), { description = "Toggle Cava mini overlay" })
 hl.bind(mainMod .. " + CTRL + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini title"), { description = "Toggle Cava mini overlay with title" })
 hl.bind(mainMod .. " + ALT + U", e(HYPRSCRIPTS .. "/cava/cava-input-switcher.sh"), { description = "Switch Cava input source" })

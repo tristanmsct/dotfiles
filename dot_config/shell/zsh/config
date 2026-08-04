@@ -52,7 +52,6 @@ eval "$(glow completion zsh)"
 eval "$(eww shell-completions --shell zsh)"
 eval "$(zoxide init zsh)"
 eval "$(thefuck --alias)"
-eval "$(ssh-agent)" &>/dev/null
 eval "$(uv generate-shell-completion zsh)"
 eval "$(uvx --generate-shell-completion zsh)"
 

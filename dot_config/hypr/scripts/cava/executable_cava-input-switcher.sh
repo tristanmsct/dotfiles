@@ -10,6 +10,7 @@
 
 CAVA_CONFIG="$HOME/.config/cava/config"
 CAVA_CONFIG_MINI="$HOME/.config/cava/config_mini"
+TURBO_CAVA_CONFIG="$HOME/.config/quickshell/turbo-cava.qml"
 
 
 if grep -qxF "method = pulse" $CAVA_CONFIG; then
@@ -17,11 +18,17 @@ if grep -qxF "method = pulse" $CAVA_CONFIG; then
     sed -i -E "s/^(source = alsa_input)/; \1/" $CAVA_CONFIG
     sed -i -E "s/^(method = pulse)$/; \1/" $CAVA_CONFIG_MINI
     sed -i -E "s/^(source = alsa_input)/; \1/" $CAVA_CONFIG_MINI
+
+    sed -i -E "s/^(source = alsa_input)/; \1/" $TURBO_CAVA_CONFIG
+    touch $TURBO_CAVA_CONFIG
 else
     sed -i -E "s/^; (method = pulse)$/\1/" $CAVA_CONFIG
     sed -i -E "s/^; (source = alsa_input)/\1/" $CAVA_CONFIG
     sed -i -E "s/^; (method = pulse)$/\1/" $CAVA_CONFIG_MINI
     sed -i -E "s/^; (source = alsa_input)/\1/" $CAVA_CONFIG_MINI
+
+    sed -i -E "s/^; (source = alsa_input)/\1/" $TURBO_CAVA_CONFIG
+    touch $TURBO_CAVA_CONFIG
 fi
 
 pkill -SIGUSR1 cava

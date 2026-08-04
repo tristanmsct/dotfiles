@@ -14,6 +14,9 @@ hl.on("hyprland.start", function()
         hl.dispatch(hl.dsp.exec_cmd(cmd))
     end
 
+    -- For IIO
+    exec("iio-hyprland")
+
     -- Clean Home Directory / Set up state
     exec(HYPRSCRIPTS .. "/system/setup-state.sh")
     exec(HYPRSCRIPTS .. "/system/home-cleaner.sh")

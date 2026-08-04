@@ -50,6 +50,7 @@ nwg_drawer = { template = 'colors-base.css', target = '~/.config/nwg-drawer/colo
 nmrs = { template = 'colors-base.css', target = '~/.config/nmrs/colors-nmrs.css' }
 rofi = { template = 'colors-rofi.rasi', target = '~/.config/rofi/colors-rofi.rasi' }
 kitty = { template = 'colors-kitty.conf', target = '~/.config/kitty/colors-kitty.conf' }
+qml = { template = 'Colors.qml', target = '~/.config/quickshell/Colors.qml' }
 
 [hooks]
 # Run commands when wallust is invoked. Useful to avoid scripting.

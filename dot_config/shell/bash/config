@@ -14,7 +14,6 @@ eval "$(glow completion bash)"
 eval "$(eww shell-completions --shell bash)"
 eval "$(zoxide init bash)"
 eval "$(thefuck --alias)"
-eval "$(ssh-agent)" &>/dev/null
 
 # -----------------------------------------------------
 # Completion Scripts

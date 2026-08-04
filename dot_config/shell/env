@@ -44,6 +44,9 @@ export WATCHER_DIR="$XDG_DATA_HOME/system-tracking"
 export AUR_DIR="$XDG_DATA_HOME/aur"
 export SHELLDIR="$HOME/.config/shell"
 
+# SSH
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
 # Misc
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 # export WGETRC="$XDG_CONFIG_HOME/wgetrc"
