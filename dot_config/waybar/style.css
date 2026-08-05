@@ -268,7 +268,8 @@ tooltip label {
 #idle_inhibitor:hover, #idle_inhibitor.activated:hover, #custom-theme_switch:hover, #custom-cliphist:hover, #custom-hyprsunset:hover,
 #custom-gamemode:hover, #custom-hyprsunset.auto_timer:hover, #custom-hyprsunset.filter_on:hover,
 #custom-printer:hover, #custom-printer.cups_on:hover, #custom-printer.cups_off:hover,
-#custom-docker:hover, #custom-docker.docker_on:hover, #custom-docker.docker_off:hover {
+#custom-docker:hover, #custom-docker.docker_on:hover, #custom-docker.docker_off:hover,
+#custom-cava_input:hover {
     color: @accent-color;
     transition: ease-in-out 0.2s;
 }

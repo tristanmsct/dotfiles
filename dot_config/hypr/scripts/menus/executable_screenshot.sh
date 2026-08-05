@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-#  ____                               _           _
-# / ___|  ___ _ __ ___  ___ _ __  ___| |__   ___ | |_
-# \___ \ / __| '__/ _ \/ _ \ '_ \/ __| '_ \ / _ \| __|
-#  ___) | (__| | |  __/  __/ | | \__ \ | | | (_) | |_
-# |____/ \___|_|  \___|\___|_| |_|___/_| |_|\___/ \__|
+#                                   _           _
+#  ___  ___ _ __ ___  ___ _ __  ___| |__   ___ | |_
+# / __|/ __| '__/ _ \/ _ \ '_ \/ __| '_ \ / _ \| __|
+# \__ \ (__| | |  __/  __/ | | \__ \ | | | (_) | |_
+# |___/\___|_|  \___|\___|_| |_|___/_| |_|\___/ \__|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -16,13 +16,14 @@ option_1="󰍺    Capture All"
 option_2="    Capture Active"
 option_3="    Capture Window"
 option_4="󰆞    Capture Area"
-option_5="󱎫    Capture in 5s"
-option_6="󱎫    Capture in 10s"
+option_5="󱄺    Use OCR"
+option_6="󱎫    Capture in 5s"
+option_7="󱎫    Capture in 10s"
 
 # Rofi CMD
 rofi_cmd() {
-	rofi -theme-str "window {width: 380px;}" \
-		-theme-str "listview {columns: 1; lines: 6;}" \
+	rofi -theme-str "window {width: 380px; height: 420px;}" \
+		-theme-str "listview {columns: 1; lines: 7;}" \
 		-theme-str 'textbox-prompt-colon {str: "";}' \
 		-disable-history \
 		-dmenu \
@@ -33,7 +34,7 @@ rofi_cmd() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-	echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6" | rofi_cmd
+	echo -e "$option_1\n$option_2\n$option_3\n$option_4\n$option_5\n$option_6\n$option_7" | rofi_cmd
 }
 
 # Filename creation
@@ -112,6 +113,11 @@ shotarea () {
 	notify_view
 }
 
+shotorc () {
+	grim -g "$(slurp)" - | tesseract - - | wl-copy
+	dunstify -u low --replace=699 "Copied to clipboard."
+}
+
 # Execute Command based on option chosen
 run_cmd() {
 	case "$1" in
@@ -119,8 +125,9 @@ run_cmd() {
 		--opt2) shotactive ;;
 		--opt3) shotwin ;;
 		--opt4) shotarea ;;
-		--opt5) shot5 ;;
-		--opt6) shot10 ;;
+		--opt5) shotorc ;;
+		--opt6) shot5 ;;
+		--opt7) shot10 ;;
 	esac
 }
 
@@ -141,5 +148,11 @@ case ${chosen} in
         ;;
     "$option_5")
 		run_cmd --opt5
+        ;;
+    "$option_6")
+		run_cmd --opt6
+        ;;
+    "$option_7")
+		run_cmd --opt7
         ;;
 esac

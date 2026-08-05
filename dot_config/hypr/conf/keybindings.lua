@@ -73,7 +73,9 @@ hl.bind("XF86PowerOff", e("wlogout -b 2"), { description = "Open logout menu" })
 hl.bind(mainMod .. " + CTRL + Q", e("wlogout -b 2"), { description = "Open logout menu" })
 
 hl.bind(mainMod .. " + PRINT", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })
-hl.bind(mainMod .. " + SHIFT + S", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })
+hl.bind(mainMod .. " + CTRL + S", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })
+hl.bind(mainMod .. " + SHIFT + PRINT", e(HYPRSCRIPTS .. "/menus/screen-record.sh"), { description = "Start screen recording" })
+hl.bind(mainMod .. " + SHIFT + CTRL + S", e(HYPRSCRIPTS .. "/menus/screen-record.sh"), { description = "Start screen recording" })
 
 hl.bind(mainMod .. " + W", e("waypaper"), { description = "Open wallpaper selector" })
 hl.bind(mainMod .. " + SHIFT + W", e("waypaper --random"), { description = "Random wallpaper" })

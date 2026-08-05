@@ -81,14 +81,6 @@ apply_accent_colors () {
     envsubst < "$HOME/.config/dunst/dunstrc.envsubst" > "$HOME/.config/dunst/dunstrc"
 
     # Cava
-    colors=($(sed -n '1,7p' "$HOME/.local/state/desktop/colors"))
-    export COLOR1="${colors[0]}"
-    export COLOR2="${colors[1]}"
-    export COLOR3="${colors[2]}"
-    export COLOR4="${colors[3]}"
-    export COLOR5="${colors[4]}"
-    export COLOR6="${colors[5]}"
-    export COLOR7="${colors[6]}"
     export COLOR="${ACCENT_COLOR}"
 
     envsubst < "$HOME/.config/cava/templates/config.envsubst" > "$HOME/.config/cava/config"

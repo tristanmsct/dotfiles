@@ -17,7 +17,6 @@ path_prepend() {
 }
 
 path_prepend "$HOME/.local/bin"
-path_prepend "$HOME/.config/hypr/launchers"
 export PATH
 
 # XDG Base Directories
