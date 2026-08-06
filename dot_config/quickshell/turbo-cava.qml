@@ -63,12 +63,7 @@ raw_target = /dev/stdout
 data_format = ascii
 ascii_max_range = 1000
 bar_delimiter = 59
-
-[smoothing]
-monstercat = 1.5
-waves = 0
-gravity = 100
-noise_reduction = 0.20
+channels = mono
 
 [eq]
 1 = 1

@@ -167,6 +167,15 @@ hl.window_rule({
     center = true,
 })
 
+-- Steam payment page
+hl.window_rule({
+    name  = "steam",
+    match = { initial_title = "^SteamWebhelper$" },
+    float  = true,
+    size   = "500 650",
+    center = true,
+})
+
 -- Bitwarden (Brave PWA)
 hl.window_rule({
     name  = "bitwarden",
