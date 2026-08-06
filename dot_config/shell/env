@@ -44,11 +44,12 @@ export AUR_DIR="$XDG_DATA_HOME/aur"
 export SHELLDIR="$HOME/.config/shell"
 
 # SSH
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+if [ -n "$XDG_RUNTIME_DIR" ]; then
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+fi
 
 # Misc
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-# export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 export SQLITE_HISTORY="$XDG_CACHE_HOME/sqlite_history"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 
@@ -85,7 +86,7 @@ export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages"
 # Development tools
 export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export VSCODE_PORTABLE="$XDG_CONFIG_HOME/VSCodium"
-# export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 # Vim
 export VIMINIT='let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.vim" | source $MYVIMRC'

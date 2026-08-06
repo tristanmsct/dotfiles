@@ -18,18 +18,10 @@ alias lt="eza --tree --level=1 --icons=always --sort=type --all"
 alias lg="eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions"
 
 alias grep="grep --color=auto"
-alias fgrep="fgrep --color=auto"
-alias egrep="egrep --color=auto"
 
-# Enable aliases to be sudo’ed.
-alias sudo="sudo "
-
-alias shutdown="systemctl poweroff"
-alias wifi="nmtui"
 alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"
 alias ff="fastfetch"
 alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"
-alias open-dotfiles="xdg-open $HOME/.local/share/dotfiles > /dev/null 2>&1 & disown"
 alias dufl="duf --only local"  # Show disk usage
 alias dust="dust -b"
 alias pkgi="watcher pkglog notes query"
@@ -44,12 +36,6 @@ alias icat="kitten icat"
 # System
 # ---------------------------------------------------------------------------------------
 alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-
-# ---------------------------------------------------------------------------------------
-# Python
-# ---------------------------------------------------------------------------------------
-alias sba="source .venv/bin/activate"
-alias poetry="nice poetry"
 
 # ---------------------------------------------------------------------------------------
 # Docker
@@ -89,4 +75,3 @@ fi
 # Kubernetes
 # ---------------------------------------------------------------------------------------
 alias ke="kubectl get events --sort-by='.lastTimestamp'"
-alias kppr="gcloud container clusters get-credentials ino-it-s-kroko-gke-cluster --region europe-west9 --project ino-it-s-kroko-ppr"
