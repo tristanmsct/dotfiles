@@ -5,3 +5,5 @@ README.md
 
 # Others
 .local/bin/nuke
+.config/Nextcloud/nextcloud.cfg.*
+.local/share/VSCodium/user-data/org.chromium.Chromium.*

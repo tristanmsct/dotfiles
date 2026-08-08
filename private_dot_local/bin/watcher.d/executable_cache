@@ -292,7 +292,7 @@ def display_applications(bl_full: bool = False):
 
     # Other applications
     path_home = os.getenv("HOME")
-    brave_main_cache = Cache(path=f"{path_home}/.cache/brave-cache", thrs_warn=2000, thrs_alert=2500)
+    brave_main_cache = Cache(path=f"{path_home}/.cache/brave-cache", thrs_warn=2500, thrs_alert=3000)
     brave_cache = Cache(path=f"{path_home}/.local/share/brave-data/Default/Service Worker", thrs_warn=500, thrs_alert=1500)
     slack_cache = Cache(path=f"{path_home}/.local/share/slack-data/Service Worker", thrs_warn=500, thrs_alert=1500)
     codium_cache = Cache(path=f"{path_home}/.local/share/VSCodium/user-data", thrs_warn=500, thrs_alert=1500)
