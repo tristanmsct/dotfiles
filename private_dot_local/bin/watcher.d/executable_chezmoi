@@ -12,7 +12,6 @@
 source "$HOME/.config/shell/lib/format"
 
 script_name=$(basename "$0")
-BASELINE_FILE=$HOME/.local/share/watcher/chezmoi/baseline.txt
 
 DESC="Track chezmoi-managed files"
 
@@ -24,7 +23,6 @@ show_help() {
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check for chezmoi managed and unmanaged files"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "sync" "Run chezmoi synchronisation script"
-    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "update" "Update the baseline file"
     exit 0
 }
 
@@ -47,8 +45,7 @@ done
 # -- Main syncing function --------------------------------------------------------------
 
 chezmoi-sync() {
-	DIFF_OUTPUT=$(diff <(cat $BASELINE_FILE) <(chezmoi unmanaged $HOME))
-	NOT_TRACKED=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> //')
+	NOT_TRACKED=$(chezmoi unmanaged $HOME)
 
 	STATUS_OUTPUT=$(chezmoi status)
 
@@ -95,7 +92,7 @@ chezmoi-sync() {
 				;;
 			A*)
 				echo -e "File was ${PURPLE}ADDED to target${RESET}"
-				echo -n "Add to source [a], delete from target [d], ignore [i], skip [s], quit [q]? "
+				echo -n "Add to source [a], delete from target [d], skip [s], quit [q]? "
 				;;
 			*A)
 				echo -e "File was ${PURPLE}ADDED to source${RESET}"
@@ -178,15 +175,9 @@ chezmoi-sync() {
 							rm -rf "$abs_target_file"
 							break
 							;;
-						i|I)
-							echo "Ignoring $target_file"
-							echo $target_file >> $BASELINE_FILE
-							{ grep '^\.' $BASELINE_FILE | LC_ALL=C sort; grep -v '^\.' $BASELINE_FILE | LC_ALL=C sort; } | sponge $BASELINE_FILE
-							break
-							;;
 						s|S) break ;;
 						q|Q) exit 0 ;;
-						*) echo -n "Invalid. Use a, d, i, s, or q: " ;;
+						*) echo -n "Invalid. Use a, d, s, or q: " ;;
 					esac
 					;;
 				*)  # Should always be M
@@ -237,9 +228,7 @@ chezmoi-sync() {
 # -- Checking and syncing chezmoi managed directories -----------------------------------
 
 if [[ $# -eq 0 ]]; then
-	DIFF_OUTPUT=$(diff <(cat $BASELINE_FILE) <(chezmoi unmanaged $HOME))
-
-	NOT_TRACKED=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> //')
+	NOT_TRACKED=$(chezmoi unmanaged $HOME)
 
 	STATUS_OUTPUT=$(chezmoi status)
 
@@ -263,9 +252,7 @@ if [[ $# -eq 0 ]]; then
 		done
 	fi
 elif [[ $# -eq 1 ]]; then
-	if [[ $1 == "update" ]]; then
-		gum confirm "Confirm chezmoi baseline update" && chezmoi unmanaged $HOME > $BASELINE_FILE
-	elif [[ $1 == "sync" ]]; then
+	if [[ $1 == "sync" ]]; then
 		chezmoi-sync
 	else
 		echo "error: invalid option or command '$1'"

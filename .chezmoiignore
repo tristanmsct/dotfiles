@@ -1,9 +1,190 @@
+#        _                              _ _
+#    ___| |__   ___ _____ __ ___   ___ (_|_) __ _ _ __   ___  _ __ ___
+#   / __| '_ \ / _ \_  / '_ ` _ \ / _ \| | |/ _` | '_ \ / _ \| '__/ _ \
+#  | (__| | | |  __// /| | | | | | (_) | | | (_| | | | | (_) | | |  __/
+# (_)___|_| |_|\___/___|_| |_| |_|\___/|_|_|\__, |_| |_|\___/|_|  \___|
+#                                           |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
 README.md
 
-# Template files
+# Ignored configs
+.config/Bitwarden CLI
+.config/Boosteroid Games S.R.L.
+.config/BraveSoftware
+.config/Kitware
+.config/Nextcloud/*
+!.config/Nextcloud/sync-exclude.lst
+.config/PCSX2
+.config/Proton
+.config/QtProject
+.config/autostart
+.config/borg
+.config/btop
+.config/cava/config
+.config/cava/config_mini
+.config/cava/shaders
+.config/cava/themes
+.config/celluloid
+.config/chezmoi/key.txt
+.config/dconf
+.config/docker
+.config/dunst/dunstrc
+.config/evolution
+.config/eww/colors-eww.scss
+.config/fontconfig
+.config/glow
+.config/go
+.config/gtk-2.0
+.config/gtk-3.0/*
+!.config/gtk-3.0/bookmarks
+.config/gtk-4.0/*
+!.config/gtk-4.0/servers
+.config/htop
+.config/ipython
+.config/jupyter
+.config/mpv
+.config/mupen64plus
+.config/nautilus
+.config/nmrs/theme
+.config/npm
+.config/onlyoffice
+.config/pacseek
+.config/pdfarranger
+.config/pika-backup/history.json
+.config/pipewire
+.config/procps
+.config/pulse
+.config/qt6ct
+.config/simple-scan
+# TODO : Sublime ????
+.config/sublime-text
+!.config/sublime-text/Packages
+.config/systemd/user/*
+!.config/systemd/user/empty-trash.*
+!.config/systemd/user/hyprsunset.*
+!.config/systemd/user/sysinfo.*
+.config/thefuck
+.config/tlpui
+.config/unity3d
+.config/viewnior
+.config/waybar/config.jsonc  # TODO ?
 .config/waypaper/config.ini
+.config/xsettingsd
+.config/yay
+.config/yazi
+.config/kwalletmanagerrc
+.config/kwalletrc
+.config/pavucontrol.ini
+.config/QtProject.conf
+.config/user-dirs.dirs
+.config/user-dirs.locale
+
+# Color files
+.config/hypr/conf/colors-hyprland.lua
+.config/hypr/conf/colors-hyprlock.conf
+.config/kitty/colors-kitty.conf
+.config/nmrs/colors-nmrs.css
+.config/nwg-drawer/colors-nwg.css
+.config/nwg-panel/colors-nwg.css
+.config/quickshell/Colors.qml
+.config/rofi/colors-rofi.rasi
+.config/waybar/colors-waybar.css
+.config/waypaper/colors-waypaper.css
+.config/wlogout/colors-wlogout.css
+
+# Local share
+.local/share/Boosteroid Games S.R.L.
+.local/share/FasterThanLight
+.local/share/Kingsoft
+.local/share/Nextcloud
+.local/share/PCSX2
+.local/share/PUNKCAKE Delicieux
+.local/share/Steam
+.local/share/Trash
+.local/share/ansible
+.local/share/ansible-archlinux
+.local/share/applications/mimeinfo.cache
+.local/share/aur
+.local/share/brave-data
+.local/share/caddy
+.local/share/cargo
+.local/share/chezmoi
+.local/share/delta
+.local/share/docker
+.local/share/dotfiles
+.local/share/evolution
+.local/share/fake_home/*
+!.local/share/fake_home/.copilot
+.local/share/flatpak
+.local/share/fonts
+.local/share/gk
+.local/share/gnome-podcasts
+.local/share/gnupg
+.local/share/go
+.local/share/gunpoint
+.local/share/gvfs-metadata
+.local/share/hyprland
+.local/share/icons
+.local/share/jupyter
+.local/share/keyrings
+.local/share/kpeople
+.local/share/kpeoplevcard
+.local/share/kwalletd
+.local/share/meld
+.local/share/mime
+.local/share/minikube
+.local/share/mupen64plus
+.local/share/nautilus
+.local/share/networkmanagement
+.local/share/nvim
+.local/share/nwg-drawer
+.local/share/nwg-look
+.local/share/onlyoffice
+.local/share/org.localsend.localsend_app
+.local/share/pki
+.local/share/recently-used.xbel
+.local/share/rofi-games
+.local/share/rustup
+.local/share/sddm
+.local/share/slack-data
+.local/share/systemd
+# Typora - Has to be this way because the only thing to sync is deeply nested.
+.local/share/typora-data/*
+.local/share/typora-data/themes/*
+!.local/share/typora-data/themes
+!.local/share/typora-data/themes/base.user.css
+.local/share/uv
+.local/share/vim
+# VSCodium - Has to be this way because the only thing to sync is deeply nested.
+.local/share/VSCodium/*
+.local/share/VSCodium/user-data/*
+.local/share/VSCodium/user-data/User/*
+!.local/share/VSCodium/user-data/
+!.local/share/VSCodium/user-data/User/
+!.local/share/VSCodium/user-data/User/settings.json
+.local/share/user-places.xbel
+.local/share/vulkan
+.local/share/watcher
+.local/share/zoxide
+
+# SSH
+.ssh/*
+!.ssh/config
+!.ssh/github_ed25519
+!.ssh/github_ed25519.pub
+
+# States and caches
+.cache
+.local/state
 
 # Others
 .local/bin/nuke
-.config/Nextcloud/nextcloud.cfg.*
-.local/share/VSCodium/user-data/org.chromium.Chromium.*
+
+# Main home directories
+Documents/*
+!Documents/Templates
+Downloads
+Media
+Nextcloud
