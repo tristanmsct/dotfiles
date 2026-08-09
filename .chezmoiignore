@@ -42,6 +42,7 @@ README.md
 .config/gtk-4.0/*
 !.config/gtk-4.0/servers
 .config/htop
+.config/hypr/scripts/theming/__pycache__
 .config/ipython
 .config/jupyter
 .config/mpv
