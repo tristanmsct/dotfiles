@@ -126,17 +126,17 @@ element selected.active  {
 // Message --------------------------------------------------------------------------------------------------------------------------------
 message {
     background-color: transparent;
-    border: 0px;
-    margin: 20px 0px 0px 0px;
-    padding: 0px;
-    spacing: 0px;
-    border-radius: 10px;
+    border: 0;
+    margin: 1% 0 0 0;
+    padding: 0;
+    spacing: 0;
+    border-radius: 0.5%;
 }
 
 textbox {
-    padding: 15px;
-    margin: 0px;
-    border-radius: 0px;
+    padding: 1%;
+    margin: 0;
+    border-radius: 0;
     background-color: @background;
     text-color: @foreground;
     vertical-align: 0.5;
@@ -144,8 +144,8 @@ textbox {
 }
 
 error-message {
-    padding: 15px;
-    border-radius: 20px;
+    padding: 1%;
+    border-radius: 1%;
     background-color: @background;
     text-color: @foreground;
 }

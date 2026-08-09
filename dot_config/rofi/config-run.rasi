@@ -20,8 +20,7 @@ configuration {
 // Window / Mainbox --------------------------------------------------------------------------------------------------------------------------------
 window {
     width:                          40%;
-    border:                         2px;
-    padding:                        8px;
+    padding:                        0.5%;
 }
 
 mainbox {
@@ -30,7 +29,7 @@ mainbox {
 
 inputbar {
     children:                       [prompt, entry];
-    padding:                        4px;
+    padding:                        0.5%;
     border:                         false;
     background-color:               transparent;
 }

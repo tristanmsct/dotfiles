@@ -348,9 +348,8 @@ def display_devtools(bl_full: bool = False):
     cache_pip_index = Cache(path=f"{path_home}/.cache/pip/http-v2", thrs_warn=500, thrs_alert=1000)
     cache_pip_wheels = Cache(path=f"{path_home}/.cache/pip/wheels", thrs_warn=500, thrs_alert=1000)
     cache_uv = Cache(path=f"{path_home}/.cache/uv", thrs_warn=1000, thrs_alert=2000)
-    cache_pyenv = Cache(path=f"""{os.getenv("PYENV_ROOT")}/cache""", thrs_warn=1000, thrs_alert=2000)
 
-    bl_display_python = any([cache_pip_index.is_gt_thres, cache_pip_wheels.is_gt_thres, cache_uv.is_gt_thres, cache_pyenv.is_gt_thres])
+    bl_display_python = any([cache_pip_index.is_gt_thres, cache_pip_wheels.is_gt_thres, cache_uv.is_gt_thres])
 
     # Go
     cache_go = Cache(path=f"{path_home}/.cache/go-build", thrs_warn=500, thrs_alert=1500)
@@ -385,9 +384,6 @@ def display_devtools(bl_full: bool = False):
 
         if cache_uv.is_gt_thres or bl_full:
             cache_uv.print_cache_self("uv cache")
-
-        if cache_pyenv.is_gt_thres or bl_full:
-            cache_pyenv.print_cache_self("pyenv cache")
 
     # Go
     if bl_display_go or bl_full:
@@ -493,16 +489,13 @@ def print_tips():
 
     print_section("Dev tools", section_type="sub")
 
-    print_section("Python (pip / uv / pyenv)", section_type="subsub")
+    print_section("Python (pip / uv)", section_type="subsub")
     print("Purge pip cache")
     display_command("    pip cache purge")
 
     print("Prune and clean uv cache")
     display_command("    uv cache prune")
     display_command("    uv cache clean")
-
-    print("Uninstall unused pyenv versions")
-    display_command("    pyenv uninstall <version>")
 
     print_section("Go", section_type="subsub")
     print("Clean go cache")

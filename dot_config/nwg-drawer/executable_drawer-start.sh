@@ -12,4 +12,4 @@ nwg-drawer \
   -s "drawer.css" \
   -ml 6 \
   -mr 6 \
-  -mb 6 \
+  -mb 6

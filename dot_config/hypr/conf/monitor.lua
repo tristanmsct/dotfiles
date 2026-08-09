@@ -118,7 +118,6 @@ local function setup_workspaces()
                 output   = external.name,
                 mode     = "1920x1080@120Hz",
                 position = "-1920x-600",
-                scale    = 1,
             })
         end
 

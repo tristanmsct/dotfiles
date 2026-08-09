@@ -8,9 +8,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Import Current Theme
-theme="$HOME/.config/rofi/config-screenshots.rasi"
-
-mesg="Saved At: $(xdg-user-dir PICTURES)/Screenshots"
+ROFI_CONFIG="$HOME/.config/rofi/config-screenshots.rasi"
 
 option_1="󰍺    Capture All"
 option_2="    Capture Active"
@@ -22,14 +20,11 @@ option_7="󱎫    Capture in 10s"
 
 # Rofi CMD
 rofi_cmd() {
-	rofi -theme-str "window {width: 380px; height: 420px;}" \
-		-theme-str "listview {columns: 1; lines: 7;}" \
-		-theme-str 'textbox-prompt-colon {str: "";}' \
-		-disable-history \
+	rofi -disable-history \
 		-dmenu \
-		-mesg "$mesg" \
 		-markup-rows \
-		-theme "${theme}"
+		-config "${ROFI_CONFIG}" \
+		-theme-str "listview {columns: 1; lines: 7;}"
 }
 
 # Pass variables to rofi dmenu

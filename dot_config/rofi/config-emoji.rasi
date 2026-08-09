@@ -41,8 +41,8 @@ window {
 
 mainbox {
     orientation:                    horizontal;
-    spacing:                        0px;
-    margin:                         0px;
+    spacing:                        0%;
+    margin:                         0%;
     children:                       [ "listbox" ];
 }
 

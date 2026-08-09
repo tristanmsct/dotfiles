@@ -34,25 +34,23 @@ window {
     width:                          100%;
     transparency:                   "real";
     background-color:               @background-transparent;
-    border:                         0px 0px 0px 0px;
+    border:                         0;
     border-radius:                  0;
     border-color:                   @primary;
 }
 
 mainbox {
     children:                       [prompt, inputbar-box, listview];
-    padding:                        0px 0px;
+    padding:                        0;
 }
 
 // Search bar -----------------------------------------------------------------------------------------------------------------------------
 inputbar {
     children:                       [textbox-prompt, entry];
-    margin:                         0px;
-    padding:                        0px;
+    margin:                         0;
+    padding:                        0;
     background-color:               @primary;
-    border:                         2px;
     border-color:                   @primary;
-    border-radius:                  8px;
 }
 
 inputbar-box {
@@ -63,20 +61,17 @@ inputbar-box {
 
 entry {
     expand:                         false;
-    padding:                        10px;
-    margin:                         -6px;
+    padding:                        1%;
     horizontal-align:               0;
     width:                          300;
     background-color:               @background;
-    border:                         6px;
     border-color:                   @primary;
-    border-radius:                  8px;
     cursor:                         text;
 }
 
 prompt {
     width:                          100%;
-    margin:                         10px 0px 0px 30px;
+    margin:                         0.3% 0% 0% 0.6%;
     text-color:                     @important;
     font:                           "MesloLGS NF 34";
 }
@@ -88,26 +83,25 @@ textbox-prompt {
     expand:                         false;
     str:                            "";
     font:                           "MesloLGS NF 24";
-    padding:                        0px 10px 0px 5px;
+    padding:                        0% 0.5% 0% 0.5%;
 }
 
 // Listview -------------------------------------------------------------------------------------------------------------------------------
 listview {
     layout:                         vertical;
-    padding:                        60px;
+    padding:                        4%;
     dynamic:                        true;
     columns:                        7;
-    spacing:                        20px;
+    spacing:                        1%;
 }
 
 // Elements -------------------------------------------------------------------------------------------------------------------------------
 element {
     children:                       [dummy, element-box, dummy];
-    padding:                        5px;
+    padding:                        0.5%;
     orientation:                    vertical;
     border:                         0px 4px solid 0px 4px;
     border-color:                   transparent;
-    border-radius:                  16;
 }
 
 element selected {
@@ -115,7 +109,6 @@ element selected {
 }
 
 element-box {
-    width: 10px;
     children:                       [element-icon, element-text];
     orientation:                    vertical;
     expand:                         false;
@@ -123,20 +116,18 @@ element-box {
 }
 
 element-icon {
-    border-radius:                  16;
-    // padding:                        10px;
     cursor:                         inherit;
     size:                           33%;
-    margin:                         5px;
+    margin:                         0.5%;
 }
 
 element-text {
-    padding:                        0px 5px 2px 5px;
+    padding:                        0% 0.5% 0.5% 0.5%;
     horizontal-align:               0.5;
     cursor:                         inherit;
-    text-color: @text-color;
+    text-color:                     @text-color;
 }
 
 element-text selected {
-    text-color: @text-color-selected;
+    text-color:                     @text-color-selected;
 }

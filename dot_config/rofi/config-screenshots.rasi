@@ -26,40 +26,32 @@ window {
     location:         center;
     anchor:           center;
     fullscreen:       false;
-    width:            300px;
-    height:           380px;
-    x-offset:         0px;
-    y-offset:         0px;
-    margin:           0px;
-    padding:          0px;
-    border-radius:    20px;
+    width:            20%;
+    x-offset:         0;
+    y-offset:         0;
+    margin:           0;
+    padding:          0;
     cursor:           "default";
 }
 
 mainbox {
     enabled:          true;
-    spacing:          15px;
-    padding:          0 20px;
-    margin:           0px;
+    spacing:          1%;
+    padding:          0% 0% 0 1%;
+    margin:           0;
     background-color: transparent;
     orientation:      horizontal;
     children:         [ "listview" ];
 }
 
-// Imagebox --------------------------------------------------------------------------------------------------------------------------------
-imagebox {
-    border-radius:    20px 0px 0px 20px;
-    background-color: transparent;
-}
-
 // Listview --------------------------------------------------------------------------------------------------------------------------------
 listview {
-    padding:          25px 20px 0px 0px;
+    padding:          1% 1% 1% 0%;
     enabled:          true;
     cycle:            true;
     scrollbar:        false;
     layout:           vertical;
-    spacing:          10px;
+    spacing:          1%;
     background-color: transparent;
     cursor:           "default";
 }
@@ -67,7 +59,6 @@ listview {
 // Elements --------------------------------------------------------------------------------------------------------------------------------
 element {
     enabled:          true;
-    padding:          10px;
     background-color: transparent;
     cursor:           pointer;
     padding:          1%;

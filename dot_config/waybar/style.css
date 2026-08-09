@@ -48,7 +48,11 @@
  */
 
 * {
-    min-height: 20px;
+    min-height: 1.6rem;
+}
+
+window {
+    margin: 1rem;
 }
 
 window#waybar {
@@ -56,18 +60,18 @@ window#waybar {
     color: @foreground-theme;
     font-family: "MesloLGS NF";
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.1rem;
 }
 
 tooltip {
     background: @background-theme-element;
-    border-radius: 25px 15px;
+    border-radius: 2rem 1rem;
     border: 2px solid @accent-color-element;
 }
 
 tooltip label {
-    font-size: 14px;
-    padding: 5px;
+    font-size: 1rem;
+    padding: 0.5rem;
 }
 
 /* group "quicklinks" widgets */
@@ -78,11 +82,11 @@ tooltip label {
 #devices, #devices-secondary, #bluetooth, #pulseaudio, #network,
 /* group "system" widgets */
 #system, #system-secondary, #custom-updates, #custom-power {
-    padding: 0px 10px;
+    padding: 0rem 0.7rem;
 }
 
 #custom-appmenu, #quicklinks, #workspaces, #taskbar, #center, #center-secondary, #misc {
-    padding: 0px 13px;
+    padding: 0rem 1rem;
 }
 
 /*
@@ -98,7 +102,7 @@ tooltip label {
 
 #custom-appmenu {
     background: @background-theme;
-    border-radius: 25px 15px;
+    border-radius: 2rem 1rem;
     border: 2px solid @border-color;
 }
 
@@ -119,7 +123,7 @@ tooltip label {
 
 #quicklinks {
     background: @background-theme;
-    border-radius: 25px 15px;
+    border-radius: 2em 1em;
     border: 2px solid @border-color;
 }
 
@@ -141,12 +145,12 @@ tooltip label {
 
 #workspaces {
     background: @background-theme;
-    border-radius: 25px 15px;
+    border-radius: 2em 1em;
     border: 2px solid @border-color;
-    padding: 2px 13px;
+    padding: 0.2rem 1rem;
 
-    margin-left: 5px;
-    margin-right: 1px;
+    margin-left: 0.3rem;
+    margin-right: 0.05rem;
 }
 
 /* ALL workspace buttons (Focused + Unfocused) */
@@ -158,25 +162,25 @@ tooltip label {
 #workspaces button.active {
     color: @act-wrk-fg;
     background: @accent-color;
-    border-radius: 10px 5px;
-    padding: 1px 2px;
-    margin: 2px 4px;
+    border-radius: 0.8rem 0.4rem;
+    padding: 0.05rem 0.2rem;
+    margin: 0.1rem 0.3rem;
     transition: all 0.3s ease-in-out;
 }
 
 #workspaces button {
     color: @foreground-theme;
     background: @background-theme-element;
-    border-radius: 10px 5px;
-    padding: 1px 2px;
-    margin: 2px 4px;
+    border-radius: 0.8rem 0.4rem;
+    padding: 0rem 0.2rem;
+    margin: 0.1rem 0.3rem;
     transition: all 0.3s ease-in-out;
 }
 
 #workspaces button:not(.empty):not(.active) {
     color: @accent-color;
-    padding: 1px 2px;
-    margin: 2px 4px;
+    padding: 0.05rem 0.2rem;
+    margin: 0.1rem 0.3rem;
 }
 
 /*
@@ -191,34 +195,34 @@ tooltip label {
 
 #taskbar {
     background: @background-theme;
-    border-radius: 25px 15px;
+    border-radius: 2em 1em;
     border: 2px solid @border-color;
 
-    margin-left: 1px;
+    margin-left: 0.05rem;
 }
 
 #taskbar button {
-    border-radius: 10px 5px;
-    padding: 0px 4px;
-    margin: 3px 4px;
+    border-radius: 0.8rem 0.4rem;
+    padding: 0rem 0.3rem;
+    margin: 0.3rem 0.3rem;
 }
 
 #taskbar button.active {
-    border-radius: 10px 5px;
+    border-radius: 0.8rem 0.4rem;
     background: @taskbar-bg;
     transition: all 0.3s ease-in-out;
 }
 
 #taskbar button:hover {
     background: @accent-color;
-    border-radius: 10px 5px;
+    border-radius: 0.8rem 0.4rem;
     transition: all 0.3s ease-in-out;
 }
 
 #taskbar.empty {
     background: transparent;
     border: none;
-    padding: 0px;
+    padding: 0rem;
 }
 
 /*
@@ -233,13 +237,13 @@ tooltip label {
 
 #center, #center-secondary {
     background: @background-theme;
-    border-radius: 15px 15px 25px 25px;
+    border-radius: 1rem 1rem 2rem 2rem;
     border: 2px solid @border-color;
 }
 
 #clock {
-    font-size: 14px;
-    padding: 2px 10px 2px 10px;
+    font-size: 0.9rem;
+    padding: 0.1rem 0.8rem 0.1rem 0.8rem;
 }
 
 #clock:hover {
@@ -259,10 +263,10 @@ tooltip label {
 
 #misc {
     background: @background-theme;
-    border-radius: 15px 25px;
+    border-radius: 1rem 2rem;
     border: 2px solid @border-color;
 
-    margin-right: 1px;
+    margin-right: 0.05rem;
 }
 
 #idle_inhibitor:hover, #idle_inhibitor.activated:hover, #custom-theme_switch:hover, #custom-cliphist:hover, #custom-hyprsunset:hover,
@@ -284,11 +288,11 @@ tooltip label {
 }
 
 #custom-hyprsunset.filter_on {
-    color: #99d989;
+    color: #e8a561;
 }
 
 #custom-hyprsunset.auto_timer {
-    color: #e8a561;
+    color: #99d989;
 }
 
 #custom-printer.cups_on {
@@ -320,11 +324,11 @@ tooltip label {
 
 #devices, #devices-secondary {
     background: @background-theme;
-    border-radius: 15px 25px;
+    border-radius: 1rem 2rem;
     border: 2px solid @border-color;
 
-    margin-left: 1px;
-    margin-right: 5px;
+    margin-left: 0.05rem;
+    margin-right: 0.3rem;
 }
 
 #pulseaudio:hover, #bluetooth:hover, #backlight:hover, #network:hover, #battery:hover,
@@ -362,7 +366,7 @@ tooltip label {
 
 #system, #system-secondary {
     background: @background-theme;
-    border-radius: 15px 25px;
+    border-radius: 1rem 2rem;
     border: 2px solid @border-color;
 }
 

@@ -8,4 +8,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-rofi -disable-history -modi emoji -show emoji -config "$HOME/.config/rofi/config-emoji.rasi" -emoji-format '{emoji}  -  {name}'
+rofi -disable-history\
+    -modi emoji \
+    -show emoji \
+    -config "$HOME/.config/rofi/config-emoji.rasi" \
+    -emoji-format '{emoji}  -  {name}'

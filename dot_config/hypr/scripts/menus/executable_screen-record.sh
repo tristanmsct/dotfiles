@@ -8,7 +8,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Import Current Theme
-theme="$HOME/.config/rofi/config-screenshots.rasi"
+ROFI_CONFIG="$HOME/.config/rofi/config-screenshots.rasi"
 
 PIDFILE="/tmp/wf-recorder.pid"
 VIDEOFILE="$HOME/Media/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4"
@@ -30,33 +30,25 @@ stop() {
     fi
 }
 
-mesg="Saved At: $VIDEOFILE)"
-
 option_1="    Record Screen"
 option_2="    Record Screen with Audio"
 option_3="    Stop Recording"
 
 # Rofi CMD
 rofi_cmd() {
-	rofi -theme-str "window {width: 420px; height: 160px;}" \
-		-theme-str "listview {columns: 1; lines: 2;}" \
-		-theme-str 'textbox-prompt-colon {str: "";}' \
-		-disable-history \
+	rofi -disable-history \
 		-dmenu \
-		-mesg "$mesg" \
 		-markup-rows \
-		-theme "${theme}"
+		-config "${ROFI_CONFIG}" \
+        -theme-str "listview {columns: 1; lines: 2;}"
 }
 
 rofi_cmd_stop() {
-	rofi -theme-str "window {width: 420px; height: 100px;}" \
-		-theme-str "listview {columns: 1; lines: 1;}" \
-		-theme-str 'textbox-prompt-colon {str: "";}' \
-		-disable-history \
+	rofi -disable-history \
 		-dmenu \
-		-mesg "$mesg" \
 		-markup-rows \
-		-theme "${theme}"
+		-config "${ROFI_CONFIG}" \
+		-theme-str "listview {columns: 1; lines: 1;}"
 }
 
 # Pass variables to rofi dmenu

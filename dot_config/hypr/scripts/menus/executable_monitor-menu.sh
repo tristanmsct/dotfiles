@@ -12,7 +12,9 @@ external="External Only"
 mirror="Mirror Main Screen"
 
 monitor_cmd() {
-    rofi -disable-history -dmenu -replace -config "$HOME/.config/rofi/config-simple.rasi" -i -no-show-icons -l $1 -p "Choose a monitor setup"
+    rofi -disable-history -dmenu -replace \
+        -config "$HOME/.config/rofi/config-simple.rasi" \
+        -i -no-show-icons -l $1 -p "Choose a monitor setup"
 }
 
 monitor_menu() {

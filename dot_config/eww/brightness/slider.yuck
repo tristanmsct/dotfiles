@@ -59,9 +59,7 @@
 (defwindow brightness-slider-window
   :monitor 0
   :geometry (geometry
-    :x "35px"
-    :y "-3px"
-    :width "300px"
+    :x "2%"
     :anchor "top right"
   )
   :stacking "fg"

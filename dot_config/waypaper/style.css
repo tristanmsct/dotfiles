@@ -13,6 +13,6 @@
 
 window {
     background-color: @background-theme;
-    border-radius: 15px;
+    border-radius: 18px;  /* Needs to be the same value as Hyprland border rounding value */
     border: 2px solid @border-color;
 }

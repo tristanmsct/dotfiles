@@ -12,46 +12,46 @@
   background-color: $background-theme;
   border: $border-theme;
 
-  border-radius: 15px 25px;
-  padding: 10px 20px 10px 20px;
-  margin: 3px;
+  border-radius: 1rem 2rem;
+  padding: 0.6rem 1.2rem;
+  min-width: 25rem;
 }
 
 .birghtness-menu-title {
   color: $foreground-theme;
-  font-size: 20;
+  font-size: 1.6rem;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 0.2rem;
 }
 
 .slider-container {
-  padding-left: 10px;
+  padding-left: 0.5rem;
 }
 
 .slider-label {
   color: $foreground-theme;
-  min-width: 100px;
-  padding: 10px 0px;
-  margin: 5px 0px;
+  min-width: 5rem;
+  padding: 0.6rem 0rem;
+  margin: 0.5rem 0rem;
 }
 
 .element-group {
-  margin: 5px 0px;
+  margin: 0.2rem 0rem;
 }
 
 .control-button-active {
   background-color: $accent-color;
   color: #ffffff;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 14px;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
   font-weight: bold;
   transition: background-color 0.2s ease;
 
-  padding: 10px;
-  margin: 5px 0px;
-  min-width: 100px;
+  padding: 0.7rem;
+  margin: 0.3rem 0rem;
+  min-width: 7rem;
 
   &:hover {
     background-color: $highlight-color;
@@ -66,15 +66,15 @@
   background-color: #404040;
   color: #ffffff;
   border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 14px;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
   font-weight: bold;
   transition: background-color 0.2s ease;
 
-  padding: 10px;
-  margin: 5px 0px;
-  min-width: 100px;
+  padding: 0.7rem;
+  margin: 0.3rem 0rem;
+  min-width: 7rem;
 
   &:hover {
     background-color: #505050;
@@ -87,29 +87,27 @@
 }
 
 .hyprsunset-slider {
-  min-height: 20px;
-  min-width: 200px;
-  margin-right: 10px;
+  min-height: 1rem;
+  min-width: 12rem;
+  margin-right: 0.5rem;
 
   trough {
     background-color: #404040;
-    border-radius: 10px;
-    min-height: 5px;
-    border: none;
+    min-height: 0.3rem;
+    border-radius: 1rem;
   }
 
   highlight {
     background-color: #404040;
-    border-radius: 10px;
-    border: none;
+    border-radius: 1rem;
   }
 
   slider {
     background-color: $accent-color;
     border-radius: 50%;
-    min-height: 16px;
-    min-width: 16px;
-    margin: -5px 0px -5px 0px;
+    min-height: 1rem;
+    min-width: 1rem;
+    margin: -0.3rem 0rem -0.3rem 0rem;
 
     &:hover {
       background-color: $highlight-color;
@@ -118,55 +116,51 @@
 }
 
 .hyprsunset-slider-hot {
-  min-height: 20px;
-  min-width: 200px;
-  margin-right: 10px;
+  min-height: 1rem;
+  min-width: 12rem;
+  margin-right: 0.5rem;
 
   trough {
     background-color: #d43f35;
-    border-radius: 10px;
-    min-height: 5px;
-    border: none;
+    min-height: 0.3rem;
+    border-radius: 1rem;
   }
 
   highlight {
     background-color: #404040;
-    border-radius: 10px;
-    border: none;
+    border-radius: 1rem;
   }
 
   slider {
     background-color: #d43f35;
     border-radius: 50%;
-    min-height: 16px;
-    min-width: 16px;
-    margin: -5px 0px -5px 0px;
+    min-height: 1rem;
+    min-width: 1rem;
+    margin: -0.3rem 0rem -0.3rem 0rem;
   }
 }
 
 .hyprsunset-slider-cold {
-  min-height: 20px;
-  min-width: 200px;
-  margin-right: 10px;
+  min-height: 1rem;
+  min-width: 12rem;
+  margin-right: 0.5rem;
 
   trough {
     background-color: #404040;
-    border-radius: 10px;
-    min-height: 5px;
-    border: none;
+    min-height: 0.3rem;
+    border-radius: 1rem;
   }
 
   highlight {
     background-color: #4094ed;
-    border-radius: 10px;
-    border: none;
+    border-radius: 1rem;
   }
 
   slider {
     background-color: #4094ed;
     border-radius: 50%;
-    min-height: 16px;
-    min-width: 16px;
-    margin: -5px 0px -5px 0px;
+    min-height: 1rem;
+    min-width: 1rem;
+    margin: -0.3rem 0rem -0.3rem 0rem;
   }
 }

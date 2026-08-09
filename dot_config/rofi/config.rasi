@@ -56,12 +56,6 @@ listview {
 }
 
 // Elements -------------------------------------------------------------------------------------------------------------------------------
-element {
-    orientation:                    vertical;
-    border-radius:                  1%;
-    padding:                        2% 0% 2% 0%;
-}
-
 element-icon {
     size:                           6%;
     border:                         0;

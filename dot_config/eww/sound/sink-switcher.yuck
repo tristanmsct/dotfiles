@@ -18,7 +18,7 @@
   (box
     :class "sink-switch-widget"
     :orientation "v"
-    :width 450
+    :width 350
     :height 50
     :space-evenly false
     :spacing 3
@@ -51,9 +51,8 @@
 (defwindow sink-switcher-window
   :monitor 0
   :geometry (geometry
-    :x "30px"
-    :y "60px"
-    :width "300px"
+    :x "6%"
+    :y "6%"
     :anchor "top right"
   )
   :stacking "fg"

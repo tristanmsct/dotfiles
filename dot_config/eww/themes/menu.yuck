@@ -19,14 +19,6 @@
   "if (hyprctl getoption general:col:active_border | grep -q 'gradient data: 0 0 0deg'); then echo 'false'; else echo 'true'; fi"
 )
 
-; Since waybar borders are disabled in focus mode, it is not reliable to know if borders are on or not
-; this is why I'm using eww borders as an indicator here.
-; (defpoll borders-decorations-on
-;   :interval "2s"
-;   :initial "if (grep -q 'border: 2px solid rgba' $HOME/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
-;   "if (grep -q 'border: 2px solid rgba' $HOME/.config/waybar/style.css); then echo 'false'; else echo 'true'; fi"
-; )
-
 (defpoll borders-decorations-on
   :interval "2s"
   :initial "if (grep -q '$border-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
@@ -172,8 +164,6 @@
   :geometry (geometry
     :x "0"
     :y "0"
-    :width "400px"
-    :height "150px"
     :anchor "center"
   )
   :stacking "overlay"

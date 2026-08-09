@@ -17,4 +17,4 @@ nwg-menu \
   -cmd-logout "hyprctl dispatch exit" \
   -cmd-restart "systemctl -i reboot" \
   -cmd-shutdown "systemctl -i poweroff" \
-  -d \
+  -d

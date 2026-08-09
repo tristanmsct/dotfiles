@@ -205,10 +205,6 @@
   :monitor 0
   :orientation "v"
   :geometry (geometry
-    :x "0"
-    :y "0"
-    :width "400px"
-    :height "150px"
     :anchor "center"
   )
   :stacking "fg"

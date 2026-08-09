@@ -85,9 +85,7 @@ Right click to switch main audio output"
 (defwindow sound-slider-window
   :monitor 0
   :geometry (geometry
-    :x "220px"
-    :y "-3px"
-    :width "300px"
+    :x "8%"
     :anchor "top right"
   )
   :stacking "fg"
@@ -102,9 +100,7 @@ Right click to switch main audio output"
 (defwindow sound-slider-window-secondary
   :monitor 0
   :geometry (geometry
-    :x "70px"
-    :y "-3px"
-    :width "300px"
+    :x "6%"
     :anchor "top right"
   )
   :stacking "fg"
