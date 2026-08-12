@@ -20,8 +20,9 @@ case $1 in
       ;;
 
     wipe)
-      if [ `echo -e "Clear full clipboard history\nCancel action" | rofi -disable-history -dmenu -l 2 \
-            -config "$HOME/.config/rofi/config-simple.rasi" -theme-str "${THEME_NORTHEAST}" -theme-str "${THEME_WIPE}"` == "Clear" ] ; then
+      if [ "$(echo -e "Clear full clipboard history\nCancel" | rofi -disable-history -dmenu -l 2 \
+            -config "$HOME/.config/rofi/config-simple.rasi" -theme-str "${THEME_NORTHEAST}" \
+            -theme-str "${THEME_WIPE}")" == "Clear full clipboard history" ] ; then
             cliphist wipe
       fi
       ;;
