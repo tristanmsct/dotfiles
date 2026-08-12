@@ -12,6 +12,7 @@
 
 // Configuration --------------------------------------------------------------------------------------------------------------------------
 configuration {
+    font:                           "Noto Sans Bold 14";
     modi:                           "drun";
     show-icons:                     false;
 	hover-select:                   true;
@@ -21,7 +22,6 @@ configuration {
 
 // Window / Mainbox -----------------------------------------------------------------------------------------------------------------------
 window {
-    font:             "Fira Sans,Fira Sans Medium 16";
     transparency:     "real";
     location:         center;
     anchor:           center;

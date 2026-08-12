@@ -14,7 +14,7 @@
 @import "colors-rofi"
 
 configuration {
-    font:                           "Fira Sans 11";
+    font:                           "Noto Sans 11";
 }
 
 * {
@@ -47,6 +47,7 @@ inputbar {
 }
 
 entry {
+    font:                           "Noto Sans Bold 11";
     enabled:                        true;
     background-color:               transparent;
     text-color:                     inherit;

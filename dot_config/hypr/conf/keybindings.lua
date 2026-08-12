@@ -9,6 +9,7 @@
 
 local mainMod = "SUPER"
 local SCRIPTS = os.getenv("HOME") .. "/.local/bin"
+local CONFIG = os.getenv("HOME") .. "/.config"
 local HYPRSCRIPTS = os.getenv("HOME") .. "/.config/hypr/scripts"
 
 local TYPORA_FILE = os.getenv("HOME") .. '/Nextcloud/03-Notes/Day-to-day/' .. os.date('%Y-%m-%d') .. '-notes.md'
@@ -66,6 +67,7 @@ hl.bind(mainMod .. " + CTRL + K", e(HYPRSCRIPTS .. "/menus/keybindings.sh"), { d
 hl.bind(mainMod .. " + SHIFT + K", e(HYPRSCRIPTS .. "/menus/aliases.sh"), { description = "Show aliases" })
 hl.bind(mainMod .. " + CTRL + RETURN", e("pkill rofi || rofi -show drun -replace -i -disable-history"), { description = "Open application launcher" })
 hl.bind(mainMod .. " + SHIFT + RETURN", e('pkill rofi || rofi -show drun -disable-history -config "' .. os.getenv("HOME") .. '/.config/rofi/config-run.rasi"'), { description = "Open command runner" })
+hl.bind(mainMod .. " + SHIFT + CTRL + RETURN", e(CONFIG .. "/nwg-drawer/drawer-start.sh"), { description = "Open NWG application launcher" })
 
 hl.bind("CTRL + Escape", e("hyprlock --grace 3"), { description = "Lock screen" })
 hl.bind(mainMod .. " + L", e("hyprlock --grace 3"), { description = "Lock screen" })

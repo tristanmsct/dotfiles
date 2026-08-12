@@ -55,3 +55,8 @@ require("conf/animations")
 -- xdg-desktop-portal-hyprland
 -- --------------------------------------------------------------------------------------
 hl.dispatch(hl.dsp.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"))
+
+-- --------------------------------------------------------------------------------------
+-- Hyprmod overwrites
+-- --------------------------------------------------------------------------------------
+require("hyprland-gui")

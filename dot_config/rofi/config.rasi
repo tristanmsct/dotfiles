@@ -46,6 +46,7 @@ inputbar {
 }
 
 entry {
+    font:                           "Noto Sans Bold 12";
     placeholder:                    "Search Applications";
 }
 
@@ -62,6 +63,7 @@ element-icon {
 }
 
 element-text {
+    font:                           "Noto Sans Bold 11";
     expand:                         true;
     horizontal-align:               0.5;
     vertical-align:                 0.5;

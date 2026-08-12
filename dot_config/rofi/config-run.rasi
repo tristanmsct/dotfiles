@@ -13,7 +13,7 @@
 configuration {
     modi:                           "run";
     show-icons:                     false;
-    font:                           "Fira Sans 14";
+    font:                           "Noto Sans 14";
     sidebar-mode:                   false;
 }
 
@@ -28,12 +28,21 @@ mainbox {
 }
 
 inputbar {
-    children:                       [prompt, entry];
+    children:                       [ "textbox-prompt-colon", "entry" ];
     padding:                        0.5%;
     border:                         false;
     background-color:               transparent;
 }
 
+textbox-prompt-colon {
+    font:                           "Noto Sans Bold 14";
+    enabled:                        true;
+    str:                            ">";
+    padding:                        0 1% 0 0;
+    background-color:               transparent;
+}
+
 entry {
+    font:                           "Noto Sans 12";
     placeholder:                    "Command";
 }

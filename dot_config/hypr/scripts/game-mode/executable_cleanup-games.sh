@@ -13,13 +13,10 @@
 base_apps="$HOME/.local/share/applications"
 
 find "$base_apps" -type f -name "*.desktop" -print0 | while IFS= read -r -d '' file; do
-    # Check if it's a game that launches with steam
-    if grep -q "Exec=steam" "$file" && grep -q "Categories=.*Game" "$file"; then
-        # Add NoDisplay if not already present
-        if ! grep -q "NoDisplay=true" "$file"; then
-            # Add after [Desktop Entry] line
+    # Check if it's a game that launches with steam and add NoDisplay if not already present
+    if grep -q "Exec=steam" "$file" && grep -q "Categories=.*Game" "$file" && \
+        ! grep -q "NoDisplay=true" "$file" && ! grep -q "Name=Steam" "$file"; then
             sed -i '/^\[Desktop Entry\]/a NoDisplay=true' "$file"
-        fi
     fi
 done
 
