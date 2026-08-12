@@ -47,7 +47,7 @@ inputbar {
 }
 
 entry {
-    font:                           "Noto Sans Bold 11";
+    font:                           "Noto Sans Bold 14";
     enabled:                        true;
     background-color:               transparent;
     text-color:                     inherit;
@@ -55,21 +55,20 @@ entry {
     expand:                         true;
     cursor:                         text;
     horizontal-align:               0;
-    padding:                        0.15% 0% 0% 0%;
+    padding:                        0% 0% 0% 0.5%;
     blink:                          true;
 }
 
 prompt {
     enabled: 						true;
-	padding: 						0 1% 0 0;
     str:                            "󰍉";
 	background-color: 				transparent;
 	text-color: 					@foreground;
 }
 
 textbox-prompt-colon {
+    font:                           "Noto Sans Bold 14";
     enabled: 						true;
-	padding: 						0 1% 0 0;
     str:                            "󰍉";
 	background-color: 				transparent;
 	text-color: 					@foreground;
