@@ -27,14 +27,17 @@ window {
     text-color:                     @foreground;
 
     border:                         @border-width;
-    border-color:                   @border-color;
+    border-color:                   @border-accent-color;
     border-radius:                  2.5% 1%;
     background-color:               @background;
 }
 
+mainbox {
+    background-color:               transparent;
+}
+
 // Search bar -----------------------------------------------------------------------------------------------------------------------------
 inputbar {
-    enabled:                        true;
     background-color:               @background;
     text-color:                     @foreground;
     expand:                         false;

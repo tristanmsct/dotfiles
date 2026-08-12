@@ -1,8 +1,9 @@
-/*  ____        __ _                                        _           _
- * |  _ \ ___  / _(_)      ___  ___ _ __ ___  ___ _ __  ___| |__   ___ | |_ ___
- * | |_) / _ \| |_| |_____/ __|/ __| '__/ _ \/ _ \ '_ \/ __| '_ \ / _ \| __/ __|
- * |  _ < (_) |  _| |_____\__ \ (__| | |  __/  __/ | | \__ \ | | | (_) | |_\__ \
- * |_| \_\___/|_| |_|     |___/\___|_|  \___|\___|_| |_|___/_| |_|\___/ \__|___/
+/*
+ *  ____        __ _                                    _           _
+ * |  _ \ ___  / _(_)  ___  ___ _ __ ___  ___ _ __  ___| |__   ___ | |_ ___
+ * | |_) / _ \| |_| | / __|/ __| '__/ _ \/ _ \ '_ \/ __| '_ \ / _ \| __/ __|
+ * |  _ < (_) |  _| | \__ \ (__| | |  __/  __/ | | \__ \ | | | (_) | |_\__ \
+ * |_| \_\___/|_| |_| |___/\___|_|  \___|\___|_| |_|___/_| |_|\___/ \__|___/
  *
  * ----------------------------------------------------------------------------------------------------------------------------------------
  */
@@ -12,7 +13,6 @@
 
 // Configuration --------------------------------------------------------------------------------------------------------------------------
 configuration {
-    font:                           "Noto Sans Bold 14";
     modi:                           "drun";
     show-icons:                     false;
 	hover-select:                   true;
@@ -22,53 +22,23 @@ configuration {
 
 // Window / Mainbox -----------------------------------------------------------------------------------------------------------------------
 window {
-    transparency:     "real";
-    location:         center;
-    anchor:           center;
-    fullscreen:       false;
+    font:             "Noto Sans Bold 14";
     width:            20%;
-    x-offset:         0;
-    y-offset:         0;
-    margin:           0;
-    padding:          0;
-    cursor:           "default";
 }
 
 mainbox {
     enabled:          true;
-    spacing:          1%;
-    padding:          0% 0% 0 1%;
-    margin:           0;
-    background-color: transparent;
-    orientation:      horizontal;
     children:         [ "listview" ];
 }
 
 // Listview --------------------------------------------------------------------------------------------------------------------------------
 listview {
-    padding:          1% 1% 1% 0%;
-    enabled:          true;
     cycle:            true;
-    scrollbar:        false;
-    layout:           vertical;
+    padding:          1%;
     spacing:          1%;
-    background-color: transparent;
-    cursor:           "default";
 }
 
 // Elements --------------------------------------------------------------------------------------------------------------------------------
 element {
-    enabled:          true;
-    background-color: transparent;
-    cursor:           pointer;
-    padding:          1%;
-}
-
-
-element-text {
-    background-color: transparent;
-    text-color:       inherit;
-    cursor:           inherit;
-    vertical-align:   0.5;
-    horizontal-align: 0.0;
+    padding:          1% 1% 1% 1.5%;
 }

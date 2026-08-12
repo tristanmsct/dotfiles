@@ -21,8 +21,8 @@
 
 (defpoll borders-decorations-on
   :interval "2s"
-  :initial "if (grep -q '$border-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
-  "if (grep -q '$border-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
+  :initial "if (grep -q '$border-accent-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
+  "if (grep -q '$border-accent-color: transparent' $HOME/.config/eww/colors-eww.scss); then echo 'false'; else echo 'true'; fi"
 )
 
 (defvar saturation-value 0.5)

@@ -35,9 +35,12 @@ fi
 NB_INTERFACE=$(echo "$LST_INTERFACES" | wc -l)
 NB_INTERFACE=$((NB_INTERFACE>=8 ? 8 : NB_INTERFACE))
 
+THEME_VPN="window { font: 'Noto Sans Bold 14'; width: 20%;} element { margin: 0% 0% 1.5% 0%;}"
+
 SELECTION=$(
-    echo -e "$LST_INTERFACES" | rofi -disable-history -dmenu -font "Noto Sans Bold 14" \
-        -config "$HOME/.config/rofi/config-simple-entry.rasi" -markup-rows -l $NB_INTERFACE -p "Select:"
+    echo -e "$LST_INTERFACES" | rofi -disable-history -dmenu \
+        -config "$HOME/.config/rofi/config-simple.rasi" -theme-str "${THEME_VPN}" \
+        -markup-rows -l $NB_INTERFACE -p "Select:"
     )
 CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
 

@@ -11,9 +11,11 @@ default="Default"
 external="External Only"
 mirror="Mirror Main Screen"
 
+THEME_MONITOR="window {width: 20%;} inputbar {enabled: false;} listview {padding: 0;}"
+
 monitor_cmd() {
     rofi -disable-history -dmenu -replace -font "Noto Sans Bold 14" \
-        -config "$HOME/.config/rofi/config-simple.rasi" \
+        -config "$HOME/.config/rofi/config-simple.rasi" -theme-str "${THEME_MONITOR}"\
         -i -no-show-icons -l $1 -p "Choose a monitor setup"
 }
 

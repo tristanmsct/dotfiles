@@ -31,4 +31,4 @@ while IFS= read -r line; do
 done < <(hyprctl binds)
 
 rofi -disable-history -dmenu -i -markup -eh 2 -replace -p "Keybinds" \
-  -config "$HOME/.config/rofi/config-search.rasi" <<< "$keybinds"
+  -config "$HOME/.config/rofi/config-simple.rasi" <<< "$keybinds"

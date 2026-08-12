@@ -30,5 +30,5 @@
     accent-color-transparent: @color-tr-1;
     foreground: #eeeeee;
     background: rgba(0, 0, 0, 0.4);
-    border-color: @accent-color;
+    border-accent-color: @accent-color;
 }

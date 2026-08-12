@@ -41,4 +41,4 @@
 @define-color highlight-color @color-br-1;
 @define-color background-theme rgba(0, 0, 0, 0.4);
 @define-color foreground-theme #eeeeee;
-@define-color border-color @accent-color;
+@define-color border-accent-color @accent-color;

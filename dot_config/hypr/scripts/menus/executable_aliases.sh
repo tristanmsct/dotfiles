@@ -48,7 +48,7 @@ while read -r line; do
 done < "$config_file"
 
 sleep 0.2
-selected=$(rofi -disable-history -dmenu -i -eh 2 -replace -p "Aliases" -config "$HOME/.config/rofi/config-search.rasi" <<< "$aliases")
+selected=$(rofi -disable-history -dmenu -i -eh 2 -replace -p "Aliases" -config "$HOME/.config/rofi/config-simple.rasi" <<< "$aliases")
 
 alias_name="${selected%%' ->'*}"
 echo -n "$alias_name" | wl-copy

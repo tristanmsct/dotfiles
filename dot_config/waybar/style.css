@@ -103,7 +103,7 @@ tooltip label {
 #custom-appmenu {
     background: @background-theme;
     border-radius: 2rem 1rem;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 }
 
 #custom-appmenu:hover {
@@ -124,7 +124,7 @@ tooltip label {
 #quicklinks {
     background: @background-theme;
     border-radius: 2em 1em;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 }
 
 #custom-filemanager:hover, #custom-browser:hover, #custom-terminal:hover, #custom-editor:hover, #custom-typora:hover {
@@ -146,7 +146,7 @@ tooltip label {
 #workspaces {
     background: @background-theme;
     border-radius: 2em 1em;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
     padding: 0.2rem 1rem;
 
     margin-left: 0.3rem;
@@ -196,7 +196,7 @@ tooltip label {
 #taskbar {
     background: @background-theme;
     border-radius: 2em 1em;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 
     margin-left: 0.05rem;
 }
@@ -238,7 +238,7 @@ tooltip label {
 #center, #center-secondary {
     background: @background-theme;
     border-radius: 1rem 1rem 2rem 2rem;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 }
 
 #clock {
@@ -264,7 +264,7 @@ tooltip label {
 #misc {
     background: @background-theme;
     border-radius: 1rem 2rem;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 
     margin-right: 0.05rem;
 }
@@ -325,7 +325,7 @@ tooltip label {
 #devices, #devices-secondary {
     background: @background-theme;
     border-radius: 1rem 2rem;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 
     margin-left: 0.05rem;
     margin-right: 0.3rem;
@@ -367,7 +367,7 @@ tooltip label {
 #system, #system-secondary {
     background: @background-theme;
     border-radius: 1rem 2rem;
-    border: 2px solid @border-color;
+    border: 2px solid @border-accent-color;
 }
 
 #custom-power:hover {
