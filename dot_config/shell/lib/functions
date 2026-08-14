@@ -30,5 +30,9 @@ show-colors() {
 }
 
 fdxdg() {
-    fd --exact-depth=1 $1 .config/ .cache .local/share .local/state
+    fd --exact-depth=1 $1 $HOME/.config/ $HOME/.cache $HOME/.local/share $HOME/.local/state
+}
+
+zf () {
+    z $(zoxide query --score --list | fzf --filter "$*" 2>/dev/null | sort -nr -k1,1 | head -1 | awk '{ $1=""; sub(/^ /,""); print }')
 }

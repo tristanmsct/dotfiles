@@ -10,7 +10,7 @@ source "$HOME/.config/shell/env"
 source "$BASHDIR/config"
 source "$SHELLDIR/aliases"
 source "$SHELLDIR/startup"
-source "$SHELLDIR/functions"
+source "$SHELLDIR/lib/functions"
 
 if [[ $(tty) == *"pts"* ]]; then
   # Themes are installed at /usr/share/oh-my-posh/themes.
