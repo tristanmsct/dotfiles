@@ -45,6 +45,7 @@ README.md
 .config/hypr/scripts/theming/__pycache__
 .config/ipython
 .config/jupyter
+.config/mlflow
 .config/mpv
 .config/mupen64plus
 .config/nautilus

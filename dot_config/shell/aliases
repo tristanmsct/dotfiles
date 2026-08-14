@@ -9,28 +9,28 @@
 # ---------------------------------------------------------------------------------------
 # General
 # ---------------------------------------------------------------------------------------
-alias ls="eza --icons=always"
-alias lh="eza --icons=always --sort=type --oneline"
-alias la="eza --icons=always --sort=type --oneline --all"
-alias ll="eza --icons=always --sort=type --long"
-alias l="eza --icons=always --sort=type --long --all"
-alias lt="eza --tree --level=1 --icons=always --sort=type --all"
-alias lg="eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions"
+alias ls="eza --icons=always"  # Simple list of regular files and directories
+alias lh="eza --icons=always --sort=type --oneline"  # One line list of regular files and directories
+alias la="eza --icons=always --sort=type --oneline --all"  # One line list of all files and directories
+alias ll="eza --icons=always --sort=type --long"  # One line list of regular files and directories with inode info
+alias l="eza --icons=always --sort=type --long --all"  # One line list of all files and directories with inode info
+alias lt="eza --tree --level=1 --icons=always --sort=type --all"  # Tree list of all files and directories
+alias lg="eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions"  # Tree list of all files and directories with git info
 
-alias grep="grep --color=auto"
+alias grep="grep --color=auto"  # Grep with colors
 
-alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"
-alias ff="fastfetch"
-alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"
+alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"  # Wget with better hist file
+alias ff="fastfetch"  # Fastfetch
+alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"  # Bash terminal sourcing directly the bashrc
 alias dufl="duf --only local"  # Show disk usage
-alias dust="dust -b"
-alias pkgi="watcher pkglog notes query"
-alias vscodium="codium"
+alias dust="dust -b"  # Dust without the percent bars
+alias pkgi="watcher pkglog notes query"  # Query nnotes on a package directly
+alias vscodium="codium"  # Short lazy version of VSCodium
 
 # ---------------------------------------------------------------------------------------
 # Kitty
 # ---------------------------------------------------------------------------------------
-alias icat="kitten icat"
+alias icat="kitten icat"  # Display image in terminal
 
 # ---------------------------------------------------------------------------------------
 # System
@@ -40,31 +40,31 @@ alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 # ---------------------------------------------------------------------------------------
 # Docker
 # ---------------------------------------------------------------------------------------
-alias dstart="sudo systemctl start docker containerd"
-alias dc="docker compose"
-alias dcu="docker compose up"
-alias dcd="docker compose down"
-alias dcr="docker compose restart"
-alias dki="docker kill"
-alias dps="docker container ls"
-alias dcl="docker compose logs -f"
-alias dpsf="docker ps --format 'table {{.Image}}\t{{.Names}}\t{{.Status}}'"
-alias dstats="docker stats --no-stream"
-alias dcstats="docker compose stats --no-stream"
+alias dstart="sudo systemctl start docker containerd"  # Starts docker
+alias dc="docker compose"  # For docker compose commands
+alias dcu="docker compose up"  # Starts a  docker compose project
+alias dcd="docker compose down"  # Stops a docker compose project
+alias dcr="docker compose restart"  # Restarts a docker compose project
+alias dki="docker kill"  # Kill a given container
+alias dcl="docker compose logs -f"  # Show logs for a docker compose project
+alias dps="docker container ls"  # List all docker containers
+alias dpsf="docker ps --format 'table {{.Image}}\t{{.Names}}\t{{.Status}}'"  # List containers in a clean formatted way
+alias dstats="docker stats --no-stream"  # Show full docker stats
+alias dcstats="docker compose stats --no-stream" # Show docker stats for a docker compose project
 
 # ---------------------------------------------------------------------------------------
 # Git
 # ---------------------------------------------------------------------------------------
-alias gad="git add ."
-alias gci="git commit"
-alias gcm="git commit -m"
-alias gph="git push"
-alias gpl="git pull"
-alias gdi="git diff"
-alias gst="git status"
-alias glo="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gma="git checkout main"
-alias gco="git checkout"
+alias gad="git add ."  # Git add everything from current working directory
+alias gci="git commit"  # Git commit with comment in an editor
+alias gcm="git commit -m"  # Git commit with inline comment
+alias gph="git push"  # Git push
+alias gpl="git pull"  # Git push
+alias gdi="git diff"  # Git diff
+alias gst="git status"  # Git status
+alias glo="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"  # Git log with good formatting
+alias gma="git checkout main"  # Git checkout main
+alias gco="git checkout"  # Git checkout
 
 if [ -n "$BASH_VERSION" ]; then
 	source /usr/share/bash-completion/completions/git

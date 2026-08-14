@@ -33,7 +33,7 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Completion Scripts
 # -----------------------------------------------------
 # Initialize completion system
-# /!\ Moving these instructions down can break the config.
+# /!\ Moving these instructions down can break the config /!\
 fpath=("$XDG_CONFIG_HOME/shell/zsh/completions" $fpath)
 autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 

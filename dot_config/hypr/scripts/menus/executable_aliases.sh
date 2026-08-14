@@ -37,9 +37,9 @@ while read -r line; do
         alias_cmd="${alias_cmd%\"}"
 
         if [[ -n "$comment" ]]; then
-            item="${alias_name} -> ${alias_cmd}"$'\r'"${comment}"
+            item="<b>${alias_name}</b> -> ${alias_cmd}"$'\r'"${comment}"
         else
-            item="${alias_name} -> ${alias_cmd}"
+            item="<b>${alias_name}</b> -> ${alias_cmd}"
 
         fi
 
@@ -48,7 +48,8 @@ while read -r line; do
 done < "$config_file"
 
 sleep 0.2
-selected=$(rofi -disable-history -dmenu -i -eh 2 -replace -p "Aliases" -config "$HOME/.config/rofi/config-simple.rasi" <<< "$aliases")
+selected=$(rofi -disable-history -dmenu -i -eh 2 -replace -markup-rows -p "Aliases" \
+    -config "$HOME/.config/rofi/config-simple.rasi" <<< "$aliases")
 
 alias_name="${selected%%' ->'*}"
 echo -n "$alias_name" | wl-copy
