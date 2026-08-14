@@ -54,7 +54,7 @@ done
 mkdir -p "$NOTES_DIR"
 
 # Find .desktop files in both directories.
-monitor_list=$(comm -12 <(ls "$SYSTEM_DIR" 2>/dev/null | sort) <(ls "$LOCAL_DIR" 2>/dev/null | sort))
+monitor_list=$(comm -12 <(ls "$SYSTEM_DIR" 2>/dev/null | sort) <(ls "$LOCAL_DIR" 2>/dev/null | sort) | grep -v "^mimeinfo.cache$")
 
 if [[ $# -eq 0 ]]; then
     # Show differences.
