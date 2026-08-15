@@ -122,11 +122,10 @@ def get_most_different_colors(k: int = 4):
 
     mat_dist = cdist(XA=lst_colors, XB=lst_colors, metric=weighted_rgb_distance)
 
-    # Start with the farthest pair
-    i, j = np.unravel_index(np.argmax(mat_dist), mat_dist.shape)
-    selected = [i, j]
+    # Start with the farthest pair including the first color.
+    selected = [0, np.argmax(mat_dist[0])]
 
-    # Distance from each point to the nearest selected point
+    # Distance from each point to the nearest selected point.
     min_dist = np.min(mat_dist[:, selected], axis=1)
     min_dist[selected] = -np.inf
 
@@ -135,6 +134,9 @@ def get_most_different_colors(k: int = 4):
         selected.append(idx)
         min_dist = np.minimum(min_dist, mat_dist[:, idx])
         min_dist[selected] = -np.inf
+
+    # Main color is second so it is more prononced in gradients.
+    selected[0], selected[1] = selected[1], selected[0]
 
     res = [rgb_to_hex(*lst_colors[idx]) for idx in selected]
 
