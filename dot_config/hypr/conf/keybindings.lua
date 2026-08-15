@@ -121,7 +121,7 @@ hl.bind(mainMod .. " + A", e("kitty --session " .. os.getenv("HOME") .. "/.confi
 
 hl.bind(mainMod .. " + SHIFT + D", e("dunstctl history-pop"), { description = "Replay last notification" })
 
-hl.bind(mainMod .. " + ALT + C", e("networkpwd"), { description = "Show network password" })
+hl.bind(mainMod .. " + ALT + C", e("networkpwd"), { description = "Show wifi network password" })
 
 -- --------------------------------------------------------------------------------------
 -- Workspaces

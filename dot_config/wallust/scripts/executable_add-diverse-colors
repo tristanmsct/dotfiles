@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#            _     _           _ _                                         _
+#   __ _  __| | __| |       __| (_)_   _____ _ __ ___  ___        ___ ___ | | ___  _ __ ___
+#  / _` |/ _` |/ _` |_____ / _` | \ \ / / _ \ '__/ __|/ _ \_____ / __/ _ \| |/ _ \| '__/ __|
+# | (_| | (_| | (_| |_____| (_| | |\ V /  __/ |  \__ \  __/_____| (_| (_) | | (_) | |  \__ \
+#  \__,_|\__,_|\__,_|      \__,_|_| \_/ \___|_|  |___/\___|      \___\___/|_|\___/|_|  |___/
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------
+
+read col1 col2 col3 col4 <<< $(python $HOME/.config/hypr/scripts/theming/get_diverse_colors.py)
+
+sed -i -E "s/(accent_color1:) \"#.{6}\"/\1 \"$col1\"/" $HOME/.config/quickshell/Colors.qml
+sed -i -E "s/(accent_color2:) \"#.{6}\"/\1 \"$col2\"/" $HOME/.config/quickshell/Colors.qml
+sed -i -E "s/(accent_color3:) \"#.{6}\"/\1 \"$col3\"/" $HOME/.config/quickshell/Colors.qml
+sed -i -E "s/(accent_color4:) \"#.{6}\"/\1 \"$col4\"/" $HOME/.config/quickshell/Colors.qml

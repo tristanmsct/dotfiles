@@ -9,4 +9,9 @@ QtObject {
     property color color6: "{{color6}}"
     property color color7: "{{color7}}"
     property color color8: "{{color8}}"
+
+    property color accent_color1: "{{color1}}"
+    property color accent_color2: "{{color2}}"
+    property color accent_color3: "{{color3}}"
+    property color accent_color4: "{{color4}}"
 }

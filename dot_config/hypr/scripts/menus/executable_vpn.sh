@@ -35,7 +35,7 @@ fi
 NB_INTERFACE=$(echo "$LST_INTERFACES" | wc -l)
 NB_INTERFACE=$((NB_INTERFACE>=8 ? 8 : NB_INTERFACE))
 
-THEME_VPN="window { font: 'Noto Sans Bold 14'; width: 20%;} element { margin: 0% 0% 1.5% 0%;}"
+THEME_VPN="window { font: 'Noto Sans Bold 14'; width: 20%;} element { margin: 0% 0% 1.5% 0%;} listview {cycle: true;}"
 
 SELECTION=$(
     echo -e "$LST_INTERFACES" | rofi -disable-history -dmenu \

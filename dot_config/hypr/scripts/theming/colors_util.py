@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #            _                  _   _ _
 #   ___ ___ | | ___  _ __ _   _| |_(_) |
 #  / __/ _ \| |/ _ \| '__| | | | __| | |
@@ -12,6 +11,7 @@ Created on 2025-03-22.
 @author: Tristan Muscat
 """
 import math
+import os
 from collections import namedtuple
 
 # hex_match_color is the color used to find the best match. Colors are adjusted to get less brown, black, etc.
@@ -109,6 +109,36 @@ def get_closest_color(hex_color, color_dict):
             best_match = name
 
     return best_match
+
+
+def get_most_different_colors(k: int = 4):
+    # Slow to import so its important they are only imported when needed.
+    import numpy as np
+    from scipy.spatial.distance import cdist
+    with open(os.environ["HOME"] + "/.local/state/desktop/colors", "r") as f:
+        lst_colors = f.read().splitlines()
+
+    lst_colors = [hex_to_rgb(elt) for elt in lst_colors[:8]]
+
+    mat_dist = cdist(XA=lst_colors, XB=lst_colors, metric=weighted_rgb_distance)
+
+    # Start with the farthest pair
+    i, j = np.unravel_index(np.argmax(mat_dist), mat_dist.shape)
+    selected = [i, j]
+
+    # Distance from each point to the nearest selected point
+    min_dist = np.min(mat_dist[:, selected], axis=1)
+    min_dist[selected] = -np.inf
+
+    while len(selected) < k:
+        idx = int(np.argmax(min_dist))
+        selected.append(idx)
+        min_dist = np.minimum(min_dist, mat_dist[:, idx])
+        min_dist[selected] = -np.inf
+
+    res = [rgb_to_hex(*lst_colors[idx]) for idx in selected]
+
+    return res
 
 
 def validate_hex_format(hex_str):

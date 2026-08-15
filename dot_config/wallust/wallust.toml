@@ -54,3 +54,4 @@ qml = { template = 'Colors.qml', target = '~/.config/quickshell/Colors.qml' }
 
 [hooks]
 # Run commands when wallust is invoked. Useful to avoid scripting.
+turbo_cava = "~/.config/wallust/scripts/add-diverse-colors"

@@ -114,10 +114,10 @@ EOF
             if (data.length < 2) return
 
             var gradient = ctx.createLinearGradient(0, 0, width, 0)
-            gradient.addColorStop(0.0, colors.color1)
-            gradient.addColorStop(0.3, colors.color2)
-            gradient.addColorStop(0.6, colors.color3)
-            gradient.addColorStop(1.0, colors.color4)
+            gradient.addColorStop(0.0, colors.accent_color1)
+            gradient.addColorStop(0.3, colors.accent_color2)
+            gradient.addColorStop(0.6, colors.accent_color3)
+            gradient.addColorStop(1.0, colors.accent_color4)
 
             ctx.beginPath()
 
