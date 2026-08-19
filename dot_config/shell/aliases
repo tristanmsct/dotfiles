@@ -18,7 +18,8 @@ alias lt="eza --tree --level=1 --icons=always --sort=type --all"  # Tree list of
 alias lg="eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions"  # Tree list of all files and directories with git info
 
 alias grep="grep --color=auto"  # Grep with colors
-
+alias hl="rg --no-line-number --passthrough"  # Use ripgrep to highlight a search term in a file
+alias rgc="rg -C 5"  # Ripgrep with a context of 5
 alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"  # Wget with better hist file
 alias ff="fastfetch"  # Fastfetch
 alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"  # Bash terminal sourcing directly the bashrc

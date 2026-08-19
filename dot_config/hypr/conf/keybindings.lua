@@ -76,8 +76,8 @@ hl.bind(mainMod .. " + SHIFT + CTRL + RETURN", e(os.getenv("HOME") .. "/.config/
 
 hl.bind("CTRL + Escape", e("hyprlock --grace 3"), { description = "Lock screen" })
 hl.bind(mainMod .. " + L", e("hyprlock --grace 3"), { description = "Lock screen" })
--- hl.bind("XF86PowerOff", e("wlogout -b 2"), { description = "Open logout menu" }, { locked = true })
-hl.bind(mainMod .. " + CTRL + Q", e("wlogout -b 2"), { description = "Open logout menu" })
+-- hl.bind("XF86PowerOff", e("pkill wlogout || wlogout -b 2"), { description = "Open logout menu" }, { locked = true })
+hl.bind(mainMod .. " + CTRL + Q", e("pkill wlogout || wlogout -b 2"), { description = "Open logout menu" })
 
 hl.bind(mainMod .. " + PRINT", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })
 hl.bind(mainMod .. " + CTRL + S", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })

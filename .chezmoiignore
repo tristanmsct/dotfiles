@@ -28,12 +28,12 @@ README.md
 .config/cava/themes
 .config/celluloid
 .config/chezmoi/key.txt
+.config/copilot
 .config/dconf
 .config/docker
 .config/dunst/dunstrc
 .config/evolution
 .config/eww/colors-eww.scss
-.config/fontconfig
 .config/glow
 .config/go
 .config/gtk-2.0
@@ -73,6 +73,7 @@ README.md
 .config/viewnior
 .config/waybar/config.jsonc  # TODO ?
 .config/waypaper/config.ini
+.config/X11
 .config/xsettingsd
 .config/yay
 .config/yazi

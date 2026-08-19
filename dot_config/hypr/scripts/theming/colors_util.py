@@ -135,9 +135,6 @@ def get_most_different_colors(k: int = 4):
         min_dist = np.minimum(min_dist, mat_dist[:, idx])
         min_dist[selected] = -np.inf
 
-    # Main color is second so it is more prononced in gradients.
-    selected[0], selected[1] = selected[1], selected[0]
-
     res = [rgb_to_hex(*lst_colors[idx]) for idx in selected]
 
     return res
