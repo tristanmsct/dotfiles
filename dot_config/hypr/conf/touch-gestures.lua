@@ -7,6 +7,9 @@
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
+local HYPRSCRIPTS = os.getenv("HOME") .. "/.config/hypr/scripts"
+local toggle_float_window = dofile(HYPRSCRIPTS .. "/workspaces/float-window.lua")
+
 -- Most workspace_swipe_* options removed in 0.55 — no equivalent in new gesture system
 -- workspace_swipe_distance, workspace_swipe_invert, workspace_swipe_min_speed_to_force,
 -- workspace_swipe_cancel_ratio, workspace_swipe_forever, workspace_swipe_direction_lock
@@ -20,7 +23,7 @@ hl.config({
 })
 
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
-hl.gesture({ fingers = 3, direction = "up",         action = "float" })
+hl.gesture({ fingers = 3, direction = "up",         action = toggle_float_window })
 hl.gesture({ fingers = 3, direction = "down", action = "close" })
 hl.gesture({ fingers = 3, direction = "swipe", mods = "SUPER", action = "resize" })
 hl.gesture({ fingers = 3, direction = "swipe", mods = "SHIFT", action = "move" })

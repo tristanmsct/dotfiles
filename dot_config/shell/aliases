@@ -21,15 +21,16 @@ alias grep="grep --color=auto"  # Grep with colors
 alias hl="rg --no-line-number --passthrough"  # Use ripgrep to highlight a search term in a file
 alias rgc="rg -C 5"  # Ripgrep with a context of 5
 alias wget="wget --hsts-file=$HOME/.local/share/wget-hsts"  # Wget with better hist file
-alias ff="fastfetch"  # Fastfetch
-alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"  # Bash terminal sourcing directly the bashrc
 alias dufl="duf --only local"  # Show disk usage
 alias dust="dust -b"  # Dust without the percent bars
-alias vscodium="codium"  # Short lazy version of VSCodium
-alias wpnq="watcher pkglog notes query"  # Query nnotes on a package directly
+alias vscodium="codium"  # VSCodium calls should point to custom launcher
+alias ff="fastfetch"  # Fastfetch
+
+alias bashterm="bash --rcfile $HOME/.config/shell/bash/bashrc"  # Bash terminal sourcing directly the bashrc
 alias wa="watcher all -n"  # Run watcher all without caches
-alias wue="watcher updates --explain"
-alias wcs="watcher chezmoi sync"
+alias wpnq="watcher pkglog notes query"  # Query nnotes on a package directly
+alias wue="watcher updates --explain"  # Give info on updatable packages
+alias wcs="watcher chezmoi sync"  # Sync chezmoi dotfile database
 
 # ---------------------------------------------------------------------------------------
 # Kitty

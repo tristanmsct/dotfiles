@@ -52,4 +52,6 @@ selected=$(rofi -disable-history -dmenu -i -eh 2 -replace -markup-rows -p "Alias
     -config "$HOME/.config/rofi/config-simple.rasi" <<< "$aliases")
 
 alias_name="${selected%%' ->'*}"
+alias_name="${alias_name//<b>/}"
+alias_name="${alias_name//<\/b>/}"
 echo -n "$alias_name" | wl-copy
