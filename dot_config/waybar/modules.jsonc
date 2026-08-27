@@ -82,6 +82,8 @@
         "on-click-right": "fullscreen",
         // "ignore-list": ["kitty"],
         // To add steam game icons to waybar, their ID need to be mapped to their name.
+        // If the icon does not exists, usually `right click` > "Manage" > "Add desktop shortcut" in Steam will
+        // create an icon in ~/.local/share/icons/hicolor and a .desktop file in ~/Documents/Desktop
         // Check Arch guide in the icon section for more info.
         // General rule : add the client class as a key, the icon name as a value.
         "app_ids-mapping": {

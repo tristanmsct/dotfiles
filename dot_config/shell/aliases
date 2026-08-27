@@ -17,6 +17,7 @@ alias l="eza --icons=always --sort=type --long --all"  # One line list of all fi
 alias lt="eza --tree --level=1 --icons=always --sort=type --all"  # Tree list of all files and directories
 alias lg="eza --tree --level=1 --icons=always --sort=type --all --long --git-repos --git --no-filesize --no-time --no-user --no-permissions"  # Tree list of all files and directories with git info
 
+alias rm-shred="shred -zu -n5"  # Shred file
 alias grep="grep --color=auto"  # Grep with colors
 alias hl="rg --no-line-number --passthrough"  # Use ripgrep to highlight a search term in a file
 alias rgc="rg -C 5"  # Ripgrep with a context of 5
