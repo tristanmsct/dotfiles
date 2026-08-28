@@ -56,6 +56,11 @@
       "keyColor": "31"
     },
     {
+      "type": "InitSystem",
+      "key": "├─",
+      "keyColor": "31"
+    },
+    {
       "type": "shell",
       "key": "├─$",
       "keyColor": "31"
