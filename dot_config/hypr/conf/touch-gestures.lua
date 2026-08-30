@@ -7,8 +7,7 @@
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
-local HYPRSCRIPTS = os.getenv("HOME") .. "/.config/hypr/scripts"
-local toggle_float_window = dofile(HYPRSCRIPTS .. "/workspaces/float-window.lua")
+local toggle_float_window = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/float-window.lua")
 
 -- Most workspace_swipe_* options removed in 0.55 — no equivalent in new gesture system
 -- workspace_swipe_distance, workspace_swipe_invert, workspace_swipe_min_speed_to_force,

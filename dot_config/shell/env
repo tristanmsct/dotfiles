@@ -39,9 +39,10 @@ export FAKE_HOME="$XDG_DATA_HOME/fake_home"
 export DESKTOP_STATE_DIR="$XDG_STATE_HOME/desktop"
 export DOTFILES="$XDG_DATA_HOME/dotfiles"
 export ANSIBLE_AUTOMATION_DIR="$XDG_DATA_HOME/ansible-archlinux"
-export WATCHER_DIR="$XDG_DATA_HOME/system-tracking"
+export WATCHER_DIR="$XDG_DATA_HOME/watcher"
 export AUR_DIR="$XDG_DATA_HOME/aur"
-export SHELLDIR="$HOME/.config/shell"
+export SHELLDIR="$XDG_CONFIG_HOME/shell"
+export DESKTOP_SCRIPTS="$XDG_DATA_HOME/scripts"
 
 # SSH
 if [ -n "$XDG_RUNTIME_DIR" ]; then

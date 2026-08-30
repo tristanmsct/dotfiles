@@ -8,6 +8,6 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Get XDG variables and create the fake home if it does not exists.
-source $HOME/.config/hypr/scripts/system/setup-fake-home.sh
+source "$DESKTOP_SCRIPTS/system/setup-fake-home.sh"
 
 HOME="$FAKE_HOME" /usr/bin/steam -nochatui -nofriendsui "$@"

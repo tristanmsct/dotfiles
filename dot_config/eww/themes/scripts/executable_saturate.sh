@@ -8,9 +8,9 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$HOME/.config/hypr/scripts/system/setup-state.sh
+$DESKTOP_SCRIPTS/system/setup-state.sh
 
-STATE_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$XDG_STATE_HOME/desktop/state.json
 
 # Maybe the saturation function should work even in focus mode but it would be a pain to implement for almost nothing.
 if hyprctl getoption animations:enabled | grep -q "int: 0"; then
@@ -20,7 +20,7 @@ fi
 
 SATURATION_VALUE=$(awk "BEGIN {printf \"%d\", $1 * 100}")
 
-WALLPAPER=$(cat $HOME/.local/state/desktop/wallpaper)
+WALLPAPER=$(cat $XDG_STATE_HOME/desktop/wallpaper)
 wallust run $WALLPAPER --skip-sequences -q --saturation $SATURATION_VALUE &
 
 jq '.theme.saturation.enabled = true' $STATE_FILE | sponge $STATE_FILE
@@ -32,7 +32,7 @@ if [ $ACCENT_COLOR_STATUS = "true" ]; then
     COLOR=$(jq -r '.theme.accent_color.hex' $STATE_FILE)
     COLOR_NB=$(jq -r '.theme.accent_color.index' $STATE_FILE)
 
-    $HOME/.config/hypr/scripts/theming/apply-theme.sh $COLOR $COLOR_NB &
+    $DESKTOP_SCRIPTS/theming/apply-theme.sh $COLOR $COLOR_NB &
 else
-    $HOME/.config/hypr/scripts/theming/apply-theme.sh &
+    $DESKTOP_SCRIPTS/theming/apply-theme.sh &
 fi

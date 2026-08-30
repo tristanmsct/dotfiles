@@ -3,7 +3,7 @@ Description=Hyprsunset Temperature Adjustment Service
 
 [Service]
 Type=oneshot
-ExecStart=%h/.config/hypr/scripts/hyprsunset/hyprsunset-timer.sh
+ExecStart=%h/.local/share/scripts/hyprland/hyprsunset/hyprsunset-timer.sh
 
 [Install]
 WantedBy=default.target

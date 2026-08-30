@@ -8,8 +8,7 @@
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
 local mainMod = "SUPER"
-local SCRIPTS = os.getenv("HOME") .. "/.local/bin"
-local HYPRSCRIPTS = os.getenv("HOME") .. "/.config/hypr/scripts"
+local SCRIPTS = os.getenv("DESKTOP_SCRIPTS")
 
 local TYPORA_FILE = os.getenv("HOME") .. '/Nextcloud/03-Notes/Day-to-day/' .. os.date('%Y-%m-%d') .. '-notes.md'
 
@@ -18,10 +17,10 @@ local e = hl.dsp.exec_cmd
 -- --------------------------------------------------------------------------------------
 -- Importing lua functions
 -- --------------------------------------------------------------------------------------
-local toggle_allfloat = dofile(HYPRSCRIPTS .. "/workspaces/all-float.lua")
-local toggle_float_window = dofile(HYPRSCRIPTS .. "/workspaces/float-window.lua")
-local move_to_empty = dofile(HYPRSCRIPTS .. "/workspaces/move-to-empty.lua")
-local move_to_end = dofile(HYPRSCRIPTS .. "/workspaces/move-to-end.lua")
+local toggle_allfloat = dofile(SCRIPTS .. "/hyprland/workspaces/all-float.lua")
+local toggle_float_window = dofile(SCRIPTS .. "/hyprland/workspaces/float-window.lua")
+local move_to_empty = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-empty.lua")
+local move_to_end = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-end.lua")
 
 -- --------------------------------------------------------------------------------------
 -- Applications
@@ -36,7 +35,7 @@ hl.bind(mainMod .. " + SHIFT + N", e("[float;size 800 400;move 1000 100] typora 
 hl.bind(mainMod .. " + CTRL + N", e("typora " .. os.getenv("HOME") .. "/Nextcloud/03-Notes/Wikis"), { description = "Open Typora with wikis" })
 hl.bind(mainMod .. " + S", e("subl"), { description = "Open Sublime Text" })
 hl.bind(mainMod .. " + X", e("codium"), { description = "Open VSCodium" })
-hl.bind(mainMod .. " + CTRL + E", e(HYPRSCRIPTS .. "/menus/emoji-picker.sh"), { description = "Open emoji picker" })
+hl.bind(mainMod .. " + CTRL + E", e(SCRIPTS .. "/menus-rofi/emoji-picker.sh"), { description = "Open emoji picker" })
 hl.bind(mainMod .. " + G", e("steam"), { description = "Open Steam" })
 hl.bind(mainMod .. " + M", e("gapplication launch org.gnome.Weather"), { description = "Open Weather app" })
 
@@ -60,10 +59,10 @@ hl.bind(mainMod .. " + K", hl.dsp.layout("swapwithmaster"), { description = "Swa
 -- --------------------------------------------------------------------------------------
 -- Actions
 -- --------------------------------------------------------------------------------------
-hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload"), { description = "Reload Hyprland config" })
-hl.bind(mainMod .. " + CTRL + V", e(HYPRSCRIPTS .. "/menus/cliphist.sh"), { description = "Open clipboard manager" })
-hl.bind(mainMod .. " + CTRL + K", e(HYPRSCRIPTS .. "/menus/keybindings.sh"), { description = "Show keybindings" })
-hl.bind(mainMod .. " + SHIFT + K", e(HYPRSCRIPTS .. "/menus/aliases.sh"), { description = "Show aliases" })
+hl.bind(mainMod .. " + SHIFT + R", e("hyprctl reload"), { description = "Reload Hyprland config" })
+hl.bind(mainMod .. " + CTRL + V", e(SCRIPTS .. "/menus-rofi/cliphist.sh"), { description = "Open clipboard manager" })
+hl.bind(mainMod .. " + CTRL + K", e(SCRIPTS .. "/menus-rofi/keybindings.sh"), { description = "Show keybindings" })
+hl.bind(mainMod .. " + SHIFT + K", e(SCRIPTS .. "/menus-rofi/aliases.sh"), { description = "Show aliases" })
 hl.bind(mainMod .. " + CTRL + RETURN",
     e("pkill rofi || rofi -show drun -replace -i -disable-history -config '" .. os.getenv("HOME") .. "/.config/rofi/config-appmenu.rasi'"),
     { description = "Open application launcher" }
@@ -79,40 +78,40 @@ hl.bind(mainMod .. " + L", e("hyprlock --grace 3"), { description = "Lock screen
 -- hl.bind("XF86PowerOff", e("pkill wlogout || wlogout -b 2"), { description = "Open logout menu" }, { locked = true })
 hl.bind(mainMod .. " + CTRL + Q", e("pkill wlogout || wlogout -b 2"), { description = "Open logout menu" })
 
-hl.bind(mainMod .. " + PRINT", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })
-hl.bind(mainMod .. " + CTRL + S", e(HYPRSCRIPTS .. "/menus/screenshot.sh"), { description = "Take a screenshot" })
-hl.bind(mainMod .. " + SHIFT + PRINT", e(HYPRSCRIPTS .. "/menus/screen-record.sh"), { description = "Start screen recording" })
-hl.bind(mainMod .. " + SHIFT + CTRL + S", e(HYPRSCRIPTS .. "/menus/screen-record.sh"), { description = "Start screen recording" })
+hl.bind(mainMod .. " + PRINT", e(SCRIPTS .. "/menus-rofi/screenshot.sh"), { description = "Take a screenshot" })
+hl.bind(mainMod .. " + CTRL + S", e(SCRIPTS .. "/menus-rofi/screenshot.sh"), { description = "Take a screenshot" })
+hl.bind(mainMod .. " + SHIFT + PRINT", e(SCRIPTS .. "/menus-rofi/screen-record.sh"), { description = "Start screen recording" })
+hl.bind(mainMod .. " + SHIFT + CTRL + S", e(SCRIPTS .. "/menus-rofi/screen-record.sh"), { description = "Start screen recording" })
 
 hl.bind(mainMod .. " + W", e("waypaper"), { description = "Open wallpaper selector" })
 hl.bind(mainMod .. " + SHIFT + W", e("waypaper --random"), { description = "Random wallpaper" })
 hl.bind(mainMod .. " + CTRL + W", e("waypaper --restore"), { description = "Restore wallpaper" })
 hl.bind(mainMod .. " + ALT + W", e("awww kill"), { description = "Stop Awww" })
 
-hl.bind(mainMod .. " + SHIFT + B", e(HYPRSCRIPTS .. "/waybar/launch.sh"), { description = "Reload Waybar" })
-hl.bind(mainMod .. " + CTRL + B", e(HYPRSCRIPTS .. "/waybar/toggle.sh"), { description = "Toggle Waybar" })
-hl.bind(mainMod .. " + CTRL + G", e(HYPRSCRIPTS .. "/game-mode/activate.sh"), { description = "Toggle game mode" })
+hl.bind(mainMod .. " + SHIFT + B", e(SCRIPTS .. "/waybar/launch.sh"), { description = "Reload Waybar" })
+hl.bind(mainMod .. " + CTRL + B", e(SCRIPTS .. "/waybar/toggle.sh"), { description = "Toggle Waybar" })
+hl.bind(mainMod .. " + CTRL + G", e(SCRIPTS .. "/focus-mode/activate.sh"), { description = "Toggle focus mode" })
 hl.bind(mainMod .. " + SHIFT + G", e("rofi -disable-history -modi games -show games -theme config-games"), { description = "Open game launcher" })
-hl.bind(mainMod .. " + ALT + G", e(HYPRSCRIPTS .. "/game-mode/btop-overlay.sh"), { description = "Display btop overlay" })
+hl.bind(mainMod .. " + ALT + G", e(SCRIPTS .. "/focus-mode/btop-overlay.sh"), { description = "Display btop overlay" })
 
-hl.bind(mainMod .. " + Y", e(HYPRSCRIPTS .. "/hyprsunset/hyprsunset.sh"), { description = "Toggle Hyprsunset" })
+hl.bind(mainMod .. " + Y", e(SCRIPTS .. "/hyprland/hyprsunset/hyprsunset.sh"), { description = "Toggle Hyprsunset" })
 
-hl.bind(mainMod .. " + P", e(HYPRSCRIPTS .. "/menus/monitor-menu.sh"), { description = "Monitor configuration menu" })
-hl.bind(mainMod .. " + CTRL + F", e(HYPRSCRIPTS .. "/media/audio-helper.sh"), { description = "Fix audio device" })
+hl.bind(mainMod .. " + P", e(SCRIPTS .. "/menus-rofi/monitor-menu.sh"), { description = "Monitor configuration menu" })
+hl.bind(mainMod .. " + CTRL + F", e(SCRIPTS .. "/media/audio-helper.sh"), { description = "Fix audio device" })
 
-hl.bind(mainMod .. " + V", e(HYPRSCRIPTS .. "/menus/vpn.sh"), { description = "Open VPN menu" })
+hl.bind(mainMod .. " + V", e(SCRIPTS .. "/menus-rofi/vpn.sh"), { description = "Open VPN menu" })
 
-hl.bind(mainMod .. " + C", e(HYPRSCRIPTS .. "/menus-eww/theme-menu.sh"), { description = "Open theme and colors menu" })
-hl.bind(mainMod .. " + SHIFT + C", e(HYPRSCRIPTS .. "/menus-eww/brightness-menu.sh"), { description = "Open brightness menu" })
+hl.bind(mainMod .. " + C", e(SCRIPTS .. "/menus-eww/theme-menu.sh"), { description = "Open theme and colors menu" })
+hl.bind(mainMod .. " + SHIFT + C", e(SCRIPTS .. "/menus-eww/brightness-menu.sh"), { description = "Open brightness menu" })
 hl.bind(mainMod .. " + CTRL + C", e("hyprpicker -a"), { description = "Open color picker" })
-hl.bind(mainMod .. " + SHIFT + L", e(HYPRSCRIPTS .. "/theming/switch-theme.sh"), { description = "Switch light/dark theme" })
+hl.bind(mainMod .. " + SHIFT + L", e(SCRIPTS .. "/theming/switch-theme.sh"), { description = "Switch light/dark theme" })
 
-hl.bind(mainMod .. " + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh"), { description = "Toggle Cava overlay" })
-hl.bind(mainMod .. " + CTRL + SHIFT + U", e(HYPRSCRIPTS .. "/cava/turbo-cava-toggle.sh"), { description = "Toggle Turbo Cava" })
-hl.bind(mainMod .. " + SHIFT + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini"), { description = "Toggle Cava mini overlay" })
-hl.bind(mainMod .. " + CTRL + U", e(HYPRSCRIPTS .. "/cava/cava-overlay.sh mini title"), { description = "Toggle Cava mini overlay with title" })
-hl.bind(mainMod .. " + ALT + U", e(HYPRSCRIPTS .. "/cava/cava-input-switcher.sh"), { description = "Switch Cava input source" })
-hl.bind(mainMod .. " + I", e(HYPRSCRIPTS .. "/game-mode/clock-overlay.sh"), { description = "Toggle clock overlay" })
+hl.bind(mainMod .. " + U", e(SCRIPTS .. "/cava/overlay.sh"), { description = "Toggle Cava overlay" })
+hl.bind(mainMod .. " + CTRL + SHIFT + U", e(SCRIPTS .. "/cava/quickshell-overlay.sh"), { description = "Toggle Turbo Cava" })
+hl.bind(mainMod .. " + SHIFT + U", e(SCRIPTS .. "/cava/overlay.sh mini"), { description = "Toggle Cava mini overlay" })
+hl.bind(mainMod .. " + CTRL + U", e(SCRIPTS .. "/cava/overlay.sh mini title"), { description = "Toggle Cava mini overlay with title" })
+hl.bind(mainMod .. " + ALT + U", e(SCRIPTS .. "/cava/input-switch.sh"), { description = "Switch Cava input source" })
+hl.bind(mainMod .. " + I", e(SCRIPTS .. "/focus-mode/clock-overlay.sh"), { description = "Toggle clock overlay" })
 
 hl.bind(mainMod .. " + comma", e("kitty --app-id btop -e btop"), { description = "Open btop" })
 hl.bind(mainMod .. " + CTRL + comma", e("missioncenter"), { description = "Open Mission Center" })
@@ -128,7 +127,7 @@ hl.bind(mainMod .. " + ALT + C", e("networkpwd"), { description = "Show wifi net
 -- --------------------------------------------------------------------------------------
 hl.bind(mainMod .. " + Z", move_to_empty, { description = "Send window to next empty workspace" })
 hl.bind(mainMod .. " + SHIFT + Z", move_to_end, { description = "Send window to last workspace" })
-hl.bind(mainMod .. " + CTRL + Z", e("python " .. HYPRSCRIPTS .. "/workspaces/compact_workspaces.py"), { description = "Compact workspaces" })
+hl.bind(mainMod .. " + CTRL + Z", e("python " .. SCRIPTS .. "/hyprland/workspaces/compact_workspaces.py"), { description = "Compact workspaces" })
 
 hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "m+1" }), { description = "Next workspace" })
 hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace" })
@@ -178,4 +177,4 @@ hl.bind("XF86AudioRaiseVolume", e("pactl set-sink-volume @DEFAULT_SINK@ +5%"), {
 -- Other
 -- --------------------------------------------------------------------------------------
 -- hl.bind(mainMod .. " + O", e("gapplication launch org.gnome.Weather"))
--- hl.bind(mainMod .. " + O", e(HYPRSCRIPTS .. "/game-mode/btop-overlay.sh"))
+-- hl.bind(mainMod .. " + O", e(SCRIPTS .. "/focus-mode/btop-overlay.sh"))

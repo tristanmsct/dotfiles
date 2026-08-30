@@ -10,10 +10,9 @@
 -- Base setup
 -- --------------------------------------------------------------------------------------
 local mainMod = "SUPER"
-local HYPRSCRIPTS = os.getenv("HOME") .. "/.config/hypr/scripts"
 local e = hl.dsp.exec_cmd
 
-local move_all = dofile(HYPRSCRIPTS .. "/workspaces/move-all.lua")
+local move_all = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/move-all.lua")
 
 -- Integrated monitor
 hl.monitor({

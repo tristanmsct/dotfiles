@@ -10,9 +10,9 @@
 new_value=$1
 
 # Set up state file if necessary.
-$HOME/.config/hypr/scripts/system/setup-state.sh
+$DESKTOP_SCRIPTS/system/setup-state.sh
 
-STATE_FILE=$HOME/.local/state/desktop/state.json
+STATE_FILE=$XDG_STATE_HOME/desktop/state.json
 manual_filter_on=$(jq '.hyprsunset.filter_on' $STATE_FILE)
 
 jq '.hyprsunset.temperature ='$new_value $STATE_FILE | sponge $STATE_FILE

@@ -6,7 +6,7 @@
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
-local HYPRSCRIPTS   = os.getenv("HOME") .. "/.config/hypr/scripts"
+local SCRIPTS = os.getenv("DESKTOP_SCRIPTS")
 local USERSCRIPTS   = os.getenv("HOME") .. "/.local/bin"
 
 hl.on("hyprland.start", function()
@@ -18,18 +18,18 @@ hl.on("hyprland.start", function()
     exec("iio-hyprland")
 
     -- Clean Home Directory / Set up state
-    exec(HYPRSCRIPTS .. "/system/setup-state.sh")
-    exec(HYPRSCRIPTS .. "/system/home-cleaner.sh")
+    exec(SCRIPTS .. "/system/setup-state.sh")
+    exec(SCRIPTS .. "/system/home-cleaner.sh")
 
     -- Clean games
-    exec(HYPRSCRIPTS .. "/game-mode/cleanup-games.sh")
+    exec(SCRIPTS .. "/system/cleanup-games.sh")
 
     -- Setup XDG for screen sharing
-    exec(HYPRSCRIPTS .. "/system/xdg.sh")
+    exec(SCRIPTS .. "/system/xdg.sh")
 
     -- Start waybar and waypaper
     exec("waypaper --restore")
-    exec(HYPRSCRIPTS .. "/waybar/launch.sh")
+    exec(SCRIPTS .. "/waybar/launch.sh")
     exec("hyprsunset -i")
 
     -- Polkit
@@ -54,11 +54,11 @@ hl.on("hyprland.start", function()
     exec("wl-paste --watch cliphist store")
 
     -- Restore Game Mode
-    exec(HYPRSCRIPTS .. "/game-mode/restore.sh")
+    exec(SCRIPTS .. "/focus-mode/restore.sh")
 
     -- Nextcloud
     exec(USERSCRIPTS .. "/nextcloud --background")
 
     -- VPN status
-    exec(HYPRSCRIPTS .. "/vpn/update-status.sh")
+    exec(SCRIPTS .. "/vpn/update-status.sh")
 end)

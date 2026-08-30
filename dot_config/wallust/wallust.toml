@@ -1,6 +1,7 @@
 # wallust v3.5
 
 # Global section - values below can be overwritten by command line flags
+env_vars = true
 
 # How the image is parse, in order to get the colors:
 # full - resized - wal - thumb -  fastresize - kmeans
@@ -37,21 +38,21 @@ saturation = 50
 # no_hooks = true
 
 [templates]
-base_colors = { template = 'colors', target = '~/.local/state/desktop/colors' }
-current_wallpaper = { template = 'wallpaper', target = '~/.local/state/desktop/wallpaper' }
-hyprland = { template = 'colors-hyprland.lua', target = '~/.config/hypr/conf/colors-hyprland.lua' }
-hyprlock = { template = 'colors-hyprlock.conf', target = '~/.config/hypr/conf/colors-hyprlock.conf' }
-eww = { template = 'colors-eww.scss', target = '~/.config/eww/colors-eww.scss' }
-waybar = { template = 'colors-base.css', target = '~/.config/waybar/colors-waybar.css' }
-waypaper = { template = 'colors-base.css', target = '~/.config/waypaper/colors-waypaper.css' }
-wlogout = { template = 'colors-wlogout.css', target = '~/.config/wlogout/colors-wlogout.css' }
-nwg_panel = { template = 'colors-base.css', target = '~/.config/nwg-panel/colors-nwg.css' }
-nwg_drawer = { template = 'colors-base.css', target = '~/.config/nwg-drawer/colors-nwg.css' }
-nmrs = { template = 'colors-base.css', target = '~/.config/nmrs/colors-nmrs.css' }
-rofi = { template = 'colors-rofi.rasi', target = '~/.config/rofi/colors-rofi.rasi' }
-kitty = { template = 'colors-kitty.conf', target = '~/.config/kitty/colors-kitty.conf' }
-qml = { template = 'Colors.qml', target = '~/.config/quickshell/Colors.qml' }
+base_colors = { template = 'colors', target = "$XDG_STATE_HOME/desktop/colors" }
+current_wallpaper = { template = 'wallpaper', target = "$XDG_STATE_HOME/desktop/wallpaper" }
+hyprland = { template = 'colors-hyprland.lua', target = "$XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua" }
+hyprlock = { template = 'colors-hyprlock.conf', target = "$XDG_CONFIG_HOME/hypr/conf/colors-hyprlock.conf" }
+eww = { template = 'colors-eww.scss', target = "$XDG_CONFIG_HOME/eww/colors-eww.scss" }
+waybar = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/waybar/colors-waybar.css" }
+waypaper = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/waypaper/colors-waypaper.css" }
+wlogout = { template = 'colors-wlogout.css', target = "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css" }
+nwg_panel = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css" }
+nwg_drawer = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css" }
+nmrs = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css" }
+rofi = { template = 'colors-rofi.rasi', target = "$XDG_CONFIG_HOME/rofi/colors-rofi.rasi" }
+kitty = { template = 'colors-kitty.conf', target = "$XDG_CONFIG_HOME/kitty/colors-kitty.conf" }
+qml = { template = 'Colors.qml', target = "$XDG_CONFIG_HOME/quickshell/Colors.qml" }
 
 [hooks]
 # Run commands when wallust is invoked. Useful to avoid scripting.
-turbo_cava = "~/.config/wallust/scripts/add-diverse-colors"
+turbo_cava = "$XDG_CONFIG_HOME/wallust/scripts/add-diverse-colors"

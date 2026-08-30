@@ -7,7 +7,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-$HOME/.config/hypr/scripts/theming/switch-theme.sh &
+$DESKTOP_SCRIPTS/theming/switch-theme.sh &
 
 eww close theme-menu-window-closer
 eww close theme-menu-window

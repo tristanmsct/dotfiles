@@ -13,7 +13,7 @@
         "format": "<span size='x-large'>󰣇</span>",
         "on-click": "pkill rofi || rofi -show drun -replace -i -disable-history",
         "on-click-middle": "~/.config/nwg-panel/menu-start.sh",
-        "on-click-right": "~/.config/hypr/scripts/menus/keybindings.sh",
+        "on-click-right": "DESKTOP_SCRIPTS/menus-rofi/keybindings.sh",
         "tooltip-format": "<span line_height='1.5'>Left: Open Rofi application launcher</span>\n<span line_height='1.5'>Middle: Open the NWG application launcher   </span>\n<span line_height='1.5'>Right: Show all keybindings</span>"
         // "tooltip": false
     },
@@ -125,7 +125,7 @@
     // Debugger
     "custom/debugger": {
         "format": " <span size='medium'></span> ",
-        "exec": "~/.config/hypr/scripts/system/debug-state.sh",
+        "exec": "$DESKTOP_SCRIPTS/system/debug-state.sh",
         // "on-click": "subl ~/.local/state/desktop/state.json",
         "restart-interval": 60,
         "escape": true,
@@ -146,8 +146,8 @@
     // VPN
     "custom/vpnstatus": {
         "format": "<span size='medium'>{}</span>",
-        "exec": "~/.config/hypr/scripts/vpn/get-status.sh",
-        "on-click": "~/.config/hypr/scripts/menus/vpn.sh",
+        "exec": "$DESKTOP_SCRIPTS/vpn/get-status.sh",
+        "on-click": "$DESKTOP_SCRIPTS/menus-rofi/vpn.sh",
         "interval": 5,
         "return-type": "json"
     },
@@ -155,8 +155,8 @@
     // Updater
     "custom/updates": {
         // "format": "<span size='medium'>{}</span>",
-        "exec": "~/.config/hypr/scripts/system/updates.sh",
-        "on-click": "~/.config/hypr/scripts/system/updates.sh up",
+        "exec": "$DEKSTOP_SCRIPTS/system/updates.sh",
+        "on-click": "$DEKSTOP_SCRIPTS/system/updates.sh up",
         "restart-interval": 60,
         "escape": true,
         "interval": 60,
@@ -197,8 +197,8 @@
     // Light Dark themes swith
     "custom/theme_switch": {
         "format": " <span size='large'>󰔎</span> ",
-        "on-click": "~/.config/hypr/scripts/theming/switch-theme.sh",
-        "on-click-right": "~/.config/hypr/scripts/menus-eww/theme-menu.sh",
+        "on-click": "$DESKTOP_SCRIPTS/theming/switch-theme.sh",
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/theme-menu.sh",
         "tooltip-format":
             "Switch between light and dark theme"
     },
@@ -217,9 +217,9 @@
     // Cliphist
     "custom/cliphist": {
         "format": " <span size='large'>󰅍</span> ",
-        "on-click": "~/.config/hypr/scripts/menus/cliphist.sh",
-        "on-click-right": "~/.config/hypr/scripts/menus/cliphist.sh delete",
-        "on-click-middle": "~/.config/hypr/scripts/menus/cliphist.sh wipe",
+        "on-click": "$DESKTOP_SCRIPTS/menus-rofi/cliphist.sh",
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-rofi/cliphist.sh delete",
+        "on-click-middle": "$DESKTOP_SCRIPTS/menus-rofi/cliphist.sh wipe",
         "tooltip-format":
             "Clipboard Manager\nLeft click: open cliphist\nRight click: delete entry from cliphist\nMiddle click: wipe cliphist"
     },
@@ -228,10 +228,10 @@
     "custom/hyprsunset": {
         "format": " <span size='large'>󱄤</span> ",
         "tooltip-format": "Toggle Hyprsunset",
-        "on-click": "~/.config/hypr/scripts/hyprsunset/hyprsunset.sh",
-        "on-click-middle": "~/.config/hypr/scripts/menus/hyprsunset.sh autotimer-switch",
-        "on-click-right": "~/.config/hypr/scripts/menus-eww/brightness-menu.sh",
-        "exec": "~/.config/hypr/scripts/hyprsunset/hyprsunset-status.sh",
+        "on-click": "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh",
+        "on-click-middle": "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh autotimer-switch",
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/brightness-menu.sh",
+        "exec": "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-status.sh",
         "return-type": "json",
         "interval": "once",
         "signal": 8
@@ -241,15 +241,15 @@
     "custom/gamemode": {
         "format": " <span size='x-large'>󰊗</span> ",
         "tooltip-format": "Toggle Game Mode",
-        "on-click": "~/.config/hypr/scripts/game-mode/activate.sh"
+        "on-click": "$DESKTOP_SCRIPTS/focus-mode/activate.sh"
     },
 
     // Printer
     "custom/printer": {
         "format": " <span size='x-large'>󰐪</span> ",
         "tooltip-format": "Toggle cups service",
-        "on-click": "~/.config/hypr/scripts/system/cups-toggle.sh",
-        "exec": "~/.config/hypr/scripts/system/cups-toggle.sh status",
+        "on-click": "$DESKTOP_SCRIPTS/system/cups-toggle.sh",
+        "exec": "$DESKTOP_SCRIPTS/system/cups-toggle.sh status",
         "return-type": "json",
         "interval": "once",
         "signal": 9
@@ -259,8 +259,8 @@
     "custom/docker": {
         "format": " <span size='x-large'></span> ",
         "tooltip-format": "Toggle docker service",
-        "on-click": "~/.config/hypr/scripts/system/docker-toggle.sh",
-        "exec": "~/.config/hypr/scripts/system/docker-toggle.sh status",
+        "on-click": "$DESKTOP_SCRIPTS/system/docker-toggle.sh",
+        "exec": "$$DESKTOP_SCRIPTS/system/docker-toggle.sh status",
         "return-type": "json",
         "interval": "once",
         "signal": 10
@@ -270,7 +270,7 @@
     "custom/cava_input": {
         "format": " <span size='small'>󱡫</span> ",
         "tooltip-format": "Switcher cava input source",
-        "on-click": "~/.config/hypr/scripts/cava/cava-input-switcher.sh"
+        "on-click": "$DESKTOP_SCRIPTS/cava/cava-input-switcher.sh"
     },
 
     // Cava -----------------------------------------------------------------------------
@@ -335,9 +335,9 @@
             "car": "",
             "default": ""
         },
-        "on-click": "~/.config/hypr/scripts/menus-eww/sound-slider.sh",
+        "on-click": "$DESKTOP_SCRIPTS/menus-eww/sound-slider.sh",
         "on-click-middle": "pavucontrol",
-        "on-click-right": "~/.config/hypr/scripts/media/audio-helper.sh"
+        "on-click-right": "$DESKTOP_SCRIPTS/media/audio-helper.sh"
     },
 
     "bluetooth": {
@@ -357,9 +357,9 @@
         "tooltip": false,
         "min-brightness": 20,
         "scroll-step": 5,
-        "on-click": "~/.config/hypr/scripts/menus-eww/brightness-slider.sh",
+        "on-click": "$DESKTOP_SCRIPTS/menus-eww/brightness-slider.sh",
         "on-click-middle": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
-        "on-click-right": "~/.config/hypr/scripts/menus-eww/brightness-menu.sh"
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/brightness-menu.sh"
     },
 
     "network": {
@@ -390,7 +390,7 @@
         "format-plugged": " <span size='large'>󰂅</span> {capacity}%",
         // "format-alt": "{icon}  {time}",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "on-update": "~/.config/hypr/scripts/system/battery-monitor.sh"
+        "on-update": "$DESKTOP_SCRIPTS/system/battery-monitor.sh"
     },
 
     // Group System ---------------------------------------------------------------------
