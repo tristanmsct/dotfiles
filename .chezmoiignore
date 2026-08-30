@@ -55,6 +55,7 @@ README.md
 .config/pacseek
 .config/pdfarranger
 .config/pika-backup/history.json
+.config/pika-backup/schedule_status.json
 .config/pipewire
 .config/procps
 .config/pulse
