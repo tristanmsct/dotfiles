@@ -9,13 +9,13 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
 STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-WAYBAR_STATUS=$(jq '.waybar.enabled' $STATE_FILE)
+WAYBAR_STATUS=$(jq '.waybar.enabled' "$STATE_FILE")
 
 # Restart waybar.
-if [ $WAYBAR_STATUS = "true" ] ;then
+if [ "$WAYBAR_STATUS" = "true" ] ;then
     # Quit all running waybar instances as a precaution.
     pkill waybar
     sleep 0.5

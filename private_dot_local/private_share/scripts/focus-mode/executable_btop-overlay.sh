@@ -23,8 +23,8 @@ if [ -n "$btop_running" ]; then
 else
     kitty +kitten panel --edge=center --layer=bottom -o background_opacity=0 \
         --margin-top=$MARGIN_TOP \
-        --margin-bottom=$((1080 - $MARGIN_TOP - $PANEL_HEIGHT)) \
+        --margin-bottom=$((1080 - MARGIN_TOP - PANEL_HEIGHT)) \
         --margin-left=$MARGIN_LEFT \
-        --margin-right=$((1920 - $MARGIN_LEFT - $PANEL_WIDTH)) \
-        btop --config $XDG_CONFIG_HOME/btop/btop-cpu.conf &
+        --margin-right=$((1920 - MARGIN_LEFT - PANEL_WIDTH)) \
+        btop --config "$XDG_CONFIG_HOME/btop/btop-cpu.conf" &
 fi

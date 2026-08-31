@@ -9,8 +9,8 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' $STATE_FILE)
-AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' $STATE_FILE)
+MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' "$STATE_FILE")
+AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' "$STATE_FILE")
 
 if $MANUAL_FILTER_ON; then
     echo '{"class": "filter_on"}'

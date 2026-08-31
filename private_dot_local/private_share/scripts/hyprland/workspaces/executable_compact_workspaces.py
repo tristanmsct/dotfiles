@@ -12,9 +12,8 @@ Created on 2025-05-11.
 @author: Tristan Muscat
 @email: tristan.muscat@pm.me
 """
-import subprocess
 import json
-
+import subprocess
 from collections import namedtuple
 
 # This is a simple representation of a Hyprland window, its address to be able to reference
@@ -25,7 +24,7 @@ Window = namedtuple("Window", ["address", "workspace_id"])
 def count_monitors():
     """Get the number of plugged in monitors."""
     # Run the hyprctl clients -j command and capture its output.
-    result = subprocess.run(['hyprctl', 'monitors', '-j'], capture_output=True, text=True)
+    result = subprocess.run(['hyprctl', 'monitors', '-j'], capture_output=True, text=True, check=False)
 
     # Parse the JSON output into a Python dictionary.
     monitors_dict = json.loads(result.stdout)
@@ -36,7 +35,7 @@ def count_monitors():
 def get_hyprctl_windows():
     """Get all windows informations from hyprctl."""
     # Run the hyprctl clients -j command and capture its output.
-    result = subprocess.run(['hyprctl', 'clients', '-j'], capture_output=True, text=True)
+    result = subprocess.run(['hyprctl', 'clients', '-j'], capture_output=True, text=True, check=False)
 
     # Parse the JSON output into a Python dictionary.
     clients_dict = json.loads(result.stdout)
@@ -59,7 +58,7 @@ def move_window_to_workspace(workspace_number, window_address):
     arg = f"""hl.dsp.window.move({{window='address:{window_address}',workspace={workspace_number},follow=false}})"""
 
     # Run the command with separate arguments
-    result = subprocess.run(["hyprctl", "dispatch", arg])
+    result = subprocess.run(["hyprctl", "dispatch", arg], check=False)
 
     return result.returncode == 0
 
@@ -74,7 +73,7 @@ def create_workspace_mappings(non_empty_workspaces):
     nb_monitors = count_monitors()
     nb_threshold_above = (max(non_empty_workspaces) // nb_workspace_per_screen) + 1
 
-    mappings = dict()
+    mappings = {}
     for threshold in range(1, nb_threshold_above + 1):
         min_workspace = (nb_workspace_per_screen * (threshold - 1))
         max_workspace = (nb_workspace_per_screen * threshold)
@@ -115,7 +114,7 @@ def compact_workspaces():
     """
     lst_windows = get_hyprctl_windows()
 
-    non_empty_workspaces = set([window.workspace_id for window in lst_windows])
+    non_empty_workspaces = {window.workspace_id for window in lst_windows}
     workspace_mapping = create_workspace_mappings(non_empty_workspaces)
 
     for workspace, target_workspace in workspace_mapping.items():

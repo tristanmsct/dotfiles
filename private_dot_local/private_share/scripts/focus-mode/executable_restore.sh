@@ -8,11 +8,11 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
-FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' "$STATE_FILE")
 
 if $FOCUSMODE_ENABLED; then
     # If focus mode is supposed to be enabled, we put the flag as false and run the script which will put it at true again.
-    jq '.focusmode.enabled = false' $STATE_FILE | sponge $STATE_FILE
+    jq '.focusmode.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
 
-    $DESKTOP_SCRIPTS/focus-mode/activate.sh quiet
+    "$DESKTOP_SCRIPTS/focus-mode/activate.sh" quiet
 fi

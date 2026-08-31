@@ -9,15 +9,15 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
 STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-WAYBAR_STATUS=$(jq '.waybar.enabled' $STATE_FILE)
+WAYBAR_STATUS=$(jq '.waybar.enabled' "$STATE_FILE")
 
-if [ $WAYBAR_STATUS = "true" ] ;then
-    jq '.waybar.enabled = false' $STATE_FILE | sponge $STATE_FILE
+if [ "$WAYBAR_STATUS" = "true" ] ;then
+    jq '.waybar.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
 else
-    jq '.waybar.enabled = true' $STATE_FILE | sponge $STATE_FILE
+    jq '.waybar.enabled = true' "$STATE_FILE" | sponge "$STATE_FILE"
 fi
 
-$DESKTOP_SCRIPTS/waybar/launch.sh &
+"$DESKTOP_SCRIPTS/waybar/launch.sh" &

@@ -16,9 +16,9 @@ elif [[ $XDG_CURRENT_DESKTOP == "niri" ]]; then
 fi
 
 if [ $monitor_id -eq 0 ]; then
-    eww open sound-slider-window-closer --screen $monitor_model
-    eww open sound-slider-window --screen $monitor_model
+    eww open sound-slider-window-closer --screen "$monitor_model"
+    eww open sound-slider-window --screen "$monitor_model"
 else
-    eww open sound-slider-window-secondary-closer --screen $monitor_model
-    eww open sound-slider-window-secondary --screen $monitor_model
+    eww open sound-slider-window-secondary-closer --screen "$monitor_model"
+    eww open sound-slider-window-secondary --screen "$monitor_model"
 fi

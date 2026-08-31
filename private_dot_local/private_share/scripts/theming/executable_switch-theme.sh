@@ -8,31 +8,30 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
-STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
+STATE_FILE="${XDG_STATE_HOME}/desktop/state.json"
+THEME_TYPE=$(jq -r '.theme.mode' "$STATE_FILE")
 
-if [ $THEME_TYPE = "dark" ]; then
-
-    FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
-    if $FOCUSMODE_ENABLED; then
+if [ "$THEME_TYPE" = "dark" ]; then
+    FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' "$STATE_FILE")
+    if [ "$FOCUSMODE_ENABLED" = "true" ]; then
         dunstify "Game mode enabled, cannot switch to light theme"
         exit
     fi
-    jq '.theme.mode = "light"' $STATE_FILE | sponge $STATE_FILE
+    jq '.theme.mode = "light"' "$STATE_FILE" | sponge "$STATE_FILE"
 else
-    jq '.theme.mode = "dark"' $STATE_FILE | sponge $STATE_FILE
+    jq '.theme.mode = "dark"' "$STATE_FILE" | sponge "$STATE_FILE"
 fi
 
-ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $STATE_FILE)
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' "$STATE_FILE")
 
-if [ $ACCENT_COLOR_STATUS = "true" ]; then
+if [ "$ACCENT_COLOR_STATUS" = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    COLOR=$(jq -r '.theme.accent_color.hex' $STATE_FILE)
-    COLOR_NB=$(jq -r '.theme.accent_color.index' $STATE_FILE)
+    COLOR=$(jq -r '.theme.accent_color.hex' "$STATE_FILE")
+    COLOR_NB=$(jq -r '.theme.accent_color.index' "$STATE_FILE")
 
-    $DESKTOP_SCRIPTS/theming/apply-theme.sh $COLOR $COLOR_NB
+    "$DESKTOP_SCRIPTS/theming/apply-theme.sh" "$COLOR" "$COLOR_NB"
 else
-    $DESKTOP_SCRIPTS/theming/apply-theme.sh
+    "$DESKTOP_SCRIPTS/theming/apply-theme.sh"
 fi

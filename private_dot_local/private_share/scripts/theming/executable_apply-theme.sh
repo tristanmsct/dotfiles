@@ -18,21 +18,21 @@
 sleep 0.2
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
-WALLPAPER=$(cat $XDG_STATE_HOME/desktop/wallpaper)
+WALLPAPER=$(cat "$XDG_STATE_HOME/desktop/wallpaper")
 
-STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
+STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
+THEME_TYPE=$(jq -r '.theme.mode' "$STATE_FILE")
 
 # Import the apply_accent_colors function to be run later.
-source $DESKTOP_SCRIPTS/theming/apply-accent-colors.sh
+source "$DESKTOP_SCRIPTS/theming/apply-accent-colors.sh"
 
 COLOR=${1:-"DEFAULT"}
 COLOR_NB=${2:-"1"}
-read icons_color theme_color _ <<< $(python $DESKTOP_SCRIPTS/theming/convert_colors.py -c $COLOR -d)
+read icons_color theme_color _ <<< "$(python "$DESKTOP_SCRIPTS/theming/convert_colors.py" -c $COLOR -d)"
 
-ACCENT_COLOR=$(sed -n "${COLOR_NB}p" $XDG_STATE_HOME/desktop/colors)
+ACCENT_COLOR=$(sed -n "${COLOR_NB}p" "$XDG_STATE_HOME/desktop/colors")
 
 # ---------------------------------------------------------------------------------------
 # Applying theme to Icons and GTK applications

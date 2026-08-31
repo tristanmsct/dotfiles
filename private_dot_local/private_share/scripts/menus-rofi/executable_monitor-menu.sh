@@ -16,7 +16,7 @@ THEME_MONITOR="window {width: 20%;} inputbar {enabled: false;} listview {padding
 monitor_cmd() {
     rofi -disable-history -dmenu -replace -font "Noto Sans Bold 14" \
         -config "$XDG_CONFIG_HOME/rofi/config-simple.rasi" -theme-str "${THEME_MONITOR}"\
-        -i -no-show-icons -l $1 -p "Choose a monitor setup"
+        -i -no-show-icons -l "$1" -p "Choose a monitor setup"
 }
 
 monitor_menu() {
@@ -29,11 +29,11 @@ monitor_menu() {
 }
 
 selected_setup="$(monitor_menu)"
-case $selected_setup in
-    $default)
+case "$selected_setup" in
+    "$default")
         hyprctl reload
         ;;
-    $external)
+    "$external")
         # log_message "Manually triggering external only conf"
         monitor_count=$(hyprctl monitors -j | jq length)
         if [[ $monitor_count -ge 2 ]]; then
@@ -44,7 +44,7 @@ case $selected_setup in
             exit 1
         fi
         ;;
-    $mirror)
+    "$mirror")
         hyprctl eval "hl.monitor({ output = 'DP-1', mode = '1920x1080@120', position = '0x0', scale = 1, mirror = 'eDP-1' })"
         ;;
     *)

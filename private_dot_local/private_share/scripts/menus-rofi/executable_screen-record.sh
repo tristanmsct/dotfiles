@@ -15,9 +15,9 @@ VIDEOFILE="$HOME/Media/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4"
 
 start() {
     if [ $1 = "audio" ]; then
-        wf-recorder -f $VIDEOFILE -a &
+        wf-recorder -f "$VIDEOFILE" -a &
     else
-        wf-recorder -f $VIDEOFILE &
+        wf-recorder -f "$VIDEOFILE" &
     fi
     echo $! > "$PIDFILE"
 }

@@ -9,12 +9,12 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
 STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-calendar.json
-MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' $STATE_FILE)
-AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' $STATE_FILE)
+CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
+MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' "$STATE_FILE")
+AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' "$STATE_FILE")
 
 logger -t hyprsunset "Running hyprsunset script"
 
@@ -33,13 +33,13 @@ HYPRSUNSET_BASE=6500
 INCREMENT=200
 
 hour=$(date +%H)
-hour=$(echo $hour | sed 's/^0*//')
+hour=${hour#0}
 minute=$(date +%M)
-minute=$(echo $minute | sed 's/^0*//')
+minute=${minute#0}
 
 # Morning and evening starts depend on the month and are in the config file.
-morning_start=$(jq -r '.calendar.'$(LC_TIME=en_UK.utf8 date +%B)'[0]' $CALENDAR_FILE)
-evening_start=$(jq -r '.calendar.'$(LC_TIME=en_UK.utf8 date +%B)'[1]' $CALENDAR_FILE)
+morning_start=$(jq -r ".calendar.$(LC_TIME=en_UK.utf8 date +%B)[0]" "$CALENDAR_FILE")
+evening_start=$(jq -r ".calendar.$(LC_TIME=en_UK.utf8 date +%B)[1]" "$CALENDAR_FILE")
 current_time=$((hour * 60 + minute))
 
 # If we are before the morning start, then we add 24h to the current time, so that if it is 1h20, we will have 25h20.

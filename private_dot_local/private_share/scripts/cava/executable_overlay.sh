@@ -29,15 +29,15 @@ if [ -n "$cava_running" ]; then
 else
     if [ "$1" = "mini" ]; then
         kitty +kitten panel --edge=center --layer=overlay -o background_opacity=0 -o font_size=1 \
-                    --margin-top=$MARGIN_TOP --margin-bottom=$((1080 - $MARGIN_TOP - $PANEL_HEIGHT)) \
-                    --margin-left=$MARGIN_LEFT --margin-right=$((1920 - $MARGIN_LEFT - $PANEL_WIDTH)) \
-                    cava -p $XDG_CONFIG_HOME/cava/config_mini &
+                    --margin-top="$MARGIN_TOP" --margin-bottom=$((1080 - MARGIN_TOP - PANEL_HEIGHT)) \
+                    --margin-left="$MARGIN_LEFT" --margin-right=$((1920 - MARGIN_LEFT - PANEL_WIDTH)) \
+                    cava -p "$XDG_CONFIG_HOME/cava/config_mini" &
 
         if [ "$2" = "title" ]; then
             kitty +kitten panel --edge=center --layer=overlay -o background_opacity=0 -o font_size=11 \
-                        --margin-top=$((MARGIN_TOP - 20)) --margin-bottom=$((1080 - $MARGIN_TOP - $PANEL_HEIGHT - 20)) \
-                        --margin-left=$MARGIN_LEFT --margin-right=$((1920 - $MARGIN_LEFT - $PANEL_WIDTH)) \
-                        python $DESKTOP_SCRIPTS/cava/song_display.py &
+                        --margin-top=$((MARGIN_TOP - 20)) --margin-bottom=$((1080 - MARGIN_TOP - PANEL_HEIGHT - 20)) \
+                        --margin-left="$MARGIN_LEFT" --margin-right=$((1920 - MARGIN_LEFT - PANEL_WIDTH)) \
+                        python "$DESKTOP_SCRIPTS/cava/song_display.py" &
         fi
     else
         # No cava panel running, start a new one

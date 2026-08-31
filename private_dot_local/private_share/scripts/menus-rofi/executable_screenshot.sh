@@ -61,7 +61,7 @@ copy_shot () {
 
 # Countdown function
 countdown () {
-	for sec in $(seq $1 -1 1); do
+	for sec in $(seq "$1" -1 1); do
 		dunstify -t 1000 --replace=699 "Taking shot in: $sec"
 		sleep 1
 	done
@@ -98,7 +98,7 @@ shotwin () {
 }
 
 shotactive () {
-	cd "$dir" && sleep 0.5 && grim -o $(hyprctl activeworkspace -j | jq -r '.monitor') -t png - | copy_shot
+	cd "$dir" && sleep 0.5 && grim -o "$(hyprctl activeworkspace -j | jq -r '.monitor')" -t png - | copy_shot
 	notify_view
 }
 

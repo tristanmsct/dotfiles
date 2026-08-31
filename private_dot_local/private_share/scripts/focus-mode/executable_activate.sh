@@ -8,28 +8,28 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
-STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
-FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
+STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
+THEME_TYPE=$(jq -r '.theme.mode' "$STATE_FILE")
+FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' "$STATE_FILE")
 
-if [ $THEME_TYPE = "light" ]; then
-    $DESKTOP_SCRIPTS/theming/switch-theme.sh
+if [ "$THEME_TYPE" = "light" ]; then
+    "$DESKTOP_SCRIPTS/theming/switch-theme.sh"
 fi
 
-if $FOCUSMODE_ENABLED; then
+if [ "$FOCUSMODE_ENABLED" = "true" ]; then
     # If focus mode is on, then we restore everything and disable it.
     hyprctl reload
     waypaper --restore
 
     nextcloud --background &
 
-    if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
+    if [ "$#" -eq 0 ] || [ "$1" != "quiet" ]; then
         dunstify "Focus mode deactivated" "Decorations, blur, wallpaper, etc. enabled"
     fi
 
-    jq '.focusmode.enabled = false' $STATE_FILE | sponge $STATE_FILE
+    jq '.focusmode.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
 else
     # If focus mode is off, then start it.
     hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
@@ -42,14 +42,14 @@ else
 
     awww kill
 
-    sed -i -E "s/(background-theme) rgba\(0, 0, 0, 0.4\);/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
-    sed -i -E "s/(border-color) @accent-color;/\1 transparent;/" $HOME/.config/waybar/colors-waybar.css
+    sed -i -E "s/(background-theme) rgba\(0, 0, 0, 0.4\);/\1 transparent;/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
+    sed -i -E "s/(border-color) @accent-color;/\1 transparent;/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
 
     nextcloud --quit
 
-    if [ "$#" -eq 0 ] || [ $1 != "quiet" ]; then
+    if [ "$#" -eq 0 ] || [ "$1" != "quiet" ]; then
         dunstify "Focus mode activated" "Decorations, blur, wallpaper, etc. disabled"
     fi
 
-    jq '.focusmode.enabled = true' $STATE_FILE | sponge $STATE_FILE
+    jq '.focusmode.enabled = true' "$STATE_FILE" | sponge "$STATE_FILE"
 fi

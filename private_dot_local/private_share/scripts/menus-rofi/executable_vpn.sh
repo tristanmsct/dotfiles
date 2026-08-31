@@ -42,7 +42,8 @@ SELECTION=$(
         -config "$XDG_CONFIG_HOME/rofi/config-simple.rasi" -theme-str "${THEME_VPN}" \
         -markup-rows -l $NB_INTERFACE -p "Select:"
     )
-CLEAN_SELECTION=$(echo "$SELECTION" | sed 's/^[^ ]* //')
+CLEAN_SELECTION="${SELECTION#* }"
+CLEAN_SELECTION="${CLEAN_SELECTION#"${CLEAN_SELECTION%%[![:space:]]*}"}"
 
 # Allow to exit when pressing esc on the menu.
 if [[ $CLEAN_SELECTION == "" ]]; then
@@ -58,27 +59,28 @@ if [[ $INITIAL_INTERFACE != "" ]]; then
     	nmcli connection down Raspberrypi-VPN
     fi
     protonvpn disconnect
-    $DESKTOP_SCRIPTS/vpn/update-status.sh
+    "$DESKTOP_SCRIPTS/vpn/update-status.sh"
 fi
 
 # Start Raspberrypi VPN or Mullvad if we chose one of them. If we clicked Disconnect, we do nothing.
 if [[ $CLEAN_SELECTION == *"Raspberrypi-VPN"* ]]; then
-    docker ps | grep -q gluetun && docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down qbittorrent gluetun
-    nmcli connection up $CLEAN_SELECTION
-    $DESKTOP_SCRIPTS/vpn/update-status.sh $CLEAN_SELECTION
+    docker ps | grep -q gluetun && docker compose --file "$HOME/Nextcloud/07-Servarr/compose.yaml" down qbittorrent gluetun
+    nmcli connection up "$CLEAN_SELECTION"
+    "$DESKTOP_SCRIPTS/vpn/update-status.sh" "$CLEAN_SELECTION"
 elif [[ $CLEAN_SELECTION != *"Deactivate"* ]]; then
-    docker ps | grep -q gluetun && docker compose --file $HOME/Nextcloud/07-Servarr/compose.yaml down qbittorrent gluetun
+    docker ps | grep -q gluetun && docker compose --file "$HOME/Nextcloud/07-Servarr/compose.yaml" down qbittorrent gluetun
     # Extract country code (e.g., "Proton-FR" -> "FR").
-    COUNTRY=$(echo "$CLEAN_SELECTION" | sed 's/Proton-//' | xargs)
+    COUNTRY="${CLEAN_SELECTION#Proton-}"
+    COUNTRY="${COUNTRY%%[[:space:]]*}"
 
     # Connect and capture output.
     OUTPUT=$(protonvpn connect --country "$COUNTRY" 2>&1)
     # Extract location from "Connected to X in (location)." line.
     if echo "$OUTPUT" | grep -q "Connected to"; then
         LOCATION=$(echo "$OUTPUT" | grep -oP '(?<=in )[\w\s,]+(?=\. )')
-        echo $LOCATION
+        printf '%s\n' "$LOCATION"
 
-        $DESKTOP_SCRIPTS/vpn/update-status.sh $LOCATION
+        "$DESKTOP_SCRIPTS/vpn/update-status.sh" "$LOCATION"
     elif echo "$OUTPUT" | grep -q "Invalid country name"; then
         dunstify "Invalid country name"
     fi

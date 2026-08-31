@@ -23,7 +23,7 @@ if [ -n "$clock_running" ]; then
     pkill -f "kitty \+kitten panel.*clock_display"
 else
     kitty +kitten panel --edge=center --layer=overlay -o background_opacity=0 -o font_size=24 \
-                --margin-top=$((MARGIN_TOP - 20)) --margin-bottom=$((1080 - $MARGIN_TOP - $PANEL_HEIGHT - 20)) \
-                --margin-left=$MARGIN_LEFT --margin-right=$((1920 - $MARGIN_LEFT - $PANEL_WIDTH)) \
-                python $DESKTOP_SCRIPTS/focus-mode/clock_display.py &
+                --margin-top=$((MARGIN_TOP - 20)) --margin-bottom=$((1080 - MARGIN_TOP - PANEL_HEIGHT - 20)) \
+                --margin-left=$MARGIN_LEFT --margin-right=$((1920 - MARGIN_LEFT - PANEL_WIDTH)) \
+                python "$DESKTOP_SCRIPTS/focus-mode/clock_display.py" &
 fi

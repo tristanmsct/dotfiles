@@ -14,5 +14,5 @@ if [ -n "$turbocava_running" ]; then
     pkill -f "qs -p .*quickshell/turbo-cava.qml"
 else
     # No turbocava process running, start a new one
-    qs -p $XDG_CONFIG_HOME/quickshell/turbo-cava.qml &
+    qs -p "$XDG_CONFIG_HOME/quickshell/turbo-cava.qml" &
 fi

@@ -13,22 +13,22 @@ CAVA_CONFIG_MINI="$XDG_CONFIG_HOME/cava/config_mini"
 TURBO_CAVA_CONFIG="$XDG_CONFIG_HOME/quickshell/turbo-cava.qml"
 
 
-if grep -qxF "method = pulse" $CAVA_CONFIG; then
-    sed -i -E "s/^(method = pulse)$/; \1/" $CAVA_CONFIG
-    sed -i -E "s/^(source = alsa_input)/; \1/" $CAVA_CONFIG
-    sed -i -E "s/^(method = pulse)$/; \1/" $CAVA_CONFIG_MINI
-    sed -i -E "s/^(source = alsa_input)/; \1/" $CAVA_CONFIG_MINI
+if grep -qxF "method = pulse" "$CAVA_CONFIG"; then
+    sed -i -E "s/^(method = pulse)$/; \1/" "$CAVA_CONFIG"
+    sed -i -E "s/^(source = alsa_input)/; \1/" "$CAVA_CONFIG"
+    sed -i -E "s/^(method = pulse)$/; \1/" "$CAVA_CONFIG_MINI"
+    sed -i -E "s/^(source = alsa_input)/; \1/" "$CAVA_CONFIG_MINI"
 
-    sed -i -E "s/^(source = alsa_input)/; \1/" $TURBO_CAVA_CONFIG
-    touch $TURBO_CAVA_CONFIG
+    sed -i -E "s/^(source = alsa_input)/; \1/" "$TURBO_CAVA_CONFIG"
+    touch "$TURBO_CAVA_CONFIG"
 else
-    sed -i -E "s/^; (method = pulse)$/\1/" $CAVA_CONFIG
-    sed -i -E "s/^; (source = alsa_input)/\1/" $CAVA_CONFIG
-    sed -i -E "s/^; (method = pulse)$/\1/" $CAVA_CONFIG_MINI
-    sed -i -E "s/^; (source = alsa_input)/\1/" $CAVA_CONFIG_MINI
+    sed -i -E "s/^; (method = pulse)$/\1/" "$CAVA_CONFIG"
+    sed -i -E "s/^; (source = alsa_input)/\1/" "$CAVA_CONFIG"
+    sed -i -E "s/^; (method = pulse)$/\1/" "$CAVA_CONFIG_MINI"
+    sed -i -E "s/^; (source = alsa_input)/\1/" "$CAVA_CONFIG_MINI"
 
-    sed -i -E "s/^; (source = alsa_input)/\1/" $TURBO_CAVA_CONFIG
-    touch $TURBO_CAVA_CONFIG
+    sed -i -E "s/^; (source = alsa_input)/\1/" "$TURBO_CAVA_CONFIG"
+    touch "$TURBO_CAVA_CONFIG"
 fi
 
 pkill -SIGUSR1 cava

@@ -8,15 +8,15 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
 STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
-SATURATE_STATE=$(jq '.theme.saturation.enabled' $STATE_FILE)
+SATURATE_STATE=$(jq '.theme.saturation.enabled' "$STATE_FILE")
 
 
 # Reset saturation value from cache before opening.
-if [ $SATURATE_STATE = "true" ]; then
-    CACHED_SAT=$(jq '.theme.saturation.level' $STATE_FILE)
+if [ "$SATURATE_STATE" = "true" ]; then
+    CACHED_SAT=$(jq '.theme.saturation.level' "$STATE_FILE")
 else
     CACHED_SAT=0.5
 fi
@@ -30,5 +30,5 @@ elif [[ $XDG_CURRENT_DESKTOP == "niri" ]]; then
     monitor_model=$(niri msg -j focused-output| jq -r ".model")
 fi
 
-eww open theme-menu-window-closer --screen $monitor_model
-eww open theme-menu-window --screen $monitor_model
+eww open theme-menu-window-closer --screen "$monitor_model"
+eww open theme-menu-window --screen "$monitor_model"

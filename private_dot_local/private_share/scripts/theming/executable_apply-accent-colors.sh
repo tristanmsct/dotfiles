@@ -10,74 +10,74 @@
 
 apply_accent_colors () {
 
-    if [ $THEME_TYPE = "dark" ]; then
+    if [ "$THEME_TYPE" = "dark" ]; then
         hyprctl setcursor Vimix-white-cursors 40
-        sed -i "s/-light.png/-dark.png/" $XDG_CONFIG_HOME/wlogout/colors-wlogout.css
+        sed -i "s/-light.png/-dark.png/" "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css"
 
         BG_COLOR="rgba(0, 0, 0, 0.4)"
         TXT_COLOR="#eeeeee"
     else
         hyprctl setcursor Vimix-cursors 40
-        sed -i "s/-dark.png/-light.png/" $XDG_CONFIG_HOME/wlogout/colors-wlogout.css
+        sed -i "s/-dark.png/-light.png/" "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css"
 
         BG_COLOR="rgba(230, 230, 230, 0.4)"
         TXT_COLOR="#000000"
     fi
 
     # Hyprland
-    sed -i -E "s/(accent_color = color_)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua
-    sed -i -E "s/(highlight_color = color_br_)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua
-    sed -i -E "s/(accent_color_transparent = color_tr_)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua
+    sed -i -E "s/(accent_color = color_)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua"
+    sed -i -E "s/(highlight_color = color_br_)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua"
+    sed -i -E "s/(accent_color_transparent = color_tr_)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/hypr/conf/colors-hyprland.lua"
 
     # Rofi
-    sed -i -E "s/(accent-color: @color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/rofi/colors-rofi.rasi
-    sed -i -E "s/(accent-color-transparent: @color-tr-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/rofi/colors-rofi.rasi
-    sed -i -E "s/(background: )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/rofi/colors-rofi.rasi
-    sed -i -E "s/(foreground: )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/rofi/colors-rofi.rasi
+    sed -i -E "s/(accent-color: @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/rofi/colors-rofi.rasi"
+    sed -i -E "s/(accent-color-transparent: @color-tr-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/rofi/colors-rofi.rasi"
+    sed -i -E "s/(background: )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/rofi/colors-rofi.rasi"
+    sed -i -E "s/(foreground: )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/rofi/colors-rofi.rasi"
 
     # NWG Drawer
-    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css
-    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css
+    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css"
+    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css"
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css"
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css"
 
     # NWG Panel
-    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/nwg-panel/colors-nwg.css
-    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/nwg-panel/colors-nwg.css
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/nwg-panel/colors-nwg.css
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/nwg-panel/colors-nwg.css
+    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css"
+    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css"
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css"
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css"
 
     # NMRS
-    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/nmrs/colors-nmrs.css
-    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/nmrs/colors-nmrs.css
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/nmrs/colors-nmrs.css
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/nmrs/colors-nmrs.css
+    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
+    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
 
     # Waybar
-    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/waybar/colors-waybar.css
-    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/waybar/colors-waybar.css
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/waybar/colors-waybar.css
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/waybar/colors-waybar.css
+    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
+    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
 
     # Waypaper
-    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/waypaper/colors-waypaper.css
-    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/waypaper/colors-waypaper.css
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/waypaper/colors-waypaper.css
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/waypaper/colors-waypaper.css
+    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/waypaper/colors-waypaper.css"
+    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/waypaper/colors-waypaper.css"
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/waypaper/colors-waypaper.css"
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/waypaper/colors-waypaper.css"
 
     # SCSS / EWW
-    sed -i -E "s/(\\\$accent-color: \\\$color-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/eww/colors-eww.scss
-    sed -i -E "s/(\\\$highlight-color: \\\$color-br-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/eww/colors-eww.scss
-    sed -i -E "s/(\\\$accent-color-transparent: \\\$color-tr-)[0-9]{1,2}/\1$COLOR_NB/" $XDG_CONFIG_HOME/eww/colors-eww.scss
-    sed -i -E "s/(\\\$background-theme: )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/eww/colors-eww.scss
-    sed -i -E "s/(\\\$foreground-theme: )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/eww/colors-eww.scss
+    sed -i -E "s/(\\\$accent-color: \\\$color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/eww/colors-eww.scss"
+    sed -i -E "s/(\\\$highlight-color: \\\$color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/eww/colors-eww.scss"
+    sed -i -E "s/(\\\$accent-color-transparent: \\\$color-tr-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/eww/colors-eww.scss"
+    sed -i -E "s/(\\\$background-theme: )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/eww/colors-eww.scss"
+    sed -i -E "s/(\\\$foreground-theme: )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/eww/colors-eww.scss"
 
     # WLogout
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" $XDG_CONFIG_HOME/wlogout/colors-wlogout.css
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" $XDG_CONFIG_HOME/wlogout/colors-wlogout.css
+    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css"
+    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css"
 
     # Dunst
-    export COLOR_FRAME=$ACCENT_COLOR
+    export COLOR_FRAME="$ACCENT_COLOR"
     envsubst < "$XDG_CONFIG_HOME/dunst/dunstrc.envsubst" > "$XDG_CONFIG_HOME/dunst/dunstrc"
 
     # Cava
@@ -88,17 +88,17 @@ apply_accent_colors () {
 }
 
 apply_gtk_theme () {
-    if [ $THEME_TYPE = "dark" ]; then
+    if [ "$THEME_TYPE" = "dark" ]; then
         theme_color+="-Dark"
     else
         theme_color+="-Light"
     fi
 
     # Setting general themes.
-    sed -i "s/^icon-theme=.*$/icon-theme=Tela-circle-${icons_color}/" $XDG_DATA_HOME/nwg-look/gsettings
-    sed -i "s|^gtk-theme=.*$|gtk-theme=Orchis-${theme_color}-Compact|" $XDG_DATA_HOME/nwg-look/gsettings
-    sed -i "s|^font-name=.*$|font-name=Noto Sans 11|" $XDG_DATA_HOME/nwg-look/gsettings
-    sed -i "s|^cursor-theme=.*$|cursor-theme=Vimix-white-cursors|" $XDG_DATA_HOME/nwg-look/gsettings
+    sed -i "s/^icon-theme=.*$/icon-theme=Tela-circle-${icons_color}/" "$XDG_DATA_HOME/nwg-look/gsettings"
+    sed -i "s|^gtk-theme=.*$|gtk-theme=Orchis-${theme_color}-Compact|" "$XDG_DATA_HOME/nwg-look/gsettings"
+    sed -i "s|^font-name=.*$|font-name=Noto Sans 11|" "$XDG_DATA_HOME/nwg-look/gsettings"
+    sed -i "s|^cursor-theme=.*$|cursor-theme=Vimix-white-cursors|" "$XDG_DATA_HOME/nwg-look/gsettings"
 
     GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc" nwg-look -a -x
 
@@ -109,31 +109,31 @@ apply_gtk_theme () {
     rm "$XDG_CONFIG_HOME/gtk-4.0/gtk-dark.css"
     rm "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
 
-    ln -sf /usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/assets "$XDG_CONFIG_HOME/gtk-4.0/assets"
-    ln -sf /usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/gtk-dark.css "$XDG_CONFIG_HOME/gtk-4.0/gtk-dark.css"
-    ln -sf /usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/gtk.css "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
+    ln -sf "/usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/assets" "$XDG_CONFIG_HOME/gtk-4.0/assets"
+    ln -sf "/usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/gtk-dark.css" "$XDG_CONFIG_HOME/gtk-4.0/gtk-dark.css"
+    ln -sf "/usr/share/themes/Orchis-${theme_color}-Compact/gtk-4.0/gtk.css" "$XDG_CONFIG_HOME/gtk-4.0/gtk.css"
 
-    if [ $THEME_TYPE = "dark" ]; then
+    if [ "$THEME_TYPE" = "dark" ]; then
         gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-        sed -i "s|color_scheme_path=/usr/share/qt6ct/colors/.*.conf|color_scheme_path=/usr/share/qt6ct/colors/darker.conf|" $XDG_CONFIG_HOME/qt6ct/qt6ct.conf
+        sed -i "s|color_scheme_path=/usr/share/qt6ct/colors/.*.conf|color_scheme_path=/usr/share/qt6ct/colors/darker.conf|" "$XDG_CONFIG_HOME/qt6ct/qt6ct.conf"
     else
         gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
-        sed -i "s|color_scheme_path=/usr/share/qt6ct/colors/.*.conf|color_scheme_path=/usr/share/qt6ct/colors/airy.conf|" $XDG_CONFIG_HOME/qt6ct/qt6ct.conf
+        sed -i "s|color_scheme_path=/usr/share/qt6ct/colors/.*.conf|color_scheme_path=/usr/share/qt6ct/colors/airy.conf|" "$XDG_CONFIG_HOME/qt6ct/qt6ct.conf"
     fi
 
     # Then nextcloud and repo directories get a specific folder icon in the current theme.
-    gio set $HOME/Nextcloud metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-cloud.svg"
-    gio set $HOME/Downloads metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-downloads.svg"
-    gio set $HOME/Documents metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-documents.svg"
-    gio set $HOME/Documents/Desktop metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-desktop.svg"
-    gio set $HOME/Documents/Public metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-public.svg"
-    gio set $HOME/Documents/Templates metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-templates.svg"
-    gio set $HOME/Media/Movies metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
-    gio set $HOME/Media/Series metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
-    gio set $HOME/Media/Games metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-games.svg"
-    gio set $HOME/Media/Music metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-music.svg"
-    gio set $HOME/Media/Pictures metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-pictures.svg"
-    gio set $HOME/Media/Videos metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
+    gio set "$HOME/Nextcloud" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-cloud.svg"
+    gio set "$HOME/Downloads" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-downloads.svg"
+    gio set "$HOME/Documents" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-documents.svg"
+    gio set "$HOME/Documents/Desktop" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-desktop.svg"
+    gio set "$HOME/Documents/Public" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-public.svg"
+    gio set "$HOME/Documents/Templates" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/folder-templates.svg"
+    gio set "$HOME/Media/Movies" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
+    gio set "$HOME/Media/Series" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
+    gio set "$HOME/Media/Games" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-games.svg"
+    gio set "$HOME/Media/Music" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-music.svg"
+    gio set "$HOME/Media/Pictures" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-pictures.svg"
+    gio set "$HOME/Media/Videos" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-video.svg"
 
     # Getting all repos
     # Main repo, config files and such.
@@ -167,7 +167,7 @@ apply_gtk_theme () {
     lst_repos+=("$HOME/Nextcloud/01-Travail/05-OpenClassrooms/01-OC_Projets"
         "$HOME/Nextcloud/01-Travail/05-OpenClassrooms/98-OC_Manager")
 
-    for repo in ${lst_repos[@]}; do
+    for repo in "${lst_repos[@]}"; do
         gio set "$repo" metadata::custom-icon "file:///usr/share/icons/Tela-circle-${icons_color}/scalable/places/default-folder-git.svg"
     done
 
@@ -183,7 +183,7 @@ apply_sddm_theme () {
 
     # Changing the SDDM wallpaper with the new one.
     sudo rm $sddm_asset_folder/current_wallpaper.*
-    sudo cp $WALLPAPER $sddm_asset_folder/current_wallpaper.$extension
+    sudo cp "$WALLPAPER" "$sddm_asset_folder/current_wallpaper.$extension"
 
     # Adding the SDDM template and replacing the wallpaper and accent color.
 

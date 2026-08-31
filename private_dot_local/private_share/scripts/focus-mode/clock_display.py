@@ -11,12 +11,14 @@ Created on 2025-05-29.
 @author: Tristan Muscat
 @email: tristan.muscat@pm.me
 """
-import os
 import configparser
+import os
+import signal
 import sys
 import time
-import signal
 from datetime import datetime
+
+import pytz
 
 # Cava color syncs up with the theme so its a good source.
 CAVA_CONFIG_FILE = os.getenv("XDG_CONFIG_HOME") + "/cava/config_mini"
@@ -57,7 +59,7 @@ def main():
 
     try:
         while True:
-            now = datetime.now()
+            now = datetime.now(pytz.timezone("Europe/Paris"))
             display_text = now.strftime("%H:%M")
 
             # Convert color to ANSI escape sequence.
@@ -70,7 +72,7 @@ def main():
             print(f"\r{display_text}", end="", flush=True)
 
             time.sleep(1)
-    except Exception as e:
+    except (OSError, ValueError) as e:
         print(f"\nError: {e}")
     finally:
         # Show cursor on exit.

@@ -15,5 +15,5 @@ elif [[ $XDG_CURRENT_DESKTOP == "niri" ]]; then
     monitor_model=$(niri msg -j focused-output| jq -r ".model")
 fi
 
-eww open brightness-slider-window-closer --screen $monitor_model
-eww open brightness-slider-window --screen $monitor_model
+eww open brightness-slider-window-closer --screen "$monitor_model"
+eww open brightness-slider-window --screen "$monitor_model"

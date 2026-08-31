@@ -13,7 +13,7 @@
 # ---------------------------------------------------------------------------------------
 
 # Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+"$DESKTOP_SCRIPTS/system/setup-state.sh"
 
 STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
 CACHE_FILE="$XDG_STATE_HOME/desktop/wallpaper"
@@ -22,16 +22,16 @@ CACHE_FILE="$XDG_STATE_HOME/desktop/wallpaper"
 # Get selected wallpaper
 # ---------------------------------------------------------------------------------------
 
-WALLPAPER=$1
+WALLPAPER="$1"
 
 # When changing wallpaper, the accent-color cache file need to be reset, otherwise
 # accent colors from previous wallpapers might get mixed.
-if [ ! "$WALLPAPER" = "$(cat $CACHE_FILE)" ]; then
+if [ ! "$WALLPAPER" = "$(cat "$CACHE_FILE")" ]; then
     jq 'del(.theme.accent_color.hex)' "$STATE_FILE" | sponge "$STATE_FILE"
     jq 'del(.theme.accent_color.index)' "$STATE_FILE" | sponge "$STATE_FILE"
     jq '.theme.accent_color.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
 fi
-echo "$WALLPAPER" > $CACHE_FILE
+echo "$WALLPAPER" > "$CACHE_FILE"
 
 # ---------------------------------------------------------------------------------------
 # Execute Wallust
@@ -43,14 +43,14 @@ wallust run "$WALLPAPER" --skip-sequences
 # Restore border config
 # ---------------------------------------------------------------------------------------
 
-BORDER_MAIN=$(jq '.theme.border_main' $STATE_FILE)
-BORDER_DECORATIONS=$(jq '.theme.border_decorations' $STATE_FILE)
+BORDER_MAIN=$(jq '.theme.border_main' "$STATE_FILE")
+BORDER_DECORATIONS=$(jq '.theme.border_decorations' "$STATE_FILE")
 
-if [ $BORDER_MAIN = "false" ]; then
+if [ "$BORDER_MAIN" = "false" ]; then
     "$XDG_CONFIG_HOME/eww/themes/scripts/switch-borders.sh" true
 fi
 
-if [ $BORDER_DECORATIONS = "false" ]; then
+if [ "$BORDER_DECORATIONS" = "false" ]; then
     "$XDG_CONFIG_HOME/eww/themes/scripts/switch-borders-decorations.sh" true
 fi
 
@@ -61,18 +61,18 @@ fi
 # Should cover all basis.
 # At boot or when refreshing waypapr (meta + W) if an accent color was selected, the cache file will be here, otherwise it will not exist.
 # When switching wallpaper, the cache file is deleted right before so no problem.
-ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' $STATE_FILE)
+ACCENT_COLOR_STATUS=$(jq '.theme.accent_color.enabled' "$STATE_FILE")
 
-if [ $ACCENT_COLOR_STATUS = "true" ]; then
+if [ "$ACCENT_COLOR_STATUS" = "true" ]; then
     # If there was accent colors cached, then we re-apply them.
-    COLOR=$(jq -r '.theme.accent_color.hex' $STATE_FILE)
-    COLOR_NB=$(jq -r '.theme.accent_color.index' $STATE_FILE)
+    COLOR=$(jq -r '.theme.accent_color.hex' "$STATE_FILE")
+    COLOR_NB=$(jq -r '.theme.accent_color.index' "$STATE_FILE")
 
-    $DESKTOP_SCRIPTS/theming/apply-theme.sh $COLOR $COLOR_NB
+    "$DESKTOP_SCRIPTS/theming/apply-theme.sh" "$COLOR" "$COLOR_NB"
 else
-    $DESKTOP_SCRIPTS/theming/apply-theme.sh
+    "$DESKTOP_SCRIPTS/theming/apply-theme.sh"
 fi
 
 # Remove any custom saturation.
-jq '.theme.saturation.enabled = false' $STATE_FILE | sponge $STATE_FILE
-jq 'del(.theme.saturation.level)' $STATE_FILE | sponge $STATE_FILE
+jq '.theme.saturation.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
+jq 'del(.theme.saturation.level)' "$STATE_FILE" | sponge "$STATE_FILE"

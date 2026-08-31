@@ -10,11 +10,11 @@
 
 # Read the VPN status file.
 STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-STATUS=$(jq '.vpn.connected' $STATE_FILE)
+STATUS=$(jq '.vpn.connected' "$STATE_FILE")
 
 if [[ "$STATUS" = "false" ]]; then
     echo "{\"text\": \"\", \"alt\": \"off\"}"
 else
-    INTERFACE=$(jq '.vpn.interface' $STATE_FILE)
+    INTERFACE=$(jq '.vpn.interface' "$STATE_FILE")
     echo "{\"text\": \" 󰒃  \", \"tooltip\": $INTERFACE, \"alt\": \"connected\"}"
 fi

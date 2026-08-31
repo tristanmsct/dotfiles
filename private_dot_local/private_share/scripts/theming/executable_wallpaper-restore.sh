@@ -14,10 +14,10 @@
 
 cachefile="$XDG_STATE_HOME/desktop/wallpaper"
 
-if [ -f $cachefile ] && [ -f $(cat $cachefile) ]; then
-    echo ":: Wallpaper $(cat $cachefile) exists"
-    wallpaper=$(cat $cachefile)
+if [ -f "$cachefile" ]; then
+    wallpaper=$(<"$cachefile")
 
-    echo ":: Setting wallpaper with source image $wallpaper"
-    waypaper --wallpaper $wallpaper
+    if [ -f "$wallpaper" ]; then
+        waypaper --wallpaper "$wallpaper"
+    fi
 fi
