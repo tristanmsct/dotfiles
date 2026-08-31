@@ -10,7 +10,7 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 PACKAGE_INFO_DIR="$HOME/.local/share/watcher/pkglog/"
@@ -34,20 +34,21 @@ show_help() {
 # -- Helper functions -------------------------------------------------------------------
 
 get_file() {
-    local options=""
+    local -a options=()
     if [[ $1 = "--multiple" ]]; then
-        options="--no-limit"
+        options+=(--no-limit)
         shift
     elif [[ $1 = "--compare" ]]; then
-        options="--limit 2"
+        options+=(--limit 2)
         shift
     fi
 
-    local selected=$(/usr/bin/ls "$PACKAGE_INFO_DIR" | sort -r | awk '{
+    local selected
+    selected=$(/usr/bin/ls "$PACKAGE_INFO_DIR" | sort -r | awk '{
         match($0, /packages_([0-9]{8})_[0-9]+/, arr)
         date = arr[1]
         printf "%s/%s/%s - %s\n", substr(date,1,4), substr(date,5,2), substr(date,7,2), $0
-    }' | gum choose $options "$@")
+    }' | gum choose "${options[@]}" "$@")
 
     # Exit if nothing selected.
     [[ -z $selected ]] && return 1
@@ -111,8 +112,6 @@ query_package_list () {
     PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name query" -- "$@") || exit 2
     eval set -- "$PARSED"
 
-    target_repo=all
-    target_type=all
     QUERY=""
     while true; do
         case "$1" in
@@ -133,10 +132,10 @@ query_package_list () {
     original_file=$(get_file --header "Choose a file")
 
     if [[ ! -z "$QUERY" ]]; then
-        awk -F',' "${QUERY::-2}" $original_file |
+        awk -F',' "${QUERY::-2}" "$original_file" |
             gum table -s',' --columns=Repository,Name,Version,Type --print
     else
-        gum table -s',' --columns=Repository,Name,Version,Type --print -f $original_file
+        gum table -s',' --columns=Repository,Name,Version,Type --print -f "$original_file"
     fi
 }
 
@@ -173,7 +172,7 @@ show_diff () {
         file1="${paths[0]}"
         file2="${paths[1]}"
     else
-        read -r file1 file2 <<< "$(/usr/bin/ls $PACKAGE_INFO_DIR | sort -r | head -2 | tr '\n' ' ')"
+        read -r file1 file2 <<< "$(/usr/bin/ls "$PACKAGE_INFO_DIR" | sort -r | head -2 | tr '\n' ' ')"
         file1="$PACKAGE_INFO_DIR/$file1"
         file2="$PACKAGE_INFO_DIR/$file2"
     fi
@@ -195,7 +194,7 @@ show_diff () {
     awk -F',' 'NR>1 {print $1","$2}' "$file2" | sort > /tmp/old_keys.tmp
 
     # Find common packages.
-    comm -12 /tmp/old_keys.tmp /tmp/new_keys.tmp | while read key; do
+    comm -12 /tmp/old_keys.tmp /tmp/new_keys.tmp | while read -r key; do
         old_line=$(grep "^$key," /tmp/old.tmp)
         new_line=$(grep "^$key," /tmp/new.tmp)
         if [ "$old_line" != "$new_line" ]; then

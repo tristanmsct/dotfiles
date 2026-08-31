@@ -44,7 +44,7 @@ while [[ $# -gt 0 ]]; do
             show_help
             ;;
         open)
-            xdg-open $HOME/.local/share/watcher > /dev/null 2>&1 & disown
+            xdg-open $XDG_DATA_HOME/watcher > /dev/null 2>&1 & disown
             exit 0
             ;;
         *)

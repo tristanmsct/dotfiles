@@ -9,7 +9,7 @@
 # Wrapper for common terminal animations.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 
@@ -35,16 +35,16 @@ fi
 
 case $choice in
     cava)
-        cava ${@:2}
+        cava "${@:2}"
         ;;
     aqua)
-        asciiquarium -t ${@:2}
+        asciiquarium -t "${@:2}"
         ;;
     matrix)
-        neo-matrix -D --charset=ascii ${@:2}
+        neo-matrix -D --charset=ascii "${@:2}"
         ;;
     bonsai)
-        cbonsai -li ${@:2}
+        cbonsai -li "${@:2}"
         ;;
     -h|--help)
         show_help

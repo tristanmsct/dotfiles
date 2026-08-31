@@ -10,13 +10,13 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 
 SYSTEM_DIR="/usr/share/applications"
-LOCAL_DIR="$HOME/.local/share/applications"
-NOTES_DIR="$HOME/.local/share/watcher/desktop"
+LOCAL_DIR="$XDG_DATA_HOME/applications"
+NOTES_DIR="$XDG_DATA_HOME/watcher/desktop"
 
 DESC="Monitor .desktop file changes"
 
@@ -54,7 +54,7 @@ done
 mkdir -p "$NOTES_DIR"
 
 # Find .desktop files in both directories.
-monitor_list=$(comm -12 <(ls "$SYSTEM_DIR" 2>/dev/null | sort) <(ls "$LOCAL_DIR" 2>/dev/null | sort) | grep -v "^mimeinfo.cache$")
+monitor_list=$(comm -12 <(fd . "$SYSTEM_DIR" -e .desktop -x echo '{/}' | sort) <(fd . "$LOCAL_DIR" -e .desktop -x echo '{/}' | sort))
 
 if [[ $# -eq 0 ]]; then
     # Show differences.

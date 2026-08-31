@@ -10,7 +10,7 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 
@@ -60,7 +60,7 @@ if [ $sync == "y" ]; then
     exit 0
 elif [ $explain_all == "y" ]; then
     while IFS= read -r line; do
-        pkg=$(sed 's/\x1b\[[0-9;]*m//g' <<< "$line" | awk '{print $1}')
+        pkg=$(echo "$line" | sed 's/\x1b\[[0-9;]*m//g' | awk '{print $1}')
         versions=$(echo "$line" | awk '{print $2, $3, $4}')
         echo "$versions"
         watcher pkglog notes query "$pkg"
@@ -70,7 +70,7 @@ elif [ $explain == "y" ]; then
     declare -A pkg_versions
 
     while IFS= read -r line; do
-        clean=$(sed 's/\x1b\[[0-9;]*m//g' <<< "$line")
+        clean=${line//$'\e'\[[0-9;]*m/}
         pkg=$(awk '{print $1}' <<< "$clean")
         ver=$(awk '{print $2, $3, $4}' <<< "$line")
         pkg_versions[$pkg]="$ver"

@@ -8,7 +8,7 @@
 # Wrapper for servarr commands.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 SERVARR_HOME=$HOME/Nextcloud/07-Servarr
@@ -51,22 +51,22 @@ fi
 
 case $choice in
     up)
-        docker compose --file $SERVARR_HOME/compose.yaml up -d ${@:2}
+        docker compose --file "$SERVARR_HOME/compose.yaml" up -d "${@:2}"
         ;;
     down)
-        docker compose --file $SERVARR_HOME/compose.yaml down ${@:2}
+        docker compose --file "$SERVARR_HOME/compose.yaml" down "${@:2}"
         ;;
     restart)
-        docker compose --file $SERVARR_HOME/compose.yaml restart ${@:2}
+        docker compose --file "$SERVARR_HOME/compose.yaml" restart "${@:2}"
         ;;
     pull)
-        docker compose --file $SERVARR_HOME/compose.yaml pull ${@:2}
+        docker compose --file "$SERVARR_HOME/compose.yaml" pull "${@:2}"
         ;;
     logs)
-        docker compose --file $SERVARR_HOME/compose.yaml logs -f ${@:2}
+        docker compose --file "$SERVARR_HOME/compose.yaml" logs -f "${@:2}"
         ;;
     shutdown)
-        docker compose --file $SERVARR_HOME/compose.yaml down
+        docker compose --file "$SERVARR_HOME/compose.yaml" down
         if [ -t 1 ]; then
             # terminal
             sudo systemctl stop docker.socket

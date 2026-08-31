@@ -15,7 +15,6 @@ THEME_TYPE=$(jq -r '.theme.mode' $STATE_FILE)
 FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
 
 if [ $THEME_TYPE = "light" ]; then
-    # TODO : make the switch
     $DESKTOP_SCRIPTS/theming/switch-theme.sh
 fi
 

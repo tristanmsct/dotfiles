@@ -28,7 +28,7 @@
 # Search and replace in string using regular expression with bash.
 # https://stackoverflow.com/questions/13043344/search-and-replace-in-bash-using-regular-expressions
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 # Get the script name.
 script_name=$(basename "$0")
@@ -52,35 +52,35 @@ show_help() {
 
 open_location () {
     # Open the notes directory.
-    xdg-open $PATH_NOTES > /dev/null 2>&1 & disown
+    xdg-open "$PATH_NOTES" > /dev/null 2>&1 & disown
 }
 
 
 open_notes_day () {
     # Open the notes for the day.
     # Create the file if it does not exists.
-    file="${PATH_NOTES}/Day-to-day/"$(date '+%Y-%m-%d')"-notes.md"
+    file="${PATH_NOTES}/Day-to-day/$(date '+%Y-%m-%d')-notes.md"
 
     if ! test -f "$file"; then
-        touch $file
+        touch "$file"
     fi
 
     # xdg-open $file
-    typora $file > /dev/null 2>&1 & disown
+    typora "$file" > /dev/null 2>&1 & disown
 }
 
 
 open_notes_month () {
     # Open the notes for the month.
     # Create the file if it does not exists.
-    file="${PATH_NOTES}/Day-to-day/Month/"$(date '+%Y-%m')"-notes.md"
+    file="${PATH_NOTES}/Day-to-day/Month/$(date '+%Y-%m')-notes.md"
 
     if ! test -f "$file"; then
-        touch $file
+        touch "$file"
     fi
 
     # xdg-open $file
-    typora $file > /dev/null 2>&1 & disown
+    typora "$file" > /dev/null 2>&1 & disown
 }
 
 
@@ -94,41 +94,42 @@ clean_notes () {
         if [[ $dayly_entry =~ ([0-9]{4}-[0-9]{2}-[0-9]{2}) ]]; then
 
             # Extracting the year and month only.
-            entry_date=$(date -d ${BASH_REMATCH[1]} +%Y-%m)
-            entry_date_day=$(date -d ${BASH_REMATCH[1]} +%Y-%m-%d)
+            entry_date=$(date -d "${BASH_REMATCH[1]}" +%Y-%m)
+            entry_date_day=$(date -d "${BASH_REMATCH[1]}" +%Y-%m-%d)
             today_date=$(date '+%Y-%m-%d')
 
             # Sometimes, dayly files are empty, nothing is done in this case.
-            entry_content=$(<$dayly_entry)
-            if [ ! -z "$entry_content" ] && [ $entry_date_day != $today_date ]; then
+            entry_content=$(<"$dayly_entry")
+            if [ ! -z "$entry_content" ] && [ "$entry_date_day" != "$today_date" ]; then
 
                 # Then we get the corresponding month file, if it does not exists, it is created here.
-                month_file="${PATH_NOTES}/Day-to-day/Month/"$entry_date"-notes.md"
+                month_file="${PATH_NOTES}/Day-to-day/Month/$entry_date-notes.md"
                 if ! test -f "$month_file"; then
-                    touch $month_file
+                    touch "$month_file"
                 fi
 
                 # Between every dayly entry appended to the monthly file we put to blank lines.
                 # But the first line of the file does not need those blank lines, so we check if
                 # the file is empty or not.
-                month_file_target=$(<$month_file)
+                month_file_target=$(<"$month_file")
                 if [ ! -z "$month_file_target" ]; then
-                    printf '%s\n\n' >> $month_file
+                    printf "\n\n" >> "$month_file"
                 fi
                 # The date is simply added before the entry.
-                echo -e "\n\n# "${BASH_REMATCH[1]} >> $month_file
+                echo -e "\n\n# ${BASH_REMATCH[1]}" >> "$month_file"
 
                 # The entry is added line by line. Header lines (containing #) are changed to one more level (# -> ##, etc.)
                 # So the date can be at the first level of header.
                 while IFS= read -r line || [ -n "$line" ] ; do
-                    line=$"`echo $line | sed -e 's/^# /## /g'`"
-                    echo $line >> $month_file
+                    # Replace a leading "# " with "## " without using external commands
+                    line="${line/#\# /## }"
+                    echo "$line" >> "$month_file"
                 done < "$dayly_entry"
             fi
 
             # Appended entries are cleaned.
-            if [ $entry_date_day != $today_date ]; then
-                rm $dayly_entry
+            if [ "$entry_date_day" != "$today_date" ]; then
+                rm "$dayly_entry"
             fi
 
         else
@@ -147,10 +148,10 @@ archive_notes () {
     do
       if [[ $monthly_entry =~ ([0-9]{4}-.*)-notes\.md ]]; then
         # Extrating the year from the name of the file.
-        entry_year=$(date -d ${BASH_REMATCH[1]}-01 +%Y)
+        entry_year=$(date -d "${BASH_REMATCH[1]}"-01 +%Y)
 
         # Calculating the age of the entry.
-        entry_epoch=$(date -d ${BASH_REMATCH[1]}-01 +%s)
+        entry_epoch=$(date -d "${BASH_REMATCH[1]}"-01 +%s)
         now_epoch=$(date +%s)
         file_age_days="$(( (now_epoch-entry_epoch)/86400 ))"
 
@@ -158,33 +159,34 @@ archive_notes () {
         if [ $file_age_days -ge 120 ]; then
 
             # Then we get the corresponding archive file, if it does not exists, it is created here.
-            archive_file_name="${PATH_NOTES}/Day-to-day/Archive/"$entry_year"-notes.md"
+            archive_file_name="${PATH_NOTES}/Day-to-day/Archive/$entry_year-notes.md"
             if ! test -f "$archive_file_name"; then
-                touch $archive_file_name
+                touch "$archive_file_name"
             fi
 
             # Between every monthly entry appended to the monthly file we put to blank lines.
             # But the first line of the file does not need those blank lines, so we check if
             # the file is empty or not.
-            archive_file_content=$(<$archive_file_name)
+            archive_file_content=$(<"$archive_file_name")
             if [ ! -z "$archive_file_content" ]; then
-                printf '%s\n\n' >> $archive_file_name
+                printf "\n\n" >> "$archive_file_name"
             fi
 
             # A formatted date with the year and month is simply added before the entry.
-            entry_date_clean=$(date -d ${BASH_REMATCH[1]}-01 "+%B %Y")
-            echo -e "\n\n# "$entry_date_clean >> $archive_file_name
-            echo -e "\n" >> $archive_file_name
+            entry_date_clean=$(date -d "${BASH_REMATCH[1]}"-01 "+%B %Y")
+            echo -e "\n\n# $entry_date_clean" >> "$archive_file_name"
+            echo -e "\n" >> "$archive_file_name"
 
             # The entry is added line by line. Header lines (containing #) are changed to one more level (# -> ##, etc.)
             # So the year and month can be at the first level of header.
             while IFS= read -r line || [ -n "$line" ] ; do
-                line=$"`echo $line | sed -e 's/^#/##/g'`"
-                echo $line >> $archive_file_name
+                # Replace a leading "#" with "##" without using external commands
+                line="${line/#\#/##}"
+                echo "$line" >> "$archive_file_name"
             done < "$monthly_entry"
 
             # Appended entries are cleaned.
-            rm $monthly_entry
+            rm "$monthly_entry"
 
         fi
 

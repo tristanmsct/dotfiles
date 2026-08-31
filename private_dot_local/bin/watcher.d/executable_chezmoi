@@ -9,7 +9,7 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 
@@ -228,7 +228,7 @@ chezmoi-sync() {
 # -- Checking and syncing chezmoi managed directories -----------------------------------
 
 if [[ $# -eq 0 ]]; then
-	NOT_TRACKED=$(chezmoi unmanaged $HOME)
+	NOT_TRACKED=$(chezmoi unmanaged "$HOME")
 
 	STATUS_OUTPUT=$(chezmoi status)
 

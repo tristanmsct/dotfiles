@@ -12,7 +12,7 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 
@@ -52,13 +52,13 @@ fi
 # -- Gathering the lists of all repositories to check -----------------------------------
 
 # Main repo, config files and such.
-lst_repos_system=("$HOME/.local/share/dotfiles")
-lst_repos_system+=("$HOME/.local/share/ansible-archlinux")
+lst_repos_system=("$XDG_DATA_HOME/dotfiles")
+lst_repos_system+=("$XDG_DATA_HOME/ansible-archlinux")
 
 # The main hub for repos.
 base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
 public_repos="$HOME/Nextcloud/02-Projets/02-Public"
-aur_repos="$HOME/.local/share/aur"
+aur_repos="$XDG_DATA_HOME/aur"
 
 # Add base repos
 if [[ -d "$base_repos" ]]; then
@@ -89,11 +89,11 @@ check-repo() {
     # We go from repo to repo because we cannot run git commands from outside.
     # The update is necessary to get the changes.
     current_repo=$1
-    cd $current_repo
+    cd "$current_repo" || exit
     git remote update &> /dev/null
 
     # Splitting the path by '/' to keep only the last bit, this gives a more readable display at the end.
-    path_repo=(${current_repo//\// })
+    IFS='/' read -r -a path_repo <<< "$current_repo"
     repo_dir=${path_repo[${#path_repo[@]} - 1]}
 
     # The `clean` variable is initialised with a value of 0 and incremented depending of the repos status.
@@ -101,7 +101,6 @@ check-repo() {
     # Remote changes -> +2
     # This gives four different possible states for the repo.
     clean=0
-    status=$(git status)
 
     if ! (git status|grep -q "working tree clean"); then clean=$((clean+1)); fi;
     if (git status|grep -q "Your branch is behind"); then clean=$((clean+2)); fi;
@@ -127,13 +126,13 @@ check-repo() {
 if ! (ssh-add -l|grep -q "github (ED25519)"); then ssh-add -t 1h $HOME/.ssh/github_ed25519; fi;
 
 subsection "System repositories"
-for repo in ${lst_repos_system[@]}; do
-    check-repo $repo
+for repo in "${lst_repos_system[@]}"; do
+    check-repo "$repo"
 done
 
 subsection "Aur repositories"
-for repo in ${lst_repos_aur[@]}; do
-    check-repo $repo
+for repo in "${lst_repos_aur[@]}"; do
+    check-repo "$repo"
 
     # Get package name from PKGBUILD.
     pkgname=$(grep -E '^pkgname=' PKGBUILD | cut -d'=' -f2 | tr -d '"' | head -n1)
@@ -144,8 +143,10 @@ for repo in ${lst_repos_aur[@]}; do
         makepkg -od &>/dev/null
         new=$(makepkg --packagelist 2>/dev/null | head -n1 | xargs basename | sed "s/${pkgname}-//" | sed 's/-[^-]*-[^-]*\.pkg\.tar\.zst//')
 
-        current=$(sed -e 's/\-[0-9]*$//g'  <<<$current)
-        new=$(sed -e 's/\-[0-9]*$//g'  <<<$new)
+        # Remove trailing dash followed by digits from version strings using
+        # parameter expansion instead of external sed calls.
+        current="${current%-[0-9]*}"
+        new="${new%-[0-9]*}"
 
         if [ "$current" != "$new" ] && [ -n "$new" ]; then
             echo -e "${ORANGE}Source update available${RESET}: $current -> $new"
@@ -154,6 +155,6 @@ for repo in ${lst_repos_aur[@]}; do
 done
 
 subsection "Projects repositories"
-for repo in ${lst_repos_projects[@]}; do
-    check-repo $repo
+for repo in "${lst_repos_projects[@]}"; do
+    check-repo "$repo"
 done
