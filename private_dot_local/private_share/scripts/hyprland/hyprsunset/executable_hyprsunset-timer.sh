@@ -8,13 +8,10 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set up state file if necessary.
-"$DESKTOP_SCRIPTS/system/setup-state.sh"
-
-STATE_FILE=$XDG_STATE_HOME/desktop/state.json
+source "$DESKTOP_SCRIPTS/system/state-utils"
+MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
+AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
 CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
-MANUAL_FILTER_ON=$(jq '.hyprsunset.filter_on' "$STATE_FILE")
-AUTOTIMER_STATE=$(jq '.hyprsunset.auto_timer' "$STATE_FILE")
 
 logger -t hyprsunset "Running hyprsunset script"
 

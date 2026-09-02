@@ -51,24 +51,27 @@ def parse_args(lst_args=None):
     parser = argparse.ArgumentParser(prog="xdgnotes", description="Track reasons for xdg directories")
     subparsers = parser.add_subparsers(title="Commands", metavar="", dest="command")
 
-    parser_add = subparsers.add_parser('add', help='Add a directory and its reason', usage="<directory> <reason>")
+    parser_add = subparsers.add_parser("add", help="Add a directory and its reason", usage="<directory> <reason>")
     parser_add.add_argument("directory", type=str, nargs="?")
     parser_add.add_argument("reason", type=str, nargs="?")
 
-    parser_query = subparsers.add_parser('query', help='Query all or a specific directory', usage="<directory>")
+    parser_query = subparsers.add_parser("query", help="Query all or a specific directory", usage="<directory>")
     parser_query.add_argument("directory", type=str, nargs="?")
 
-    parser_query_app = subparsers.add_parser('query-application', help='Query all or a specific application', usage="<application>")
+    parser_query_app = subparsers.add_parser("query-application", help="Query all or a specific application", usage="<application>")
     parser_query_app.add_argument("application", type=str, nargs="?")
 
-    parser_search = subparsers.add_parser('search', help='Search for a directory or a reason by search term', usage="<term>")
+    parser_search = subparsers.add_parser("search", help="Search for a directory or a reason by search term", usage="<term>")
     parser_search.add_argument("term", type=str, nargs="?")
 
-    parser_edit = subparsers.add_parser('edit', help='Edit notes for a directory', usage="<directory>")
+    parser_edit = subparsers.add_parser("edit", help="Edit notes for a directory", usage="<directory>")
     parser_edit.add_argument("directory", type=str, nargs="?")
 
-    parser_remove = subparsers.add_parser('remove', help='Remove notes for a directory', usage="<directory>")
+    parser_remove = subparsers.add_parser("remove", help="Remove notes for a directory", usage="<directory>")
     parser_remove.add_argument("directory", type=str, nargs="?")
+
+    subparsers.add_parser("orphans", help="List all notes where the path does not exist anymore")
+    subparsers.add_parser("orphans-applications", help="List all applications that does not exist anymore")
 
     return parser.parse_args(lst_args)
 
@@ -77,14 +80,14 @@ def load_notes() -> dict:
     """Load notes from JSON file"""
     if not NOTES_FILE.exists():
         return {}
-    with open(NOTES_FILE, 'r') as f:
+    with open(NOTES_FILE, "r") as f:
         return json.load(f)
 
 
 def save_notes(notes: dict):
     """Save notes to JSON file"""
     NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(NOTES_FILE, 'w') as f:
+    with open(NOTES_FILE, "w") as f:
         json.dump(notes, f, indent=2)
 
 
@@ -184,7 +187,7 @@ def add_note(directory: str):
         notes[directory]["reason"] = reason
 
     save_notes(notes)
-    print(f"✓ Note added for '{ORANGE}{directory}{RESET}'")
+    print(f"{GREEN}✓{RESET} Note added for '{ORANGE}{directory}{RESET}'")
 
 
 def query_notes(directory: str = None):
@@ -328,16 +331,46 @@ def remove_note(directory: str):
         if directory in notes:
             del notes[directory]
             save_notes(notes)
-            print(f"✓ Note removed for '{ORANGE}{directory}{RESET}'")
+            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{directory}{RESET}'")
         else:
             print(f"No note found for '{ORANGE}{directory}{RESET}'")
+
+
+def get_orphans():
+    """List all notes where the path does not exist anymore"""
+    notes = load_notes()
+    lst_notes = {get_full_path(item) for item in notes}
+    lst_notes = {p for p in lst_notes if not os.path.exists(p.replace("~", os.environ.get("HOME")))}
+
+    if lst_notes:
+        print(f"\n=== {GREEN}List of orphaned xdg file notes{RESET} ===")
+        for path in lst_notes:
+            print(f" - {ORANGE}{path}{RESET}")
+    else:
+        print(f"{GREEN}✓{RESET} No orphaned note found")
+
+
+def get_orphans_application():
+    """List all applications that does not exist anymore"""
+    notes = load_notes()
+    s_other_packages = {"servarr", "personal-setup", "system"}
+    pkg_notes = {app for elt in notes.values() for app in elt["applications"]}
+    pacman_result = set(subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True).stdout.split("\n"))
+    orphans = (pkg_notes - pacman_result - s_other_packages)
+
+    if orphans:
+        print(f"\n=== {GREEN}List of orphaned package notes{RESET} ===")
+        for pkg in sorted(orphans):
+            print(f" - {ORANGE}{pkg}{RESET}")
+    else:
+        print(f"{GREEN}✓{RESET} No orphaned package found")
 
 
 def main():
     args = parse_args()
 
     if not (command := args.command):
-        lst_gum_options = ["gum", "choose", "add", "query", "query-application", "search", "edit", "remove"]
+        lst_gum_options = ["gum", "choose", "add", "query", "query-application", "search", "edit", "remove", "orphans", "orphans-applications"]
         command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
         args = parse_args([command])
 
@@ -361,6 +394,12 @@ def main():
 
     elif args.command == "remove":
         remove_note(args.directory)
+
+    elif args.command == "orphans":
+        get_orphans()
+
+    elif args.command == "orphans-applications":
+        get_orphans_application()
 
 
 if __name__ == "__main__":

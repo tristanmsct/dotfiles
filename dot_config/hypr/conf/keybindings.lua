@@ -101,8 +101,8 @@ hl.bind(mainMod .. " + CTRL + F", e(SCRIPTS .. "/media/audio-helper.sh"), { desc
 
 hl.bind(mainMod .. " + V", e(SCRIPTS .. "/menus-rofi/vpn.sh"), { description = "Open VPN menu" })
 
-hl.bind(mainMod .. " + C", e(SCRIPTS .. "/menus-eww/theme-menu.sh"), { description = "Open theme and colors menu" })
-hl.bind(mainMod .. " + SHIFT + C", e(SCRIPTS .. "/menus-eww/brightness-menu.sh"), { description = "Open brightness menu" })
+hl.bind(mainMod .. " + C", e(SCRIPTS .. "/menus-eww/themes/display-theme-menu.sh"), { description = "Open theme and colors menu" })
+hl.bind(mainMod .. " + SHIFT + C", e(SCRIPTS .. "/menus-eww/brightness/display-brightness-menu.sh"), { description = "Open brightness menu" })
 hl.bind(mainMod .. " + CTRL + C", e("hyprpicker -a"), { description = "Open color picker" })
 hl.bind(mainMod .. " + SHIFT + L", e(SCRIPTS .. "/theming/switch-theme.sh"), { description = "Switch light/dark theme" })
 

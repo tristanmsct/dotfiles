@@ -18,21 +18,17 @@ use_bold_entry_title = true
 #  - "recency" - most recently accessed
 #  - "frecency" - weighted combination of frequency and recency (default)
 order = "alphabetical"
- # Option to reverse the result of the sort order. Ignored if sort order is none.
+# Option to reverse the result of the sort order. Ignored if sort order is none.
 reverse = false
 
 [[entries]]
 title = "The Legend of Zelda: Majora's Mask"
 launch_command = "mupen64plus {{ .chezmoi.homeDir }}/Nextcloud/99-Documents/07-Games/ROMs/TloZ-majoras_mask.n64"
+path_box_art = "majoras_mask.png"
+
+[[entries]]
+# /!\ For new games entries this line may be needed but the new launcher seem to work without it.
+# launch_env = { HOME = "/home/tristan/.local/share/fake_home"}
 # launch_env = { LOG_LEVEL = "info", "can_quote_key_too" = "some_value"}
 # launch_env = { SDL_VIDEODRIVER = "x11" }
 # path_game_dir = "/opt/GDLauncher"
-path_box_art = "majoras_mask.png"
-
-# /!\ For new games entries this line may be needed but the new launcher seem to work without it.
-# launch_env = { HOME = "/home/tristan/.local/share/fake_home"}
-
-[[entries]]
-title = "Thronefall"
-# Maybe be needed but the new launcher seem to work without it. If it doesn't work, uncomment the line below.
-# launch_env = { HOME = "/home/tristan/.local/share/fake_home"}

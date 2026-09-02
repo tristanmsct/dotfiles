@@ -8,8 +8,8 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-STATE_FILE="$HOME/.local/state/desktop/state.json"
-BATTERY_FILE="$HOME/.local/state/desktop/battery.json"
+STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
+BATTERY_FILE="$XDG_STATE_HOME/desktop/battery.json"
 
 if [ ! -e "$STATE_FILE" ] || [ ! -s "$STATE_FILE" ]; then
 cat > "$STATE_FILE" << 'EOF'

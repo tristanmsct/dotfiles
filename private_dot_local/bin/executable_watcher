@@ -9,7 +9,7 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$HOME/.config/shell/lib/format"
+source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
 WATCHER_DIR="$HOME/.local/bin/watcher.d"

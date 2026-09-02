@@ -10,11 +10,11 @@ new_value=$1
 
 output=$(amixer sget Master | grep "Front Left:")
 volume=$(echo "$output" | grep -oP '\[\K\d+%')
-volume=$(echo $volume | sed 's/%//g')
+volume=${volume//%/}
 status=$(echo "$output" | grep -oP '\[on\]|\[off\]' | tr -d '[]')
 
-if [ $new_value = "mute" ]; then
-    if [ $status = "off" ]; then
+if [ "$new_value" = "mute" ]; then
+    if [ "$status" = "off" ]; then
         amixer set -q Master on
     else
         amixer set -q Master off

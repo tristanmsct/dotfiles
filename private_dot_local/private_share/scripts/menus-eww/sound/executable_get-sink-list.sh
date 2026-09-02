@@ -62,4 +62,4 @@ SINK_OPTIONS=$(
     ' | jq -R -s -c 'split("\n") | map(select(length > 0))'
 )
 
-echo $SINK_OPTIONS
+echo "$SINK_OPTIONS"

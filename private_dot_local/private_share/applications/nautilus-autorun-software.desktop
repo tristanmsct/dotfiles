@@ -56,6 +56,7 @@ Name[my]=ဆော့ဖ်ဝဲလ်မောင်းနှင်
 Name[nb]=Kjør programvare
 Name[ne]=सफ्टवेयर चलाउनुहोस्
 Name[nl]=Software starten
+Name[nn]=Køyr programvare
 Name[oc]=Aviar lo logicial
 Name[or]=ସଫଟୱେର ଚଲାନ୍ତୁ
 Name[pa]=ਸਾਫਟਵੇਅਰ ਚਲਾਓ
@@ -85,7 +86,7 @@ Name=Run Software
 TryExec=nautilus-autorun-software
 Exec=nautilus-autorun-software %u
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-Icon=system-run
+Icon=application-x-executable
 NoDisplay=true
 Terminal=false
 StartupNotify=true

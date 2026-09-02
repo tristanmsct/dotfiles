@@ -7,12 +7,10 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set up state file if necessary.
-"$DESKTOP_SCRIPTS/system/setup-state.sh"
+source "$DESKTOP_SCRIPTS/system/state-utils"
 
-STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
-THEME_TYPE=$(jq -r '.theme.mode' "$STATE_FILE")
-FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' "$STATE_FILE")
+THEME_TYPE=$(state_get ".theme.mode")
+FOCUSMODE_ENABLED=$(state_get ".focusmode.enabled")
 
 if [ "$THEME_TYPE" = "light" ]; then
     "$DESKTOP_SCRIPTS/theming/switch-theme.sh"
@@ -29,7 +27,7 @@ if [ "$FOCUSMODE_ENABLED" = "true" ]; then
         dunstify "Focus mode deactivated" "Decorations, blur, wallpaper, etc. enabled"
     fi
 
-    jq '.focusmode.enabled = false' "$STATE_FILE" | sponge "$STATE_FILE"
+    state_set ".focusmode.enabled" false
 else
     # If focus mode is off, then start it.
     hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
@@ -51,5 +49,5 @@ else
         dunstify "Focus mode activated" "Decorations, blur, wallpaper, etc. disabled"
     fi
 
-    jq '.focusmode.enabled = true' "$STATE_FILE" | sponge "$STATE_FILE"
+    state_set ".focusmode.enabled" true
 fi

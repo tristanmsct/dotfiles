@@ -42,21 +42,23 @@ def parse_args(lst_args=None):
     parser = argparse.ArgumentParser(prog="sysnotes", description="Track reasons for custom system files")
     subparsers = parser.add_subparsers(title="Commands", metavar="", dest="command")
 
-    parser_add = subparsers.add_parser('add', help='Add a custom system file and its reason', usage="<file> <reason>")
+    parser_add = subparsers.add_parser("add", help="Add a custom system file and its reason", usage="<file> <reason>")
     parser_add.add_argument("file", type=str, nargs="?")
     parser_add.add_argument("reason", type=str, nargs="?")
 
-    parser_query = subparsers.add_parser('query', help='Query all or a specific custom system file', usage="<file>")
+    parser_query = subparsers.add_parser("query", help="Query all or a specific custom system file", usage="<file>")
     parser_query.add_argument("file", type=str, nargs="?")
 
-    parser_search = subparsers.add_parser('search', help='Search for a custom system file or a reason by search term', usage="<term>")
+    parser_search = subparsers.add_parser("search", help="Search for a custom system file or a reason by search term", usage="<term>")
     parser_search.add_argument("term", type=str, nargs="?")
 
-    parser_edit = subparsers.add_parser('edit', help='Edit notes for a custom system file', usage="<file>")
+    parser_edit = subparsers.add_parser("edit", help="Edit notes for a custom system file", usage="<file>")
     parser_edit.add_argument("file", type=str, nargs="?")
 
-    parser_remove = subparsers.add_parser('remove', help='Remove notes for a custom system file', usage="<file>")
+    parser_remove = subparsers.add_parser("remove", help="Remove notes for a custom system file", usage="<file>")
     parser_remove.add_argument("file", type=str, nargs="?")
+
+    _ = subparsers.add_parser("orphans", help="List all notes for files that do not exist anymore")
 
     return parser.parse_args(lst_args)
 
@@ -65,14 +67,14 @@ def load_notes() -> dict:
     """Load notes from JSON file"""
     if not NOTES_FILE.exists():
         return {}
-    with open(NOTES_FILE, 'r') as f:
+    with open(NOTES_FILE, "r") as f:
         return json.load(f)
 
 
 def save_notes(notes: dict):
     """Save notes to JSON file"""
     NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(NOTES_FILE, 'w') as f:
+    with open(NOTES_FILE, "w") as f:
         json.dump(notes, f, indent=2)
 
 
@@ -106,7 +108,7 @@ def add_note(file: str, reason: str):
     }
 
     save_notes(notes)
-    print(f"✓ Note added for '{ORANGE}{file}{RESET}'")
+    print(f"{GREEN}✓{RESET} Note added for '{ORANGE}{file}{RESET}'")
 
 
 def remove_note(file):
@@ -125,7 +127,7 @@ def remove_note(file):
         if file in notes:
             del notes[file]
             save_notes(notes)
-            print(f"✓ Note removed for '{ORANGE}{file}{RESET}'")
+            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{file}{RESET}'")
         else:
             print(f"No note found for '{ORANGE}{file}{RESET}'")
 
@@ -211,11 +213,26 @@ def edit_note(file: str):
     add_note(file=file, reason="")
 
 
+def get_orphans():
+    """List all notes where the path does not exist anymore"""
+    s_root_paths = {"/etc/sddm.conf", "/etc/sudoers.d/sddm-theme", "/root/.bashrc"}
+    notes = load_notes()
+    path_notes = set(notes.keys()) - s_root_paths
+    path_notes = {p for p in path_notes if not os.path.exists(p)}
+
+    if path_notes:
+        print(f"\n=== {GREEN}List of orphaned file notes{RESET} ===")
+        for path in path_notes:
+            print(f" - {ORANGE}{path}{RESET}")
+    else:
+        print(f"{GREEN}✓{RESET} No orphaned note found")
+
+
 def main():
     args = parse_args()
 
     if not (command := args.command):
-        lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove"]
+        lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove", "orphans"]
         command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
         args = parse_args([command])
 
@@ -236,6 +253,9 @@ def main():
 
     elif args.command == "remove":
         remove_note(args.file)
+
+    elif args.command == "orphans":
+        get_orphans()
 
 
 if __name__ == "__main__":

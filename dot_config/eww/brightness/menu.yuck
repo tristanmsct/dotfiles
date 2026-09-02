@@ -83,7 +83,7 @@
               :max 21
               :timeout 1000
               :value brightness-slider-value
-              :onchange "$XDG_CONFIG_HOME/eww/brightness/scripts/set-brightness.sh $(({} * 5))"
+              :onchange "$DESKTOP_SCRIPTS/menus-eww/brightness/set-brightness.sh $(({} * 5))"
               :tooltip "Drag to change value (20-100)"
             )
           )
@@ -139,7 +139,7 @@
           (button
             :class {hyprsunset-active == "true" ? "control-button-active" : "control-button"}
             :onclick "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh"
-            :onrightclick "$XDG_CONFIG_HOME/eww/brightness/scripts/menu-hyprsunset-slider.sh 6500"
+            :onrightclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-slider.sh 6500"
             :tooltip "Click to toogle hyprsunset manually"
             "Hyprsunset"
           )
@@ -162,7 +162,7 @@
               :max 400
               :timeout 1000
               :value sunset-value
-              :onchange "$XDG_CONFIG_HOME/eww/brightness/scripts/menu-hyprsunset-slider.sh $(({} * 50))"
+              :onchange "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-slider.sh $(({} * 50))"
               :tooltip "Drag to change value (1000 - 20000)"
             )
           )
@@ -179,7 +179,7 @@
           :cursor "pointer"
           (button
             :class {hyprsunset-timer-active == "true" ? "control-button-active" : "control-button"}
-            :onclick "$XDG_CONFIG_HOME/eww/brightness/scripts/menu-hyprsunset-timer-button.sh"
+            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-timer-button.sh"
             :tooltip "Click to toogle hyprsunset auto timer"
             "Hyprsunset Auto Timer"
           )

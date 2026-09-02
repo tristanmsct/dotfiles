@@ -10,5 +10,5 @@
 
 monitor_id=$(hyprctl activeworkspace -j | jq '.monitorID')
 
-eww open sink-switcher-window-closer --screen $monitor_id
-eww open sink-switcher-window --screen $monitor_id
+eww open sink-switcher-window-closer --screen "$monitor_id"
+eww open sink-switcher-window --screen "$monitor_id"

@@ -198,7 +198,7 @@
     "custom/theme_switch": {
         "format": " <span size='large'>󰔎</span> ",
         "on-click": "$DESKTOP_SCRIPTS/theming/switch-theme.sh",
-        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/theme-menu.sh",
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/themes/display-theme-menu.sh",
         "tooltip-format":
             "Switch between light and dark theme"
     },
@@ -230,7 +230,7 @@
         "tooltip-format": "Toggle Hyprsunset",
         "on-click": "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh",
         "on-click-middle": "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh autotimer-switch",
-        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/brightness-menu.sh",
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/brightness/display-brightness-menu.sh",
         "exec": "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-status.sh",
         "return-type": "json",
         "interval": "once",
@@ -335,7 +335,7 @@
             "car": "",
             "default": ""
         },
-        "on-click": "$DESKTOP_SCRIPTS/menus-eww/sound-slider.sh",
+        "on-click": "$DESKTOP_SCRIPTS/menus-eww/sound/display-sound-slider.sh",
         "on-click-middle": "pavucontrol",
         "on-click-right": "$DESKTOP_SCRIPTS/media/audio-helper.sh"
     },
@@ -357,9 +357,9 @@
         "tooltip": false,
         "min-brightness": 20,
         "scroll-step": 5,
-        "on-click": "$DESKTOP_SCRIPTS/menus-eww/brightness-slider.sh",
+        "on-click": "$DESKTOP_SCRIPTS/menus-eww/brightness/display-brightness-slider.sh",
         "on-click-middle": "brightnessctl set $(($(brightnessctl max) * 80 / 100))",
-        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/brightness-menu.sh"
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-eww/brightness/display-brightness-menu.sh"
     },
 
     "network": {

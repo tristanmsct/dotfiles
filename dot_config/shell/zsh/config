@@ -43,9 +43,8 @@ source "$ZSH/oh-my-zsh.sh"
 # -----------------------------------------------------
 # Tools initialisations
 # -----------------------------------------------------
-# So that `task` get the same completion as `go-task`.
-source <(task --completion zsh | sed 's/go_task/task/g; s/go-task/task/g')
-source <(fzf --zsh)
+eval "$(task --completion zsh)"  # export TASK_EXE='go-task' to use `go-task` instead of `task` for completion.
+eval "$(fzf --zsh)"
 eval "$(glow completion zsh)"
 eval "$(eww shell-completions --shell zsh)"
 eval "$(zoxide init zsh)"

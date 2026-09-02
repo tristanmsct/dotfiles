@@ -7,16 +7,13 @@
 #        |___/|_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
-new_value=$1
 
-# Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+source "$DESKTOP_SCRIPTS/system/state-utils"
 
-STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-manual_filter_on=$(jq '.hyprsunset.filter_on' $STATE_FILE)
+manual_filter_on=$(state_get ".hyprsunset.filter_on")
 
-jq '.hyprsunset.temperature ='$new_value $STATE_FILE | sponge $STATE_FILE
+state_set ".hyprsunset.temperature" "$1"
 
 if [[ ($manual_filter_on = "true") ]]; then
-    hyprctl hyprsunset temperature $new_value
+    hyprctl hyprsunset temperature "$1"
 fi

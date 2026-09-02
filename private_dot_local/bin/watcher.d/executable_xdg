@@ -57,22 +57,22 @@ display_diff() {
 
 if [[ $# -eq 0 ]]; then
 	subsection "      .config      "
-	DIFF_OUTPUT=$(diff <(cat "$CONFIG_BASELINE") <(/usr/bin/ls -1 ~/.config/))
+	DIFF_OUTPUT=$(diff <(cat "$CONFIG_BASELINE") <(fd . "$XDG_CONFIG_HOME" -d 1 -H -x echo '{/}' | sort))
 	display_diff "$DIFF_OUTPUT"
 
 	subsection "    .local/state   "
-	DIFF_OUTPUT=$(diff <(cat "$STATE_BASELINE") <(/usr/bin/ls -1 ~/.local/state/))
+	DIFF_OUTPUT=$(diff <(cat "$STATE_BASELINE") <(fd . "$XDG_STATE_HOME" -d 1 -H -x echo '{/}' | sort))
 	display_diff "$DIFF_OUTPUT"
 
 	subsection "    .local/share   "
-	DIFF_OUTPUT=$(diff <(cat "$SHARE_BASELINE") <(/usr/bin/ls -1 ~/.local/share/))
+	DIFF_OUTPUT=$(diff <(cat "$SHARE_BASELINE") <(fd . "$XDG_DATA_HOME" -d 1 -H -x echo '{/}' | sort))
 	display_diff "$DIFF_OUTPUT"
 
 	subsection "       .cache      "
-	DIFF_OUTPUT=$(diff <(cat "$CACHE_BASELINE") <(/usr/bin/ls -1 ~/.cache/))
+	DIFF_OUTPUT=$(diff <(cat "$CACHE_BASELINE") <(fd . "$XDG_CACHE_HOME" -d 1 -H -x echo '{/}' | sort))
 	display_diff "$DIFF_OUTPUT"
 
-	DIFF_OUTPUT=$(diff <(cat "$HOME_BASELINE") <(/usr/bin/ls -1a "$HOME"))
+	DIFF_OUTPUT=$(diff <(cat "$HOME_BASELINE") <(fd . "$HOME" -d 1 -H -x echo '{/}' | sort))
 	if [[ -n "$DIFF_OUTPUT" ]]; then
 		subsection "       home      "
 		ADDITIONS=$(echo "$DIFF_OUTPUT" | grep "^>" | sed 's/^> /+ /')
@@ -91,11 +91,11 @@ elif [[ $# -eq 1 ]]; then
 			-h|--help) show_help ;;
 			update)
 				if gum confirm "Confirm XDG baseline update"; then
-					/usr/bin/ls -1 "$HOME/.config" > "$CONFIG_BASELINE"
-					/usr/bin/ls -1 "$HOME/.local/state" > "$STATE_BASELINE"
-					/usr/bin/ls -1 "$HOME/.local/share" > "$SHARE_BASELINE"
-					/usr/bin/ls -1 "$HOME/.cache" > "$CACHE_BASELINE"
-					/usr/bin/ls -1a "$HOME" > "$HOME_BASELINE"
+					fd . "$XDG_CONFIG_HOME" -d 1 -H -x echo '{/}' | sort > "$CONFIG_BASELINE"
+					fd . "$XDG_STATE_HOME" -d 1 -H -x echo '{/}' | sort > "$STATE_BASELINE"
+					fd . "$XDG_DATA_HOME" -d 1 -H -x echo '{/}' | sort > "$SHARE_BASELINE"
+					fd . "$XDG_CACHE_HOME" -d 1 -H -x echo '{/}' | sort > "$CACHE_BASELINE"
+					fd . "$HOME" -d 1 -H -x echo '{/}' | sort > "$HOME_BASELINE"
 				fi
 				break
 				;;

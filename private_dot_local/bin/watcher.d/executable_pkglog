@@ -10,10 +10,14 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
+# Needed for when the script is run by pacman.
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+XDG_DATA_HOME=${XDG_CONFIG_HOME:-$HOME/.local/share}
+
 source "$XDG_CONFIG_HOME/shell/lib/format"
 
 script_name=$(basename "$0")
-PACKAGE_INFO_DIR="$HOME/.local/share/watcher/pkglog/"
+PACKAGE_INFO_DIR="$XDG_DATA_HOME/watcher/pkglog/"
 
 DESC="Monitor packages meta data"
 
@@ -44,7 +48,7 @@ get_file() {
     fi
 
     local selected
-    selected=$(/usr/bin/ls "$PACKAGE_INFO_DIR" | sort -r | awk '{
+    selected=$(fd . "$PACKAGE_INFO_DIR" -x echo '{/}' | sort -r | awk '{
         match($0, /packages_([0-9]{8})_[0-9]+/, arr)
         date = arr[1]
         printf "%s/%s/%s - %s\n", substr(date,1,4), substr(date,5,2), substr(date,7,2), $0
@@ -172,7 +176,7 @@ show_diff () {
         file1="${paths[0]}"
         file2="${paths[1]}"
     else
-        read -r file1 file2 <<< "$(/usr/bin/ls "$PACKAGE_INFO_DIR" | sort -r | head -2 | tr '\n' ' ')"
+        read -r file1 file2 <<< "$(fd . "$PACKAGE_INFO_DIR" -x echo '{/}' | sort -r | head -2 | tr '\n' ' ')"
         file1="$PACKAGE_INFO_DIR/$file1"
         file2="$PACKAGE_INFO_DIR/$file2"
     fi

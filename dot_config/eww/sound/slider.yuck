@@ -9,8 +9,8 @@
 
 (defpoll sound-icon
   :interval "100ms"
-  :initial "$XDG_CONFIG_HOME/eww/sound/scripts/get-icon.sh"
-  "$XDG_CONFIG_HOME/eww/sound/scripts/get-icon.sh"
+  :initial "$DESKTOP_SCRIPTS/menus-eww/sound/get-icon.sh"
+  "$DESKTOP_SCRIPTS/menus-eww/sound/get-icon.sh"
 )
 
 (defpoll sound-slider-value
@@ -50,8 +50,8 @@
       :cursor "pointer"
       (button
         :class "mute-button"
-        :onclick "$XDG_CONFIG_HOME/eww/sound/scripts/set-sound.sh mute"
-        :onrightclick "$XDG_CONFIG_HOME/eww/sound/scripts/open-sink-switcher.sh"
+        :onclick "$DESKTOP_SCRIPTS/menus-eww/sound/set-sound.sh mute"
+        :onrightclick "$DESKTOP_SCRIPTS/menus-eww/sound/open-sink-switcher.sh"
 
         :tooltip
 "Left click to mute / unmute
@@ -72,7 +72,7 @@ Right click to switch main audio output"
           :max 21
           :timeout 1000
           :value sound-slider-value
-          :onchange "$XDG_CONFIG_HOME/eww/sound/scripts/set-sound.sh $(( {} * 5 ))"
+          :onchange "$DESKTOP_SCRIPTS/menus-eww/sound/set-sound.sh $(( {} * 5 ))"
 
           :tooltip "Drag to change value (0-100)"
         )

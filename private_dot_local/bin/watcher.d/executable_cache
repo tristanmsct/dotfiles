@@ -19,15 +19,15 @@ import argparse
 import os
 import shutil
 
-ORANGE = '\033[38;2;255;158;23m'
-BLUE = '\033[38;2;73;136;252m'
-PURPLE = '\033[38;2;150;85;166m'
+ORANGE = "\033[38;2;255;158;23m"
+BLUE = "\033[38;2;73;136;252m"
+PURPLE = "\033[38;2;150;85;166m"
 CYAN = "\033[38;2;105;230;245m"
-GREEN = '\033[38;2;125;235;103m'
+GREEN = "\033[38;2;125;235;103m"
 RED = "\033[38;2;225;20;20m"
-BOLD = '\033[1m'
-DIM = '\033[2m'
-RESET = '\033[0m'
+BOLD = "\033[1m"
+DIM = "\033[2m"
+RESET = "\033[0m"
 
 DESC = "Manage and monitor cache files"
 

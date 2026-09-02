@@ -102,10 +102,10 @@ chezmoi-sync() {
 				if [[ "$extension" = "tmpl" && "$status" = "MM" ]]; then
 					echo -e "File was ${PURPLE}MODIFIED${RESET} - ${ORANGE}⚠${RESET} source is a ${ORANGE}template${RESET}," \
 					 	"target should not be modified directly"
-					echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
+					echo -n "Apply source->target [a], resolve difference and re-apply [r], compare source and target [c], skip [s], quit [q]? "
 				elif [[ "$extension" = "tmpl" && "$status" = " M" ]]; then
 					echo -e "Template was ${PURPLE}MODIFIED${RESET}"
-					echo -n "Apply source->target [a], compare source and target [c], skip [s], quit [q]? "
+					echo -n "Apply source->target [a], resolve difference and re-apply [r], compare source and target [c], skip [s], quit [q]? "
 				else
 					echo -e "File was ${PURPLE}MODIFIED${RESET}"
 					echo -n "Apply source->target [a], re-add target->source [r], compare source and target [c], skip [s], quit [q]? "
@@ -190,8 +190,9 @@ chezmoi-sync() {
 							;;
 						r|R)
 							if [[ "$extension" = "tmpl" ]]; then
-								echo -e "Cannot re-add a modified target to a ${ORANGE}template${RESET}"
-								echo -n "Use a, c, s, or q: "
+								meld "$abs_target_file" "$source_file"
+								chezmoi apply "$abs_target_file"
+								break
 							else
 								echo "Re-adding $target_file..."
 								chezmoi re-add "$abs_target_file"

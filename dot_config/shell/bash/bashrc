@@ -16,5 +16,5 @@ if [[ $(tty) == *"pts"* ]]; then
   # Themes are installed at /usr/share/oh-my-posh/themes.
   eval "$(oh-my-posh init bash --config spaceship)"
 else
-  eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/zen.toml)"
+  eval "$(oh-my-posh init bash --config $XDG_CONFIG_HOME/ohmyposh/zen.toml)"
 fi

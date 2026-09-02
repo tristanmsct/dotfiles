@@ -9,8 +9,8 @@
 
 (defpoll sink-list
   :interval "2s"
-  :initial "$XDG_CONFIG_HOME/eww/sound/scripts/get-sink-list.sh"
-  "$XDG_CONFIG_HOME/eww/sound/scripts/get-sink-list.sh"
+  :initial "$DESKTOP_SCRIPTS/menus-eww/sound/get-sink-list.sh"
+  "$DESKTOP_SCRIPTS/menus-eww/sound/get-sink-list.sh"
 )
 
 
@@ -30,7 +30,7 @@
         :cursor "pointer"
         (button
           :class "switch-item"
-          :onclick '$XDG_CONFIG_HOME/eww/sound/scripts/switch-sink.sh "${entry}"'
+          :onclick '$DESKTOP_SCRIPTS/menus-eww/sound/switch-sink.sh "${entry}"'
           (label :markup "${entry}")
         )
       )

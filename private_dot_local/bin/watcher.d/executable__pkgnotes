@@ -54,21 +54,23 @@ def parse_args(lst_args=None):
     parser = argparse.ArgumentParser(prog="pkgnotes", description="Track reasons for installed packages")
     subparsers = parser.add_subparsers(title="Commands", metavar="", dest="command")
 
-    parser_add = subparsers.add_parser('add', help='Add a package and its reason', usage="<package> <reason>")
+    parser_add = subparsers.add_parser("add", help="Add a package and its reason", usage="<package> <reason>")
     parser_add.add_argument("package", type=str, nargs="?")
     parser_add.add_argument("reason", type=str, nargs="?")
 
-    parser_query = subparsers.add_parser('query', help='Query all or a specific package', usage="<package>")
+    parser_query = subparsers.add_parser("query", help="Query all or a specific package", usage="<package>")
     parser_query.add_argument("package", type=str, nargs="?")
 
-    parser_search = subparsers.add_parser('search', help='Search for a package or a reason by search term', usage="<term>")
+    parser_search = subparsers.add_parser("search", help="Search for a package or a reason by search term", usage="<term>")
     parser_search.add_argument("term", type=str, nargs="?")
 
-    parser_edit = subparsers.add_parser('edit', help='Edit notes for a package', usage="<package>")
+    parser_edit = subparsers.add_parser("edit", help="Edit notes for a package", usage="<package>")
     parser_edit.add_argument("package", type=str, nargs="?")
 
-    parser_remove = subparsers.add_parser('remove', help='Remove notes for a package', usage="<package>")
+    parser_remove = subparsers.add_parser("remove", help="Remove notes for a package", usage="<package>")
     parser_remove.add_argument("package", type=str, nargs="?")
+
+    _ = subparsers.add_parser("orphans", help="List all notes for not installed packages")
 
     return parser.parse_args(lst_args)
 
@@ -77,7 +79,7 @@ def load_notes() -> dict:
     """Load notes from JSON file"""
     if not NOTES_FILE.exists():
         return {}
-    with open(NOTES_FILE, 'r') as f:
+    with open(NOTES_FILE, "r") as f:
         return json.load(f)
 
 
@@ -85,7 +87,7 @@ def load_xdg_notes() -> dict:
     """Load notes from JSON file"""
     if not XDG_NOTES_FILE.exists():
         return {}
-    with open(XDG_NOTES_FILE, 'r') as f:
+    with open(XDG_NOTES_FILE, "r") as f:
         return json.load(f)
 
 
@@ -112,7 +114,7 @@ def get_all_dir_for_app(application: str, notes: dict, col_width: int = 20) -> l
 def save_notes(notes: dict):
     """Save notes to JSON file"""
     NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(NOTES_FILE, 'w') as f:
+    with open(NOTES_FILE, "w") as f:
         json.dump(notes, f, indent=2)
 
 
@@ -165,7 +167,7 @@ def add_note(package: str, reason: str):
     }
 
     save_notes(notes)
-    print(f"✓ Note added for '{ORANGE}{package}{RESET}'")
+    print(f"{GREEN}✓{RESET} Note added for '{ORANGE}{package}{RESET}'")
 
 
 def remove_note(package):
@@ -184,7 +186,7 @@ def remove_note(package):
         if package in notes:
             del notes[package]
             save_notes(notes)
-            print(f"✓ Note removed for '{ORANGE}{package}{RESET}'")
+            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{package}{RESET}'")
         else:
             print(f"No note found for '{ORANGE}{package}{RESET}'")
 
@@ -313,11 +315,28 @@ def edit_note(package: str):
     add_note(package=package, reason="")
 
 
+def get_orphans():
+    """List all notes for not installed packages"""
+    notes = load_notes()
+
+    pkg_notes = set(notes.keys())
+    pacman_result = set(subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True).stdout.split("\n"))
+
+    orphans = (pkg_notes - pacman_result)
+
+    if orphans:
+        print(f"\n=== {GREEN}List of orphaned package notes{RESET} ===")
+        for pkg in sorted(orphans):
+            print(f" - {ORANGE}{pkg}{RESET}")
+    else:
+        print(f"{GREEN}✓{RESET} No orphaned package found")
+
+
 def main():
     args = parse_args()
 
     if not (command := args.command):
-        lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove"]
+        lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove", "orphans"]
         command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
         args = parse_args([command])
 
@@ -338,6 +357,9 @@ def main():
 
     elif args.command == "remove":
         remove_note(args.package)
+
+    elif args.command == "orphans":
+        get_orphans()
 
 
 if __name__ == "__main__":

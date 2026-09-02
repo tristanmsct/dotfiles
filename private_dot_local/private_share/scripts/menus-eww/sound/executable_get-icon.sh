@@ -10,15 +10,15 @@
 
 output=$(amixer sget Master | grep "Front Left:")
 volume=$(echo "$output" | grep -oP '\[\K\d+%')
-volume=$(echo $volume | sed 's/%//g')
+volume=${volume//%/}
 status=$(echo "$output" | grep -oP '\[on\]|\[off\]' | tr -d '[]')
 
-if [ $status = "off" ]; then
+if [ "$status" = "off" ]; then
     echo " "
 else
-    if [ $volume -ge 50 ]; then
+    if [ "$volume" -ge 50 ]; then
         echo " "
-    elif [ $volume -gt 0 ]; then
+    elif [ "$volume" -gt 0 ]; then
         echo " "
     else
         echo " "

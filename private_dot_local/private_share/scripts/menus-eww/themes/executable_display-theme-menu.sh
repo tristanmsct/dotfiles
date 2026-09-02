@@ -7,16 +7,12 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set up state file if necessary.
-"$DESKTOP_SCRIPTS/system/setup-state.sh"
-
-STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
-SATURATE_STATE=$(jq '.theme.saturation.enabled' "$STATE_FILE")
-
+source "$DESKTOP_SCRIPTS/system/state-utils"
+SATURATE_STATE=$(state_get ".theme.saturation.enabled")
 
 # Reset saturation value from cache before opening.
 if [ "$SATURATE_STATE" = "true" ]; then
-    CACHED_SAT=$(jq '.theme.saturation.level' "$STATE_FILE")
+    CACHED_SAT=$(state_get ".theme.saturation.level" | awk '{print $1 / 100}')
 else
     CACHED_SAT=0.5
 fi

@@ -10,6 +10,9 @@
 
 apply_accent_colors () {
 
+    THEME_TYPE="$1"
+    ACCENT_COLOR="$2"
+
     if [ "$THEME_TYPE" = "dark" ]; then
         hyprctl setcursor Vimix-white-cursors 40
         sed -i "s/-light.png/-dark.png/" "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css"
@@ -88,6 +91,10 @@ apply_accent_colors () {
 }
 
 apply_gtk_theme () {
+    THEME_TYPE="$1"
+    theme_color="$2"
+    icons_color="$3"
+
     if [ "$THEME_TYPE" = "dark" ]; then
         theme_color+="-Dark"
     else
@@ -175,6 +182,9 @@ apply_gtk_theme () {
 }
 
 apply_sddm_theme () {
+    WALLPAPER="$1"
+    ACCENT_COLOR="$2"
+
     # Being careful with .png, .jpg. etc.
     extension="${WALLPAPER##*.}"
 

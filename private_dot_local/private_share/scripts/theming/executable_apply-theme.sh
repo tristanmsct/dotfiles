@@ -22,15 +22,15 @@ sleep 0.2
 
 WALLPAPER=$(cat "$XDG_STATE_HOME/desktop/wallpaper")
 
-STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
-THEME_TYPE=$(jq -r '.theme.mode' "$STATE_FILE")
+source "$DESKTOP_SCRIPTS/system/state-utils"
+THEME_TYPE=$(state_get ".theme.mode")
 
 # Import the apply_accent_colors function to be run later.
 source "$DESKTOP_SCRIPTS/theming/apply-accent-colors.sh"
 
 COLOR=${1:-"DEFAULT"}
 COLOR_NB=${2:-"1"}
-read icons_color theme_color _ <<< "$(python "$DESKTOP_SCRIPTS/theming/convert_colors.py" -c $COLOR -d)"
+read -r icons_color theme_color _ <<< "$(python "$DESKTOP_SCRIPTS/theming/convert_colors.py" -c "$COLOR" -d)"
 
 ACCENT_COLOR=$(sed -n "${COLOR_NB}p" "$XDG_STATE_HOME/desktop/colors")
 
@@ -38,19 +38,19 @@ ACCENT_COLOR=$(sed -n "${COLOR_NB}p" "$XDG_STATE_HOME/desktop/colors")
 # Applying theme to Icons and GTK applications
 # ---------------------------------------------------------------------------------------
 
-apply_gtk_theme
+apply_gtk_theme "$THEME_TYPE" "$theme_color" "$icons_color"
 
 # ---------------------------------------------------------------------------------------
 # SDDM
 # ---------------------------------------------------------------------------------------
 
-apply_sddm_theme
+apply_sddm_theme "$WALLPAPER" "$ACCENT_COLOR"
 
 # ---------------------------------------------------------------------------------------
 # Enhancing wallust themes and applying dark and light variant
 # ---------------------------------------------------------------------------------------
 
-apply_accent_colors
+apply_accent_colors "$THEME_TYPE" "$ACCENT_COLOR"
 
 # ---------------------------------------------------------------------------------------
 # Refreshing apps

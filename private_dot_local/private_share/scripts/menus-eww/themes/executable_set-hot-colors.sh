@@ -7,30 +7,24 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# Set up state file if necessary.
-$DESKTOP_SCRIPTS/system/setup-state.sh
+source "$DESKTOP_SCRIPTS/system/state-utils"
 
-STATE_FILE=$XDG_STATE_HOME/desktop/state.json
-
-COLOR=$(echo $1 | awk -F'#' '{print "#" $2}' | cut -c 1-7)
-COLOR_NB=$(echo $1 | grep -o "^[0-9]")
+COLOR=$(echo "$1" | awk -F'#' '{print "#" $2}' | cut -c 1-7)
+COLOR_NB=$(echo "$1" | grep -o "^[0-9]")
 
 # If focus mode was activated we need to reactivate it after setting the colors.
-FOCUSMODE_ENABLED=$(jq -r '.focusmode.enabled' $STATE_FILE)
+FOCUSMODE_ENABLED=$(state_get ".focusmode.enabled")
 
-$DESKTOP_SCRIPTS/theming/apply-theme.sh $COLOR $COLOR_NB &
+"$DESKTOP_SCRIPTS/theming/apply-theme.sh" "$COLOR" "$COLOR_NB" &
 
-# Accent colors are stored in a cache files to set them up again at restart.
-jq --arg color "$COLOR" --arg color_nb "$COLOR_NB" '
-  .theme.accent_color.enabled = true |
-  .theme.accent_color.hex = $color |
-  .theme.accent_color.index = $color_nb
-' "$STATE_FILE" | sponge "$STATE_FILE"
+state_set ".theme.accent_color.enabled" true
+state_set ".theme.accent_color.hex" "$COLOR"
+state_set ".theme.accent_color.index" "$COLOR_NB"
 
 # We need to wait a bit otherwise we reactivate focus mode before the borders are back on.
-if $FOCUSMODE_ENABLED; then
+if "$FOCUSMODE_ENABLED"; then
   timeout 1.5 sleep 1.5 || true
-  $DESKTOP_SCRIPTS/focus-mode/restore.sh
+  "$DESKTOP_SCRIPTS/focus-mode/restore.sh"
 fi
 
 eww close theme-menu-window-closer

@@ -7,9 +7,10 @@
 #                                 |___/
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+
 new_val=$1
 
 # Cap the value at 20
-[ $new_val -lt 20 ] && new_val=20
+[ "$new_val" -lt 20 ] && new_val=20
 
-brightnessctl set $(($(brightnessctl max) * $new_val / 100))
+brightnessctl set $(($(brightnessctl max) * "$new_val" / 100))

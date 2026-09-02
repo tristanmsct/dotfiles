@@ -101,7 +101,7 @@ elif [[ $# -eq 1 ]]; then
                 while IFS= read -r app_file; do
                     cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
                 done <<< "$monitor_list"
-                echo "✓ Tracked files updated"
+                echo "${GREEN}✓${RESET} Tracked files updated"
             fi
         fi
     elif [[ "$1" == "update" ]]; then
@@ -110,7 +110,7 @@ elif [[ $# -eq 1 ]]; then
             while IFS= read -r app_file; do
                 cp "$SYSTEM_DIR/$app_file" "$NOTES_DIR/$app_file"
             done <<< "$monitor_list"
-            echo "✓ Tracked files updated"
+            echo "${GREEN}✓${RESET} Tracked files updated"
         fi
     else
 		echo "error: invalid command '$1'"
