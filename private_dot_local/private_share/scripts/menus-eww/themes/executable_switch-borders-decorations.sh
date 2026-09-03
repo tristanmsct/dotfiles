@@ -9,9 +9,13 @@
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 
+script_name=$(basename "$0")
+
 FOCUSMODE_ENABLED=$(state_get ".focusmode.enabled")
 
 if [ "$1" == true ]; then
+    logger -t theming -p user.info "[$script_name] Disabling decoration borders"
+
     if ! $FOCUSMODE_ENABLED; then
         # Waybar border disabled in focus mode.
         sed -i -E "s/(border-accent-color) @accent-color;/\1 transparent;/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"
@@ -34,6 +38,8 @@ if [ "$1" == true ]; then
 
     state_set ".theme.border_decorations" false
 else
+    logger -t theming -p user.info "[$script_name] Enabling decoration borders"
+
     if ! $FOCUSMODE_ENABLED; then
         # Waybar border disabled in focus mode.
         sed -i -E "s/(border-accent-color) transparent;/\1 @accent-color;/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"

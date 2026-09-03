@@ -24,15 +24,9 @@ hl.on("hyprland.start", function()
     -- Clean games
     exec(SCRIPTS .. "/system/cleanup-games.sh")
 
-    -- Setup XDG for screen sharing
-    -- TODO : remove if possible
-    -- exec(SCRIPTS .. "/system/xdg.sh")
-
     -- Start waybar and waypaper
     exec("waypaper --restore")
     exec(SCRIPTS .. "/waybar/launch.sh")
-    -- TODO : is this necessary ?
-    -- exec("hyprsunset -i")
 
     -- Polkit
     -- Gnome polkit is not supported anymore. If it stops working, switch to hyprpolkitagent.

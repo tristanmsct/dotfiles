@@ -8,8 +8,11 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+script_name=$(basename "$0")
+
 if systemctl is-active --quiet docker.service; then
     if [ -z "$1" ]; then
+        logger -t docker -p user.info "[$script_name] Stopping docker service"
         systemctl stop docker.socket
         # Update waybar icon config.
         pkill -RTMIN+10 waybar
@@ -18,6 +21,7 @@ if systemctl is-active --quiet docker.service; then
     fi
 else
     if [ -z "$1" ]; then
+        logger -t docker -p user.info "[$script_name] Starting docker service"
         systemctl start docker.service
         # Update waybar icon config.
         pkill -RTMIN+10 waybar

@@ -10,21 +10,20 @@
 
 # Needed for the systemd timer.
 DESKTOP_SCRIPTS=${DESKTOP_SCRIPTS:-$HOME/.local/share/scripts}
+script_name=$(basename "$0")
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
 AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
 CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
 
-logger -t hyprsunset "Running hyprsunset script"
-
 # The timer does not have priority over the manual filter, IF either the manual filter is on, or the auto timer is off, the script stops.
 if [[ $MANUAL_FILTER_ON = "" ]]; then
-    logger -t hyprsunset "Manual filter is on, exiting"
+    logger -t hyprsunset -p user.info "[$script_name] Manual filter is on, exiting"
     exit
 fi
 if ! $AUTOTIMER_STATE; then
-    logger -t hyprsunset "Auto timer is off, exiting"
+    logger -t hyprsunset -p user.info "[$script_name] Auto timer is off, exiting"
     exit
 fi
 
@@ -52,25 +51,25 @@ if [[ $current_time -ge $morning_start ]] && [[ $current_time -le $((morning_sta
     # Morning, sun is rising.
     slice=$(((current_time - morning_start) / 10))
     temperature=$((HYPRSUNSET_BASE - (((DIMMING_INTERVAL / 10) - slice) * INCREMENT)))
-    logger -t hyprsunset "Sunrise : incrementing temperature to $temperature"
+    logger -t hyprsunset -p user.info "[$script_name] Sunrise : incrementing temperature to $temperature"
 
     hyprctl hyprsunset temperature $temperature
 elif [[ $current_time -ge $evening_start ]] && [[ $current_time -le $((evening_start + DIMMING_INTERVAL)) ]]; then
     # Evening, sun is setting.
     slice=$((((current_time - evening_start) / 10) + 1))
     temperature=$((HYPRSUNSET_BASE - (slice * INCREMENT)))
-    logger -t hyprsunset "Sunset : decreasing temperature to $temperature"
+    logger -t hyprsunset -p user.info "[$script_name] Sunset : decreasing temperature to $temperature"
 
     hyprctl hyprsunset temperature $temperature
 elif [[ $current_time -gt $((evening_start + DIMMING_INTERVAL)) ]]; then
     # Night time.
     slice=$(((DIMMING_INTERVAL / 10) + 1))
     temperature=$((HYPRSUNSET_BASE - (slice * INCREMENT)))
-    logger -t hyprsunset "Night time : temperature set to $temperature"
+    logger -t hyprsunset -p user.info "[$script_name] Night time : temperature set to $temperature"
 
     hyprctl hyprsunset temperature $temperature
 else
     # Day time.
-    logger -t hyprsunset "Day time : no temperature modifier"
+    logger -t hyprsunset -p user.info "[$script_name] Day time : no temperature modifier"
     hyprctl hyprsunset identity
 fi

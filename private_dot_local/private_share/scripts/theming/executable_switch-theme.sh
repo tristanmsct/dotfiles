@@ -10,6 +10,7 @@
 source "$DESKTOP_SCRIPTS/system/state-utils"
 
 THEME_TYPE=$(state_get ".theme.mode")
+script_name=$(basename "$0")
 
 if [ "$THEME_TYPE" = "dark" ]; then
     FOCUSMODE_ENABLED=$(state_get ".focusmode.enabled")
@@ -17,8 +18,10 @@ if [ "$THEME_TYPE" = "dark" ]; then
         dunstify "Game mode enabled, cannot switch to light theme"
         exit
     fi
+    logger -t theming -p user.info "[$script_name] Switching to light theme"
     state_set ".theme.mode" "light"
 else
+    logger -t theming -p user.info "[$script_name] Switching to dark theme"
     state_set ".theme.mode" "dark"
 fi
 

@@ -10,8 +10,10 @@
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)
+script_name=$(basename "$0")
 
-if [[ $INTERFACE == "" ]]; then
+if [[ "$INTERFACE" == "" ]]; then
+    logger -t vpn -p user.info "[$script_name] Stopping VPN"
     state_set ".vpn.connected" false
     state_del ".vpn.interface"
 else
@@ -22,6 +24,7 @@ else
     if [[ -n "$*" ]]; then
         INTERFACE="$*"
     fi
+    logger -t vpn -p user.info "[$script_name] Starting VPN with interface $INTERFACE"
     state_set ".vpn.connected" true
-    state_set ".vpn.interface" $INTERFACE
+    state_set ".vpn.interface" "$INTERFACE"
 fi

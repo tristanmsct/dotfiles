@@ -7,7 +7,6 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# TODO : niri needs a monitor_id there.
 if [[ $XDG_CURRENT_DESKTOP == "Hyprland" ]]; then
     monitor_id=$(hyprctl activeworkspace -j | jq '.monitorID')
     monitor_model=$(hyprctl monitors -j | jq -r --argjson id "$monitor_id" '.[] | select(.id == $id) | .model')

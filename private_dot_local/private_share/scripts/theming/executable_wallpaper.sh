@@ -16,6 +16,10 @@ source "$DESKTOP_SCRIPTS/system/state-utils"
 
 WALLPAPER_FILE="$XDG_STATE_HOME/desktop/wallpaper"
 
+script_name=$(basename "$0")
+
+logger -t theming -p user.info "[$script_name] Setting up theme for wallpaper $1"
+
 # ---------------------------------------------------------------------------------------
 # Get selected wallpaper
 # ---------------------------------------------------------------------------------------

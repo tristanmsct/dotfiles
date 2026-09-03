@@ -16,6 +16,8 @@
 # To add a device, get its name, mac and info with `pactl list cards`.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+script_name=$(basename "$0")
+
 # MAC Adresses are hard coded, something as to be hardcoded anyway, might as well be the MAC Adress, it is the most stable element.
 BOSE_HEADSET_MAC="C8_7B_23_47_4B_DB"
 PIXEL_BUDS_MAC="B8_7B_D4_10_6B_B3"
@@ -23,10 +25,12 @@ PIXEL_BUDS_MAC="B8_7B_D4_10_6B_B3"
 
 # If no audio device is connected then tries to connect one.
 if ! pactl list cards | grep -q "$BOSE_HEADSET_MAC" && ! pactl list cards | grep -q "$PIXEL_BUDS_MAC"; then
+    logger -t audiohelper -p user.info "[$script_name] Trying to connect to bose headset"
     BLUETOOTH_MAC=$(echo "$BOSE_HEADSET_MAC" | tr '_' ':')
     bluetoothctl connect "$BLUETOOTH_MAC"
     sleep 1
     if ! pactl list cards | grep -q "$BOSE_HEADSET_MAC"; then
+        logger -t audiohelper -p user.info "[$script_name] Trying to connect to pixel buds"
         BLUETOOTH_MAC=$(echo "$PIXEL_BUDS_MAC" | tr '_' ':')
         bluetoothctl connect "$BLUETOOTH_MAC"
     fi
@@ -39,6 +43,7 @@ else
         # sleep 1
         # pactl set-card-profile bluez_card."$BOSE_HEADSET_MAC" "a2dp-sink-sbc_xq"
 
+        logger -t audiohelper -p user.info "[$script_name] Reconnecting to bose headset"
         BLUETOOTH_MAC=$(echo "$BOSE_HEADSET_MAC" | tr '_' ':')
         bluetoothctl disconnect "$BLUETOOTH_MAC"
         sleep 1
@@ -46,6 +51,7 @@ else
     fi
 
     if pactl list cards | grep -q "$PIXEL_BUDS_MAC"; then
+        logger -t audiohelper -p user.info "[$script_name] Reconnecting to pixel buds"
         pactl set-card-profile bluez_card."$PIXEL_BUDS_MAC" "a2dp-sink-sbc"
         sleep 1
         pactl set-card-profile bluez_card."$PIXEL_BUDS_MAC" "a2dp-sink-opus_g"

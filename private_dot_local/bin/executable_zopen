@@ -48,10 +48,21 @@ esac
 if [[ $# -eq 0 ]]; then
     target="$HOME"
 else
-    # zoxide --score outputs two columns: score and path. Let fzf filter, then
-    # sort by score (first column), keep the highest scored entry and extract path.
-    target=$(zoxide query --score --list | fzf --filter "$*" 2>/dev/null | sort -nr -k1,1 | head -1 | awk '{ $1=""; sub(/^ /,""); print }')
-    [[ -z "$target" ]] && target="$HOME"
+    # Try a simple zoxide query first. If it reports "no match found", fall
+    # back to the more complex fzf-based lookup that uses scores.
+    zout=$(zoxide query "$*" 2>&1)
+    if [[ $? -eq 0 ]]; then
+        target="$zout"
+    elif grep -q "zoxide: no match found" <<<"$zout"; then
+        # zoxide --score outputs two columns: score and path. Let fzf filter,
+        # then sort by score (first column), keep the highest scored entry and
+        # extract path.
+        target=$(zoxide query --score --list | fzf --filter "$*" 2>/dev/null | sort -nr -k1,1 | head -1 | awk '{ $1=""; sub(/^ /,""); print }')
+        [[ -z "$target" ]] && target="$HOME"
+    else
+        # Some other error occurred; fall back to HOME.
+        target="$HOME"
+    fi
 fi
 
 # --- Opening directory -----------------------------------------------------------------

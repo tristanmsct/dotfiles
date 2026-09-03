@@ -11,6 +11,7 @@ source "$DESKTOP_SCRIPTS/system/state-utils"
 
 THEME_TYPE=$(state_get ".theme.mode")
 FOCUSMODE_ENABLED=$(state_get ".focusmode.enabled")
+script_name=$(basename "$0")
 
 if [ "$THEME_TYPE" = "light" ]; then
     "$DESKTOP_SCRIPTS/theming/switch-theme.sh"
@@ -18,6 +19,8 @@ fi
 
 if [ "$FOCUSMODE_ENABLED" = "true" ]; then
     # If focus mode is on, then we restore everything and disable it.
+    logger -t focusmode -p user.info "[$script_name] Deactivating focus mode"
+
     hyprctl reload
     waypaper --restore
 
@@ -30,6 +33,8 @@ if [ "$FOCUSMODE_ENABLED" = "true" ]; then
     state_set ".focusmode.enabled" false
 else
     # If focus mode is off, then start it.
+    logger -t focusmode -p user.info "[$script_name] Activating focus mode"
+
     hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
     # hyprctl eval "hl.config({decoration = {blur = {enabled = false}}})"
     hyprctl eval "hl.config({decoration = {inactive_opacity = 1}})"

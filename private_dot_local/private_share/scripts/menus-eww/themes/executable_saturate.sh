@@ -9,6 +9,10 @@
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 
+script_name=$(basename "$0")
+
+logger -t theming -p user.info "[$script_name] Generating a new palette with $1 saturation"
+
 # Maybe the saturation function should work even in focus mode but it would be a pain to implement for almost nothing.
 if hyprctl getoption animations:enabled | grep -q "int: 0"; then
     dunstify "Focus mode activated, saturation disabled."

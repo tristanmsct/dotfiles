@@ -20,6 +20,8 @@ sleep 0.2
 # Set up state file if necessary.
 "$DESKTOP_SCRIPTS/system/setup-state.sh"
 
+script_name=$(basename "$0")
+
 WALLPAPER=$(cat "$XDG_STATE_HOME/desktop/wallpaper")
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
@@ -33,6 +35,8 @@ COLOR_NB=${2:-"1"}
 read -r icons_color theme_color _ <<< "$(python "$DESKTOP_SCRIPTS/theming/convert_colors.py" -c "$COLOR" -d)"
 
 ACCENT_COLOR=$(sed -n "${COLOR_NB}p" "$XDG_STATE_HOME/desktop/colors")
+
+logger -t theming -p user.info "[$script_name] Setting up theme with accent color $COLOR_NB ($icons_color)"
 
 # ---------------------------------------------------------------------------------------
 # Applying theme to Icons and GTK applications

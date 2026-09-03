@@ -16,22 +16,21 @@
 source "$DESKTOP_SCRIPTS/system/state-utils"
 MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
 AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
+script_name=$(basename "$0")
 
 pgrep -x hyprsunset >/dev/null || hyprsunset -i &
 
-logger -t hyprsunset-base "Starting hyprsunset script"
-
 if [[ "$1" = "restore" ]]; then
     # When rebooting, or restarting the session, we can restore the current hyprsunset state.
-    logger -t hyprsunset-base "Restoring hyprsunset config"
+    logger -t hyprsunset -p user.info "[$script_name] Restoring hyprsunset config"
     if [[ "$MANUAL_FILTER_ON" == "true" ]]; then
         temperature=$(state_get ".hyprsunset.temperature")
         hyprctl hyprsunset temperature "$temperature"
-        logger -t hyprsunset-base "Restoring manual hyprsunset"
+        logger -t hyprsunset -p user.info "[$script_name] Restoring manual hyprsunset"
         dunstify "Restoring hyprsunset with temperature $temperature"
     elif [[ "$AUTOTIMER_STATE" == "true" ]]; then
         "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
-        logger -t hyprsunset-base "Restoring auto hyprsunset"
+        logger -t hyprsunset -p user.info "[$script_name] Restoring auto hyprsunset"
         dunstify "Restoring hyprsunset timer"
     else
         hyprctl hyprsunset identity
@@ -43,11 +42,11 @@ elif [[ "$MANUAL_FILTER_ON" == "true" ]]; then
     state_set ".hyprsunset.filter_on" false
     if [[ "$AUTOTIMER_STATE" == "true" ]]; then
         "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
-        logger -t hyprsunset-base "Stopping manual hyprsunset, timer resumed"
+        logger -t hyprsunset -p user.info "[$script_name] Stopping manual hyprsunset, timer resumed"
         dunstify "Stopping manual hyprsunset, timer resumed"
 
     else
-        logger -t hyprsunset-base "Hyprsunset stopped"
+        logger -t hyprsunset -p user.info "[$script_name] Hyprsunset stopped"
         hyprctl hyprsunset identity
         dunstify "Hyprsunset stopped"
     fi
@@ -55,7 +54,7 @@ else
     state_set ".hyprsunset.filter_on" true
     temperature=$(state_get ".hyprsunset.temperature")
     hyprctl hyprsunset temperature "$temperature"
-    logger -t hyprsunset-base "Hyprsunset started with temperature $temperature"
+    logger -t hyprsunset -p user.info "[$script_name] Hyprsunset started with temperature $temperature"
     dunstify "Hyprsunset started with temperature $temperature"
 fi
 

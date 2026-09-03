@@ -8,8 +8,11 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+script_name=$(basename "$0")
+
 if systemctl is-active --quiet cups.service; then
     if [ -z "$1" ]; then
+        logger -t cups -p user.info "[$script_name] Stopping cups service"
         systemctl stop cups.service
         # Update waybar icon config.
         pkill -RTMIN+9 waybar
@@ -18,6 +21,7 @@ if systemctl is-active --quiet cups.service; then
     fi
 else
     if [ -z "$1" ]; then
+        logger -t cups -p user.info "[$script_name] Starting cups service"
         systemctl start cups.service
         # Update waybar icon config.
         pkill -RTMIN+9 waybar
