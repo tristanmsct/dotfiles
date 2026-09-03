@@ -12,10 +12,10 @@ source "$DESKTOP_SCRIPTS/system/state-utils"
 MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
 AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
 
-if $MANUAL_FILTER_ON; then
+if [[ "$MANUAL_FILTER_ON" == "true" ]]; then
     echo '{"class": "filter_on"}'
 else
-    if $AUTOTIMER_STATE; then
+    if [[ "$AUTOTIMER_STATE" == "true" ]]; then
         echo '{"class": "auto_timer"}'
     else
         echo '{"class": "filter_off"}'

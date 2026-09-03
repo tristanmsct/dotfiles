@@ -8,6 +8,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+# Needed for the systemd timer.
+DESKTOP_SCRIPTS=${DESKTOP_SCRIPTS:-$HOME/.local/share/scripts}
+
 source "$DESKTOP_SCRIPTS/system/state-utils"
 MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
 AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
@@ -16,7 +19,7 @@ CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
 logger -t hyprsunset "Running hyprsunset script"
 
 # The timer does not have priority over the manual filter, IF either the manual filter is on, or the auto timer is off, the script stops.
-if $MANUAL_FILTER_ON; then
+if [[ $MANUAL_FILTER_ON = "" ]]; then
     logger -t hyprsunset "Manual filter is on, exiting"
     exit
 fi

@@ -12,7 +12,7 @@
 
 # Needed for when the script is run by pacman.
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-XDG_DATA_HOME=${XDG_CONFIG_HOME:-$HOME/.local/share}
+XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 
 source "$XDG_CONFIG_HOME/shell/lib/format"
 
