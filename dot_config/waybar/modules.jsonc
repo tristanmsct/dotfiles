@@ -85,7 +85,7 @@
         // If the icon does not exists, usually `right click` > "Manage" > "Add desktop shortcut" in Steam will
         // create an icon in ~/.local/share/icons/hicolor and a .desktop file in ~/Documents/Desktop
         // Check Arch guide in the icon section for more info.
-        // General rule : add the client class as a key, the icon name as a value.
+        // General rule : add the client class (id) as a key, and a correponding .desktop file as a value.
         "app_ids-mapping": {
           "firefoxdeveloperedition": "firefox-developer-edition",
           "steam_app_1996010": "Crow Country",
@@ -95,7 +95,8 @@
           "FTL.amd64": "FTL: Faster Than Light",
           "org.nmrs.ui": "network-wireless",
           "nmtui": "network-wireless",
-          "networkpwd": "network-wireless"
+          "networkpwd": "network-wireless",
+          "brave-__home_tristan_.local_share_scripts_system_system-paths.html-Default": "cheatsheet"
         },
         "rewrite": {
           "Firefox Web Browser": "Firefox"

@@ -121,7 +121,7 @@ hl.bind("SUPER + SHIFT + D", e("dunstctl history-pop"), { description = "Replay 
 
 hl.bind("SUPER + ALT + C", e("networkpwd"), { description = "Show wifi network password" })
 
-hl.bind("SUPER + SHIFT + P", e("brave --app='file://" .. SCRIPTS .. "/system/system-paths.html'"), { description = "Show a system paths cheat sheet" })
+hl.bind("SUPER + SHIFT + P", e("gtk-launch cheatsheet.desktop"), { description = "Show a system paths cheat sheet" })
 
 -- --------------------------------------------------------------------------------------
 -- Workspaces
