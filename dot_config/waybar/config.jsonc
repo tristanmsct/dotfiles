@@ -1,0 +1,92 @@
+[{
+    // Header
+    "layer": "top",
+    "output": "eDP-1",
+    "position": "top",
+    "mod": "dock",
+    "height": 35,
+    "margin-top": 4,
+    "margin-bottom": 4,
+    "margin-left": 0,
+    "margin-right": 0,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "reload_style_on_change": true,
+
+    // Load Modules
+    "include": ["~/.config/waybar/modules.jsonc"],
+
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm+1' })\"",
+        "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm-1' })\"",
+        "all-outputs": false,
+        "active-only": false,
+        "on-click": "activate"
+    },
+
+    // Left Segment
+    "modules-left": [
+        // "custom/appmenu",
+        // "group/quicklinks",
+        "hyprland/workspaces",
+        "wlr/taskbar"
+    ],
+
+    // Center Segment
+    "modules-center": [
+        "group/center"
+    ],
+
+    // Right Segment
+    "modules-right": [
+        "group/misc",
+        "group/devices"
+        // "group/system"
+    ]
+},
+{
+    // Header
+    "layer": "top",
+    "output": ["DP-1", "DP-2", "DP-3"],
+    "position": "top",
+    "mod": "dock",
+    "height": 35,
+    "margin-top": 4,
+    "margin-bottom": 4,
+    "margin-left": 0,
+    "margin-right": 0,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+
+    // Load Modules
+    "include": ["~/.config/waybar/modules.jsonc"],
+
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm+1' })\"",
+        "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm-1' })\"",
+        "all-outputs": false,
+        "active-only": false
+    },
+
+    // Left Segment
+    "modules-left": [
+        // "custom/appmenu",
+        // "group/quicklinks",
+        "hyprland/workspaces",
+        "wlr/taskbar"
+    ],
+
+    // Center Segment
+    "modules-center": [
+        "group/center-secondary"
+    ],
+
+    // Right Segment
+    "modules-right": [
+        "group/misc",
+        "group/devices-secondary"
+        // "group/system"
+    ]
+}]

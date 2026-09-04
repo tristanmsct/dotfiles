@@ -61,8 +61,7 @@ README.md
 .config/pulse
 .config/qt6ct
 .config/simple-scan
-# TODO : Sublime ????
-.config/sublime-text
+.config/sublime-text/*
 !.config/sublime-text/Packages
 .config/systemd/user/*
 !.config/systemd/user/empty-trash.*
@@ -72,7 +71,6 @@ README.md
 .config/tlpui
 .config/unity3d
 .config/viewnior
-.config/waybar/config.jsonc  # TODO ?
 .config/waypaper/config.ini
 .config/X11
 .config/xsettingsd
