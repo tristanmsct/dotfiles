@@ -227,6 +227,15 @@ hl.window_rule({
     opaque = true,
 })
 
+-- System cheat sheet
+hl.window_rule({
+    name  = "system cheat-sheet",
+    match = { initial_title = ".*system-paths.html" },
+    float  = true,
+    size  = "500 700",
+    move  = "1380 70",
+})
+
 -- File/directory picker
 hl.window_rule({
     name  = "file-picker",

@@ -9,7 +9,6 @@
 -- --------------------------------------------------------------------------------------
 -- Base setup
 -- --------------------------------------------------------------------------------------
-local mainMod = "SUPER"
 local e = hl.dsp.exec_cmd
 
 local move_all = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/move-all.lua")
@@ -101,13 +100,13 @@ local function setup_workspaces()
     }
 
     for _, ws in ipairs(ws_keys) do
-        hl.unbind(mainMod .. " + " .. ws.key)
-        hl.unbind(mainMod .. " + SHIFT + " .. ws.key)
-        hl.unbind(mainMod .. " + CTRL + " .. ws.key)
+        hl.unbind("SUPER + " .. ws.key)
+        hl.unbind("SUPER + SHIFT + " .. ws.key)
+        hl.unbind("SUPER + CTRL + " .. ws.key)
     end
 
-    hl.bind(mainMod .. " + R", function() return smw.grab_rogue_windows() end)
-    hl.bind(mainMod .. " + D", function() return smw.change_monitor() end)
+    hl.bind("SUPER + R", function() return smw.grab_rogue_windows() end)
+    hl.bind("SUPER + D", function() return smw.change_monitor() end)
 
     if has_external_monitor() then
 
@@ -128,21 +127,21 @@ local function setup_workspaces()
         smw.max_workspaces({ monitor = external.name, max = 3 })
 
         for _, ws in ipairs(ws_keys) do
-            hl.bind(mainMod .. " + " .. ws.key, function() return smw.workspace(ws.n) end, { description = "Go to workspace " .. ws.n })
-            hl.bind(mainMod .. " + SHIFT + " .. ws.key, function()
+            hl.bind("SUPER + " .. ws.key, function() return smw.workspace(ws.n) end, { description = "Go to workspace " .. ws.n })
+            hl.bind("SUPER + SHIFT + " .. ws.key, function()
                 smw.move_to_workspace_silent(ws.n)
                 smw.workspace(ws.n)
             end, { description = "Move active window to workspace " .. ws.n })
-            hl.bind(mainMod .. " + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
+            hl.bind("SUPER + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
         end
     else
         -- laptop only: normal workspace switching
         smw.max_workspaces({ monitor = "eDP-1", max = 4 })
 
         for _, ws in ipairs(ws_keys) do
-            hl.bind(mainMod .. " + " .. ws.key, hl.dsp.focus({ workspace = ws.n }), { description = "Go to workspace " .. ws.n })
-            hl.bind(mainMod .. " + SHIFT + " .. ws.key, hl.dsp.window.move({ workspace = ws.n }), { description = "Move active window to workspace " .. ws.n })
-            hl.bind(mainMod .. " + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
+            hl.bind("SUPER + " .. ws.key, hl.dsp.focus({ workspace = ws.n }), { description = "Go to workspace " .. ws.n })
+            hl.bind("SUPER + SHIFT + " .. ws.key, hl.dsp.window.move({ workspace = ws.n }), { description = "Move active window to workspace " .. ws.n })
+            hl.bind("SUPER + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
         end
     end
 end

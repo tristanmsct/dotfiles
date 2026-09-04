@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    background: #272822;
+    color: #cdd6f4;
+    font-family: monospace;
+    font-size: 14px;
+    margin: 0;
+    padding: 12px;
+  }
+  h1 {
+    color: #AE81FF;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    padding: 0 0 6px 0;
+  }
+  h2 {
+    color: #F92672;
+    font-size: 13px;
+    margin: 14px 0 4px 0;
+    padding: 4px;
+    border-bottom: 1px solid #A6E22E66;
+  }
+  .search-wrap {
+    margin: 0 0 10px 0;
+  }
+  .search {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1b1d1e;
+    color: #F8F8F2;
+    border: 1px solid #A6E22E66;
+    border-radius: 6px;
+    padding: 7px 9px;
+    font: inherit;
+    outline: none;
+  }
+  .search:focus {
+    border-color: #66D9EF;
+    box-shadow: 0 0 0 1px rgba(102, 217, 239, 0.3);
+  }
+  .group {
+    margin: 0;
+  }
+  .group.hidden {
+    display: none;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .label { color: #F8F8F2; }
+  .path {
+    color: #66D9EF;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+  .path:hover {
+    color: #AE81FF;
+    transform: translateY(-1px);
+  }
+  .path.copied {
+    color: #E6DB74;
+    font-weight: bold;
+  }
+  .status {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #E6DB74;
+    border: 1px solid #A6E22E66;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+  }
+  .status.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<h1>Quick system paths</h1>
+<div class="search-wrap">
+  <input id="search" class="search" type="text" placeholder="search paths..." autofocus>
+</div>
+
+<div class="group">
+  <h2>user config</h2>
+  <div class="row"><span class="label">Home</span><span class="path">~</span></div>
+  <div class="row"><span class="label">Config dir</span><span class="path">~/.config/</span></div>
+  <div class="row"><span class="label">Local share</span><span class="path">~/.local/share/</span></div>
+  <div class="row"><span class="label">Local state</span><span class="path">~/.local/state/</span></div>
+  <div class="row"><span class="label">Cache dir</span><span class="path">~/.cache/</span></div>
+</div>
+
+<div class="group">
+  <h2>boot / system</h2>
+  <div class="row"><span class="label">Fstab</span><span class="path">/etc/fstab</span></div>
+  <div class="row"><span class="label">Hostname</span><span class="path">/etc/hostname</span></div>
+  <div class="row"><span class="label">Hosts</span><span class="path">/etc/hosts</span></div>
+  <div class="row"><span class="label">Grub config</span><span class="path">/etc/default/grub</span></div>
+  <div class="row"><span class="label">Grub generated</span><span class="path">/boot/grub/grub.cfg</span></div>
+  <div class="row"><span class="label">Grub scripts</span><span class="path">/etc/grub.d/</span></div>
+  <div class="row"><span class="label">System units</span><span class="path">/etc/systemd/system/</span></div>
+  <div class="row"><span class="label">Vendor units</span><span class="path">/usr/lib/systemd/system/</span></div>
+  <div class="row"><span class="label">Journal</span><span class="path">/var/log/journal/</span></div>
+  <div class="row"><span class="label">journal config</span><span class="path">/etc/systemd/journald.conf.d/</span></div>
+  <div class="row"><span class="label">Mkinitcpio</span><span class="path">/etc/mkinitcpio.conf</span></div>
+  <div class="row"><span class="label">Mkinitcpio hooks</span><span class="path">/etc/mkinitcpio.d/</span></div>
+  <div class="row"><span class="label">Keyboard config</span><span class="path">/etc/vconsole.conf</span></div>
+  <div class="row"><span class="label">Locales</span><span class="path">/etc/locale.conf</span></div>
+  <div class="row"><span class="label">OS info</span><span class="path">/etc/os-release</span></div>
+</div>
+
+<div class="group">
+  <h2>pacman</h2>
+  <div class="row"><span class="label">Config</span><span class="path">/etc/pacman.conf</span></div>
+  <div class="row"><span class="label">Mirrorlist</span><span class="path">/etc/pacman.d/mirrorlist</span></div>
+  <div class="row"><span class="label">Hooks</span><span class="path">/etc/pacman.d/hooks/</span></div>
+  <div class="row"><span class="label">Package cache</span><span class="path">/var/cache/pacman/pkg/</span></div>
+  <div class="row"><span class="label">Database</span><span class="path">/var/lib/pacman/</span></div>
+  <div class="row"><span class="label">Makepkg</span><span class="path">/etc/makepkg.conf</span></div>
+  <div class="row"><span class="label">Yay cache</span><span class="path">~/.cache/yay/</span></div>
+</div>
+
+<div class="group">
+  <h2>Networking</h2>
+  <div class="row"><span class="label">NetworkManager</span><span class="path">/etc/NetworkManager/</span></div>
+  <div class="row"><span class="label">DNS config</span><span class="path">/etc/resolv.conf</span></div>
+  <div class="row"><span class="label">XDG config</span><span class="path">/etc/xdg/</span></div>
+</div>
+
+<div class="group">
+  <h2>Audio / pipewire</h2>
+  <div class="row"><span class="label">Pipewire config</span><span class="path">/etc/pipewire/</span></div>
+  <div class="row"><span class="label">Pipewire user config</span><span class="path">~/.config/pipewire/</span></div>
+</div>
+
+<div class="group">
+  <h2>SDDM</h2>
+  <div class="row"><span class="label">SDDM config</span><span class="path">/etc/sddm.conf</span></div>
+  <div class="row"><span class="label">SDDM overrides</span><span class="path">/etc/sddm.conf.d/</span></div>
+  <div class="row"><span class="label">SDDM themes</span><span class="path">/usr/share/sddm/themes/</span></div>
+</div>
+
+<div class="group">
+  <h2>Themes / icons / fonts</h2>
+  <div class="row"><span class="label">System fonts</span><span class="path">/etc/fonts/</span></div>
+  <div class="row"><span class="label">Shared fonts</span><span class="path">/usr/share/fonts/</span></div>
+  <div class="row"><span class="label">System themes</span><span class="path">/usr/share/themes/</span></div>
+  <div class="row"><span class="label">System icons</span><span class="path">/usr/share/icons/</span></div>
+  <div class="row"><span class="label">User icons</span><span class="path">~/.local/share/icons/</span></div>
+</div>
+
+<div class="group">
+  <h2>User important directories</h2>
+  <div class="row"><span class="label">Fake home</span><span class="path">~/.local/share/fake_home</span></div>
+  <div class="row"><span class="label">Desktop state directory</span><span class="path">~/.local/state/desktop</span></div>
+  <div class="row"><span class="label">Dotfiles</span><span class="path">~/.local/share/dotfiles</span></div>
+  <div class="row"><span class="label">Ansible home</span><span class="path">~/.local/share/ansible-archlinux</span></div>
+  <div class="row"><span class="label">Watcher directory</span><span class="path">~/.local/share/watcher</span></div>
+  <div class="row"><span class="label">AUR scripts</span><span class="path">~/.local/share/aur</span></div>
+  <div class="row"><span class="label">Shell configuration</span><span class="path">~/.config/shell</span></div>
+  <div class="row"><span class="label">Desktop scripts</span><span class="path">~/.local/share/scripts</span></div>
+</div>
+
+<div class="status" id="copy-status">copied</div>
+
+<script>
+const status = document.getElementById('copy-status');
+const searchInput = document.getElementById('search');
+const groups = Array.from(document.querySelectorAll('.group'));
+const rows = Array.from(document.querySelectorAll('.row'));
+
+function showStatus() {
+  status.classList.add('visible');
+  clearTimeout(showStatus.timer);
+  showStatus.timer = setTimeout(() => status.classList.remove('visible'), 500);
+}
+
+function filterRows() {
+  const query = searchInput.value.trim().toLowerCase();
+
+  groups.forEach(group => {
+    const groupRows = Array.from(group.querySelectorAll('.row'));
+    const visibleRows = groupRows.filter(row => {
+      const label = row.querySelector('.label')?.textContent.toLowerCase() || '';
+      const path = row.querySelector('.path')?.textContent.toLowerCase() || '';
+      return !query || label.includes(query) || path.includes(query);
+    });
+
+    groupRows.forEach(row => {
+      row.style.display = visibleRows.includes(row) ? '' : 'none';
+    });
+
+    group.classList.toggle('hidden', visibleRows.length === 0);
+  });
+}
+
+searchInput.addEventListener('input', filterRows);
+
+document.querySelectorAll('.path').forEach(el => {
+  el.title = 'Copy path';
+
+  el.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(el.textContent);
+      el.classList.add('copied');
+      status.textContent = 'copied';
+      showStatus();
+      setTimeout(() => el.classList.remove('copied'), 300);
+    } catch (err) {
+      status.textContent = 'copy failed';
+      showStatus();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
