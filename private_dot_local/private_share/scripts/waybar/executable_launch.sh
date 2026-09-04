@@ -11,10 +11,13 @@
 source "$DESKTOP_SCRIPTS/system/state-utils"
 WAYBAR_STATUS=$(state_get ".waybar.enabled")
 
+if pgrep -f "waybar -c *" > /dev/null; then
+    pkill waybar
+fi
+
 # Restart waybar.
 if [ "$WAYBAR_STATUS" = "true" ] ;then
     # Quit all running waybar instances as a precaution.
-    pkill waybar
     sleep 0.5
 
     waybar -c "$XDG_CONFIG_HOME/waybar/config.jsonc" -s "$XDG_CONFIG_HOME/waybar/style.css" &

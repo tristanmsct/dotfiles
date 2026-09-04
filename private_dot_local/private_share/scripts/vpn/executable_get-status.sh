@@ -16,5 +16,5 @@ if [[ "$STATUS" = "false" ]]; then
     echo "{\"text\": \"\", \"alt\": \"off\"}"
 else
     INTERFACE=$(state_get ".vpn.interface")
-    echo "{\"text\": \" 󰒃  \", \"tooltip\": $INTERFACE, \"alt\": \"connected\"}"
+    echo "{\"text\": \" 󰒃  \", \"tooltip\": \"$INTERFACE\", \"alt\": \"connected\"}"
 fi

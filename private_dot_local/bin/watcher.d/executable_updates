@@ -70,7 +70,7 @@ elif [ $explain == "y" ]; then
     declare -A pkg_versions
 
     while IFS= read -r line; do
-        clean=${line//$'\e'\[[0-9;]*m/}
+        clean=$(sed 's/\x1b\[[0-9;]*m//g' <<< "$line")
         pkg=$(awk '{print $1}' <<< "$clean")
         ver=$(awk '{print $2, $3, $4}' <<< "$line")
         pkg_versions[$pkg]="$ver"

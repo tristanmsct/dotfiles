@@ -260,7 +260,7 @@
         "format": " <span size='x-large'></span> ",
         "tooltip-format": "Toggle docker service",
         "on-click": "$DESKTOP_SCRIPTS/system/docker-toggle.sh",
-        "exec": "$$DESKTOP_SCRIPTS/system/docker-toggle.sh status",
+        "exec": "$DESKTOP_SCRIPTS/system/docker-toggle.sh status",
         "return-type": "json",
         "interval": "once",
         "signal": 10
