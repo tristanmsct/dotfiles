@@ -64,7 +64,7 @@
     transform: translateY(-1px);
   }
   .path.copied {
-    color: #E6DB74;
+    color: #A6E22E;
     font-weight: bold;
   }
   .status {
@@ -96,19 +96,11 @@
 </div>
 
 <div class="group">
-  <h2>user config</h2>
-  <div class="row"><span class="label">Home</span><span class="path">~</span></div>
-  <div class="row"><span class="label">Config dir</span><span class="path">~/.config/</span></div>
-  <div class="row"><span class="label">Local share</span><span class="path">~/.local/share/</span></div>
-  <div class="row"><span class="label">Local state</span><span class="path">~/.local/state/</span></div>
-  <div class="row"><span class="label">Cache dir</span><span class="path">~/.cache/</span></div>
-</div>
-
-<div class="group">
-  <h2>boot / system</h2>
+  <h2>Boot / system</h2>
   <div class="row"><span class="label">Fstab</span><span class="path">/etc/fstab</span></div>
   <div class="row"><span class="label">Hostname</span><span class="path">/etc/hostname</span></div>
   <div class="row"><span class="label">Hosts</span><span class="path">/etc/hosts</span></div>
+  <div class="row"><span class="label">Groups</span><span class="path">/etc/passwd</span></div>
   <div class="row"><span class="label">Grub config</span><span class="path">/etc/default/grub</span></div>
   <div class="row"><span class="label">Grub generated</span><span class="path">/boot/grub/grub.cfg</span></div>
   <div class="row"><span class="label">Grub scripts</span><span class="path">/etc/grub.d/</span></div>
@@ -124,7 +116,7 @@
 </div>
 
 <div class="group">
-  <h2>pacman</h2>
+  <h2>Pacman</h2>
   <div class="row"><span class="label">Config</span><span class="path">/etc/pacman.conf</span></div>
   <div class="row"><span class="label">Mirrorlist</span><span class="path">/etc/pacman.d/mirrorlist</span></div>
   <div class="row"><span class="label">Hooks</span><span class="path">/etc/pacman.d/hooks/</span></div>
@@ -155,6 +147,12 @@
 </div>
 
 <div class="group">
+  <h2>Applications</h2>
+  <div class="row"><span class="label">System applications</span><span class="path">/usr/share/applications</span></div>
+  <div class="row"><span class="label">User applications</span><span class="path">~/.local/share/applications</span></div>
+</div>
+
+<div class="group">
   <h2>Themes / icons / fonts</h2>
   <div class="row"><span class="label">System fonts</span><span class="path">/etc/fonts/</span></div>
   <div class="row"><span class="label">Shared fonts</span><span class="path">/usr/share/fonts/</span></div>
@@ -173,6 +171,15 @@
   <div class="row"><span class="label">AUR scripts</span><span class="path">~/.local/share/aur</span></div>
   <div class="row"><span class="label">Shell configuration</span><span class="path">~/.config/shell</span></div>
   <div class="row"><span class="label">Desktop scripts</span><span class="path">~/.local/share/scripts</span></div>
+</div>
+
+<div class="group">
+  <h2>User config</h2>
+  <div class="row"><span class="label">Home</span><span class="path">~</span></div>
+  <div class="row"><span class="label">Config dir</span><span class="path">~/.config/</span></div>
+  <div class="row"><span class="label">Local share</span><span class="path">~/.local/share/</span></div>
+  <div class="row"><span class="label">Local state</span><span class="path">~/.local/state/</span></div>
+  <div class="row"><span class="label">Cache dir</span><span class="path">~/.cache/</span></div>
 </div>
 
 <div class="status" id="copy-status">copied</div>

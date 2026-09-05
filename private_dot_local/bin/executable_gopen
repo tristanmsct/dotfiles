@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+#   __ _  ___  _ __   ___ _ __
+#  / _` |/ _ \| '_ \ / _ \ '_ \
+# | (_| | (_) | |_) |  __/ | | |
+#  \__, |\___/| .__/ \___|_| |_|
+#  |___/      |_|
+#
+"""
+Created on 2026-09-05.
+
+@author: Tristan Muscat
+@email: tristan.muscat@pm.me
+"""
+
+import os
+import subprocess
+import sys
+
+HOME_DIR = os.environ.get("HOME")
+
+common_dirs = {
+    "Desktop scripts": f"{HOME_DIR}/.local/share/scripts",
+    "User scripts": f"{HOME_DIR}/.local/bin",
+    "User config": f"{HOME_DIR}/.config",
+    "Dotfiles": f"{HOME_DIR}/.local/share/dotfiles",
+    "Ansible config": f"{HOME_DIR}/.local/share/ansible-archlinux",
+    "AUR custom scripts": f"{HOME_DIR}/.local/share/aur",
+}
+
+try:
+    gum_result = subprocess.run(
+        ["gum", "choose", "--no-show-help", "--cursor= 󰝥  ", "--header=Open a directory in codium", "--padding=1 1", *common_dirs.keys()],
+        stdout=subprocess.PIPE,
+        text=True,
+        check=True,
+    )
+except subprocess.CalledProcessError:
+    # gum returns non-zero when exit is pressed, quit gracefully.
+    sys.exit(0)
+
+choice = gum_result.stdout.strip()
+if not choice:
+    sys.exit(0)
+
+path = common_dirs.get(choice)
+if not path:
+    # unknown selection, quit.
+    sys.exit(0)
+
+try:
+    subprocess.run(["codium", path], check=True)
+except subprocess.CalledProcessError:
+    # codium failed to open, exit non-zero.
+    sys.exit(1)

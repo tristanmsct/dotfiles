@@ -34,6 +34,7 @@ hl.bind("SUPER + SHIFT + N", e("[float;size 800 400;move 1000 100] typora " .. T
 hl.bind("SUPER + CTRL + N", e("typora " .. os.getenv("HOME") .. "/Nextcloud/03-Notes/Wikis"), { description = "Open Typora with wikis" })
 hl.bind("SUPER + S", e("subl"), { description = "Open Sublime Text" })
 hl.bind("SUPER + X", e("codium"), { description = "Open VSCodium" })
+hl.bind("SUPER + CTRL + X", e("kitty --app-id gopen -e gopen"), { description = "Open a common directory in VSCodium" })
 hl.bind("SUPER + CTRL + E", e(SCRIPTS .. "/menus-rofi/emoji-picker.sh"), { description = "Open emoji picker" })
 hl.bind("SUPER + G", e("steam"), { description = "Open Steam" })
 hl.bind("SUPER + M", e("gapplication launch org.gnome.Weather"), { description = "Open Weather app" })

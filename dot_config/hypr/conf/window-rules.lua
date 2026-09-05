@@ -236,6 +236,15 @@ hl.window_rule({
     move  = "1380 70",
 })
 
+-- Gopen
+hl.window_rule({
+    name  = "Gum open",
+    match = { class = "gopen" },
+    float  = true,
+    size  = "400 250",
+    center = true,
+})
+
 -- File/directory picker
 hl.window_rule({
     name  = "file-picker",
