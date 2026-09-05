@@ -15,6 +15,7 @@ Created on 2026-09-05.
 import os
 import subprocess
 import sys
+import time
 
 HOME_DIR = os.environ.get("HOME")
 
@@ -29,7 +30,8 @@ common_dirs = {
 
 try:
     gum_result = subprocess.run(
-        ["gum", "choose", "--no-show-help", "--cursor= 󰝥  ", "--header=Open a directory in codium", "--padding=1 1", *common_dirs.keys()],
+        ["gum", "filter", "--no-show-help", "--no-strict", "--header=Open a directory in codium",
+        "--placeholder=Search...",  "--padding=1 1", *common_dirs.keys()],
         stdout=subprocess.PIPE,
         text=True,
         check=True,
@@ -39,16 +41,12 @@ except subprocess.CalledProcessError:
     sys.exit(0)
 
 choice = gum_result.stdout.strip()
-if not choice:
-    sys.exit(0)
-
 path = common_dirs.get(choice)
-if not path:
-    # unknown selection, quit.
-    sys.exit(0)
 
-try:
+if not path:
+    subprocess.run(["zodium", choice], check=True)
+else:
     subprocess.run(["codium", path], check=True)
-except subprocess.CalledProcessError:
-    # codium failed to open, exit non-zero.
-    sys.exit(1)
+
+# Otherwise codium sometimes does not have time to load.
+time.sleep(0.2)

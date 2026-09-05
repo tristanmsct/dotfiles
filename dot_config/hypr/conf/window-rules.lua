@@ -241,7 +241,7 @@ hl.window_rule({
     name  = "Gum open",
     match = { class = "gopen" },
     float  = true,
-    size  = "400 250",
+    size  = "400 300",
     center = true,
 })
 
