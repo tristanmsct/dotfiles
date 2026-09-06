@@ -1,0 +1,23 @@
+layer-rule {
+    match namespace="^waybar$"
+
+    geometry-corner-radius 12
+
+
+    popups {
+        opacity 0.5
+        geometry-corner-radius 20 10 20 10
+
+        background-effect {
+            // xray true
+            blur true
+            noise 0
+            saturation 1
+        }
+    }
+}
+
+layer-rule {
+    match namespace="^awww-daemon$"
+    place-within-backdrop true
+}

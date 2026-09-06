@@ -60,6 +60,7 @@ README.md
 .config/procps
 .config/pulse
 .config/qt6ct
+.config/sandustry
 .config/simple-scan
 .config/sublime-text/*
 !.config/sublime-text/Packages
@@ -149,6 +150,7 @@ README.md
 .local/share/recently-used.xbel
 .local/share/rofi-games
 .local/share/rustup
+.local/share/sandustry
 .local/share/sddm
 .local/share/slack-data
 .local/share/systemd
