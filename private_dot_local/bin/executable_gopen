@@ -20,9 +20,9 @@ import time
 HOME_DIR = os.environ.get("HOME")
 
 common_dirs = {
+    "User config": f"{HOME_DIR}/.config",
     "Desktop scripts": f"{HOME_DIR}/.local/share/scripts",
     "User scripts": f"{HOME_DIR}/.local/bin",
-    "User config": f"{HOME_DIR}/.config",
     "Dotfiles": f"{HOME_DIR}/.local/share/dotfiles",
     "Ansible config": f"{HOME_DIR}/.local/share/ansible-archlinux",
     "AUR custom scripts": f"{HOME_DIR}/.local/share/aur",

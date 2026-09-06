@@ -27,11 +27,9 @@ if [[ "$1" = "restore" ]]; then
         temperature=$(state_get ".hyprsunset.temperature")
         hyprctl hyprsunset temperature "$temperature"
         logger -t hyprsunset -p user.info "[$script_name] Restoring manual hyprsunset"
-        dunstify "Restoring hyprsunset with temperature $temperature"
     elif [[ "$AUTOTIMER_STATE" == "true" ]]; then
         "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
         logger -t hyprsunset -p user.info "[$script_name] Restoring auto hyprsunset"
-        dunstify "Restoring hyprsunset timer"
     else
         hyprctl hyprsunset identity
     fi
@@ -43,19 +41,16 @@ elif [[ "$MANUAL_FILTER_ON" == "true" ]]; then
     if [[ "$AUTOTIMER_STATE" == "true" ]]; then
         "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
         logger -t hyprsunset -p user.info "[$script_name] Stopping manual hyprsunset, timer resumed"
-        dunstify "Stopping manual hyprsunset, timer resumed"
 
     else
         logger -t hyprsunset -p user.info "[$script_name] Hyprsunset stopped"
         hyprctl hyprsunset identity
-        dunstify "Hyprsunset stopped"
     fi
 else
     state_set ".hyprsunset.filter_on" true
     temperature=$(state_get ".hyprsunset.temperature")
     hyprctl hyprsunset temperature "$temperature"
     logger -t hyprsunset -p user.info "[$script_name] Hyprsunset started with temperature $temperature"
-    dunstify "Hyprsunset started with temperature $temperature"
 fi
 
 # Update waybar icon config.
