@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Sandustry
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/2764460
+Icon=steam_icon_2764460
+Terminal=false
+Type=Application
+Categories=Game;

@@ -3,7 +3,7 @@
     "layer": "top",
     "output": "eDP-1",
     "position": "top",
-    "mod": "dock",
+    "mode": "dock",
     "height": 35,
     "margin-top": 4,
     "margin-bottom": 4,
