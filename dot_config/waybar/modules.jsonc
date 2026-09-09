@@ -110,7 +110,7 @@
     "group/center": {
         "orientation": "horizontal",
         "modules": [
-            "custom/debugger",
+            // "custom/debugger",
             "clock",
             "custom/vpnstatus"
             // "custom/updates"
@@ -128,7 +128,7 @@
     "custom/debugger": {
         "format": " <span size='medium'></span> ",
         "exec": "$DESKTOP_SCRIPTS/system/debug-state.sh",
-        // "on-click": "subl ~/.local/state/desktop/state.json",
+        "on-click": "$DESKTOP_SCRIPTS/system/setup-state.sh",
         "restart-interval": 60,
         "escape": true,
         "interval": 2,

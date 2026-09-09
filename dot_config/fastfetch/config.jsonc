@@ -83,6 +83,12 @@
       "keyColor": "31"
     },
     {
+      "type": "command",
+      "key": "├─",
+      "text": "/home/tristan/.local/share/scripts/system/system-age.sh",
+      "keyColor": "31"
+    },
+    {
       "type": "uptime",
       "key": "╰─󰔚",
       "keyColor": "31"

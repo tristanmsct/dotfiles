@@ -8,7 +8,7 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-BATTERY_FILE="$XDG_STATE_HOME/desktop/state.json"
+BATTERY_FILE="$XDG_STATE_HOME/desktop/battery.json"
 BATTERY_LOCK="$BATTERY_FILE.lock"
 
 battery_state_get() {

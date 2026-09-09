@@ -6,3 +6,4 @@ Icon=steam_icon_2764460
 Terminal=false
 Type=Application
 Categories=Game;
+NoDisplay=true
