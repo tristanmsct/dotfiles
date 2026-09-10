@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    background: #272822;
+    color: #cdd6f4;
+    font-family: monospace;
+    font-size: 14px;
+    margin: 0;
+    padding: 12px;
+  }
+  h1 {
+    color: #AE81FF;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    padding: 0 0 6px 0;
+  }
+  h2 {
+    color: #F92672;
+    font-size: 13px;
+    margin: 14px 0 4px 0;
+    padding: 4px;
+    border-bottom: 1px solid #A6E22E66;
+  }
+  .search-wrap {
+    margin: 0 0 10px 0;
+  }
+  .search {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1b1d1e;
+    color: #F8F8F2;
+    border: 1px solid #A6E22E66;
+    border-radius: 6px;
+    padding: 7px 9px;
+    font: inherit;
+    outline: none;
+  }
+  .search:focus {
+    border-color: #66D9EF;
+    box-shadow: 0 0 0 1px rgba(102, 217, 239, 0.3);
+  }
+  .group {
+    margin: 0;
+  }
+  .group.hidden {
+    display: none;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .label { color: #F8F8F2; }
+  .path {
+    color: #66D9EF;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+  .path:hover {
+    color: #AE81FF;
+    transform: translateY(-1px);
+  }
+  .path.copied {
+    color: #A6E22E;
+    font-weight: bold;
+  }
+  .status {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #E6DB74;
+    border: 1px solid #A6E22E66;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+  }
+  .status.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<h1>Vim Keybings</h1>
+<div class="search-wrap">
+  <input id="search" class="search" type="text" placeholder="search paths..." autofocus>
+</div>
+
+<div class="group">
+  <h2>Movement</h2>
+  <div class="row"><span class="label">Move cursor left</span><span class="path">h</span></div>
+  <div class="row"><span class="label">Move cursor right</span><span class="path">l</span></div>
+  <div class="row"><span class="label">Move cursor up</span><span class="path">k</span></div>
+  <div class="row"><span class="label">Move cursor down</span><span class="path">j</span></div>
+</div>
+
+<div class="group">
+  <h2>Editing</h2>
+  <div class="row"><span class="label">Replace a single character</span><span class="path">r</span></div>
+  <div class="row"><span class="label">Join line below to the current one</span><span class="path">J</span></div>
+</div>
+
+<div class="status" id="copy-status">copied</div>
+
+<script>
+const status = document.getElementById('copy-status');
+const searchInput = document.getElementById('search');
+const groups = Array.from(document.querySelectorAll('.group'));
+const rows = Array.from(document.querySelectorAll('.row'));
+
+function showStatus() {
+  status.classList.add('visible');
+  clearTimeout(showStatus.timer);
+  showStatus.timer = setTimeout(() => status.classList.remove('visible'), 500);
+}
+
+function filterRows() {
+  const query = searchInput.value.trim().toLowerCase();
+
+  groups.forEach(group => {
+    const groupRows = Array.from(group.querySelectorAll('.row'));
+    const visibleRows = groupRows.filter(row => {
+      const label = row.querySelector('.label')?.textContent.toLowerCase() || '';
+      const path = row.querySelector('.path')?.textContent.toLowerCase() || '';
+      return !query || label.includes(query) || path.includes(query);
+    });
+
+    groupRows.forEach(row => {
+      row.style.display = visibleRows.includes(row) ? '' : 'none';
+    });
+
+    group.classList.toggle('hidden', visibleRows.length === 0);
+  });
+}
+
+searchInput.addEventListener('input', filterRows);
+
+document.querySelectorAll('.path').forEach(el => {
+  el.title = 'Copy path';
+
+  el.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(el.textContent);
+      el.classList.add('copied');
+      status.textContent = 'copied';
+      showStatus();
+      setTimeout(() => el.classList.remove('copied'), 300);
+    } catch (err) {
+      status.textContent = 'copy failed';
+      showStatus();
+    }
+  });
+});
+</script>
+
+</body>
+</html>

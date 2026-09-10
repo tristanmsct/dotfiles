@@ -97,7 +97,8 @@
           "nmtui": "network-wireless",
           "networkpwd": "network-wireless",
           "gopen": "vscodium",
-          "brave-__home_tristan_.local_share_scripts_system_system-paths.html-Default": "cheatsheet"
+          "brave-__home_tristan_.local_share_scripts_system_system-paths.html-Default": "cheatsheet",
+          "brave-__home_tristan_.local_share_scripts_system_vim-keybindings.html-Default": "vimkeybindings"
         },
         "rewrite": {
           "Firefox Web Browser": "Firefox"

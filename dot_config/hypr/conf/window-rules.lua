@@ -236,6 +236,15 @@ hl.window_rule({
     move  = "1380 70",
 })
 
+-- Vim cheat sheet
+hl.window_rule({
+    name  = "vim cheat-sheet",
+    match = { initial_title = ".*vim-keybindings.html" },
+    float  = true,
+    size  = "500 700",
+    move  = "1380 70",
+})
+
 -- Gopen
 hl.window_rule({
     name  = "Gum open",

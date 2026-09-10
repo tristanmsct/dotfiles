@@ -124,6 +124,8 @@ hl.bind("SUPER + ALT + C", e("networkpwd"), { description = "Show wifi network p
 
 hl.bind("SUPER + SHIFT + P", e("gtk-launch cheatsheet.desktop"), { description = "Show a system paths cheat sheet" })
 
+hl.bind("SUPER + SHIFT + V", e("gtk-launch vimkeybindings.desktop"), { description = "Show a vim keybindings cheat sheet" })
+
 -- --------------------------------------------------------------------------------------
 -- Workspaces
 -- --------------------------------------------------------------------------------------

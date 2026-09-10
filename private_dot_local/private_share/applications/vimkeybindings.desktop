@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Cheat Sheet
+Comment=System path cheat sheet
+StartupWMClass=vimkeybindings
+Exec=brave --app='file:///home/tristan/.local/share/scripts/system/vim-keybindings.html'
+Icon=nvim
+Terminal=false
+Type=Application
+Categories=Development;
+MimeType=text/html
+NoDisplay=true
+
