@@ -26,6 +26,7 @@ alias dufl="duf --only local"  # Show disk usage
 alias dust="dust -b"  # Dust without the percent bars
 alias vscodium="codium"  # VSCodium calls should point to custom launcher
 alias ff="fastfetch"  # Fastfetch
+alias v="nvim"  # Neovim
 
 alias bashterm="bash --rcfile $XDG_CONFIG_HOME/shell/bash/bashrc"  # Bash terminal sourcing directly the bashrc
 alias wa="watcher all -n"  # Run watcher all without caches

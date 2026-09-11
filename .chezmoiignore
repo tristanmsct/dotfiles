@@ -51,6 +51,7 @@ README.md
 .config/mupen64plus
 .config/nautilus
 .config/nmrs/theme
+.config/nvim/lazy-lock.json
 .config/npm
 .config/onlyoffice
 .config/pacseek

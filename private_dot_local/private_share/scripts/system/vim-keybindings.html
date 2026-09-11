@@ -97,16 +97,237 @@
 
 <div class="group">
   <h2>Movement</h2>
-  <div class="row"><span class="label">Move cursor left</span><span class="path">h</span></div>
-  <div class="row"><span class="label">Move cursor right</span><span class="path">l</span></div>
-  <div class="row"><span class="label">Move cursor up</span><span class="path">k</span></div>
-  <div class="row"><span class="label">Move cursor down</span><span class="path">j</span></div>
+  <div class="row"><span class="label">move cursor left</span><span class="path">h</span></div>
+  <div class="row"><span class="label">move cursor down</span><span class="path">j</span></div>
+  <div class="row"><span class="label">move cursor up</span><span class="path">k</span></div>
+  <div class="row"><span class="label">move cursor right</span><span class="path">l</span></div>
+  <div class="row"><span class="label">move cursor down (multi-line text)</span><span class="path">gj</span></div>
+  <div class="row"><span class="label">move cursor up (multi-line text)</span><span class="path">gk</span></div>
+  <div class="row"><span class="label">move to top of screen</span><span class="path">H</span></div>
+  <div class="row"><span class="label">move to middle of screen</span><span class="path">M</span></div>
+  <div class="row"><span class="label">move to bottom of screen</span><span class="path">L</span></div>
+  <div class="row"><span class="label">jump forwards to the start of a word</span><span class="path">w</span></div>
+  <div class="row"><span class="label">jump forwards to the start of a word (words can contain punctuation)</span><span class="path">W</span></div>
+  <div class="row"><span class="label">jump forwards to the end of a word</span><span class="path">e</span></div>
+  <div class="row"><span class="label">jump forwards to the end of a word (words can contain punctuation)</span><span class="path">E</span></div>
+  <div class="row"><span class="label">jump backwards to the start of a word</span><span class="path">b</span></div>
+  <div class="row"><span class="label">jump backwards to the start of a word (words can contain punctuation)</span><span class="path">B</span></div>
+  <div class="row"><span class="label">jump backwards to the end of a word</span><span class="path">ge</span></div>
+  <div class="row"><span class="label">jump backwards to the end of a word (words can contain punctuation)</span><span class="path">gE</span></div>
+  <div class="row"><span class="label">move cursor to matching character (default supported pairs: '()', '{}', '[]' - use :h matchpairs in vim for more info)</span><span class="path">%</span></div>
+  <div class="row"><span class="label">jump to the start of the line</span><span class="path">0</span></div>
+  <div class="row"><span class="label">jump to the first non-blank character of the line</span><span class="path">^</span></div>
+  <div class="row"><span class="label">jump to the end of the line</span><span class="path">$</span></div>
+  <div class="row"><span class="label">jump to the last non-blank character of the line</span><span class="path">g_</span></div>
+  <div class="row"><span class="label">go to the first line of the document</span><span class="path">gg</span></div>
+  <div class="row"><span class="label">go to the last line of the document</span><span class="path">G</span></div>
+  <div class="row"><span class="label">go to line 5</span><span class="path">5gg or 5G</span></div>
+  <div class="row"><span class="label">move to local declaration</span><span class="path">gd</span></div>
+  <div class="row"><span class="label">move to global declaration</span><span class="path">gD</span></div>
+  <div class="row"><span class="label">jump to next occurrence of character x</span><span class="path">fx</span></div>
+  <div class="row"><span class="label">jump to before next occurrence of character x</span><span class="path">tx</span></div>
+  <div class="row"><span class="label">jump to the previous occurrence of character x</span><span class="path">Fx</span></div>
+  <div class="row"><span class="label">jump to after previous occurrence of character x</span><span class="path">Tx</span></div>
+  <div class="row"><span class="label">repeat previous f, t, F or T movement</span><span class="path">;</span></div>
+  <div class="row"><span class="label">repeat previous f, t, F or T movement, backwards</span><span class="path">,</span></div>
+  <div class="row"><span class="label">jump to next paragraph (or function/block, when editing code)</span><span class="path">}</span></div>
+  <div class="row"><span class="label">jump to previous paragraph (or function/block, when editing code)</span><span class="path">{</span></div>
+  <div class="row"><span class="label">center cursor on screen</span><span class="path">zz</span></div>
+  <div class="row"><span class="label">position cursor on top of the screen</span><span class="path">zt</span></div>
+  <div class="row"><span class="label">position cursor on bottom of the screen</span><span class="path">zb</span></div>
+  <div class="row"><span class="label">move screen down one line (without moving cursor)</span><span class="path">Ctrl + e</span></div>
+  <div class="row"><span class="label">move screen up one line (without moving cursor)</span><span class="path">Ctrl + y</span></div>
+  <div class="row"><span class="label">move screen up one page (cursor to last line)</span><span class="path">Ctrl + b</span></div>
+  <div class="row"><span class="label">move screen down one page (cursor to first line)</span><span class="path">Ctrl + f</span></div>
+  <div class="row"><span class="label">move cursor and screen down 1/2 page</span><span class="path">Ctrl + d</span></div>
+  <div class="row"><span class="label">move cursor and screen up 1/2 page</span><span class="path">Ctrl + u</span></div>
 </div>
 
 <div class="group">
   <h2>Editing</h2>
-  <div class="row"><span class="label">Replace a single character</span><span class="path">r</span></div>
-  <div class="row"><span class="label">Join line below to the current one</span><span class="path">J</span></div>
+  <div class="row"><span class="label">insert before the cursor</span><span class="path">i</span></div>
+  <div class="row"><span class="label">insert at the beginning of the line</span><span class="path">I</span></div>
+  <div class="row"><span class="label">insert (append) after the cursor</span><span class="path">a</span></div>
+  <div class="row"><span class="label">insert (append) at the end of the line</span><span class="path">A</span></div>
+  <div class="row"><span class="label">append (open) a new line below the current line</span><span class="path">o</span></div>
+  <div class="row"><span class="label">append (open) a new line above the current line</span><span class="path">O</span></div>
+  <div class="row"><span class="label">insert (append) at the end of the word</span><span class="path">ea</span></div>
+  <div class="row"><span class="label">delete the character before the cursor during insert mode</span><span class="path">Ctrl + h</span></div>
+  <div class="row"><span class="label">delete word before the cursor during insert mode</span><span class="path">Ctrl + w</span></div>
+  <div class="row"><span class="label">add a line break at the cursor position during insert mode</span><span class="path">Ctrl + j</span></div>
+  <div class="row"><span class="label">indent (move right) line one shiftwidth during insert mode</span><span class="path">Ctrl + t</span></div>
+  <div class="row"><span class="label">de-indent (move left) line one shiftwidth during insert mode</span><span class="path">Ctrl + d</span></div>
+  <div class="row"><span class="label">insert (auto-complete) next match before the cursor during insert mode</span><span class="path">Ctrl + n</span></div>
+  <div class="row"><span class="label">insert (auto-complete) previous match before the cursor during insert mode</span><span class="path">Ctrl + p</span></div>
+  <div class="row"><span class="label">insert the contents of register x</span><span class="path">Ctrl + rx</span></div>
+  <div class="row"><span class="label">temporarily enter normal mode to issue one normal-mode command x</span><span class="path">Ctrl + ox</span></div>
+  <div class="row"><span class="label">exit insert mode</span><span class="path">Esc or Ctrl + c</span></div>
+  <div class="row"><span class="label">replace a single character</span><span class="path">r</span></div>
+  <div class="row"><span class="label">replace more than one character, until ESC is pressed</span><span class="path">R</span></div>
+  <div class="row"><span class="label">join line below to the current one with one space in between</span><span class="path">J</span></div>
+  <div class="row"><span class="label">join line below to the current one without space in between</span><span class="path">gJ</span></div>
+  <div class="row"><span class="label">reflow paragraph</span><span class="path">gwip</span></div>
+  <div class="row"><span class="label">switch case up to motion</span><span class="path">g~</span></div>
+  <div class="row"><span class="label">change to lowercase up to motion</span><span class="path">gu</span></div>
+  <div class="row"><span class="label">change to uppercase up to motion</span><span class="path">gU</span></div>
+  <div class="row"><span class="label">change (replace) entire line</span><span class="path">cc</span></div>
+  <div class="row"><span class="label">change (replace) to the end of the line</span><span class="path">c$ or C</span></div>
+  <div class="row"><span class="label">change (replace) entire word</span><span class="path">ciw</span></div>
+  <div class="row"><span class="label">change (replace) to the end of the word</span><span class="path">cw or ce</span></div>
+  <div class="row"><span class="label">delete character and substitute text (same as cl)</span><span class="path">s</span></div>
+  <div class="row"><span class="label">delete line and substitute text (same as cc)</span><span class="path">S</span></div>
+  <div class="row"><span class="label">transpose two letters (delete and paste)</span><span class="path">xp</span></div>
+  <div class="row"><span class="label">undo</span><span class="path">u</span></div>
+  <div class="row"><span class="label">restore (undo) last changed line</span><span class="path">U</span></div>
+  <div class="row"><span class="label">redo</span><span class="path">Ctrl + r</span></div>
+  <div class="row"><span class="label">repeat last command</span><span class="path">.</span></div>
+</div>
+
+<div class="group">
+  <h2>Visual Mode</h2>
+  <div class="row"><span class="label">start visual mode, mark lines, then do a command (like y-yank)</span><span class="path">v</span></div>
+  <div class="row"><span class="label">start linewise visual mode</span><span class="path">V</span></div>
+  <div class="row"><span class="label">move to other end of marked area</span><span class="path">o</span></div>
+  <div class="row"><span class="label">start visual block mode</span><span class="path">Ctrl + v</span></div>
+  <div class="row"><span class="label">move to other corner of block</span><span class="path">O</span></div>
+  <div class="row"><span class="label">mark a word</span><span class="path">aw</span></div>
+  <div class="row"><span class="label">a block with ()</span><span class="path">ab</span></div>
+  <div class="row"><span class="label">a block with {}</span><span class="path">aB</span></div>
+  <div class="row"><span class="label">a block with &lt;&gt; tags</span><span class="path">at</span></div>
+  <div class="row"><span class="label">inner block with ()</span><span class="path">ib</span></div>
+  <div class="row"><span class="label">inner block with {}</span><span class="path">iB</span></div>
+  <div class="row"><span class="label">inner block with &lt;&gt; tags</span><span class="path">it</span></div>
+  <div class="row"><span class="label">exit visual mode</span><span class="path">Esc or Ctrl + c</span></div>
+</div>
+
+<div class="group">
+  <h2>Visual Commands</h2>
+  <div class="row"><span class="label">shift text right</span><span class="path">&gt;</span></div>
+  <div class="row"><span class="label">shift text left</span><span class="path">&lt;</span></div>
+  <div class="row"><span class="label">yank (copy) marked text</span><span class="path">y</span></div>
+  <div class="row"><span class="label">delete marked text</span><span class="path">d</span></div>
+  <div class="row"><span class="label">switch case</span><span class="path">~</span></div>
+  <div class="row"><span class="label">change marked text to lowercase</span><span class="path">u</span></div>
+  <div class="row"><span class="label">change marked text to uppercase</span><span class="path">U</span></div>
+</div>
+
+<div class="group">
+  <h2>Registers</h2>
+  <div class="row"><span class="label">show registers content</span><span class="path">:reg[isters]</span></div>
+  <div class="row"><span class="label">yank into register x</span><span class="path">"xy</span></div>
+  <div class="row"><span class="label">paste contents of register x</span><span class="path">"xp</span></div>
+  <div class="row"><span class="label">yank into the system clipboard register</span><span class="path">"+y</span></div>
+  <div class="row"><span class="label">paste from the system clipboard register</span><span class="path">"+p</span></div>
+</div>
+
+<div class="group">
+  <h2>Marks and Positions</h2>
+  <div class="row"><span class="label">list of marks</span><span class="path">:marks</span></div>
+  <div class="row"><span class="label">set current position for mark A</span><span class="path">ma</span></div>
+  <div class="row"><span class="label">jump to position of mark A</span><span class="path">`a</span></div>
+  <div class="row"><span class="label">yank text to position of mark A</span><span class="path">y`a</span></div>
+  <div class="row"><span class="label">go to the position where Vim was previously exited</span><span class="path">`0</span></div>
+  <div class="row"><span class="label">go to the position when last editing this file</span><span class="path">`"</span></div>
+  <div class="row"><span class="label">go to the position of the last change in this file</span><span class="path">`.</span></div>
+  <div class="row"><span class="label">go to the position before the last jump</span><span class="path">``</span></div>
+  <div class="row"><span class="label">list of jumps</span><span class="path">:ju[mps]</span></div>
+  <div class="row"><span class="label">go to newer position in jump list</span><span class="path">Ctrl + i</span></div>
+  <div class="row"><span class="label">go to older position in jump list</span><span class="path">Ctrl + o</span></div>
+  <div class="row"><span class="label">list of changes</span><span class="path">:changes</span></div>
+  <div class="row"><span class="label">go to newer position in change list</span><span class="path">g,</span></div>
+  <div class="row"><span class="label">go to older position in change list</span><span class="path">g;</span></div>
+  <div class="row"><span class="label">jump to the tag under cursor</span><span class="path">Ctrl + ]</span></div>
+</div>
+
+<div class="group">
+  <h2>Macros</h2>
+  <div class="row"><span class="label">record macro a</span><span class="path">qa</span></div>
+  <div class="row"><span class="label">stop recording macro</span><span class="path">q</span></div>
+  <div class="row"><span class="label">run macro a</span><span class="path">@a</span></div>
+  <div class="row"><span class="label">rerun last run macro</span><span class="path">@@</span></div>
+</div>
+
+<div class="group">
+  <h2>Cut and Paste</h2>
+  <div class="row"><span class="label">yank (copy) a line</span><span class="path">yy</span></div>
+  <div class="row"><span class="label">yank (copy) 2 lines</span><span class="path">2yy</span></div>
+  <div class="row"><span class="label">yank (copy) the characters of the word from the cursor position to the start of the next word</span><span class="path">yw</span></div>
+  <div class="row"><span class="label">yank (copy) word under the cursor</span><span class="path">yiw</span></div>
+  <div class="row"><span class="label">yank (copy) word under the cursor and the space after or before it</span><span class="path">yaw</span></div>
+  <div class="row"><span class="label">yank (copy) to end of line</span><span class="path">y$ or Y</span></div>
+  <div class="row"><span class="label">put (paste) the clipboard after cursor</span><span class="path">p</span></div>
+  <div class="row"><span class="label">put (paste) before cursor</span><span class="path">P</span></div>
+  <div class="row"><span class="label">put (paste) the clipboard after cursor and leave cursor after the new text</span><span class="path">gp</span></div>
+  <div class="row"><span class="label">put (paste) before cursor and leave cursor after the new text</span><span class="path">gP</span></div>
+  <div class="row"><span class="label">delete (cut) a line</span><span class="path">dd</span></div>
+  <div class="row"><span class="label">delete (cut) 2 lines</span><span class="path">2dd</span></div>
+  <div class="row"><span class="label">delete (cut) the characters of the word from the cursor position to the start of the next word</span><span class="path">dw</span></div>
+  <div class="row"><span class="label">delete (cut) word under the cursor</span><span class="path">diw</span></div>
+  <div class="row"><span class="label">delete (cut) word under the cursor and the space after or before it</span><span class="path">daw</span></div>
+  <div class="row"><span class="label">delete lines starting from 3 to 5</span><span class="path">:3,5d</span></div>
+  <div class="row"><span class="label">delete all lines containing pattern</span><span class="path">:g/{pattern}/d</span></div>
+  <div class="row"><span class="label">delete all lines not containing pattern</span><span class="path">:g!/{pattern}/d</span></div>
+  <div class="row"><span class="label">delete (cut) to the end of the line</span><span class="path">d$ or D</span></div>
+  <div class="row"><span class="label">delete (cut) character</span><span class="path">x</span></div>
+</div>
+
+<div class="group">
+  <h2>Indent Text</h2>
+  <div class="row"><span class="label">indent (move right) line one shiftwidth</span><span class="path">&gt;&gt;</span></div>
+  <div class="row"><span class="label">de-indent (move left) line one shiftwidth</span><span class="path">&lt;&lt;</span></div>
+  <div class="row"><span class="label">indent a block with () or {} (cursor on brace)</span><span class="path">&gt;%</span></div>
+  <div class="row"><span class="label">de-indent a block with () or {} (cursor on brace)</span><span class="path">&lt;%</span></div>
+  <div class="row"><span class="label">indent inner block with ()</span><span class="path">&gt;ib</span></div>
+  <div class="row"><span class="label">indent a block with &lt;&gt; tags</span><span class="path">&gt;at</span></div>
+  <div class="row"><span class="label">re-indent 3 lines</span><span class="path">3==</span></div>
+  <div class="row"><span class="label">re-indent a block with () or {} (cursor on brace)</span><span class="path">=%</span></div>
+  <div class="row"><span class="label">re-indent inner block with {}</span><span class="path">=iB</span></div>
+  <div class="row"><span class="label">re-indent entire buffer</span><span class="path">gg=G</span></div>
+  <div class="row"><span class="label">paste and adjust indent to current line</span><span class="path">]p</span></div>
+</div>
+
+<div class="group">
+  <h2>Exiting</h2>
+  <div class="row"><span class="label">write (save) the file, but don't exit</span><span class="path">:w</span></div>
+  <div class="row"><span class="label">write out the current file using sudo</span><span class="path">:w !sudo tee %</span></div>
+  <div class="row"><span class="label">write (save) and quit</span><span class="path">:wq or :x or ZZ</span></div>
+  <div class="row"><span class="label">quit (fails if there are unsaved changes)</span><span class="path">:q</span></div>
+  <div class="row"><span class="label">quit and throw away unsaved changes</span><span class="path">:q! or ZQ</span></div>
+  <div class="row"><span class="label">write (save) and quit on all tabs</span><span class="path">:wqa</span></div>
+</div>
+
+<div class="group">
+  <h2>Search and Replace</h2>
+  <div class="row"><span class="label">search for pattern</span><span class="path">/pattern</span></div>
+  <div class="row"><span class="label">search backward for pattern</span><span class="path">?pattern</span></div>
+  <div class="row"><span class="label">'very magic' pattern: non-alphanumeric characters are interpreted as special regex symbols (no escaping needed)</span><span class="path">\vpattern</span></div>
+  <div class="row"><span class="label">repeat search in same direction</span><span class="path">n</span></div>
+  <div class="row"><span class="label">repeat search in opposite direction</span><span class="path">N</span></div>
+  <div class="row"><span class="label">replace all old with new throughout file</span><span class="path">:%s/old/new/g</span></div>
+  <div class="row"><span class="label">replace all old with new throughout file with confirmations</span><span class="path">:%s/old/new/gc</span></div>
+  <div class="row"><span class="label">remove highlighting of search matches</span><span class="path">:noh[lsearch]</span></div>
+</div>
+
+<div class="group">
+  <h2>Search in Multiple Files</h2>
+  <div class="row"><span class="label">search for pattern in multiple files</span><span class="path">:vim[grep] /pattern/ {file}</span></div>
+  <div class="row"><span class="label">jump to the next match</span><span class="path">:cn[ext]</span></div>
+  <div class="row"><span class="label">jump to the previous match</span><span class="path">:cp[revious]</span></div>
+  <div class="row"><span class="label">open a window containing the list of matches</span><span class="path">:cope[n]</span></div>
+  <div class="row"><span class="label">close the quickfix window</span><span class="path">:ccl[ose]</span></div>
+</div>
+
+<div class="group">
+  <h2>Tabs</h2>
+  <div class="row"><span class="label">open a file in a new tab</span><span class="path">:tabnew or :tabnew {file}</span></div>
+  <div class="row"><span class="label">move the current split window into its own tab</span><span class="path">Ctrl + wT</span></div>
+  <div class="row"><span class="label">move to the next tab</span><span class="path">gt or :tabn[ext]</span></div>
+  <div class="row"><span class="label">move to the previous tab</span><span class="path">gT or :tabp[revious]</span></div>
+  <div class="row"><span class="label">move to tab number #</span><span class="path">#gt</span></div>
+  <div class="row"><span class="label">move current tab to the #th position (indexed from 0)</span><span class="path">:tabm[ove] #</span></div>
+  <div class="row"><span class="label">close the current tab and all its windows</span><span class="path">:tabc[lose]</span></div>
+  <div class="row"><span class="label">close all tabs except for the current one</span><span class="path">:tabo[nly]</span></div>
+  <div class="row"><span class="label">run the command on all tabs (e.g. :tabdo q - closes all opened tabs)</span><span class="path">:tabdo command</span></div>
 </div>
 
 <div class="status" id="copy-status">copied</div>

@@ -21,46 +21,4 @@ vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermfg = "NONE" })
 vim.api.nvim_set_hl(0, "TabLine", { bg = "NONE", ctermfg = "NONE" })
 vim.api.nvim_set_hl(0, "NonText", { bg = "NONE", ctermbg = "NONE" })
 
--- bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
-require("lazy").setup({
-  {
-    "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("nvim-tree").setup({
-        sort = {
-          sorter = "case_sensitive",
-        },
-        view = {
-          width = 30,
-          side = "left",
-        },
-        renderer = {
-          group_empty = true,
-        },
-        filters = {
-          dotfiles = false,
-        },
-        update_focused_file = {
-          enable = true,
-        },
-      })
-    end,
-  },
-})
-
-vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>f", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
+require("config.lazy")
