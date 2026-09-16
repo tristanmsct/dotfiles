@@ -22,12 +22,12 @@ Usage:
     _pkgnotes remove <file>
 """
 
-import subprocess
-import json
-from pathlib import Path
-import sys
 import argparse
+import json
 import os
+import subprocess
+import sys
+from pathlib import Path
 
 # ANSI color codes.
 ORANGE = "\033[38;2;255;158;23m"
@@ -84,7 +84,7 @@ def add_note(file: str, reason: str):
 
     if not file:
         lst_gum_prompt = ["gum", "input", "--header=Custom system file", "--placeholder=Input..."]
-        file = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).stdout.strip()
+        file = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True, check=False).stdout.strip()
 
     if file == "":
         print("Action cancelled")
@@ -94,11 +94,11 @@ def add_note(file: str, reason: str):
     if file in notes:
         lst_gum_prompt = ["gum", "confirm", "File already in notes, append new notes ?"]
         # Gum returncode is inverted for some reason ?
-        bl_concat = not bool(subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).returncode)
+        bl_concat = not bool(subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True, check=False).returncode)
 
     if not reason:
         lst_gum_prompt = ["gum", "input", f"--header=Reason for {file}", "--placeholder=Type the reason this custom system file"]
-        reason = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True).stdout.strip()
+        reason = subprocess.run(lst_gum_prompt, stdout=subprocess.PIPE, text=True, check=False).stdout.strip()
 
     if file in notes and bl_concat:
         reason = notes[file]["reason"] + " " + reason
@@ -117,22 +117,22 @@ def remove_note(file):
     if not file:
         sorted_files = sorted(notes.keys())
         lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_files]
-        lst_files = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+        lst_files = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True, check=False).stdout.strip().split("\n")
 
         if lst_files == [""]:
             print("Action cancelled")
             sys.exit(1)
 
-    for file in lst_files:
-        if file in notes:
-            del notes[file]
+    for file_note in lst_files:
+        if file_note in notes:
+            del notes[file_note]
             save_notes(notes)
-            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{file}{RESET}'")
+            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{file_note}{RESET}'")
         else:
-            print(f"No note found for '{ORANGE}{file}{RESET}'")
+            print(f"No note found for '{ORANGE}{file_note}{RESET}'")
 
 
-def query_notes(file: str = None):
+def query_notes(file: str | None = None):
     """Query notes for a specific custom system file or all of them"""
     notes = load_notes()
 
@@ -143,7 +143,7 @@ def query_notes(file: str = None):
     if not file:
         sorted_files = sorted(notes.keys())
         lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_files]
-        lst_files = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+        lst_files = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True, check=False).stdout.strip().split("\n")
 
         if lst_files == [""]:
             print("Action cancelled")
@@ -152,15 +152,15 @@ def query_notes(file: str = None):
     else:
         lst_files = [file]
 
-    for file in lst_files:
-        if file in notes:
-            print(f"{ORANGE}{file}{RESET}:")
-            if (reason := notes[file]['reason']) == "":
+    for file_note in lst_files:
+        if file_note in notes:
+            print(f"{ORANGE}{file_note}{RESET}:")
+            if (reason := notes[file_note]['reason']) == "":
                 reason = "No specified reason."
             print(f"  {reason}")
             print()
         else:
-            print(f"No note found for '{ORANGE}{file}{RESET}'")
+            print(f"No note found for '{ORANGE}{file_note}{RESET}'")
 
 
 def search_notes(term):
@@ -169,7 +169,8 @@ def search_notes(term):
 
     if not term:
         term = subprocess.run(
-            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True).stdout.strip()
+            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True, check=False
+        ).stdout.strip()
 
     if term == "":
         print("Action cancelled")
@@ -198,7 +199,7 @@ def edit_note(file: str):
     if not file:
         sorted_files = sorted(notes.keys())
         lst_gum_filter = ["gum", "filter", "--header=Choose", *sorted_files]
-        file = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
+        file = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True, check=False).stdout.strip()
 
         if file == "":
             print("Action cancelled")
@@ -206,7 +207,7 @@ def edit_note(file: str):
 
     os.system("clear")
     current_reason = notes[file]["reason"]
-    subprocess.run(["wl-copy", current_reason])
+    subprocess.run(["wl-copy", current_reason], check=False)
     print(f"\n=== {GREEN}Current reason{RESET} ===")
     print(f"""Reason : {current_reason}""")
     print()
@@ -220,6 +221,7 @@ def get_orphans():
     path_notes = set(notes.keys()) - s_root_paths
     path_notes = {p for p in path_notes if not os.path.exists(p)}
 
+    # Listing all notes where the linked path does not exist anymore.
     if path_notes:
         print(f"\n=== {GREEN}List of orphaned file notes{RESET} ===")
         for path in path_notes:
@@ -233,7 +235,7 @@ def main():
 
     if not (command := args.command):
         lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove", "orphans"]
-        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
+        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True, check=False).stdout.strip()
         args = parse_args([command])
 
     if args.command == "":

@@ -19,11 +19,11 @@ CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
 
 # The timer does not have priority over the manual filter, IF either the manual filter is on, or the auto timer is off, the script stops.
 if [[ $MANUAL_FILTER_ON = "" ]]; then
-    logger -t hyprsunset -p user.info "[$script_name] Manual filter is on, exiting"
+    logger -t hyprsunset -p user.debug "[$script_name] Manual filter is on, exiting"
     exit
 fi
 if ! $AUTOTIMER_STATE; then
-    logger -t hyprsunset -p user.info "[$script_name] Auto timer is off, exiting"
+    logger -t hyprsunset -p user.debug "[$script_name] Auto timer is off, exiting"
     exit
 fi
 
@@ -65,11 +65,11 @@ elif [[ $current_time -gt $((evening_start + DIMMING_INTERVAL)) ]]; then
     # Night time.
     slice=$(((DIMMING_INTERVAL / 10) + 1))
     temperature=$((HYPRSUNSET_BASE - (slice * INCREMENT)))
-    logger -t hyprsunset -p user.info "[$script_name] Night time : temperature set to $temperature"
+    logger -t hyprsunset -p user.debug "[$script_name] Night time : temperature set to $temperature"
 
     hyprctl hyprsunset temperature $temperature
 else
     # Day time.
-    logger -t hyprsunset -p user.info "[$script_name] Day time : no temperature modifier"
+    logger -t hyprsunset -p user.debug "[$script_name] Day time : no temperature modifier"
     hyprctl hyprsunset identity
 fi

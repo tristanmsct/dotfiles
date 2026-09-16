@@ -12,12 +12,12 @@ Created on 2026-04-12.
 @email: tristan.muscat@pm.me
 """
 
-import subprocess
-import sys
-import re
 import argparse
 import os
+import re
 import shutil
+import subprocess
+import sys
 
 ORANGE = "\033[38;2;255;158;23m"
 BLUE = "\033[38;2;73;136;252m"
@@ -41,9 +41,9 @@ def parse_args(lst_args=None):
     return parser.parse_args(lst_args)
 
 
-class Cache():
+class Cache:
 
-    def __init__(self, thrs_warn: str = None, thrs_alert: str = None, path: str = "", sudo: bool = False):
+    def __init__(self, thrs_warn: str | None = None, thrs_alert: str | None = None, path: str = "", sudo: bool = False):
         self.path = path
         self.thrs_warn = thrs_warn
         self.thrs_alert = thrs_alert
@@ -53,7 +53,7 @@ class Cache():
             self.size = 0
             self.is_gt_thres = False
 
-    def set_size(self, sudo: bool = False, size: int = None):
+    def set_size(self, sudo: bool = False, size: int | None = None):
         """Set size for a cache. Can be provided or computed"""
         if size:
             # Proved size when du command cannot be used. For example for the journald log size.
@@ -78,7 +78,7 @@ class Cache():
         if sudo:
             cmd_size_dir.insert(0, "sudo")
 
-        res_du = subprocess.run(cmd_size_dir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        res_du = subprocess.run(cmd_size_dir, capture_output=True, text=True, check=False)
 
         # The directory may not exist for a cache that has been deleted.
         # We then return -1 so the display function knows how to handle it.
@@ -90,7 +90,7 @@ class Cache():
         return res
 
     @staticmethod
-    def colorize_size(int_size: int, threshold_warn: int = None, thresold_alert: int = None) -> str:
+    def colorize_size(int_size: int, threshold_warn: int | None = None, thresold_alert: int | None = None) -> str:
         if int_size < 0:
             # -1 size for directories that do not exist will be displayed as a dimmed N/A.
             res = f"{DIM}N/A{RESET}"
@@ -152,7 +152,7 @@ def print_message(str_message: str, msg_type: str = "ok"):
 
 
 def get_journal_size():
-    size_journal = subprocess.run(["journalctl", "--disk-usage"], stdout=subprocess.PIPE, text=True).stdout
+    size_journal = subprocess.run(["journalctl", "--disk-usage"], stdout=subprocess.PIPE, text=True, check=False).stdout
 
     size_journal = re.findall(r"[\d]+\.?[\d]+[KMG]?", size_journal)[0]
 
@@ -185,10 +185,10 @@ def display_system(bl_full: bool = False):
     cache_yay = Cache(path=f"""{os.getenv("HOME")}/.cache/yay""", thrs_warn=1024, thrs_alert=2048)
 
     cmd_stale_downloads = ["sudo", "find", "/var/cache/pacman/pkg", "-maxdepth", "1", "-name", "download-*"]
-    lst_stale_downloads = subprocess.run(cmd_stale_downloads, stdout=subprocess.PIPE, text=True).stdout.split("\n")
+    lst_stale_downloads = subprocess.run(cmd_stale_downloads, stdout=subprocess.PIPE, text=True, check=False).stdout.split("\n")
     bl_stale_downloads = not (len(lst_stale_downloads) == 1 and lst_stale_downloads[0] == "")
 
-    lst_orphans = subprocess.run(["pacman", "-Qdtq"], stdout=subprocess.PIPE, text=True)
+    lst_orphans = subprocess.run(["pacman", "-Qdtq"], stdout=subprocess.PIPE, text=True, check=False)
     if lst_orphans.returncode == 0:
         nb_orphans = len(lst_orphans.stdout.split("\n")) - 1
     else:
@@ -208,11 +208,13 @@ def display_system(bl_full: bool = False):
     # Docker
     bl_display_docker = False
     if shutil.which("docker"):
-        is_docker_up = subprocess.run(["docker", "info"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True).returncode
+        is_docker_up = subprocess.run(
+            ["docker", "info"], capture_output=True, text=True, check=False
+        ).returncode
 
         if is_docker_up == 0:
             cmd_docker_cache = ["docker", "system", "df", "--format", "\"{{.Type}}\t{{.Size}}\""]
-            lst_docker_systems = subprocess.run(cmd_docker_cache, stdout=subprocess.PIPE, text=True).stdout
+            lst_docker_systems = subprocess.run(cmd_docker_cache, stdout=subprocess.PIPE, text=True, check=False).stdout
 
             lst_sizes = re.findall(r"[\d]+\.?[\d]*[KMG]?B?", lst_docker_systems)
             docker_total_size = sum([convert_size(size) for size in lst_sizes])
@@ -280,9 +282,9 @@ def display_applications(bl_full: bool = False):
     threshold_usercache = 300
     # Caches that are handled elsewhere and should not appear in this list.
     other_caches = ["uv", "brave-cache", "pre-commit", "go-build", "npm"]
-    lst_usercaches = list()
+    lst_usercaches = []
     cmd_get_all_usercaches = ["find", f"""{os.getenv("HOME")}/.cache""", "-mindepth", "1", "-maxdepth", "1", "-type", "d"]
-    lst_all_usercaches = subprocess.run(cmd_get_all_usercaches, stdout=subprocess.PIPE, text=True).stdout.split("\n")[:-1]
+    lst_all_usercaches = subprocess.run(cmd_get_all_usercaches, stdout=subprocess.PIPE, text=True, check=False).stdout.split("\n")[:-1]
     for usercache in lst_all_usercaches:
         tmp_usercache = Cache(path=usercache, thrs_warn=300, thrs_alert=1000)
         if tmp_usercache.size > threshold_usercache * 1024 and not usercache.split("/")[-1] in other_caches:

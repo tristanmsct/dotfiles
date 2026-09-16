@@ -22,14 +22,13 @@ Usage:
     _pkgnotes remove <package>
 """
 
-import subprocess
-import json
-from pathlib import Path
-import sys
 import argparse
-import re
+import json
 import os
-
+import re
+import subprocess
+import sys
+from pathlib import Path
 
 # ANSI color codes.
 ORANGE = "\033[38;2;255;158;23m"
@@ -123,7 +122,7 @@ def pick_package(lst_known_packages: list):
     try:
         # Get list of packages.
         pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True).stdout.split("\n")
-        pacman_result = sorted(list(set(pacman_result) - set(lst_known_packages)))[1:]
+        pacman_result = sorted(set(pacman_result) - set(lst_known_packages))[1:]
 
         # Pass the package list to gum filter via stdin.
         gum_result = subprocess.run(
@@ -159,7 +158,7 @@ def add_note(package: str, reason: str):
     if not reason:
         reason = subprocess.run(
             ["gum", "input", f"--header=Reason for {package}", "--placeholder=Type the reason this package is installed"],
-            stdout=subprocess.PIPE, text=True
+            stdout=subprocess.PIPE, text=True, check=False
         ).stdout.strip()
 
     notes[package] = {
@@ -176,23 +175,23 @@ def remove_note(package):
     if not package:
         sorted_packages = sorted(notes.keys())
         lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_packages]
-        lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+        lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True, check=False).stdout.strip().split("\n")
 
         if lst_packages == [""]:
             print("Action cancelled")
             sys.exit(1)
 
-    for package in lst_packages:
-        if package in notes:
-            del notes[package]
+    for pkg_note in lst_packages:
+        if pkg_note in notes:
+            del notes[pkg_note]
             save_notes(notes)
-            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{package}{RESET}'")
+            print(f"{GREEN}✓{RESET} Note removed for '{ORANGE}{pkg_note}{RESET}'")
         else:
-            print(f"No note found for '{ORANGE}{package}{RESET}'")
+            print(f"No note found for '{ORANGE}{pkg_note}{RESET}'")
 
 
 def get_pacman_info(package):
-    pacman_result = subprocess.run(["pacman", "-Qi", package], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    pacman_result = subprocess.run(["pacman", "-Qi", package], capture_output=True, text=True, check=False)
     if pacman_result.returncode == 0:
         package_name = re.search(r"Name\s+: (.*)", pacman_result.stdout).groups()[0]
         package_desc = re.search(r"Description\s+: (.*)", pacman_result.stdout).groups()[0]
@@ -213,7 +212,7 @@ def get_pacman_info(package):
     return pacman_result
 
 
-def query_notes(package: str = None):
+def query_notes(package: str | None = None):
     """Query notes for a specific package or all packages"""
     notes = load_notes()
     xdg_notes = load_xdg_notes()
@@ -225,13 +224,13 @@ def query_notes(package: str = None):
     if not package:
         lst_packages = list(notes.keys())
         pacman_result = subprocess.run(["pacman", "-Qq"], stdout=subprocess.PIPE, text=True, check=True).stdout.split("\n")
-        pacman_result = sorted(list(set(pacman_result)))[1:]
+        pacman_result = sorted(set(pacman_result))[1:]
         lst_packages.extend(pacman_result)
 
         sorted_packages = sorted(lst_packages)
 
         lst_gum_filter = ["gum", "filter", "--no-limit", "--header=Choose", *sorted_packages]
-        lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip().split("\n")
+        lst_packages = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True, check=False).stdout.strip().split("\n")
 
         if lst_packages == [""]:
             print("Action cancelled")
@@ -239,30 +238,30 @@ def query_notes(package: str = None):
     else:
         lst_packages = [package]
 
-    for package in lst_packages:
-        pkg_info = get_pacman_info(package)
+    for pkg_note in lst_packages:
+        pkg_info = get_pacman_info(pkg_note)
         if pkg_info:
             print(pkg_info)
 
-        col_width = max(len(get_full_path(path)) for path in xdg_notes.keys()) + 4
-        lst_dirs = get_all_dir_for_app(package, xdg_notes, col_width)
+        col_width = max(len(get_full_path(path)) for path in xdg_notes) + 4
+        lst_dirs = get_all_dir_for_app(pkg_note, xdg_notes, col_width)
 
         if lst_dirs:
             print(f"{GREEN}Directories{RESET}")
             for subdir in lst_dirs:
                 print(f"  {subdir}")
-            print("")
+            print()
 
-        if package in notes:
+        if pkg_note in notes:
             if pkg_info:
                 print(f"{GREEN}Reason{RESET}")
             else:
-                print(f"{GREEN}{package.capitalize()}{RESET}")
+                print(f"{GREEN}{pkg_note.capitalize()}{RESET}")
 
-            print(f"  {notes[package]['reason']}")
+            print(f"  {notes[pkg_note]['reason']}")
             print()
         else:
-            print(f"No note found for '{ORANGE}{package}{RESET}'")
+            print(f"No note found for '{ORANGE}{pkg_note}{RESET}'")
 
 
 def search_notes(term):
@@ -271,7 +270,8 @@ def search_notes(term):
 
     if not term:
         term = subprocess.run(
-            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True).stdout.strip()
+            ["gum", "input", "--header=Search term", "--placeholder=Your search ..."], stdout=subprocess.PIPE, text=True, check=False
+        ).stdout.strip()
 
     if term == "":
         print("Action cancelled")
@@ -300,7 +300,7 @@ def edit_note(package: str):
     if not package:
         sorted_packages = sorted(notes.keys())
         lst_gum_filter = ["gum", "filter", "--header=Choose", *sorted_packages]
-        package = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True).stdout.strip()
+        package = subprocess.run(lst_gum_filter, stdout=subprocess.PIPE, text=True, check=False).stdout.strip()
 
         if package == "":
             print("Action cancelled")
@@ -308,7 +308,7 @@ def edit_note(package: str):
 
     os.system("clear")
     current_reason = notes[package]["reason"]
-    subprocess.run(["wl-copy", current_reason])
+    subprocess.run(["wl-copy", current_reason], check=False)
     print(f"\n=== {GREEN}Current reason{RESET} ===")
     print(f"""Reason : {current_reason}""")
     print()
@@ -324,6 +324,7 @@ def get_orphans():
 
     orphans = (pkg_notes - pacman_result)
 
+    # Listing all notes where the linked package does not exist anymore.
     if orphans:
         print(f"\n=== {GREEN}List of orphaned package notes{RESET} ===")
         for pkg in sorted(orphans):
@@ -337,7 +338,7 @@ def main():
 
     if not (command := args.command):
         lst_gum_options = ["gum", "choose", "add", "query", "search", "edit", "remove", "orphans"]
-        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True).stdout.strip()
+        command = subprocess.run(lst_gum_options, stdout=subprocess.PIPE, text=True, check=False).stdout.strip()
         args = parse_args([command])
 
     if args.command == "":

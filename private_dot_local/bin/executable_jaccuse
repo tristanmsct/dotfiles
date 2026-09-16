@@ -16,11 +16,12 @@ For example, all these depend on gtk4.
 jaccuse -d "adw-bluetooth baobab gnome-calculator gnome-calendar gnome-podcasts smile libadwaita libinput-gestures pinta nmrs
 proton-vpn-cli pika-backup simple-scan steam mission-center pavucontrol nautilus"
 """
+import argparse
+import re
 import subprocess
 import sys
-import argparse
+
 import networkx as nx
-import re
 
 # ANSI color codes
 ORANGE = "\033[38;2;255;158;23m"
@@ -87,7 +88,10 @@ def create_repr_list_packages(lst_packages):
         else:
             repr_list_package += f", {PURPLE}{package}{RESET}"
 
-    return repr_list_package.strip(", ").strip(" and ")
+    print(repr_list_package)
+    input()
+
+    return repr_list_package.removesuffix(", ").removeprefix("and ").strip()
 
 
 def get_explicit_dependents(lst_packages):
