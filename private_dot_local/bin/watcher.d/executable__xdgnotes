@@ -357,12 +357,12 @@ def get_orphans():
 
     if lst_deleted_paths or lst_uninstalled_packages:
         if lst_deleted_paths:
-            print(f"\n=== {GREEN}List of deleted paths with orphaned notes {RESET} ===")
+            print(f"\n=== {GREEN}List of deleted paths with orphaned notes{RESET} ===")
             for path in lst_deleted_paths:
                 print(f" - {ORANGE}{path}{RESET}")
 
         if lst_uninstalled_packages:
-            print(f"\n=== {GREEN}List of orphaned notes for uninstalled packages {RESET} ===")
+            print(f"\n=== {GREEN}List of orphaned notes for uninstalled packages{RESET} ===")
             for path in lst_uninstalled_packages:
                 print(f" - {ORANGE}{path}{RESET}")
 
