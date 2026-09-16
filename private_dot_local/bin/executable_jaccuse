@@ -88,10 +88,7 @@ def create_repr_list_packages(lst_packages):
         else:
             repr_list_package += f", {PURPLE}{package}{RESET}"
 
-    print(repr_list_package)
-    input()
-
-    return repr_list_package.removesuffix(", ").removeprefix("and ").strip()
+    return repr_list_package.strip().strip(",").removeprefix("and ")
 
 
 def get_explicit_dependents(lst_packages):
