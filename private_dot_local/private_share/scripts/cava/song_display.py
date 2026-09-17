@@ -17,12 +17,15 @@ Obviously if several media are playing at the same time, the result can get a bi
 Only the media started last should show, in theory.
 """
 import configparser
+import logging
 import os
 import shutil
 import signal
 import subprocess
 import sys
 import time
+
+logger = logging.getLogger(__name__)
 
 CAVA_CONFIG_FILE = os.getenv("XDG_CONFIG_HOME") + "/cava/config_mini"
 
@@ -132,8 +135,8 @@ def main():
             # Sleep for a bit (controls scroll speed).
             time.sleep(0.2)
 
-    except Exception as e:
-        print(f"\nError: {e}")
+    except Exception:
+        logger.exception("Error while displaying song name.")
     finally:
         # Show cursor on exit.
         print("\033[?25h", end="")

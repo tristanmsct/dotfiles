@@ -18,7 +18,7 @@ docpy() {
 
 # Bitwarden decryption tool.
 bw-decrypt() {
-    python $HOME/Nextcloud/02-Projets/02-Public/BitwardenDecrypt/BitwardenDecrypt.py "$@"
+    python "$HOME/Nextcloud/02-Projets/02-Public/02-BitwardenDecrypt/BitwardenDecrypt.py" "$@"
 }
 
 
