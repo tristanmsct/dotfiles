@@ -31,7 +31,7 @@ sourceDir = "/home/tristan/.local/share/dotfiles"
 
 Then clone and sync the dotfiles.
 ```bash
-git clone git@github.com:tristanmsct/dotfiles.git $HOME/.local/share/dotfiles
+git clone git@github.com:tristanmsct/dotfiles.git "$HOME/.local/share/dotfiles"
 chezmoi apply
 ```
 
