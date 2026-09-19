@@ -37,7 +37,7 @@ chezmoi apply
 
 ## Repository layout
 
-- `Documents` - Simple templates files
+- `Documents` - Simple templates files for nautilus
 - `dot_config` - Base config for most software
 - `private_dot_ssh` - Configuration for ssh
 - `private_dot_local/bin` - User scripts

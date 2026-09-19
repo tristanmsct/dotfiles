@@ -74,9 +74,15 @@ _watcher-desktop() {
 _watcher-git() {
     local -a options
     options=(
-        ":Check git repositories status"
+        ":Check git repositories status (all sources)"
+        "--aur:Check custom packge recipes repositories"
+        "-a:Check custom packge recipes repositories"
         "--help:Display help message"
         "-h:Display help message"
+        "--projects:Check personal projects repositories"
+        "-p:Check personal projects repositories"
+        "--system:Check system repositories"
+        "-s:Check system repositories"
     )
 
     _describe "watcher git options" options

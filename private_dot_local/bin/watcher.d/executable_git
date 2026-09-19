@@ -24,25 +24,41 @@ show_help() {
     printf "watcher $script_name - $DESC\n\n"
     printf "${BOLD}${COLOR_TERM_5}available commands:${RESET}\n"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "" "Check git repositories status"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-a, --aur" "Check custom packge recipes repositories"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-p, --projects" "Check personal projects repositories"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-s, --system" "Check system repositories"
     exit 0
 }
 
 # --- Handling options ------------------------------------------------------------------
 
-LONGOPTS="help"
-OPTIONS="h"
+LONGOPTS="help,system,aur,projects"
+OPTIONS="hsap"
 
+# TODO : autocomplete
 PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name" -- "$@") || exit 2
 eval set -- "$PARSED"
 
+system=n
+aur=n
+projects=n
 while true; do
     case "$1" in
         -h|--help) show_help ;;
+        -s|--system) system=y; shift ;;
+        -a|--aur) aur=y; shift ;;
+        -p|--projects) projects=y; shift ;;
         --) shift; break ;;
         *) echo "Error"; exit 1 ;;
     esac
 done
+
+if [ $system = "n" ] && [ $aur = "n" ] && [ $projects = n ]; then
+    system=y
+    aur=y
+    projects=y
+fi
 
 if [ $# -ge 1 ]; then
 	echo "error: invalid option or command '$1'"
@@ -123,38 +139,54 @@ check-repo() {
 # -- Permorming all checks --------------------------------------------------------------
 
 # Checking if the ssh identity is already added, otherwise it will be prompted everytime.
-if ! (ssh-add -l|grep -q "github (ED25519)"); then ssh-add -t 1h $HOME/.ssh/github_ed25519; fi;
+if ! (ssh-add -l|grep -q "github (ED25519)"); then ssh-add -t 1h "$HOME/.ssh/github_ed25519"; fi;
 
-subsection "System repositories"
-for repo in "${lst_repos_system[@]}"; do
-    check-repo "$repo"
-done
+if [ $system = "y" ]; then
+    subsection "System repositories"
+    for repo in "${lst_repos_system[@]}"; do
+        check-repo "$repo"
+    done
+fi
 
-subsection "Aur repositories"
-for repo in "${lst_repos_aur[@]}"; do
-    check-repo "$repo"
+if [ $aur = "y" ]; then
+    subsection "Aur repositories"
+    for repo in "${lst_repos_aur[@]}"; do
+        check-repo "$repo"
 
-    # Get package name from PKGBUILD.
-    pkgname=$(grep -E '^pkgname=' PKGBUILD | cut -d'=' -f2 | tr -d '"' | head -n1)
+        pkgname=$(grep -oP '^pkgname=\K.*' PKGBUILD | tr -d '"'"'")
 
-    # Check if package is installed.
-    if pacman -Q "$pkgname" &>/dev/null; then
-        current=$(pacman -Q "$pkgname" 2>/dev/null | cut -d' ' -f2)
-        makepkg -od &>/dev/null
-        new=$(makepkg --packagelist 2>/dev/null | head -n1 | xargs basename | sed "s/${pkgname}-//" | sed 's/-[^-]*-[^-]*\.pkg\.tar\.zst//')
+        # Check if package is installed.
+        if pacman -Q "$pkgname" &>/dev/null; then
+            last_install_date=$(date -u -d """$(LC_ALL=C pacman -Qi "$pkgname" | awk -F': ' '/^Install Date/{print $2}')""" +%Y-%m-%dT%H:%M:%SZ)
 
-        # Remove trailing dash followed by digits from version strings using
-        # parameter expansion instead of external sed calls.
-        current="${current%-[0-9]*}"
-        new="${new%-[0-9]*}"
+            url=$(grep -oP '^url=\K.*' PKGBUILD | tr -d '"'"'")
+            owner_repo=$(awk -F'/' '{print $(NF-1)"/"$NF}' <<< "$url")
+            last_upstream_commit=$(curl -s "https://api.github.com/repos/$owner_repo/commits/HEAD" | jq -r .commit.committer.date)
 
-        if [ "$current" != "$new" ] && [ -n "$new" ]; then
-            echo -e "${ORANGE}Source update available${RESET}: $current -> $new"
+            if [[ $last_upstream_commit > $last_install_date ]]; then
+                echo -e "Upstream repository ${ORANGE}has changes${RESET}"
+            fi
+
+            current=$(pacman -Q "$pkgname" 2>/dev/null | cut -d' ' -f2)
+
+            makepkg -od &>/dev/null
+            new=$(makepkg --packagelist 2>/dev/null | head -n1 | xargs basename | sed "s/${pkgname}-//" | sed 's/-[^-]*-[^-]*\.pkg\.tar\.zst//')
+
+            # Remove trailing dash followed by digits from version strings using
+            # parameter expansion instead of external sed calls.
+            current="${current%-[0-9]*}"
+            new="${new%-[0-9]*}"
+
+            if [ "$current" != "$new" ] && [ -n "$new" ]; then
+                echo -e "Package recipe ${ORANGE}update available${RESET}: $current -> $new"
+            fi
         fi
-    fi
-done
+    done
+fi
 
-subsection "Projects repositories"
-for repo in "${lst_repos_projects[@]}"; do
-    check-repo "$repo"
-done
+if [ $projects = "y" ]; then
+    subsection "Projects repositories"
+    for repo in "${lst_repos_projects[@]}"; do
+        check-repo "$repo"
+    done
+fi

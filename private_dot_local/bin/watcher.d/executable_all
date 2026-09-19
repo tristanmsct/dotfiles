@@ -75,7 +75,7 @@ fi
 
 if [ $flag_git == "y" ]; then
     section "Git repositories"
-    "$WATCHER_DIR/git"
+    "$WATCHER_DIR/git" -s
     echo
 fi
 

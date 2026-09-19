@@ -240,7 +240,7 @@ def display_system(bl_full: bool = False):
         if bl_stale_downloads:
             print_message(
                 f"{len(lst_stale_downloads) - 1} stale download-* dir(s) in {cache_pacman.path}" +
-                f"  → sudo rm -rf {cache_pacman.path}/download-*", msg_type="warn"
+                f"  → sudo rm {cache_pacman.path}/download-* -rf", msg_type="warn"
             )
 
         cache_yay.print_cache_self("yay build cache")
@@ -451,7 +451,7 @@ def print_tips():
 
     print_section("Hyprland / hyprpm", section_type="subsub")
     print("Clean hyprpm cache")
-    display_command("    sudo rm -r /var/cache/hyprpm/$USER/")
+    display_command("    sudo rm /var/cache/hyprpm/$USER/ -r")
     print_message("This removes the plugins themselves as they are used directly from this cache, use with caution", msg_type="warn")
 
     print_section("Systemd journal", section_type="subsub")
@@ -478,15 +478,15 @@ def print_tips():
 
     print_section("Brave", section_type="subsub")
     print("Clean Brave caches from brave://settings/clearBrowserData or with cli")
-    display_command("    rm -rf ~/.cache/brave-cache")
+    display_command("    rm ~/.cache/brave-cache -rf")
 
     print_section("Slack", section_type="subsub")
     print("Clean Slack caches")
-    display_command("    rm -rf ~/.local/share/slack-data/Service\\ Worker/CacheStorage")
+    display_command("    rm ~/.local/share/slack-data/Service\\ Worker/CacheStorage -rf")
 
     print_section("VSCodium", section_type="subsub")
     print("Clean VSCodium caches")
-    display_command("    rm -rf ~/.config/VSCodium/Cache ~/.cache/electron")
+    display_command("    rm ~/.config/VSCodium/Cache ~/.cache/electron -rf")
     print_message("~/.cache/electron may contain other VSCodium cached files", msg_type="warn")
 
     print_section("Dev tools", section_type="sub")
