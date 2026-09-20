@@ -18,7 +18,8 @@ hl.on("hyprland.start", function()
     exec("iio-hyprland")
 
     -- Restore hyprsunset
-    -- This needs to be done here because hyprsunset.service will start the daemon, run then the daemon will be killed with the process.
+    -- This needs to be done here because hyprsunset.service will start the daemon but is not persistent,
+    -- so this command will at leave a running daemon.
     exec(SCRIPTS .. "/hyprland/hyprsunset/hyprsunset.sh restore")
 
     -- Clean Home Directory / Set up state

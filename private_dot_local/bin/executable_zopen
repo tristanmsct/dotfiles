@@ -46,7 +46,7 @@ case "$1" in
 esac
 
 if [[ $# -eq 0 ]]; then
-    target="$HOME"
+    target="$(pwd)"
 else
     # Try a simple zoxide query first. If it reports "no match found", fall
     # back to the more complex fzf-based lookup that uses scores.

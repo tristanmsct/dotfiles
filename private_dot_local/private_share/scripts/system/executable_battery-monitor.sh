@@ -17,16 +17,17 @@ battery_state_get() {
 
 battery_state_set() {
     (
+        exec 200>"$BATTERY_LOCK" || exit 1
         flock -x 200
         tmp=$(mktemp)
         # Determine if $2 is valid JSON. If so, use --argjson, else use --arg for string.
-        if printf '%s' "$2" | jq -e . >/dev/null 2>&1; then
+        if printf '%s' "$2" | jq . >/dev/null 2>&1; then
             jq --argjson val "$2" "$1 = \$val" "$BATTERY_FILE" > "$tmp" && mv "$tmp" "$BATTERY_FILE"
         else
             jq --arg val "$2" "$1 = \$val" "$BATTERY_FILE" > "$tmp" && mv "$tmp" "$BATTERY_FILE"
         fi
         rm -f "$BATTERY_LOCK"
-    ) 200>"$BATTERY_LOCK"
+    )
 }
 
 BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)

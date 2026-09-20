@@ -23,7 +23,7 @@ state_set() {
         flock -x 200
         tmp=$(mktemp)
         # Determine if $2 is valid JSON. If so, use --argjson, else use --arg for string.
-        if printf '%s' "$2" | jq -e . >/dev/null 2>&1; then
+        if printf '%s' "$2" | jq . >/dev/null 2>&1; then
             jq --argjson val "$2" "$1 = \$val" "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
         else
             jq --arg val "$2" "$1 = \$val" "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"

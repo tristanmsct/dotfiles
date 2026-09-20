@@ -18,6 +18,12 @@ MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
 AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
 script_name=$(basename "$0")
 
+
+hyprsunset_status=$(hyprctl hyprsunset temperature 2>&1 || true)
+if [[ "$hyprsunset_status" == "Couldn't connect to"* ]]; then
+    pkill -x hyprsunset || true
+fi
+
 pgrep -x hyprsunset >/dev/null || hyprsunset -i &
 
 if [[ "$1" = "restore" ]]; then
