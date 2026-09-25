@@ -8,12 +8,13 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-output=$(amixer sget Master | grep "Front Left:")
-volume=$(echo "$output" | grep -oP '\[\K\d+%')
-volume=${volume//%/}
-status=$(echo "$output" | grep -oP '\[on\]|\[off\]' | tr -d '[]')
+# Use wpctl to get the default sink volume and mute status
+output_vol=$(wpctl get-volume @DEFAULT_SINK@ 2>/dev/null || true)
+volume=$(echo "$output_vol" | grep -oP '\d+(\.\d+)?' | head -n1)
+volume=$(awk -v v="$volume" 'BEGIN{printf("%d", v*100)}')
+status=$(echo "$output_vol" | grep -oP '\[MUTED\]')
 
-if [ "$status" = "off" ]; then
+if [ "$status" = "[MUTED]" ]; then
     echo " "
 else
     if [ "$volume" -ge 50 ]; then

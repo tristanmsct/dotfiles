@@ -15,8 +15,8 @@
 
 (defpoll sound-slider-value
   :interval "200ms"
-  :initial "echo $(( $(amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%') / 5 ))"
-  "echo $(( $(amixer sget Master | awk -F'\\[\\]\\[\\]' '/Left:/ { print $2 }' | tr -d '%') / 5 ))"
+  :initial "echo $(wpctl get-volume @DEFAULT_SINK@ | sed -E 's/[^0-9.]//g' | awk '{printf \"%d\", ($1*100)/5}')"
+  "echo $(wpctl get-volume @DEFAULT_SINK@ | sed -E 's/[^0-9.]//g' | awk '{printf \"%d\", ($1*100)/5}')"
 )
 
 (defwindow sound-slider-window-closer
