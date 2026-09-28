@@ -11,9 +11,10 @@
     // Application Launcher -------------------------------------------------------------
     "custom/appmenu": {
         "format": "<span size='x-large'>󰣇</span>",
-        "on-click": "pkill rofi || rofi -show drun -replace -i -disable-history",
-        "on-click-middle": "~/.config/nwg-panel/menu-start.sh",
-        "on-click-right": "DESKTOP_SCRIPTS/menus-rofi/keybindings.sh",
+        // "format": "<span size='x-large'></span>",
+        "on-click": "pkill rofi || rofi -show drun -replace -i -disable-history -config $XDG_CONFIG_HOME/rofi/config-appmenu.rasi",
+        "on-click-middle": "$XDG_CONFIG_HOME/nwg-panel/menu-start.sh",
+        "on-click-right": "$DESKTOP_SCRIPTS/menus-rofi/keybindings.sh",
         "tooltip-format": "<span line_height='1.5'>Left: Open Rofi application launcher</span>\n<span line_height='1.5'>Middle: Open the NWG application launcher   </span>\n<span line_height='1.5'>Right: Show all keybindings</span>"
         // "tooltip": false
     },
@@ -83,7 +84,7 @@
         // "ignore-list": ["kitty"],
         // To add steam game icons to waybar, their ID need to be mapped to their name.
         // If the icon does not exists, usually `right click` > "Manage" > "Add desktop shortcut" in Steam will
-        // create an icon in ~/.local/share/icons/hicolor and a .desktop file in ~/Documents/Desktop
+        // create an icon in $XDG_DATA_HOME/icons/hicolor and a .desktop file in $HOME/Documents/Desktop
         // Check Arch guide in the icon section for more info.
         // General rule : add the client class (id) as a key, and a correponding .desktop file as a value.
         "app_ids-mapping": {

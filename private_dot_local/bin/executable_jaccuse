@@ -22,6 +22,10 @@ import subprocess
 import sys
 
 import networkx as nx
+import pyalpm
+
+handle = pyalpm.Handle("/", "/var/lib/pacman")
+db = handle.get_localdb()
 
 # ANSI color codes
 ORANGE = "\033[38;2;255;158;23m"
@@ -145,6 +149,7 @@ def find_full_list_of_dependencies(lst_packages, deep_search=False):
             lst_dependencies = set(lst_dependencies.stdout.strip().split("\n")[1:])
             lst_dependencies = {dep.strip() for dep in lst_dependencies if dep.strip()}
             lst_dependencies = {dep.split("=")[0].strip(">") for dep in lst_dependencies}
+            lst_dependencies = {pyalpm.find_satisfier(db.pkgcache, dep).name for dep in lst_dependencies}
 
             full_set_dependencies.update(lst_dependencies)
 
