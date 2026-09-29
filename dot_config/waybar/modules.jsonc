@@ -68,8 +68,19 @@
     },
 
     // Workspaces -----------------------------------------------------------------------
-    // Workspaces are handled directly in the config file because the workspace widget is not the same
-    // on each screen.
+
+    "hyprland/workspaces": {
+        "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm+1' })\"",
+        "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm-1' })\"",
+        "all-outputs": false,
+        "active-only": false,
+        "on-click": "activate",
+        "show-special": true,
+        "format-icons": {
+            "minimized": ""
+        },
+        "format": "{icon}"
+    },
 
     // Taskbar --------------------------------------------------------------------------
     "wlr/taskbar": {

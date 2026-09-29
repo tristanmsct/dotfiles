@@ -63,7 +63,7 @@ hl.plugin.hyprgrass.gesture {
 hl.plugin.hyprgrass.gesture {
     pattern = {kind = "swipe", fingers = 2, origin = "up", direction = "down"},
     action = "special",
-    workspace_name = "minimize",
+    workspace_name = "minimized",
 }
 
 hl.plugin.hyprgrass.bind {

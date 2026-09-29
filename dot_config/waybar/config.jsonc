@@ -17,14 +17,6 @@
     // Load Modules
     "include": ["~/.config/waybar/modules.jsonc"],
 
-    "hyprland/workspaces": {
-        "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm+1' })\"",
-        "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm-1' })\"",
-        "all-outputs": false,
-        "active-only": false,
-        "on-click": "activate"
-    },
-
     // Left Segment
     "modules-left": [
         // "custom/appmenu",
@@ -62,13 +54,6 @@
 
     // Load Modules
     "include": ["~/.config/waybar/modules.jsonc"],
-
-    "hyprland/workspaces": {
-        "on-scroll-up": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm+1' })\"",
-        "on-scroll-down": "hyprctl dispatch \"hl.dsp.focus({ workspace = 'm-1' })\"",
-        "all-outputs": false,
-        "active-only": false
-    },
 
     // Left Segment
     "modules-left": [
