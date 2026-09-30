@@ -29,6 +29,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
 export PAGER="bat"
+export MANPAGER="nvim +Man!"
 
 # Locale
 export LANG=en_US.utf8
