@@ -35,7 +35,7 @@ hl.window_rule({
     name  = "pavucontrol",
     match = { class = ".*org.pulseaudio.pavucontrol.*" },
     float  = true,
-    size   = "monitor_w*0.4 monitor_h*0.5",
+    size   = "monitor_w*0.5 monitor_h*0.5",
     center = true,
     pin    = true,
 })
