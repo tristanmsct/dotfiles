@@ -30,10 +30,11 @@ alias v="nvim"  # Neovim
 alias nvimupdate="nvim --headless '+Lazy! update' +qa"  # Update neovim
 
 alias bashterm="bash --rcfile \$XDG_CONFIG_HOME/shell/bash/bashrc"  # Bash terminal sourcing directly the bashrc
-alias wa="watcher all -n"  # Run watcher all without caches
-alias wpnq="watcher pkglog notes query"  # Query nnotes on a package directly
-alias wue="watcher updates --explain"  # Give info on updatable packages
-alias wcs="watcher chezmoi sync"  # Sync chezmoi dotfile database
+alias wt="watcher"  # Simple alias for Watcher
+alias wa="watcher all -n"  # Run Watcher all without caches
+alias wpnq="watcher pkglog notes query"  # Query notes from Watcher pkglog on a package directly
+alias wue="watcher updates --explain"  # Give info on updatable packages through Watcher
+alias wcs="watcher chezmoi sync"  # Sync chezmoi dotfile database through Watcher
 
 # ---------------------------------------------------------------------------------------
 # Kitty

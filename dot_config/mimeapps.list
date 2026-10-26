@@ -14,7 +14,7 @@ image/svg+xml=brave-browser.desktop
 text/x-tex=sublime_text.desktop
 image/jpeg=viewnior.desktop
 image/png=viewnior.desktop
-application/pdf=onlyoffice-desktopeditors.desktop
+application/pdf=org.gnome.Papers.desktop
 application/wps-office.xlsx=onlyoffice-desktopeditors.desktop
 application/wps-office.docx=onlyoffice-desktopeditors.desktop
 application/wps-office.pptx=onlyoffice-desktopeditors.desktop
@@ -30,6 +30,7 @@ x-scheme-handler/https=brave-browser.desktop
 x-scheme-handler/about=brave-browser.desktop
 x-scheme-handler/unknown=brave-browser.desktop
 video/vnd.avi=io.github.celluloid_player.Celluloid.desktop
+x-scheme-handler/discord-1170028348756471908=discord-1170028348756471908.desktop
 
 [Added Associations]
 application/x-zerosize=typora.desktop;sublime_text.desktop;vscodium.desktop;nvim.desktop;
@@ -41,7 +42,7 @@ application/x-shellscript=sublime_text.desktop;vscodium.desktop;nvim.desktop;
 image/svg+xml=brave-browser.desktop;sublime_text.desktop;
 inode/directory=kitty-open.desktop;org.gnome.Nautilus.desktop;vscodium-wayland.desktop;vscodium.desktop;yazi.desktop;
 text/x-python3=sublime_text.desktop;vscodium.desktop;nvim.desktop;
-application/pdf=onlyoffice-desktopeditors.desktop;brave-browser.desktop;org.gnome.Evince.desktop;
+application/pdf=onlyoffice-desktopeditors.desktop;brave-browser.desktop;org.gnome.Evince.desktop;org.gnome.Papers.desktop;
 application/wps-office.xlsx=onlyoffice-desktopeditors.desktop;
 application/wps-office.docx=onlyoffice-desktopeditors.desktop;
 application/wps-office.pptx=onlyoffice-desktopeditors.desktop;

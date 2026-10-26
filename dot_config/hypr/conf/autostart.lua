@@ -24,7 +24,7 @@ hl.on("hyprland.start", function()
 
     -- Clean Home Directory / Set up state
     exec(SCRIPTS .. "/system/setup-state.sh")
-    exec(SCRIPTS .. "/system/home-cleaner.sh")
+    exec(SCRIPTS .. "/system/cleanup-home.sh")
 
     -- Clean games
     exec(SCRIPTS .. "/system/cleanup-games.sh")

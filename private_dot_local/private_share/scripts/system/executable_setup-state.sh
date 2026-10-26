@@ -11,6 +11,8 @@
 STATE_FILE="$XDG_STATE_HOME/desktop/state.json"
 BATTERY_FILE="$XDG_STATE_HOME/desktop/battery.json"
 
+mkdir -p "$(dirname "$STATE_FILE")"
+
 if [ ! -e "$STATE_FILE" ] || [ ! -s "$STATE_FILE" ]; then
 cat > "$STATE_FILE" << 'EOF'
 {

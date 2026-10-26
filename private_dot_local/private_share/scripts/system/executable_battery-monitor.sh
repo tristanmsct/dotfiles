@@ -8,30 +8,12 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
+source "$DESKTOP_SCRIPTS/system/state-utils"
+
 BATTERY_FILE="$XDG_STATE_HOME/desktop/battery.json"
-BATTERY_LOCK="$BATTERY_FILE.lock"
-
-battery_state_get() {
-    jq -r "$1" "$BATTERY_FILE"
-}
-
-battery_state_set() {
-    (
-        exec 200>"$BATTERY_LOCK" || exit 1
-        flock -x 200
-        tmp=$(mktemp)
-        # Determine if $2 is valid JSON. If so, use --argjson, else use --arg for string.
-        if printf '%s' "$2" | jq . >/dev/null 2>&1; then
-            jq --argjson val "$2" "$1 = \$val" "$BATTERY_FILE" > "$tmp" && mv "$tmp" "$BATTERY_FILE"
-        else
-            jq --arg val "$2" "$1 = \$val" "$BATTERY_FILE" > "$tmp" && mv "$tmp" "$BATTERY_FILE"
-        fi
-        rm -f "$BATTERY_LOCK"
-    )
-}
 
 BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT1/capacity)
-PREVIOUS_LEVEL=$(battery_state_get ".battery_level")
+PREVIOUS_LEVEL=$(state_get ".battery_level" "$BATTERY_FILE")
 
 if [ "$BATTERY_LEVEL" -gt "$PREVIOUS_LEVEL" ]; then
     if [ "$BATTERY_LEVEL" -eq 100 ]; then
@@ -49,4 +31,4 @@ elif [ "$PREVIOUS_LEVEL" -gt "$BATTERY_LEVEL" ]; then
     fi
 fi
 
-battery_state_set ".battery_level" "$BATTERY_LEVEL"
+state_set ".battery_level" "$BATTERY_LEVEL" "$BATTERY_FILE"
