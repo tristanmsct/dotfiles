@@ -8,34 +8,29 @@
 ; -----------------------------------------------------------------------------------------------------------------------------------------
 
 ;; Variables
-(defpoll hyprsunset-active
+(defpoll hyprsunset-state
   :interval "1s"
-  :initial "echo $( cat $XDG_STATE_HOME/desktop/state.json|jq '.hyprsunset.filter_on' )"
-  "echo $( cat $XDG_STATE_HOME/desktop/state.json|jq '.hyprsunset.filter_on' )"
-)
-
-(defpoll hyprsunset-timer-active
-  :interval "1s"
-  :initial "echo $( cat $XDG_STATE_HOME/desktop/state.json|jq '.hyprsunset.auto_timer' )"
-  "echo $( cat $XDG_STATE_HOME/desktop/state.json|jq '.hyprsunset.auto_timer' )"
+  "jq -r '.hyprsunset.state' \"$XDG_STATE_HOME/desktop/state.json\""
 )
 
 (defpoll brightness-value
   :interval "200ms"
-  :initial  "$(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
   "$(( $(brightnessctl g) * 100 / $(brightnessctl m) ))"
 )
 
 (defpoll keyboard-backlight-value
   :interval "200ms"
-  :initial "brightnessctl get -d '*kbd_backlight*'"
   "brightnessctl get -d '*kbd_backlight*'"
 )
 
 (defpoll sunset-value
   :interval "200ms"
-  :initial "echo $(( $( cat $XDG_STATE_HOME/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
-  "echo $(( $( cat $XDG_STATE_HOME/desktop/state.json|jq '.hyprsunset.temperature' ) / 50 ))"
+  "jq -r '.hyprsunset.temperature // 0' \"$XDG_STATE_HOME/desktop/state.json\" | awk '{print int($1 / 50)}'"
+)
+
+(defpoll sunset-value-real
+  :interval "200ms"
+  "jq -r '.hyprsunset.temperature // 0' \"$XDG_STATE_HOME/desktop/state.json\""
 )
 
 ;; Widget Definition
@@ -69,6 +64,8 @@
         (label
           :class "slider-label"
           :text "Monitor"
+          :width 100
+          :xalign 0.1
         )
 
         (box
@@ -99,6 +96,8 @@
         (label
           :class "slider-label"
           :text "Keyboard"
+          :xalign 0.1
+          :width 100
         )
 
         (box
@@ -127,25 +126,73 @@
       :class "element-group"
       :spacing 15
 
+
+      ;; Blue light filter label
+      (box
+        :orientation "h"
+
+        (label
+          :text "Blue Light Filter"
+          :class "blue-light-filter-label"
+          :xalign 0.1
+        )
+
+        (box
+          :class "separator"
+          :orientation "h"
+        )
+
+      )
+
       ;; Hyprsunset elements
       (box
         :orientation "h"
-        :space-evenly false
-        :spacing 15
+        :space-evenly true
+        :spacing 25
 
         ;; Hyprsunset toggle button
         (eventbox
           :cursor "pointer"
           (button
-            :class {hyprsunset-active == "true" ? "control-button-active" : "control-button"}
-            :onclick "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh"
-            :onrightclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-slider.sh 6500"
-            :tooltip "Click to toogle hyprsunset manually"
-            "Hyprsunset"
+            :class {hyprsunset-state == "on" ? "control-button-active" : "control-button"}
+            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-button.sh on"
+            :tooltip "Click to enable hyprsunset"
+            "On"
           )
         )
 
-        ;; hyprsunset slider
+        (eventbox
+          :cursor "pointer"
+          (button
+            :class {hyprsunset-state == "auto" ? "control-button-active" : "control-button"}
+            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-button.sh auto"
+            :onrightclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-slider.sh 6500"
+            :tooltip "Click to toogle hyprsunset auto timer (right click to reset temp)"
+            "Auto"
+          )
+        )
+
+        (eventbox
+          :cursor "pointer"
+          (button
+            :class {hyprsunset-state == "off" ? "control-button-active" : "control-button"}
+            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-button.sh off"
+            :tooltip "Click to disable hyprsunset"
+            "Off"
+          )
+        )
+      )
+
+      (box
+        :orientation "h"
+        :space-evenly false
+        :spacing 15
+
+        (label
+          :class "slider-label"
+          :text "Temp"
+        )
+
         (box
           :class "slider-container"
           :halign "fill"
@@ -154,12 +201,12 @@
             :cursor "pointer"
             (scale
               :class  {
-                        sunset-value < 130 ? "hyprsunset-slider-hot" :
-                        sunset-value == 130 ? "hyprsunset-slider" :
-                        "hyprsunset-slider-cold"
+                        sunset-value < 130 ? "hyprsunset-slider hot" :
+                        sunset-value > 130 ? "hyprsunset-slider cold" :
+                        "hyprsunset-slider"
                       }
               :min 20
-              :max 400
+              :max 401
               :timeout 1000
               :value sunset-value
               :onchange "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-slider.sh $(({} * 50))"
@@ -167,26 +214,13 @@
             )
           )
         )
-      )
 
-      ;; Hyprsunset auto timer button
-      (box
-        :orientation "h"
-        :space-evenly true
-        :spacing 15
-
-        (eventbox
-          :cursor "pointer"
-          (button
-            :class {hyprsunset-timer-active == "true" ? "control-button-active" : "control-button"}
-            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-timer-button.sh"
-            :tooltip "Click to toogle hyprsunset auto timer"
-            "Hyprsunset Auto Timer"
-          )
+        (label
+          :class "slider-label"
+          :text "${sunset-value-real}K"
         )
       )
     )
-
   )
 )
 
@@ -206,6 +240,7 @@
   :orientation "v"
   :geometry (geometry
     :anchor "center"
+    :x "2%"
   )
   :stacking "fg"
   :wm-ignore false

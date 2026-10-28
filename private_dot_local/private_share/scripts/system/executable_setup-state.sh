@@ -34,9 +34,8 @@ cat > "$STATE_FILE" << 'EOF'
     "connected": false
   },
   "hyprsunset": {
-    "auto_timer": true,
-    "temperature": 6500,
-    "filter_on": false
+    "state": "auto",
+    "temperature": 6500
   },
   "focusmode": {
     "enabled": false

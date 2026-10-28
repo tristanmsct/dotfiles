@@ -10,10 +10,10 @@
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 
-manual_filter_on=$(state_get ".hyprsunset.filter_on")
+FILTER_STATE=$(state_get ".hyprsunset.state")
 
 state_set ".hyprsunset.temperature" "$1"
 
-if [[ ($manual_filter_on = "true") ]]; then
+if [[ ($FILTER_STATE = "on") ]]; then
     hyprctl hyprsunset temperature "$1"
 fi

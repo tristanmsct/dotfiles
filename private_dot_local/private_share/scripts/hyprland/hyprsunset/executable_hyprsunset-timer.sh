@@ -7,22 +7,19 @@
 #        |___/|_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# Handles the logic of applying the right temperature for the time.
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 # Needed for the systemd timer.
-DESKTOP_SCRIPTS=${DESKTOP_SCRIPTS:-$HOME/.local/share/scripts}
+DESKTOP_SCRIPTS="${DESKTOP_SCRIPTS:-$HOME/.local/share/scripts}"
 script_name=$(basename "$0")
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
-MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
-AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
+FILTER_STATE=$(state_get ".hyprsunset.state")
 CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
 
-# The timer does not have priority over the manual filter, IF either the manual filter is on, or the auto timer is off, the script stops.
-if [[ $MANUAL_FILTER_ON = "" ]]; then
-    logger -t hyprsunset -p user.debug "[$script_name] Manual filter is on, exiting"
-    exit
-fi
-if ! $AUTOTIMER_STATE; then
+# Exiting script if the hyprsunset auto timer is not on.
+if [[ $FILTER_STATE != "auto" ]]; then
     logger -t hyprsunset -p user.debug "[$script_name] Auto timer is off, exiting"
     exit
 fi

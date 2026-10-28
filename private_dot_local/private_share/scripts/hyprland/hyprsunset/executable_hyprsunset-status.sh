@@ -7,17 +7,23 @@
 #        |___/|_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# Returns the current status of hyprsunset.
+# -----------------------------------------------------------------------------------------------------------------------------------------
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
-MANUAL_FILTER_ON=$(state_get ".hyprsunset.filter_on")
-AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
+FILTER_STATE=$(state_get ".hyprsunset.state")
 
-if [[ "$MANUAL_FILTER_ON" == "true" ]]; then
+case $FILTER_STATE in
+  on)
     echo '{"class": "filter_on"}'
-else
-    if [[ "$AUTOTIMER_STATE" == "true" ]]; then
-        echo '{"class": "auto_timer"}'
-    else
-        echo '{"class": "filter_off"}'
-    fi
-fi
+    ;;
+  off)
+    echo '{"class": "filter_off"}'
+    ;;
+  auto)
+    echo '{"class": "auto_timer"}'
+    ;;
+  *)
+    echo '{"class": "error"}'
+    ;;
+esac

@@ -39,6 +39,18 @@
   margin: 0.2rem 0rem;
 }
 
+.blue-light-filter-label {
+  font-size: 1.1rem;
+  margin: 0rem;
+}
+
+.separator {
+  min-height: 0.1rem;
+  background-color: $accent-color;
+  // This is jank but it allows the separator to overflow on the label to the left.
+  margin: 1.8rem 0rem 1.8rem -3rem;
+}
+
 .control-button-active {
   background-color: $accent-color;
   color: #ffffff;
@@ -51,7 +63,7 @@
 
   padding: 0.7rem;
   margin: 0.3rem 0rem;
-  min-width: 7rem;
+  min-width: 5rem;
 
   &:hover {
     background-color: $highlight-color;
@@ -74,7 +86,7 @@
 
   padding: 0.7rem;
   margin: 0.3rem 0rem;
-  min-width: 7rem;
+  min-width: 5rem;
 
   &:hover {
     background-color: #505050;
@@ -115,52 +127,30 @@
   }
 }
 
-.hyprsunset-slider-hot {
-  min-height: 1rem;
-  min-width: 12rem;
-  margin-right: 0.5rem;
-
+.hot {
   trough {
     background-color: #d43f35;
-    min-height: 0.3rem;
-    border-radius: 1rem;
   }
 
   highlight {
     background-color: #404040;
-    border-radius: 1rem;
   }
 
   slider {
     background-color: #d43f35;
-    border-radius: 50%;
-    min-height: 1rem;
-    min-width: 1rem;
-    margin: -0.3rem 0rem -0.3rem 0rem;
   }
 }
 
-.hyprsunset-slider-cold {
-  min-height: 1rem;
-  min-width: 12rem;
-  margin-right: 0.5rem;
-
+.cold {
   trough {
     background-color: #404040;
-    min-height: 0.3rem;
-    border-radius: 1rem;
   }
 
   highlight {
     background-color: #4094ed;
-    border-radius: 1rem;
   }
 
   slider {
     background-color: #4094ed;
-    border-radius: 50%;
-    min-height: 1rem;
-    min-width: 1rem;
-    margin: -0.3rem 0rem -0.3rem 0rem;
   }
 }

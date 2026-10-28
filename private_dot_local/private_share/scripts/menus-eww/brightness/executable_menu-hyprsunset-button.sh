@@ -9,18 +9,16 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
+FILTER_STATE=$(state_get ".hyprsunset.state")
 
-AUTOTIMER_STATE=$(state_get ".hyprsunset.auto_timer")
-
-if $AUTOTIMER_STATE; then
-    # When turning off the auto timer, we restore the last known config.
-    # It is a bit redundant because manual hyprsunset should have priority.
-    state_set ".hyprsunset.auto_timer" "false"
-    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset.sh" restore
-    dunstify "Hyprsunset auto-timer off"
-elif ! $AUTOTIMER_STATE; then
-    # If we activate the auto timer, then the script is run once to catch up.
-    state_set ".hyprsunset.auto_timer" "true"
+if [[ $1 == "on" ]] && [[ $FILTER_STATE != "on" ]]; then
+    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-switch.sh"
+elif [[ $1 == "auto" ]] && [[ $FILTER_STATE != "auto" ]]; then
+    state_set ".hyprsunset.state" "auto"
     "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
-    dunstify "Hyprsunset auto-timer on"
+elif [[ $1 == "off" ]] && [[ $FILTER_STATE != "off" ]]; then
+    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-switch.sh"
 fi
+
+# Help change waybar idicator faster.
+pkill -RTMIN+8 waybar
