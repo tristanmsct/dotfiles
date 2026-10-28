@@ -46,14 +46,19 @@ wallust run "$WALLPAPER" --skip-sequences
 # ---------------------------------------------------------------------------------------
 
 BORDER_MAIN=$(state_get ".theme.border_main")
-BORDER_DECORATIONS=$(state_get ".theme.border_decorations")
+BORDER_MENUS=$(state_get ".theme.border_menus")
+BORDER_WAYBAR=$(state_get ".theme.border_menus")
 
 if [ "$BORDER_MAIN" = "false" ]; then
-    "$XDG_CONFIG_HOME/eww/themes/scripts/switch-borders.sh" true
+    "$DESKTOP_SCRIPTS/menus-eww/themes/switch-borders.sh" true
 fi
 
-if [ "$BORDER_DECORATIONS" = "false" ]; then
-    "$XDG_CONFIG_HOME/eww/themes/scripts/switch-borders-decorations.sh" true
+if [ "$BORDER_MENUS" = "false" ]; then
+    "$DESKTOP_SCRIPTS/menus-eww/themes/switch-borders-menus.sh" true
+fi
+
+if [ "$BORDER_WAYBAR" = "false" ]; then
+    "$DESKTOP_SCRIPTS/menus-eww/themes/switch-borders-waybar.sh" true
 fi
 
 # ---------------------------------------------------------------------------------------

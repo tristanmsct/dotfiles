@@ -285,7 +285,7 @@
     "custom/cava_input": {
         "format": " <span size='small'>󱡫</span> ",
         "tooltip-format": "Switcher cava input source",
-        "on-click": "$DESKTOP_SCRIPTS/cava/cava-input-switcher.sh"
+        "on-click": "$DESKTOP_SCRIPTS/cava/input-switch.sh"
     },
 
     // Cava -----------------------------------------------------------------------------

@@ -22,7 +22,8 @@ cat > "$STATE_FILE" << 'EOF'
     },
     "mode": "dark",
     "border_main": true,
-    "border_decorations": true,
+    "border_menus": true,
+    "border_waybar": true,
     "saturation": {
       "enabled": false
     }

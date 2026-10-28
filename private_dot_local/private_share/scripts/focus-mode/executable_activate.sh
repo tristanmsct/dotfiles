@@ -18,6 +18,8 @@ if [ "$THEME_TYPE" = "light" ]; then
 fi
 
 if [ "$FOCUSMODE_ENABLED" = "true" ]; then
+    state_set ".focusmode.enabled" false
+
     # If focus mode is on, then we restore everything and disable it.
     logger -t focusmode -p user.info "[$script_name] Deactivating focus mode"
 
@@ -29,14 +31,13 @@ if [ "$FOCUSMODE_ENABLED" = "true" ]; then
     if [ "$#" -eq 0 ] || [ "$1" != "quiet" ]; then
         dunstify "Focus mode deactivated" "Decorations, blur, wallpaper, etc. enabled"
     fi
-
-    state_set ".focusmode.enabled" false
 else
+    state_set ".focusmode.enabled" true
+
     # If focus mode is off, then start it.
     logger -t focusmode -p user.info "[$script_name] Activating focus mode"
 
     hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
-    # hyprctl eval "hl.config({decoration = {blur = {enabled = false}}})"
     hyprctl eval "hl.config({decoration = {inactive_opacity = 1}})"
     hyprctl eval "hl.config({decoration = {rounding = 1}})"
     hyprctl eval "hl.config({general = {gaps_in = 0}})"
@@ -53,6 +54,4 @@ else
     if [ "$#" -eq 0 ] || [ "$1" != "quiet" ]; then
         dunstify "Focus mode activated" "Decorations, blur, wallpaper, etc. disabled"
     fi
-
-    state_set ".focusmode.enabled" true
 fi
