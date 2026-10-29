@@ -74,6 +74,7 @@ lst_repos_system+=("$XDG_DATA_HOME/ansible-archlinux")
 # The main hub for repos.
 base_repos="$HOME/Nextcloud/02-Projets/01-Repos"
 public_repos="$HOME/Nextcloud/02-Projets/02-Public"
+hyprland_plugin_repos="$XDG_DATA_HOME/hypr/plugins"
 aur_repos="$XDG_DATA_HOME/aur"
 
 # Add base repos
@@ -86,6 +87,12 @@ fi
 if [[ -d "$public_repos" ]]; then
     readarray -t public_dirs < <(ls -1d "$public_repos"/*/ 2>/dev/null)
     lst_repos_projects+=("${public_dirs[@]}")
+fi
+
+# Hyprland plugins
+if [[ -d "$base_repos" ]]; then
+    readarray -t base_dirs < <(ls -1d "$hyprland_plugin_repos"/*/ 2>/dev/null)
+    lst_hyprland_plugin_repos=("${base_dirs[@]}")
 fi
 
 # Other repos.
@@ -181,6 +188,13 @@ if [ $aur = "y" ]; then
                 echo -e "Package recipe ${ORANGE}update available${RESET}: $current -> $new"
             fi
         fi
+    done
+fi
+
+if [ $projects = "y" ]; then
+    subsection "Hyprland plugin repositories"
+    for repo in "${lst_hyprland_plugin_repos[@]}"; do
+        check-repo "$repo"
     done
 fi
 

@@ -22,18 +22,16 @@ hl.monitor({
 })
 
 -- Base split_monitor_workspaces plugin configuration
-local smw = hl.plugin.split_monitor_workspaces
-hl.config({
-    plugin = {
-        split_monitor_workspaces = {
-            count                        = 5,
-            keep_focused                 = 1,
-            enable_notifications         = 0,
-            enable_persistent_workspaces = 1,
-            enable_wrapping              = 1,
-            link_monitors                = 0,
-        },
-    },
+local data = os.getenv("XDG_DATA_HOME")
+package.path = package.path .. ";" .. data .. "/hypr/?.lua;" .. data .. "/hypr/?/init.lua"
+local smw = require("plugins.split-monitor-workspaces")
+
+smw.setup({
+    keep_focused                 = true,
+    enable_notifications         = false,
+    enable_persistent_workspaces = true,
+    enable_wrapping              = true,
+    link_monitors                = false
 })
 
 -- --------------------------------------------------------------------------------------
@@ -119,12 +117,10 @@ local function setup_workspaces()
             })
         end
 
-        -- Set monitor priority (first entry = lowest workspace numbers)
-        smw.monitor_priority({ "eDP-1", external.name })
-
-        -- Set max workspaces per monitor (call once per monitor)
-        smw.max_workspaces({ monitor = "eDP-1", max = 3 })
-        smw.max_workspaces({ monitor = external.name, max = 3 })
+        smw.setup({
+            monitor_priority = { "eDP-1", external.name },
+            max_workspaces = { ["eDP-1"] = 3, [external.name] = 3 }
+        })
 
         for _, ws in ipairs(ws_keys) do
             hl.bind("SUPER + " .. ws.key, function() return smw.workspace(ws.n) end, { description = "Go to workspace " .. ws.n })
@@ -136,7 +132,7 @@ local function setup_workspaces()
         end
     else
         -- laptop only: normal workspace switching
-        smw.max_workspaces({ monitor = "eDP-1", max = 4 })
+        smw.setup({max_workspaces = { ["eDP-1"] = 4 }})
 
         for _, ws in ipairs(ws_keys) do
             hl.bind("SUPER + " .. ws.key, hl.dsp.focus({ workspace = ws.n }), { description = "Go to workspace " .. ws.n })

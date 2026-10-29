@@ -27,13 +27,18 @@ hl.config({
             xray             = false,
             special          = true,
             popups           = true,
+            variant          = "ripple",
         },
 
         shadow = {
             enabled      = true,
             range        = 15,
-            render_power = 5,
+            render_power = 4,
             color        = "rgba(0,0,0,0.5)",
         },
+
+        wobble = {
+            enabled      = true,
+        }
     },
 })

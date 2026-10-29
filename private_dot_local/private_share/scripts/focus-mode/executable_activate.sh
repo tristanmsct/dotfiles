@@ -38,6 +38,8 @@ else
     logger -t focusmode -p user.info "[$script_name] Activating focus mode"
 
     hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
+    hyprctl eval "hl.config({decoration = {blur = {variant = 'kawase'}}})"
+    hyprctl eval "hl.config({decoration = {wobble = {enabled = false}}})"
     hyprctl eval "hl.config({decoration = {inactive_opacity = 1}})"
     hyprctl eval "hl.config({decoration = {rounding = 1}})"
     hyprctl eval "hl.config({general = {gaps_in = 0}})"

@@ -132,6 +132,7 @@ README.md
 .local/share/go
 .local/share/gunpoint
 .local/share/gvfs-metadata
+.local/share/hypr
 .local/share/hyprland
 .local/share/icons
 .local/share/jupyter
