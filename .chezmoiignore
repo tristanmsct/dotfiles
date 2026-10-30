@@ -34,6 +34,7 @@ README.md
 .config/docker
 .config/dunst/dunstrc
 .config/evolution
+.config/euro-office
 .config/eww/colors-eww.scss
 .config/glow
 .config/go
@@ -54,7 +55,6 @@ README.md
 .config/nmrs/theme
 .config/nvim/lazy-lock.json
 .config/npm
-.config/onlyoffice
 .config/pacseek
 .config/pdfarranger
 .config/pika-backup/history.json
@@ -122,6 +122,7 @@ README.md
 .local/share/docker
 .local/share/dotfiles
 .local/share/evolution
+.local/share/euro-office
 .local/share/fake_home/*
 !.local/share/fake_home/.copilot
 .local/share/flatpak
@@ -149,7 +150,6 @@ README.md
 .local/share/nvim
 .local/share/nwg-drawer
 .local/share/nwg-look
-.local/share/onlyoffice
 .local/share/org.localsend.localsend_app
 .local/share/papers
 .local/share/pki

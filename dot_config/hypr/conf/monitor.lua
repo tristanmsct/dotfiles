@@ -9,7 +9,11 @@
 -- --------------------------------------------------------------------------------------
 -- Base setup
 -- --------------------------------------------------------------------------------------
+local data = os.getenv("XDG_DATA_HOME")
 local e = hl.dsp.exec_cmd
+
+package.path = package.path .. ";" .. data .. "/hypr/?.lua;" .. data .. "/hypr/?/init.lua"
+local smw = require("plugins.split-monitor-workspaces")
 
 local move_all = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/move-all.lua")
 
@@ -22,10 +26,6 @@ hl.monitor({
 })
 
 -- Base split_monitor_workspaces plugin configuration
-local data = os.getenv("XDG_DATA_HOME")
-package.path = package.path .. ";" .. data .. "/hypr/?.lua;" .. data .. "/hypr/?/init.lua"
-local smw = require("plugins.split-monitor-workspaces")
-
 smw.setup({
     keep_focused                 = true,
     enable_notifications         = false,
