@@ -31,7 +31,7 @@ monitor_menu() {
 selected_setup="$(monitor_menu)"
 case "$selected_setup" in
     "$default")
-        hyprctl reload
+        hyprctl eval "hl.monitor({ output = 'eDP-1', disabled = false })"
         ;;
     "$external")
         # log_message "Manually triggering external only conf"

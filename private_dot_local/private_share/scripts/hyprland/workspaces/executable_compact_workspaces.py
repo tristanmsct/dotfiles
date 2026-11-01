@@ -42,9 +42,10 @@ def get_hyprctl_windows():
 
     lst_windows = []
     for client in clients_dict:
-        lst_windows.append(
-            Window(client["address"], client["workspace"]["id"])
-        )
+        if client["workspace"].get("type") != "special":
+            lst_windows.append(
+                Window(client["address"], client["workspace"].get("id"))
+            )
 
     # The idea is to have windows sorted by workspace id to be able to go through them from smallest to biggest id.
     lst_windows.sort(key=lambda elt: elt.workspace_id)

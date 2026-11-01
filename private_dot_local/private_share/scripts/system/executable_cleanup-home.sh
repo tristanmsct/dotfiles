@@ -28,3 +28,6 @@ fi
 rm -f "$XDG_DATA_HOME/Boosteroid.svg"
 rm -f "$XDG_DATA_HOME/applications/discord-1170028348756471908.desktop"
 sed -i -E "s|/home/tristan/.local/share/Boosteroid.svg|Boosteroid|" "$XDG_DATA_HOME/applications/Boosteroid.desktop"
+
+# This specific print statement conflict with hyprmod so it needs to be silenced.
+sed -i -E 's/^(\tprint\("\[split-monitor-workspaces\])/\t-- \1/' "$XDG_DATA_HOME/hypr/plugins/split-monitor-workspaces/lua/split-monitor-workspaces.lua"

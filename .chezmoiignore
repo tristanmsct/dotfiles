@@ -174,6 +174,7 @@ README.md
 !.local/share/VSCodium/user-data/
 !.local/share/VSCodium/user-data/User/
 !.local/share/VSCodium/user-data/User/settings.json
+!.local/share/VSCodium/user-data/User/keybindings.json
 .local/share/user-places.xbel
 .local/share/vulkan
 .local/share/watcher

@@ -6,32 +6,29 @@
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
-local smw = hl.plugin.split_monitor_workspaces
+local smw = require("plugins.split-monitor-workspaces")
 
 return function()
-   local win = hl.get_active_window()
-   if not win then return end
-   local workspaces = hl.get_workspaces()
-   local monitor = win.monitor
+    -- Script only works with a focused window.
+    local win = hl.get_active_window()
+    if not win then return end
 
-   local last = nil
-   for _, ws in ipairs(workspaces) do
-     if ws.monitor == monitor then
-        if not last or ws.id > last.id then last = ws end
-     end
-   end
+    -- Getting all workspaces (including on other monitors and special workspaces).
+    local workspaces = hl.get_workspaces()
 
-   local monitors = hl.get_monitors()
-   local has_external = false
-   for _, m in ipairs(monitors) do
-     if m.name ~= "eDP-1" then has_external = true end
-   end
+    local lst_ids = {}
+    for _, ws in ipairs(workspaces) do
+        if ws.monitor == win.monitor then table.insert(lst_ids, ws.id) end
+    end
 
-   if has_external then
-     local ws_per_monitor = 3
-     local relative_target = last.id - (win.monitor.id * ws_per_monitor)
-     smw.move_to_workspace_silent(relative_target)
-   else
-     hl.dispatch(hl.dsp.window.move({ workspace = last.id, follow = false }))
-   end
+    local last_workspace = math.max(table.unpack(lst_ids))
+
+    hl.dispatch(hl.dsp.exec_cmd("dunstify " .. last_workspace))
+
+    -- The distinction is important because with one monitor, we need to be able to go beyond the smw max monitor count
+    if #hl.get_monitors() == 1 then
+        hl.dispatch(hl.dsp.window.move({ workspace = last_workspace, follow = false }))
+    else
+        hl.dispatch(smw.move_to_workspace_silent(last_workspace))
+    end
 end

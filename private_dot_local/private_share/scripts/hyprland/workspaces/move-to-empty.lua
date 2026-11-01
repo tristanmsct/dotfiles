@@ -7,36 +7,29 @@
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
-local smw = hl.plugin.split_monitor_workspaces
+local smw = require("plugins.split-monitor-workspaces")
 
 return function()
+    -- Script only works with a focused window.
     local win = hl.get_active_window()
     if not win then return end
+
+    -- Getting all workspaces (including on other monitors and special workspaces).
     local workspaces = hl.get_workspaces()
-    local monitor = win.monitor
 
-    local empty, last = nil, nil
-
+    local lst_empty_ids = {}
+    local lst_ids = {}
     for _, ws in ipairs(workspaces) do
-        if ws.monitor == monitor then
-            if not last or ws.id > last.id then last = ws end
-            if ws.windows == 0 and (not empty or ws.id < empty.id) then empty = ws end
-        end
+        if ws.monitor == win.monitor and ws.windows == 0 then table.insert(lst_empty_ids, ws.id) end
+        if ws.monitor == win.monitor then table.insert(lst_ids, ws.id) end
     end
 
-    local target = empty and empty.id or last.id
+    local next_empty = #lst_empty_ids > 0 and math.min(table.unpack(lst_empty_ids)) or math.max(table.unpack(lst_ids))
 
-    local monitors = hl.get_monitors()
-    local has_external = false
-    for _, m in ipairs(monitors) do
-        if m.name ~= "eDP-1" then has_external = true end
-    end
-
-    if has_external then
-        local ws_per_monitor = 3
-        local relative_target = target - (win.monitor.id * ws_per_monitor)
-        smw.move_to_workspace_silent(relative_target)
+    -- The distinction is important because with one monitor, we need to be able to go beyond the smw max monitor count
+    if #hl.get_monitors() == 1 then
+        hl.dispatch(hl.dsp.window.move({ workspace = next_empty, follow = false }))
     else
-        hl.dispatch(hl.dsp.window.move({ workspace = target, follow = false }))
+        hl.dispatch(smw.move_to_workspace_silent(next_empty))
     end
 end

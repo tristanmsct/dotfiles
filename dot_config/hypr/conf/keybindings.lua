@@ -18,8 +18,10 @@ local e = hl.dsp.exec_cmd
 -- --------------------------------------------------------------------------------------
 local toggle_allfloat = dofile(SCRIPTS .. "/hyprland/workspaces/all-float.lua")
 local toggle_float_window = dofile(SCRIPTS .. "/hyprland/workspaces/float-window.lua")
-local move_to_empty = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-empty.lua")
 local move_to_end = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-end.lua")
+local move_to_empty = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-empty.lua")
+local move_all = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/move-all.lua")
+local change_monitor = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/change-monitor.lua")
 
 -- --------------------------------------------------------------------------------------
 -- Applications
@@ -129,9 +131,49 @@ hl.bind("SUPER + SHIFT + V", e("gtk-launch vimkeybindings.desktop"), { descripti
 -- --------------------------------------------------------------------------------------
 -- Workspaces
 -- --------------------------------------------------------------------------------------
-hl.bind("SUPER + Z", move_to_empty, { description = "Send window to next empty workspace" })
+local smw = require("plugins.split-monitor-workspaces")
+
+local ws_keys = {
+    { key = "ampersand",  n = 1 },
+    { key = "eacute",     n = 2 },
+    { key = "quotedbl",   n = 3 },
+    { key = "apostrophe", n = 4 },
+    { key = "parenleft",  n = 5 },
+    { key = "minus",      n = 6 },
+    { key = "egrave",     n = 7 },
+    { key = "underscore", n = 8 },
+    { key = "ccedilla",   n = 9 },
+    { key = "agrave",     n = 10 },
+}
+
+hl.unbind("SUPER + D")
+for _, ws in ipairs(ws_keys) do
+    hl.unbind("SUPER + " .. ws.key)
+    hl.unbind("SUPER + SHIFT + " .. ws.key)
+    hl.unbind("SUPER + CTRL + " .. ws.key)
+end
+
+-- Keep the normal hl.dsp.focus to go beyond the smw max workspace with only one monitor.
+if #hl.get_monitors() == 1 then
+    for _, ws in ipairs(ws_keys) do
+        hl.bind("SUPER + " .. ws.key, hl.dsp.focus({ workspace = ws.n }), { description = "Go to workspace " .. ws.n })
+        hl.bind("SUPER + SHIFT + " .. ws.key, hl.dsp.window.move({ workspace = ws.n }), { description = "Move active window to workspace " .. ws.n })
+        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
+    end
+else
+    hl.bind("SUPER + D", function() return change_monitor() end, { description = "Move active window to the next monitor" })
+    for _, ws in ipairs(ws_keys) do
+        hl.bind("SUPER + " .. ws.key, smw.workspace(ws.n), { description = "Go to workspace " .. ws.n })
+        hl.bind("SUPER + SHIFT + " .. ws.key, smw.move_to_workspace(ws.n), { description = "Move active window to workspace " .. ws.n })
+        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
+    end
+end
+
+hl.bind("SUPER + Z", smw.move_to_workspace_silent("empty"), { description = "Go to workspace empty" })
 hl.bind("SUPER + SHIFT + Z", move_to_end, { description = "Send window to last workspace" })
 hl.bind("SUPER + CTRL + Z", e("python " .. SCRIPTS .. "/hyprland/workspaces/compact_workspaces.py"), { description = "Compact workspaces" })
+
+hl.bind("SUPER + R", smw.grab_rogue_windows())
 
 hl.bind("SUPER + Tab", hl.dsp.focus({ workspace = "m+1" }), { description = "Next workspace" })
 hl.bind("SUPER + SHIFT + Tab", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace" })
@@ -164,6 +206,17 @@ hl.bind("SUPER + SHIFT + CTRL + H", function ()
     hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
     hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
 end, { description = "Move window to minimized workspace" })
+
+-- Lid switch → hyprlock
+hl.bind("switch:on:Lid Switch", function()
+    local monitors = hl.get_monitors()
+    for _, mon in ipairs(monitors) do
+        if mon.name == "eDP-1" then
+            hl.dispatch(hl.dsp.exec_cmd("hyprlock"))
+            return
+        end
+    end
+end, { locked = true })
 
 -- --------------------------------------------------------------------------------------
 -- Fn keys
