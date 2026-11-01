@@ -128,7 +128,7 @@ Comment[ug]=ئوخشاش بولمىغان تۈردىكى ھۆججەتنى تېز
 Comment=Provide a facility for quickly viewing different kinds of files
 Exec=sushi %u
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-Icon=org.gnome.NautilusPreviewer
+Icon=org.gnome.Evince-previewer
 NoDisplay=true
 Terminal=false
 Type=Application

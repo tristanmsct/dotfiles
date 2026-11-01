@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Adwaita Bluetooth
+Name=Bluetooth
 GenericName=Bluetooth Manager
 Comment=Manage Bluetooth devices and connections
 Exec=adw-bluetooth

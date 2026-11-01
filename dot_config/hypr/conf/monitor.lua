@@ -11,7 +11,7 @@
 -- --------------------------------------------------------------------------------------
 local smw = require("plugins.split-monitor-workspaces")
 
--- Base split_monitor_workspaces plugin configuration
+-- Base split_monitor_workspaces plugin configuration.
 smw.setup({
     keep_focused                 = true,
     enable_notifications         = false,
@@ -38,8 +38,10 @@ end
 local function read_last_profile()
     local path = profile_path()
     if not path then return nil end
+
     local f = io.open(path, "r")
     if not f then return nil end
+
     local content = f:read("*l")
     f:close()
     return content
@@ -48,6 +50,7 @@ end
 local function write_last_profile(profile)
     local path = profile_path()
     if not path then return end
+
     local f = io.open(path, "w")
     if f then
         f:write(profile)
@@ -70,7 +73,7 @@ local function detect_profile()
             has_external = true
         end
 
-        if m.description and m.description:find("Acer Technologies QG241Y", 1, true) then
+        if m.description and m.description == "Acer Technologies QG241Y TLAEE001854A" then
             has_home_monitor = true
         end
     end
@@ -100,7 +103,7 @@ local function setup_laptop_mode()
 
     smw.setup({
         monitor_priority = { "eDP-1" },
-        max_workspaces = { ["eDP-1"] = 4 }
+        max_workspaces =   { ["eDP-1"] = 4 }
     })
 end
 
@@ -120,7 +123,7 @@ local function setup_home_dock_mode()
 
     smw.setup({
         monitor_priority = { "eDP-1", home_monitor },
-        max_workspaces = { ["eDP-1"] = 3, [home_monitor] = 3 }
+        max_workspaces =   { ["eDP-1"] = 3, [home_monitor] = 3 }
     })
 end
 
@@ -134,7 +137,7 @@ local function setup_external_only_mode()
         disabled = true,
     })
 
-    -- apply the same safe default to all external monitors
+    -- apply the same safe default to all external monitors.
     for _, mon in ipairs(monitors) do
         if mon.name ~= "eDP-1" then
             table.insert(priority, mon.name)
@@ -157,17 +160,15 @@ end
 local function setup_default_multi_monitor_mode()
     local monitors = hl.get_monitors()
     local priority = { "eDP-1" }
-    local max_workspaces = {
-        ["eDP-1"] = 3,
-    }
+    local max_workspaces = { ["eDP-1"] = 3 }
 
-    -- keep the internal monitor in its usual place
+    -- keep the internal monitor in its usual place.
     hl.monitor({
         output   = "eDP-1",
         scale    = 1,
     })
 
-    -- apply the same safe default to all external monitors
+    -- apply the same safe default to all external monitors.
     for _, mon in ipairs(monitors) do
         if mon.name ~= "eDP-1" then
             table.insert(priority, mon.name)
@@ -181,7 +182,7 @@ local function setup_default_multi_monitor_mode()
 
     smw.setup({
         monitor_priority = priority,
-        max_workspaces = max_workspaces
+        max_workspaces   = max_workspaces
     })
 end
 
@@ -216,4 +217,9 @@ hl.on("monitor.layout_changed", function()
         setup_workspaces()
         hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
     end
+end)
+
+-- So new monitor get the new wallpaper. No need to do it on remove.
+hl.on("monitor.added", function()
+    hl.dispatch(hl.dsp.exec_cmd("waypaper --restore"))
 end)

@@ -86,7 +86,7 @@ Name=Run Software
 TryExec=nautilus-autorun-software
 Exec=nautilus-autorun-software %u
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-Icon=application-x-executable
+Icon=terminal
 NoDisplay=true
 Terminal=false
 StartupNotify=true

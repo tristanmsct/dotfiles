@@ -36,7 +36,6 @@ show_help() {
 LONGOPTS="help,system,aur,projects"
 OPTIONS="hsap"
 
-# TODO : autocomplete
 PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name" -- "$@") || exit 2
 eval set -- "$PARSED"
 

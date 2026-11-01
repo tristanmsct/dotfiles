@@ -9,4 +9,4 @@ Terminal=false
 Categories=Settings;DesktopSettings;GTK;
 Keywords=hyprland;compositor;wayland;configuration;monitors;keybinds;
 StartupNotify=true
-StartupWMClass=io.github.bluemancz.hyprmod
+#StartupWMClass=io.github.bluemancz.hyprmod

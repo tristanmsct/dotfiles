@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=nmrs
+Name=Network Manager
 Comment=Wayland-native NetworkManager GUI
 Exec=nmrs
 Icon=network-wireless

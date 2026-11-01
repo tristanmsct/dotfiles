@@ -19,7 +19,6 @@ end)
 local data = os.getenv("XDG_DATA_HOME")
 local configdir = os.getenv("XDG_CONFIG_HOME")
 package.path = package.path .. ";" .. data .. "/hypr/?.lua;" .. data .. "/hypr/?/init.lua"
--- package.path = package.path .. ";" .. configdir .. "/hypr/?.lua;" .. configdir .. "/hypr/?/init.lua"
 
 -- --------------------------------------------------------------------------------------
 -- Monitor
