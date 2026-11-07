@@ -16,7 +16,7 @@ script_name=$(basename "$0")
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 FILTER_STATE=$(state_get ".hyprsunset.state")
-CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-calendar.json
+CALENDAR_FILE=$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-calendar.json
 
 # Exiting script if the hyprsunset auto timer is not on.
 if [[ $FILTER_STATE != "auto" ]]; then

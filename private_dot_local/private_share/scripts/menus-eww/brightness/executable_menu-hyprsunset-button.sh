@@ -12,12 +12,12 @@ source "$DESKTOP_SCRIPTS/system/state-utils"
 FILTER_STATE=$(state_get ".hyprsunset.state")
 
 if [[ $1 == "on" ]] && [[ $FILTER_STATE != "on" ]]; then
-    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-switch.sh"
+    "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-switch.sh"
 elif [[ $1 == "auto" ]] && [[ $FILTER_STATE != "auto" ]]; then
     state_set ".hyprsunset.state" "auto"
-    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
+    "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-timer.sh"
 elif [[ $1 == "off" ]] && [[ $FILTER_STATE != "off" ]]; then
-    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-switch.sh"
+    "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-switch.sh"
 fi
 
 # Help change waybar idicator faster.

@@ -29,7 +29,7 @@ off)
     logger -t hyprsunset -p user.info "[$script_name] Restoring off state"
     ;;
 auto)
-    "$DESKTOP_SCRIPTS/hyprland/hyprsunset/hyprsunset-timer.sh"
+    "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-timer.sh"
     logger -t hyprsunset -p user.info "[$script_name] Restoring auto hyprsunset"
     ;;
 *)
