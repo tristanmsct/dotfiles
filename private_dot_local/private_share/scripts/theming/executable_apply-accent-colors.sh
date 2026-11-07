@@ -51,10 +51,7 @@ apply_accent_colors () {
     sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css"
 
     # NMRS
-    sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
-    sed -i -E "s/(highlight-color @color-br-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
-    sed -i -E "s/(background-theme )rgba\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}, 0\.4\)/\1$BG_COLOR/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
-    sed -i -E "s/(foreground-theme )#.{6}/\1$TXT_COLOR/" "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css"
+    sed -i -E "s/(accent = \")#.{6}\"/\1$ACCENT_COLOR\"/" "$XDG_CONFIG_HOME/nmrs/config.toml"
 
     # Waybar
     sed -i -E "s/(accent-color @color-)[0-9]{1,2}/\1$COLOR_NB/" "$XDG_CONFIG_HOME/waybar/colors-waybar.css"

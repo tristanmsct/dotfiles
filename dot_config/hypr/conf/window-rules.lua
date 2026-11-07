@@ -92,7 +92,7 @@ hl.window_rule({
     match = { class = "org.gnome.Weather" },
     float = true,
     size  = "monitor_w*0.55 monitor_h*0.65",
-    move  = "(monitor_w/4)-window_w/2 monitor_h*0.15",
+    move  = "(monitor_w/2)-window_w/2 monitor_h*0.15",
 })
 
 -- Smile emoji picker
@@ -134,9 +134,9 @@ hl.window_rule({
 -- Network Manager RS
 hl.window_rule({
     name  = "network-manager-gui",
-    match = { class = "^(org.nmrs.ui)$" },
+    match = { class = "^(nmrs)$" },
     float  = true,
-    size   = "500 650",
+    size   = "850 650",
     center = true,
 })
 
@@ -169,11 +169,21 @@ hl.window_rule({
 
 -- Steam payment page
 hl.window_rule({
-    name  = "steam",
+    name  = "steam-payment",
     match = { initial_title = "^SteamWebhelper$" },
     float  = true,
     size   = "500 650",
     center = true,
+})
+
+-- Steam preference windows
+hl.window_rule({
+    name = "steam-game-prefs-float",
+    match = {
+        class = "^steam$",
+        initial_title = "negative:^Steam$",
+    },
+    float = true,
 })
 
 -- Bitwarden (Brave PWA)
@@ -266,11 +276,3 @@ hl.window_rule({
 hl.window_rule({ match = { initial_title = "^(Select Folder)$|^(Select File)$|^(Open Folder)$|^(Open File)$|^(Save File)$|^(Save As)$" }, tag = "+filepicker" })
 hl.window_rule({ match = { title       = "^(Select Folder)$|^(Select File)$|^(Open Folder)$|^(Open File)$|^(Save File)$|^(Save As)$" }, tag = "+filepicker" })
 hl.window_rule({ match = { class       = "^(xdg-desktop-portal-gtk)$" }, tag = "+filepicker" })
-
--- OnlyOffice save dialog
-hl.window_rule({
-    name  = "onlyoffice-save",
-    match = { initial_class = "DesktopEditors" },
-    float  = true,
-    center = true,
-})

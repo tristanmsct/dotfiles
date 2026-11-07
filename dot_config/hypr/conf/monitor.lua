@@ -98,7 +98,9 @@ local function setup_laptop_mode()
         output   = "eDP-1",
         mode     = "preferred",
         position = "auto",
-        scale    = 1
+        scale    = 1,
+        bitdepth = 10,
+        supports_wide_color = -1,
     })
 
     smw.setup({
@@ -114,11 +116,13 @@ local function setup_home_dock_mode()
         mode     = "preferred",
         position = "0x0",
         scale    = 1,
+        supports_wide_color = -1,
     })
     hl.monitor({
         output   = home_monitor,
         mode     = "1920x1080@120Hz",
         position = "-1920x-600",
+        supports_wide_color = -1,
     })
 
     smw.setup({
@@ -166,6 +170,7 @@ local function setup_default_multi_monitor_mode()
     hl.monitor({
         output   = "eDP-1",
         scale    = 1,
+        supports_wide_color = -1,
     })
 
     -- apply the same safe default to all external monitors.
@@ -176,6 +181,7 @@ local function setup_default_multi_monitor_mode()
 
             hl.monitor({
                 output   = mon.name,
+                supports_wide_color = -1,
             })
         end
     end

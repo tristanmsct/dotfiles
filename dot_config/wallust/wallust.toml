@@ -48,7 +48,6 @@ waypaper = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/waypaper/c
 wlogout = { template = 'colors-wlogout.css', target = "$XDG_CONFIG_HOME/wlogout/colors-wlogout.css" }
 nwg_panel = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/nwg-panel/colors-nwg.css" }
 nwg_drawer = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/nwg-drawer/colors-nwg.css" }
-nmrs = { template = 'colors-base.css', target = "$XDG_CONFIG_HOME/nmrs/colors-nmrs.css" }
 rofi = { template = 'colors-rofi.rasi', target = "$XDG_CONFIG_HOME/rofi/colors-rofi.rasi" }
 kitty = { template = 'colors-kitty.conf', target = "$XDG_CONFIG_HOME/kitty/colors-kitty.conf" }
 qml = { template = 'Colors.qml', target = "$XDG_CONFIG_HOME/quickshell/Colors.qml" }

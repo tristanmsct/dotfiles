@@ -16,12 +16,10 @@ local e = hl.dsp.exec_cmd
 -- --------------------------------------------------------------------------------------
 -- Importing lua functions
 -- --------------------------------------------------------------------------------------
-local toggle_allfloat = dofile(SCRIPTS .. "/hyprland/workspaces/all-float.lua")
-local toggle_float_window = dofile(SCRIPTS .. "/hyprland/workspaces/float-window.lua")
-local move_to_end = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-end.lua")
-local move_to_empty = dofile(SCRIPTS .. "/hyprland/workspaces/move-to-empty.lua")
-local move_all = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/move-all.lua")
-local change_monitor = dofile(os.getenv("DESKTOP_SCRIPTS") .. "/hyprland/workspaces/change-monitor.lua")
+local minimize = require("scripts/minimize")
+local float = require("scripts/float")
+local scratchpad = require("scripts/scratchpads")
+local move_windows = require("scripts/move-windows")
 
 -- --------------------------------------------------------------------------------------
 -- Applications
@@ -46,8 +44,8 @@ hl.bind("SUPER + M", e("gapplication launch org.gnome.Weather"), { description =
 -- --------------------------------------------------------------------------------------
 hl.bind("SUPER + Q", hl.dsp.window.close(), { description = "Kill active window" })
 hl.bind("SUPER + F", hl.dsp.window.fullscreen(), { description = "Fullscreen active window" })
-hl.bind("SUPER + T", toggle_float_window, { description = "Toggle floating" })
-hl.bind("SUPER + SHIFT + T", toggle_allfloat, { description = "Float all window in a workspace"})
+hl.bind("SUPER + T", float.float_window, { description = "Toggle floating" })
+hl.bind("SUPER + SHIFT + T", float.all_float, { description = "Float all window in a workspace"})
 hl.bind("SUPER + left", hl.dsp.focus({ direction = "l" }), { description = "Move focus left" })
 hl.bind("SUPER + right", hl.dsp.focus({ direction = "r" }), { description = "Move focus right" })
 hl.bind("SUPER + up", hl.dsp.focus({ direction = "u" }), { description = "Move focus up" })
@@ -80,7 +78,7 @@ hl.bind("SUPER + L", e("hyprlock --grace 3"), { description = "Lock screen" })
 -- hl.bind("XF86PowerOff", e("pkill wlogout || wlogout -b 2"), { description = "Open logout menu" }, { locked = true })
 hl.bind("SUPER + CTRL + Q", e("pkill wlogout || wlogout -b 2"), { description = "Open logout menu" })
 
-hl.bind("SUPER + PRINT", e(SCRIPTS .. "/menus-rofi/screenshot.sh"), { description = "Take a screenshot" })
+hl.bind("PRINT", e(SCRIPTS .. "/menus-rofi/screenshot.sh"), { description = "Take a screenshot" })
 hl.bind("SUPER + CTRL + S", e(SCRIPTS .. "/menus-rofi/screenshot.sh"), { description = "Take a screenshot" })
 hl.bind("SUPER + SHIFT + PRINT", e(SCRIPTS .. "/menus-rofi/screen-record.sh"), { description = "Start screen recording" })
 hl.bind("SUPER + SHIFT + CTRL + S", e(SCRIPTS .. "/menus-rofi/screen-record.sh"), { description = "Start screen recording" })
@@ -96,7 +94,7 @@ hl.bind("SUPER + CTRL + G", e(SCRIPTS .. "/focus-mode/activate.sh"), { descripti
 hl.bind("SUPER + SHIFT + G", e("rofi -disable-history -modi games -show games -theme config-games"), { description = "Open game launcher" })
 hl.bind("SUPER + ALT + G", e(SCRIPTS .. "/focus-mode/btop-overlay.sh"), { description = "Display btop overlay" })
 
-hl.bind("SUPER + Y", e(SCRIPTS .. "/hyprland/hyprsunset/hyprsunset-switch.sh"), { description = "Toggle Hyprsunset" })
+hl.bind("SUPER + Y", e(SCRIPTS .. "/hyprsunset/hyprsunset-switch.sh"), { description = "Toggle Hyprsunset" })
 
 hl.bind("SUPER + P", e(SCRIPTS .. "/menus-rofi/monitor-menu.sh"), { description = "Monitor configuration menu" })
 hl.bind("SUPER + CTRL + F", e(SCRIPTS .. "/media/audio-helper.sh"), { description = "Fix audio device" })
@@ -158,20 +156,20 @@ if #hl.get_monitors() == 1 then
     for _, ws in ipairs(ws_keys) do
         hl.bind("SUPER + " .. ws.key, hl.dsp.focus({ workspace = ws.n }), { description = "Go to workspace " .. ws.n })
         hl.bind("SUPER + SHIFT + " .. ws.key, hl.dsp.window.move({ workspace = ws.n }), { description = "Move active window to workspace " .. ws.n })
-        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
+        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_windows.move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
     end
 else
-    hl.bind("SUPER + D", function() return change_monitor() end, { description = "Move active window to the next monitor" })
+    hl.bind("SUPER + D", move_windows.switch_monitor, { description = "Move active window to the next monitor" })
     for _, ws in ipairs(ws_keys) do
         hl.bind("SUPER + " .. ws.key, smw.workspace(ws.n), { description = "Go to workspace " .. ws.n })
         hl.bind("SUPER + SHIFT + " .. ws.key, smw.move_to_workspace(ws.n), { description = "Move active window to workspace " .. ws.n })
-        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
+        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_windows.move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
     end
 end
 
 hl.bind("SUPER + Z", smw.move_to_workspace_silent("empty"), { description = "Go to workspace empty" })
-hl.bind("SUPER + SHIFT + Z", move_to_end, { description = "Send window to last workspace" })
-hl.bind("SUPER + CTRL + Z", e("python " .. SCRIPTS .. "/hyprland/workspaces/compact_workspaces.py"), { description = "Compact workspaces" })
+hl.bind("SUPER + SHIFT + Z", move_windows.move_to_end, { description = "Send window to last workspace" })
+hl.bind("SUPER + CTRL + Z", move_windows.compact_workspaces, { description = "Compact workspaces" })
 
 hl.bind("SUPER + R", smw.grab_rogue_windows())
 
@@ -181,31 +179,11 @@ hl.bind("SUPER + mouse_up", hl.dsp.focus({ workspace = "m+1" }), { description =
 hl.bind("SUPER + mouse_down", hl.dsp.focus({ workspace = "m-1" }), { description = "Previous workspace", mouse = true })
 hl.bind("SUPER + CTRL + down", hl.dsp.focus({ workspace = "empty" }), { description = "Next empty workspace" })
 
--- Toggle the special workspace visibility.
+-- Minimized workspace
+hl.bind("SUPER + H", minimize.swap_minimized, { description = "Toggle window minimized state" })
 hl.bind("SUPER + SHIFT + H", hl.dsp.workspace.toggle_special("minimized"), { description = "Open minimized workspace" })
-
--- Put a single window in a minimized state and get it back.
-hl.bind("SUPER + H", function ()
-    if hl.get_workspace("special:minimized") then
-        hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
-        hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
-    else
-        hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
-        hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
-    end
-end, { description = "Toggle window minimized state" })
-
--- Move focused window into it.
-hl.bind("SUPER + CTRL + H", function ()
-    hl.dispatch(hl.dsp.window.tag({ tag = "minimized", window = hl.get_active_window() }))
-    hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized", follow = false }))
-end, { description = "Move window to minimized workspace" })
-
--- Get a window back from the minimized workspace.
-hl.bind("SUPER + SHIFT + CTRL + H", function ()
-    hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = "tag:minimized" }))
-    hl.dispatch(hl.dsp.window.clear_tags({ window = "tag:minimized" }))
-end, { description = "Move window to minimized workspace" })
+hl.bind("SUPER + CTRL + H", minimize.send_to_minimized, { description = "Move window to minimized workspace" })
+hl.bind("SUPER + SHIFT + CTRL + H", minimize.get_from_minimized, { description = "Get window from minimized workspace" })
 
 -- Lid switch → hyprlock
 hl.bind("switch:on:Lid Switch", function()
@@ -219,16 +197,23 @@ hl.bind("switch:on:Lid Switch", function()
 end, { locked = true })
 
 -- --------------------------------------------------------------------------------------
+-- Scratchpad test
+-- --------------------------------------------------------------------------------------
+hl.bind("SUPER + ALT + RETURN", scratchpad.scratch_kitty)
+
+-- --------------------------------------------------------------------------------------
 -- Fn keys
 -- --------------------------------------------------------------------------------------
--- In order using `xbindkeys --key` to find out :
+-- In order, using `xbindkeys --key` to find out :
 -- XF86Launch1, XF86MonBrightnessDown, XF86MonBrightnessUp, meta + P, ?, XF86AudioMute, XF86AudioLowerVolume, XF86AudioRaiseVolume, ?
 -- ?, ?, ?, ?, ?, XF86Lock
+-- hl.bind("XF86Launch1", e("hyprmod"), { description = "Open Hyprmod configuration manager" })
 hl.bind("XF86MonBrightnessDown", e("brightnessctl -q s 10%-"), { description = "Decrease brightness" })
 hl.bind("XF86MonBrightnessUp", e("brightnessctl -q s +10%"), { description = "Increase brightness" })
 hl.bind("XF86AudioMute", e("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { description = "Toggle mute" })
 hl.bind("XF86AudioLowerVolume", e("pactl set-sink-volume @DEFAULT_SINK@ -5%"), { description = "Decrease volume" })
 hl.bind("XF86AudioRaiseVolume", e("pactl set-sink-volume @DEFAULT_SINK@ +5%"), { description = "Increase volume" })
+hl.bind("code:248", e("hyprlock --grace 3"), { description = "Lock screen" })
 
 -- --------------------------------------------------------------------------------------
 -- Other

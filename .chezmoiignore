@@ -80,6 +80,7 @@ README.md
 .config/xsettingsd
 .config/yay
 .config/yazi
+.config/kedro
 .config/kwalletmanagerrc
 .config/kwalletrc
 .config/pavucontrol.ini

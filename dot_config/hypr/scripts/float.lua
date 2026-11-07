@@ -1,12 +1,14 @@
---        _ _        __ _             _
---   __ _| | |      / _| | ___   __ _| |_
---  / _` | | |_____| |_| |/ _ \ / _` | __|
--- | (_| | | |_____|  _| | (_) | (_| | |_
---  \__,_|_|_|     |_| |_|\___/ \__,_|\__|
+--   __ _             _
+--  / _| | ___   __ _| |_
+-- | |_| |/ _ \ / _` | __|
+-- |  _| | (_) | (_| | |_
+-- |_| |_|\___/ \__,_|\__|
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
-return function()
+local M = {}
+
+local function all_float()
     local workspace = hl.get_active_workspace()
     local windows = hl.get_windows()
 
@@ -35,9 +37,36 @@ return function()
                 local offset = float_count * 20
                 hl.dispatch(hl.dsp.window.float({ action = "on", window = w }))
                 hl.dispatch(hl.dsp.window.resize({ window = w, x = 1100, y = 700 }))
-                hl.dispatch(hl.dsp.window.move({ window = w, x = 100 + offset, y = 100 + offset }))
+                if #hl.get_monitors() == 1 then
+                    hl.dispatch(hl.dsp.window.move({ window = w, x = 100 + offset, y = 100 + offset }))
+                end
                 float_count = float_count + 1
             end
         end
     end
 end
+
+local function float_window()
+    local w = hl.get_active_window()
+
+    if w.floating then
+        hl.dispatch(hl.dsp.window.float({ action = "tile" }))
+    else
+        local windows = hl.get_windows()
+        local float_count = 0
+        for _, win in ipairs(windows) do
+            if win.floating then float_count = float_count + 1 end
+        end
+        local offset = float_count * 20
+        hl.dispatch(hl.dsp.window.float({ action = "on", window = w }))
+        hl.dispatch(hl.dsp.window.resize({ window = w, x = 1100, y = 700 }))
+        if #hl.get_monitors() == 1 then
+            hl.dispatch(hl.dsp.window.move({ window = w, x = 100 + offset, y = 100 + offset }))
+        end
+    end
+end
+
+M.all_float = all_float
+M.float_window = float_window
+
+return M
