@@ -193,6 +193,7 @@ hl.window_rule({
     float = true,
     size  = "500 700",
     move  = "1400 70",
+    pin   = true,
 })
 
 -- MPV / Celluloid

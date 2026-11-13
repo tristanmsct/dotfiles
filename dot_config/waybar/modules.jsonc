@@ -77,7 +77,8 @@
         "show-special": true,
         "format-icons": {
             "minimized": "",
-            "scratchpad-kitty": "󰄛"
+            "scratchpad-kitty": "󰄛",
+            "scratchpad-bitwarden": ""
         },
         "format": "{icon}"
     },
@@ -106,10 +107,10 @@
           "steam_app_2239150": "Thronefall",
           "steam_app_219740": "Don't Starve",
           "FTL.amd64": "FTL: Faster Than Light",
-          "org.nmrs.ui": "network-wireless",
-          "nmtui": "network-wireless",
           "networkpwd": "network-wireless",
           "gopen": "vscodium",
+          "brave-nngceckbapebfimnlniiiahkandclblb-Default": "bitwarden",
+          "brave-nngceckbapebfimnlniiiahkandclblb__popup_index.html-Default": "bitwarden",
           "brave-__home_tristan_.local_share_scripts_system_system-paths.html-Default": "cheatsheet",
           "brave-__home_tristan_.local_share_scripts_system_vim-keybindings.html-Default": "vimkeybindings"
         },
@@ -361,8 +362,11 @@
         "format-disabled": "", // an empty format will hide the module
         "format-connected": " {num_connections}",
         "on-click": "adw-bluetooth",
-        "tooltip-format": "  {device_alias} ",
+        "tooltip-format": "",
         "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-disabled": "bluetooth disabled",
+        "tooltip-format-off": "Bluetooth off",
+        "tooltip-format-no-controller": "No bluetooth controler",
         "tooltip-format-enumerate-connected": "  {device_alias}",
         "tooltip-format-enumerate-connected-battery": "  {device_alias}\t{device_battery_percentage}%"
     },

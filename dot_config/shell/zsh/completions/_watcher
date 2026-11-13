@@ -93,10 +93,10 @@ _watcher-pkglog() {
   options=(
     "delete:Delete a package info file"
     "diff:Display the difference between two states"
+    "get:Explore the package list"
     "--help:Display help message"
     "-h:Display help message"
     "notes:Manage notes for packages reasons"
-    "query:Query the package list"
     "save:Save the current state, used as a pacman hook"
   )
 
@@ -114,10 +114,10 @@ _watcher-pkglog-diff() {
   _describe "watcher pkglog diff commands" options
 }
 
-_watcher-pkglog-query() {
+_watcher-pkglog-get() {
   local -a options
   options=(
-      ":Query full data base"
+      ":Explore full data base"
       "--repo:Filter by repo"
       "-r:Filter by repo"
       "--name:Filter by name"
@@ -290,7 +290,7 @@ _watcher() {
                 pkglog/notes)   _watcher-pkglog-notes ;;
                 pkglog/diff)    _watcher-pkglog-diff ;;
                 sysinfo/notes)  _watcher-sysinfo-notes ;;
-                pkglog/query)   _watcher-pkglog-query ;;
+                pkglog/get)     _watcher-pkglog-get ;;
                 all/*)          _watcher-all ;;
             esac
             ;;
@@ -300,13 +300,13 @@ _watcher() {
                 xdg/notes/query-application)    _watcher-xdg-notes-query-application ;;
                 xdg/notes/query)                _watcher-xdg-notes-query ;;
                 sysinfo/notes/query)            _watcher-sysinfo-notes-query ;;
-                pkglog/query/*)                 _watcher-pkglog-query ;;
+                pkglog/get/*)                   _watcher-pkglog-get ;;
                 all/*/*)                        _watcher-all ;;
             esac
             ;;
         *)
             case "${words[2]}/${words[3]}" in
-                pkglog/query)   _watcher-pkglog-query ;;
+                pkglog/get)     _watcher-pkglog-get ;;
                 all/*)          _watcher-all ;;
             esac
             ;;

@@ -8,6 +8,9 @@
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
 local KITTY_TAG = "scratchpad-kitty"
+local BW_CLASS = "^brave%-nn.*%-Default$"
+local BW_CMD = "brave --app=chrome-extension://nngceckbapebfimnlniiiahkandclblb/popup/index.html"
+local BW_SPECIAL = "special:scratchpad-bitwarden"
 local M = {}
 
 local function has_tag(w, tag)
@@ -54,6 +57,33 @@ local function scratch_kitty()
   end
 end
 
+local function find_bitwarden()
+  for _, w in ipairs(hl.get_windows()) do
+    if tostring(w.class or ""):match(BW_CLASS) then return w end
+  end
+end
+
+local function scratch_bitwarden()
+  local w = find_bitwarden()
+
+  if not w then
+    hl.dispatch(hl.dsp.exec_cmd(BW_CMD))
+    return -- window async. Press key again once open.
+  end
+
+  if w.workspace and w.workspace.name == BW_SPECIAL then
+    -- bring back: move to current ws, pin, focus.
+    hl.dispatch(hl.dsp.window.move({ workspace = hl.get_active_workspace(), window = w }))
+    if not w.pinned then hl.dispatch(hl.dsp.window.pin({ window = w })) end
+    hl.dispatch(hl.dsp.focus({ window = w }))
+  else
+    -- hide: unpin, send to special.
+    if w.pinned then hl.dispatch(hl.dsp.window.pin({ window = w })) end
+    hl.dispatch(hl.dsp.window.move({ workspace = BW_SPECIAL, follow = false, window = w }))
+  end
+end
+
 M.scratch_kitty = scratch_kitty
+M.scratch_bitwarden = scratch_bitwarden
 
 return M

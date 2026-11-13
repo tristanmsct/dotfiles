@@ -53,6 +53,7 @@ hl.bind("SUPER + down", hl.dsp.focus({ direction = "d" }), { description = "Move
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { description = "Move window with mouse", mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { description = "Resize window with mouse", mouse = true })
 -- hl.bind("SUPER + ALT + G", hl.dsp.group.toggle(), { description = "Toggle window group" })
+hl.bind("SUPER + ALT + P", hl.dsp.window.pin(), { description = "Pin a window" })
 hl.bind("SUPER + J", hl.dsp.layout("orientationcycle left right"), { description = "Cycle master orientation" })
 hl.bind("SUPER + K", hl.dsp.layout("swapwithmaster"), { description = "Swap focused window with master" })
 
@@ -197,9 +198,10 @@ hl.bind("switch:on:Lid Switch", function()
 end, { locked = true })
 
 -- --------------------------------------------------------------------------------------
--- Scratchpad test
+-- Scratchpads
 -- --------------------------------------------------------------------------------------
 hl.bind("SUPER + ALT + RETURN", scratchpad.scratch_kitty)
+hl.bind("SUPER + ALT + B", scratchpad.scratch_bitwarden)
 
 -- --------------------------------------------------------------------------------------
 -- Fn keys

@@ -121,7 +121,7 @@ def get_explicit_dependents(lst_packages):
         # Display results.
         if final_set:
             print(f"List of {GREEN}explicitly installed packages{RESET} that require {repr_list_package}:")
-            for dep in final_set:
+            for dep in sorted(list(final_set)):
                 print(f"{GREEN}{dep}{RESET}")
         else:
             suffix = ("is not a dependency" if len(lst_packages) == 1 else "are not dependencies")
@@ -173,7 +173,7 @@ def get_potential_orphans(lst_packages, deep_search=False, quiet=False, only_uni
         ct_req = 0
         if not quiet:
             print(f"List of dependencies for {repr_list_package} ({GREEN}would be uninstalled{RESET} and {ORANGE}would remain{RESET}):")
-        for dependency in full_set_dependencies:
+        for dependency in sorted(list(full_set_dependencies)):
             lst_reqs_of_dependency = subprocess.run(
                 ["pactree", "-u", "-r", dependency],
                 stdout=subprocess.PIPE,

@@ -9,7 +9,8 @@
 
 # --- Base set up -----------------------------------------------------------------------
 
-source "$XDG_CONFIG_HOME/shell/lib/format"
+source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/lib/format"
+set -euo pipefail
 
 script_name=$(basename "$0")
 WATCHER_DIR="$HOME/.local/bin/watcher.d"
@@ -38,30 +39,24 @@ show_help() {
 
 # --- Running watcher -------------------------------------------------------------------
 
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        -h|--help|help)
-            show_help
-            ;;
-        open)
-            xdg-open $XDG_DATA_HOME/watcher > /dev/null 2>&1 & disown
-            exit 0
-            ;;
-        *)
-            # Dispatch to watcher plugin.
-            target="$WATCHER_DIR/$1"
+case "${1:-}" in
+    -h|--help|help|"")
+        show_help
+        ;;
+    open)
+        xdg-open "${XDG_DATA_HOME:-$HOME/.local/share}/watcher" > /dev/null 2>&1 & disown
+        exit 0
+        ;;
+    *)
+        # Dispatch to watcher plugin.
+        target="$WATCHER_DIR/$1"
 
-            if [[ -x "$target" ]]; then
-                shift
-                exec "$target" "$@"
-                exit 0
-            else
-        		echo "error: invalid command '$1'"
-                echo "run 'watcher --help' to see available commands"
-                exit 1
-            fi
-    esac
-done
-
-# If we reach here, no command or option was provided.
-show_help
+        if [[ -x "$target" ]]; then
+            shift
+            exec "$target" "$@"
+        else
+            echo "error: invalid command '$1'" >&2
+            echo "run 'watcher --help' to see available commands" >&2
+            exit 1
+        fi
+esac

@@ -30,7 +30,7 @@ show_help() {
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "diff" "Display the difference between two states"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "-h, --help" "Display this help message"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "notes" "Manage notes for packages reasons"
-    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "query" "Query the package list"
+    printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "get" "Explore the package list"
     printf "  ${BOLD}${COLOR_TERM_3}%-20s${RESET} %s\n" "save" "Save the current state, used as a pacman hook"
     exit 0
 }
@@ -109,20 +109,20 @@ delete_file () {
     done < <(get_file --multiple --header "Choose files to delete")
 }
 
-query_package_list () {
+get_package_list () {
     LONGOPTS="repo:,name:,version:,type:"
     OPTIONS="r:n:v:t:"
 
-    PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name query" -- "$@") || exit 2
+    PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "watcher $script_name get" -- "$@") || exit 2
     eval set -- "$PARSED"
 
-    QUERY=""
+    GET=""
     while true; do
         case "$1" in
-            -r|--repo) QUERY+="\$1==\"$2\"&&"; shift 2;;
-            -n|--name) QUERY+="\$2==\"$2\"&&"; shift 2;;
-            -v|--version) QUERY+="\$3==\"$2\"&&"; shift 2;;
-            -t|--type) QUERY+="\$4==\"$2\"&&"; shift 2;;
+            -r|--repo) GET+="\$1==\"$2\"&&"; shift 2;;
+            -n|--name) GET+="\$2==\"$2\"&&"; shift 2;;
+            -v|--version) GET+="\$3==\"$2\"&&"; shift 2;;
+            -t|--type) GET+="\$4==\"$2\"&&"; shift 2;;
             --) shift; break ;;
             *) echo "Error"; exit 1 ;;
         esac
@@ -135,8 +135,8 @@ query_package_list () {
     fi
     original_file=$(get_file --header "Choose a file")
 
-    if [[ ! -z "$QUERY" ]]; then
-        awk -F',' "${QUERY::-2}" "$original_file" |
+    if [[ ! -z "$GET" ]]; then
+        awk -F',' "${GET::-2}" "$original_file" |
             gum table -s',' --columns=Repository,Name,Version,Type --print
     else
         gum table -s',' --columns=Repository,Name,Version,Type --print -f "$original_file"
@@ -225,8 +225,8 @@ else
         save)
             save_package_list
             ;;
-        query)
-            query_package_list "$@"
+        get)
+            get_package_list "$@"
             ;;
         diff)
             show_diff "$@"

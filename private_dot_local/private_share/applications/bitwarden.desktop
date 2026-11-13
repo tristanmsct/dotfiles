@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Bitwarden
+Exec=brave --app=chrome-extension://nngceckbapebfimnlniiiahkandclblb/popup/index.html
+Icon=bitwarden
+Type=Application
+Categories=Utility;

@@ -114,6 +114,7 @@ README.md
 .local/share/ansible
 .local/share/ansible-archlinux
 .local/share/applications/mimeinfo.cache
+.local/share/applications/intent.cache
 .local/share/aur
 .local/share/brave-data
 .local/share/caddy

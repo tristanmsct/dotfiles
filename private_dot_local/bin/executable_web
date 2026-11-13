@@ -40,20 +40,17 @@ urls=(
 
 search_engine="$urls[$1]"
 
-# check whether the search engine is supported
-if [[ -z search_engine ]]; then
-    echo "Search engine '$1' not supported."
-    return 1
+# Default to brave.
+if [[ -z "$search_engine" ]]; then
+    search_engine="https://search.brave.com/search?q="
+else
+    shift
 fi
 
-shift
-
-# search or go to main page depending on number of arguments passed
+# search or go to main page depending on number of arguments passed.
 query=""
 while [ $# -gt 0 ]; do
     query+="+"$1
-
-    # Shift to the next argument
     shift
 done
 url="$search_engine$query"

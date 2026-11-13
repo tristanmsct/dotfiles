@@ -6,14 +6,15 @@ _jaccuse() {
       2)
         local -a options
         options=(
+          ":List all dependencies for target package"
           "-c:Get a dependency chain"
           "--chain:Get a dependency chain"
           "--deep:Deep search"
           "-d:Deep search"
           "--quiet:Quiet mode"
           "-q:Quiet mode"
-          "--reverse:Show reverse dependencies"
-          "-r:Show reverse dependencies"
+          "--reverse:List all dependents of target packages"
+          "-r:List all dependents of target packages"
           "--help:Display help message"
           "-h:Display help message"
         )

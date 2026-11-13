@@ -1,13 +1,141 @@
 #compdef anim
 
-local -a options
-options=(
-  "cava:Starts cava audio visualiser"
-  "aqua:Starts asciiquarium"
-  "matrix:Starts cmatrix"
-  "bonsai:Starts cbonsai"
-  "--help:Display the help message for this function"
-  "-h:Display the help message for this function"
-)
+_anim-aqua() {
+    local -a options
+    options=(
+      "-c:Only show species from Asciiquarium 1.0"
+      "--classic:Only show species from Asciiquarium 1.0"
+      "-t:Transparent background"
+      "--transparent:Transparent background"
+      "-s:Exit on any keypress"
+      "--screensaver:Exit on any keypress"
+      "-h:Print help and exit"
+      "--help:Print help and exit"
+      "-v:Print version and exit"
+      "--version:Print version and exit"
+    )
 
-_describe "values" options
+    _describe "anim aqua options" options
+}
+
+_anim-bonsai() {
+    local -a options
+    options=(
+      "-l:live mode: show each step of growth"
+      "--live:live mode: show each step of growth"
+      "-t:in live mode, wait TIME secs between steps of growth (must be larger than 0) [default: 0.03]"
+      "--time=TIME:in live mode, wait TIME secs between steps of growth (must be larger than 0) [default: 0.03]"
+      "-i:infinite mode: keep growing trees"
+      "--infinite:infinite mode: keep growing trees"
+      "-w:in infinite mode, wait TIME between each tree generation [default: 4.00]"
+      "--wait=TIME:in infinite mode, wait TIME between each tree generation [default: 4.00]"
+      "-S:screensaver mode; equivalent to -li and quit on any keypress"
+      "--screensaver:screensaver mode; equivalent to -li and quit on any keypress"
+      "-m:attach message next to the tree"
+      "--message=STR:attach message next to the tree"
+      "-b:ascii-art plant base to use, 0 is none"
+      "--base=INT:ascii-art plant base to use, 0 is none"
+      "-c:randomly choose a leaf string from a comma-delimited list [default: &]"
+      "--leaf=LIST:randomly choose a leaf string from a comma-delimited list [default: &]"
+      "-k:4 comma-delimited color indices (0-255) for dark leaves, dark wood, light leaves, and light wood [default: 2,3,10,11]"
+      "--color=LIST:4 comma-delimited color indices (0-255) for dark leaves, dark wood, light leaves, and light wood [default: 2,3,10,11]"
+      "-M:branch multiplier; higher -> more branching (0-20) [default: 5]"
+      "--multiplier=INT:branch multiplier; higher -> more branching (0-20) [default: 5]"
+      "-L:life; higher -> more growth (0-200) [default: 32]"
+      "--life=INT:life; higher -> more growth (0-200) [default: 32]"
+      "-p:print tree to terminal when finished"
+      "--print:print tree to terminal when finished"
+      "-s:seed random number generator"
+      "--seed=INT:seed random number generator"
+      "-W:save progress to file [default: $XDG_CACHE_HOME/cbonsai or $HOME/.cache/cbonsai]"
+      "--save=FILE:save progress to file [default: $XDG_CACHE_HOME/cbonsai or $HOME/.cache/cbonsai]"
+      "-C:load progress from file [default: $XDG_CACHE_HOME/cbonsai]"
+      "--load=FILE:load progress from file [default: $XDG_CACHE_HOME/cbonsai]"
+      "-v:increase output verbosity"
+      "--verbose:increase output verbosity"
+      "-h:show help"
+      "--help:show help"
+    )
+
+    _describe "anim bonsai options" options
+}
+
+_anim-matrix() {
+    local -a options
+    options=(
+      "-a:asynchronous scroll speed"
+      "--async:asynchronous scroll speed"
+      "-b:control character boldness"
+      "--bold=NUM:control character boldness"
+      "-C:read the colors from a file"
+      "--colorfile=FILE:read the colors from a file"
+      "-c:select the foreground text color"
+      "--color=COLOR:select the foreground text color"
+      "-D:use the default terminal background color"
+      "--defaultbg:use the default terminal background color"
+      "-d:set the density of droplets"
+      "--density=NUM:set the density of droplets"
+      "-F:use two columns per character"
+      "--fullwidth:use two columns per character"
+      "-f:set the frames per second target/limit"
+      "--fps=NUM:set the frames per second target/limit"
+      "-G:set the percentage of screen chars that glitch"
+      "--glitchpct=NUM:set the percentage of screen chars that glitch"
+      "-g:control how often characters glitch"
+      "--glitchms=NUM1,2:control how often characters glitch"
+      "-h:show this help message"
+      "--help:show this help message"
+      "-l:control how long characters linger after scrolling"
+      "--lingerms=NUM1,2:control how long characters linger after scrolling"
+      "-M:set the shading mode"
+      "--shadingmode=NUM:set the shading mode"
+      "-m:display a message"
+      "--message=STR:display a message"
+      "-p:enable profiling mode"
+      "--profile:enable profiling mode"
+      "-r:set the percentage of droplets that die early"
+      "--rippct=NUM:set the percentage of droplets that die early"
+      "-S:set the scroll speed in chars per second"
+      "--speed=NUM:set the scroll speed in chars per second"
+      "-s:exit on the first key press"
+      "--screensaver:exit on the first key press"
+      "-V:print the version"
+      "--version:print the version"
+      "--chars=NUM1,2:use a range of unicode chars"
+      "--charset=STR:set the character set"
+      "--colormode=NUM:set the color mode"
+      "--maxdpc=NUM:set the maximum droplets per column"
+      "--noglitch:disable character glitching"
+      "--shortpct=NUM:set the percentage of shortened droplets"
+    )
+
+    _describe "anim matrix options" options
+}
+
+_anim() {
+    local -a commands
+
+    case ${#words} in
+        2)
+          commands=(
+            "cava:Starts cava audio visualiser"
+            "aqua:Starts asciiquarium"
+            "matrix:Starts cmatrix"
+            "bonsai:Starts cbonsai"
+            "--help:Display the help message for this function"
+            "-h:Display the help message for this function"
+          )
+          _describe "anim commands" commands
+          ;;
+        *)
+            # Second argument: subcommands based on first arg.
+            case ${words[2]} in
+                aqua)     _anim-aqua ;;
+                bonsai)   _anim-bonsai ;;
+                matrix)   _anim-matrix ;;
+            esac
+            ;;
+    esac
+}
+
+
