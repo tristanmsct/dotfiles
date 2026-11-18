@@ -1,0 +1,9 @@
+[Desktop Entry]
+NoDisplay=true
+Name=Outhold
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/3767740
+Icon=steam_icon_3767740
+Terminal=false
+Type=Application
+Categories=Game;

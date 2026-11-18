@@ -49,4 +49,5 @@ X-KDE-Protocols=appending,file,ftp,http,https,mms,mpv,rtmp,rtmps,rtmpt,rtmpts,rt
 StartupWMClass=mpv
 Keywords=mpv;media;player;video;audio;tv;
 Keywords[ar]=mpv;إم بي في;ام بي في;وسائط;مشغل;فيديو;مرئية;صوتي;تلفاز;
+Keywords[ru]=mpv;медиа;мультимедиа;проигрыватель;плеер;видео;аудио;звук;музыка;фильм;кино;тв;
 NoDisplay=true

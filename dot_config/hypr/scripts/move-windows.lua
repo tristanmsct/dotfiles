@@ -90,27 +90,31 @@ local function switch_monitor()
     hl.dispatch(hl.dsp.window.move({ workspace = next_monitors_active_workspace, follow = true }))
 end
 
-local function compact_workspaces()
-    local monitors = hl.get_monitors()
-    hl.dispatch(hl.dsp.exec_cmd("dunstify hey"))
-
-    local windows = hl.get_windows()
-
-    for _, w in ipairs(windows) do
-        hl.dispatch(hl.dsp.window.move({ window = w, workspace = 1 }))
-    end
-end
-
 -- This is the Lua equivalent of the Python compaction logic.
 -- It groups workspaces by monitor-sized blocks of 3 and remaps each occupied
 -- workspace to the first available slot in that block. This makes the workspace
 -- layout more compact without reordering monitor assignments.
+local function is_regular_workspace_id(workspace_id)
+    return type(workspace_id) == "number" and workspace_id > 0
+end
+
 local function create_workspace_mappings(non_empty_workspaces)
     local workspace_per_monitor = 3
     local monitor_count = #hl.get_monitors()
+    local regular_workspaces = {}
+
+    for _, ws_id in ipairs(non_empty_workspaces) do
+        if is_regular_workspace_id(ws_id) then
+            table.insert(regular_workspaces, ws_id)
+        end
+    end
+
+    if #regular_workspaces == 0 then
+        return {}
+    end
 
     local max_workspace = 0
-    for _, ws_id in ipairs(non_empty_workspaces) do
+    for _, ws_id in ipairs(regular_workspaces) do
         if ws_id > max_workspace then
             max_workspace = ws_id
         end
@@ -124,7 +128,7 @@ local function create_workspace_mappings(non_empty_workspaces)
         local max_workspace_in_threshold = workspace_per_monitor * threshold
         local workspaces_in_threshold = {}
 
-        for _, ws_id in ipairs(non_empty_workspaces) do
+        for _, ws_id in ipairs(regular_workspaces) do
             if threshold < monitor_count then
                 if min_workspace < ws_id and ws_id <= max_workspace_in_threshold then
                     table.insert(workspaces_in_threshold, ws_id)
@@ -159,8 +163,9 @@ local function compact_workspaces()
     local seen = {}
 
     for _, win in ipairs(windows) do
-        if win.workspace and win.workspace.type ~= "special" then
-            local workspace_id = win.workspace.id
+        local workspace = win.workspace
+        if workspace and workspace.type ~= "special" and is_regular_workspace_id(workspace.id) then
+            local workspace_id = workspace.id
             if not seen[workspace_id] then
                 seen[workspace_id] = true
                 table.insert(non_empty_workspaces, workspace_id)
@@ -196,7 +201,6 @@ M.move_to_end = move_to_end
 M.move_to_empty = move_to_empty
 M.move_all = move_all
 M.switch_monitor = switch_monitor
-M.compact_workspaces = compact_workspaces
 M.compact_workspaces = compact_workspaces
 
 return M
