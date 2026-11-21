@@ -95,7 +95,7 @@ hl.bind("SUPER + CTRL + G", e(SCRIPTS .. "/focus-mode/activate.sh"), { descripti
 hl.bind("SUPER + SHIFT + G", e("rofi -disable-history -modi games -show games -theme config-games"), { description = "Open game launcher" })
 hl.bind("SUPER + ALT + G", e(SCRIPTS .. "/focus-mode/btop-overlay.sh"), { description = "Display btop overlay" })
 
-hl.bind("SUPER + Y", e(SCRIPTS .. "/hyprsunset/hyprsunset-switch.sh"), { description = "Toggle Hyprsunset" })
+hl.bind("SUPER + Y", e(SCRIPTS .. "/hyprsunset/hyprsunset-change-state.sh switch"), { description = "Toggle Hyprsunset" })
 
 hl.bind("SUPER + P", e(SCRIPTS .. "/menus-rofi/monitor-menu.sh"), { description = "Monitor configuration menu" })
 hl.bind("SUPER + CTRL + F", e(SCRIPTS .. "/media/audio-helper.sh"), { description = "Fix audio device" })

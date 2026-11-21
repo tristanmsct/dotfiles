@@ -155,7 +155,7 @@
           :cursor "pointer"
           (button
             :class {hyprsunset-state == "on" ? "control-button-active" : "control-button"}
-            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-button.sh on"
+            :onclick "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-change-state.sh on"
             :tooltip "Click to enable hyprsunset"
             "On"
           )
@@ -165,7 +165,7 @@
           :cursor "pointer"
           (button
             :class {hyprsunset-state == "auto" ? "control-button-active" : "control-button"}
-            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-button.sh auto"
+            :onclick "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-change-state.sh auto"
             :onrightclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-slider.sh 6500"
             :tooltip "Click to toogle hyprsunset auto timer (right click to reset temp)"
             "Auto"
@@ -176,7 +176,7 @@
           :cursor "pointer"
           (button
             :class {hyprsunset-state == "off" ? "control-button-active" : "control-button"}
-            :onclick "$DESKTOP_SCRIPTS/menus-eww/brightness/menu-hyprsunset-button.sh off"
+            :onclick "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-change-state.sh off"
             :tooltip "Click to disable hyprsunset"
             "Off"
           )

@@ -7,35 +7,17 @@
 #        |___/|_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
-# Restores the previous state of hyprsunset.
+# Restores previous Hyprsunset configuration.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-source "$DESKTOP_SCRIPTS/system/state-utils"
-FILTER_STATE=$(state_get ".hyprsunset.state")
+HYPRSUNSET_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 script_name=$(basename "$0")
 
-pgrep -x hyprsunset >/dev/null || hyprsunset -i &
+source "$HYPRSUNSET_DIR/hyprsunset-utils.sh"
 
-logger -t hyprsunset -p user.info "[$script_name] Restoring hyprsunset config"
+logger -t hyprsunset -p user.info "[$script_name] Restoring Hyprsunset configuration"
 
-case $FILTER_STATE in
-on)
-    temperature=$(state_get ".hyprsunset.temperature")
-    hyprctl hyprsunset temperature "$temperature"
-    logger -t hyprsunset -p user.info "[$script_name] Restoring manual hyprsunset"
-    ;;
-off)
-    hyprctl hyprsunset identity
-    logger -t hyprsunset -p user.info "[$script_name] Restoring off state"
-    ;;
-auto)
-    "$DESKTOP_SCRIPTS/hyprsunset/hyprsunset-timer.sh"
-    logger -t hyprsunset -p user.info "[$script_name] Restoring auto hyprsunset"
-    ;;
-*)
-    logger -t hyprsunset -p user.error "[$script_name] Error, filter state unkown"
-    ;;
-esac
+hyprsunset_ensure_running
+hyprsunset_restore "$script_name"
 
-# Update waybar icon config.
-pkill -RTMIN+8 waybar
+hyprsunset_refresh_waybar

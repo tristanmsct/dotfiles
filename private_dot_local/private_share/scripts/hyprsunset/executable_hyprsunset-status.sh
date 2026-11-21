@@ -10,7 +10,8 @@
 # Returns the current status of hyprsunset.
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-source "$DESKTOP_SCRIPTS/system/state-utils"
+HYPRSUNSET_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+source "$HYPRSUNSET_DIR/hyprsunset-utils.sh"
 FILTER_STATE=$(state_get ".hyprsunset.state")
 
 case $FILTER_STATE in
