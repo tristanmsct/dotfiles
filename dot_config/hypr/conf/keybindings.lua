@@ -20,6 +20,7 @@ local minimize = require("scripts/minimize")
 local float = require("scripts/float")
 local scratchpad = require("scripts/scratchpads")
 local move_windows = require("scripts/move-windows")
+local misc = require("scripts/misc")
 
 -- --------------------------------------------------------------------------------------
 -- Applications
@@ -131,6 +132,7 @@ hl.bind("SUPER + SHIFT + V", e("gtk-launch vimkeybindings.desktop"), { descripti
 -- Workspaces
 -- --------------------------------------------------------------------------------------
 local smw = require("plugins.split-monitor-workspaces")
+local multiple_monitors = #hl.get_monitors() > 1
 
 local ws_keys = {
     { key = "ampersand",  n = 1 },
@@ -146,26 +148,30 @@ local ws_keys = {
 }
 
 hl.unbind("SUPER + D")
+
 for _, ws in ipairs(ws_keys) do
     hl.unbind("SUPER + " .. ws.key)
     hl.unbind("SUPER + SHIFT + " .. ws.key)
     hl.unbind("SUPER + CTRL + " .. ws.key)
+
+    local focus_action
+    local move_action
+
+    if multiple_monitors then
+        focus_action = smw.workspace(ws.n)
+        move_action = smw.move_to_workspace(ws.n)
+    else
+        focus_action = hl.dsp.focus({ workspace = ws.n })
+        move_action = hl.dsp.window.move({ workspace = ws.n })
+    end
+
+    hl.bind("SUPER + " .. ws.key, focus_action, { description = "Go to workspace " .. ws.n })
+    hl.bind("SUPER + SHIFT + " .. ws.key, move_action, { description = "Move active window to workspace " .. ws.n })
+    hl.bind("SUPER + CTRL + " .. ws.key, function() return move_windows.move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
 end
 
--- Keep the normal hl.dsp.focus to go beyond the smw max workspace with only one monitor.
-if #hl.get_monitors() == 1 then
-    for _, ws in ipairs(ws_keys) do
-        hl.bind("SUPER + " .. ws.key, hl.dsp.focus({ workspace = ws.n }), { description = "Go to workspace " .. ws.n })
-        hl.bind("SUPER + SHIFT + " .. ws.key, hl.dsp.window.move({ workspace = ws.n }), { description = "Move active window to workspace " .. ws.n })
-        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_windows.move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
-    end
-else
+if multiple_monitors then
     hl.bind("SUPER + D", move_windows.switch_monitor, { description = "Move active window to the next monitor" })
-    for _, ws in ipairs(ws_keys) do
-        hl.bind("SUPER + " .. ws.key, smw.workspace(ws.n), { description = "Go to workspace " .. ws.n })
-        hl.bind("SUPER + SHIFT + " .. ws.key, smw.move_to_workspace(ws.n), { description = "Move active window to workspace " .. ws.n })
-        hl.bind("SUPER + CTRL + " .. ws.key, function() return move_windows.move_all(ws.n) end, { description = "Move all windows to workspace " .. ws.n })
-    end
 end
 
 hl.bind("SUPER + Z", smw.move_to_workspace_silent("empty"), { description = "Go to workspace empty" })
@@ -187,15 +193,7 @@ hl.bind("SUPER + CTRL + H", minimize.send_to_minimized, { description = "Move wi
 hl.bind("SUPER + SHIFT + CTRL + H", minimize.get_from_minimized, { description = "Get window from minimized workspace" })
 
 -- Lid switch → hyprlock
-hl.bind("switch:on:Lid Switch", function()
-    local monitors = hl.get_monitors()
-    for _, mon in ipairs(monitors) do
-        if mon.name == "eDP-1" then
-            hl.dispatch(hl.dsp.exec_cmd("hyprlock"))
-            return
-        end
-    end
-end, { locked = true })
+hl.bind("switch:on:Lid Switch", misc.close_lid, { locked = true })
 
 -- --------------------------------------------------------------------------------------
 -- Scratchpads

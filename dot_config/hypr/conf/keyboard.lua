@@ -30,3 +30,8 @@ hl.config({
         },
     },
 })
+
+hl.device({
+    name = "zhenye-tech-ble-remote-keyboard",
+    kb_layout  = "us",
+})

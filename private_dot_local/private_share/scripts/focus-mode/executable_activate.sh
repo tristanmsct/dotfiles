@@ -37,14 +37,20 @@ else
     # If focus mode is off, then start it.
     logger -t focusmode -p user.info "[$script_name] Activating focus mode"
 
-    hyprctl eval "hl.config({decoration = {shadow = {enabled = false}}})"
-    hyprctl eval "hl.config({decoration = {blur = {variant = 'kawase'}}})"
-    hyprctl eval "hl.config({decoration = {wobble = {enabled = false}}})"
-    hyprctl eval "hl.config({decoration = {inactive_opacity = 1}})"
-    hyprctl eval "hl.config({decoration = {rounding = 1}})"
-    hyprctl eval "hl.config({general = {gaps_in = 0}})"
-    hyprctl eval "hl.config({general = {gaps_out = 0}})"
-    hyprctl eval "hl.config({general = {border_size = 0}})"
+    hyprctl eval 'hl.config({
+        decoration = {
+            shadow = { enabled = false },
+            blur = { variant = "kawase" },
+            wobble = { enabled = false },
+            inactive_opacity = 1,
+            rounding = 1,
+        },
+        general = {
+            gaps_in = 0,
+            gaps_out = 0,
+            border_size = 0,
+        },
+    })'
 
     awww kill
 
