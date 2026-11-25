@@ -7,7 +7,9 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-default="Default"
+source "$DESKTOP_SCRIPTS/system/state-utils"
+
+extend="Extend"
 external="External Only"
 mirror="Mirror Main Screen"
 
@@ -15,39 +17,24 @@ THEME_MONITOR="window {width: 20%;} inputbar {enabled: false;} listview {padding
 
 monitor_cmd() {
     rofi -disable-history -dmenu -replace -font "Noto Sans Bold 14" \
-        -config "$XDG_CONFIG_HOME/rofi/config-simple.rasi" -theme-str "${THEME_MONITOR}"\
-        -i -no-show-icons -l "$1" -p "Choose a monitor setup"
+        -config "$XDG_CONFIG_HOME/rofi/config-simple.rasi" -theme-str "${THEME_MONITOR}" \
+        -i -no-show-icons -l 3 -p "Choose a monitor setup"
 }
 
-monitor_menu() {
-    monitor_count=$(hyprctl monitors -j | jq length)
-    if [[ $monitor_count -ge 2 ]]; then
-        echo -e "$external\n$mirror" | monitor_cmd 2
-    else
-        echo -e "$default" | monitor_cmd 1
-    fi
-}
+# need at least one non-internal monitor
+if ! hyprctl monitors -j | jq -e 'any(.[]; .name != "eDP-1")' >/dev/null; then
+    dunstify "No external monitor connected."
+    exit 0
+fi
 
-selected_setup="$(monitor_menu)"
-case "$selected_setup" in
-    "$default")
-        hyprctl eval "hl.monitor({ output = 'eDP-1', disabled = false })"
-        ;;
-    "$external")
-        # log_message "Manually triggering external only conf"
-        monitor_count=$(hyprctl monitors -j | jq length)
-        if [[ $monitor_count -ge 2 ]]; then
-            hyprctl eval "hl.monitor({ output = 'eDP-1', disabled = true })"
-            exit 1
-        else
-            dunstify "Cannot disable the main monitor: need at least another one."
-            exit 1
-        fi
-        ;;
-    "$mirror")
-        hyprctl eval "hl.monitor({ output = 'DP-1', mode = '1920x1080@120', position = '0x0', scale = 1, mirror = 'eDP-1' })"
-        ;;
-    *)
-        echo "Unknown command."
-        ;;
+selected="$(echo -e "$extend\n$external\n$mirror" | monitor_cmd)"
+
+case "$selected" in
+    "$extend")   state_set ".monitor.pref" "extend" ;;
+    "$external") state_set ".monitor.pref" "external" ;;
+    # "$mirror")   state_set ".monitor.pref" "mirror" ;;
+    "$mirror")   dunstify "Not implemented" ;;
+    *)           exit 0 ;;
 esac
+
+hyprctl reload

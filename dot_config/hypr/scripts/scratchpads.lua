@@ -32,7 +32,7 @@ local function find_scratch(tag)
   end
 end
 
-local function scratch_kitty()
+function M.scratch_kitty()
   local w = find_scratch(KITTY_TAG)
 
   if not w then
@@ -63,7 +63,7 @@ local function find_bitwarden()
   end
 end
 
-local function scratch_bitwarden()
+function M.scratch_bitwarden()
   local w = find_bitwarden()
 
   if not w then
@@ -82,8 +82,5 @@ local function scratch_bitwarden()
     hl.dispatch(hl.dsp.window.move({ workspace = BW_SPECIAL, follow = false, window = w }))
   end
 end
-
-M.scratch_kitty = scratch_kitty
-M.scratch_bitwarden = scratch_bitwarden
 
 return M

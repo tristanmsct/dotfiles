@@ -40,6 +40,10 @@ cat > "$STATE_FILE" << 'EOF'
   },
   "focusmode": {
     "enabled": false
+  },
+  "monitor": {
+    "pref": "extend",
+    "applied":"laptop"
   }
 }
 EOF

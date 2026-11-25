@@ -9,7 +9,7 @@
 local smw = require("plugins.split-monitor-workspaces")
 local M = {}
 
-local function move_to_end()
+function M.move_to_end()
     -- Script only works with a focused window.
     local win = hl.get_active_window()
     if not win then return end
@@ -27,7 +27,7 @@ local function move_to_end()
     hl.dispatch(hl.dsp.window.move({ workspace = last_workspace, follow = false }))
 end
 
-local function move_to_empty()
+function M.move_to_empty()
     -- Script only works with a focused window.
     local win = hl.get_active_window()
     if not win then return end
@@ -52,7 +52,7 @@ local function move_to_empty()
     end
 end
 
-local function move_all(target)
+function M.move_all(target)
     -- Script only works with at least one window on the monitor so there must be a focused window.
     local win = hl.get_active_window()
     if not win then return end
@@ -69,7 +69,7 @@ local function move_all(target)
     end
 end
 
-local function switch_monitor()
+function M.switch_monitor()
     -- Script only works with a focused window.
     local win = hl.get_active_window()
     if not win then return end
@@ -157,7 +157,7 @@ local function create_workspace_mappings(non_empty_workspaces)
     return mappings
 end
 
-local function compact_workspaces()
+function M.compact_workspaces()
     local windows = hl.get_windows()
     local non_empty_workspaces = {}
     local seen = {}
@@ -196,11 +196,5 @@ local function compact_workspaces()
         end
     end
 end
-
-M.move_to_end = move_to_end
-M.move_to_empty = move_to_empty
-M.move_all = move_all
-M.switch_monitor = switch_monitor
-M.compact_workspaces = compact_workspaces
 
 return M

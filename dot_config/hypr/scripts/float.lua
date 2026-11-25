@@ -8,7 +8,7 @@
 
 local M = {}
 
-local function all_float()
+function M.all_float()
     local workspace = hl.get_active_workspace()
     local windows = hl.get_windows()
 
@@ -46,7 +46,7 @@ local function all_float()
     end
 end
 
-local function float_window()
+function M.float_window()
     local w = hl.get_active_window()
 
     if w.floating then
@@ -65,8 +65,5 @@ local function float_window()
         end
     end
 end
-
-M.all_float = all_float
-M.float_window = float_window
 
 return M

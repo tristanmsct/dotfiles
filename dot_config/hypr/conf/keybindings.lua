@@ -16,11 +16,11 @@ local e = hl.dsp.exec_cmd
 -- --------------------------------------------------------------------------------------
 -- Importing lua functions
 -- --------------------------------------------------------------------------------------
-local minimize = require("scripts/minimize")
-local float = require("scripts/float")
-local scratchpad = require("scripts/scratchpads")
-local move_windows = require("scripts/move-windows")
-local misc = require("scripts/misc")
+local minimize = require("scripts.minimize")
+local float = require("scripts.float")
+local scratchpad = require("scripts.scratchpads")
+local move_windows = require("scripts.move-windows")
+local monitor_utils = require("scripts.monitor-utils")
 
 -- --------------------------------------------------------------------------------------
 -- Applications
@@ -193,7 +193,7 @@ hl.bind("SUPER + CTRL + H", minimize.send_to_minimized, { description = "Move wi
 hl.bind("SUPER + SHIFT + CTRL + H", minimize.get_from_minimized, { description = "Get window from minimized workspace" })
 
 -- Lid switch → hyprlock
-hl.bind("switch:on:Lid Switch", misc.close_lid, { locked = true })
+hl.bind("switch:on:Lid Switch", monitor_utils.close_lid, { locked = true })
 
 -- --------------------------------------------------------------------------------------
 -- Scratchpads

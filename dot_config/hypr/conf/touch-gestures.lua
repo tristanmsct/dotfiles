@@ -7,7 +7,7 @@
 --
 -- ----------------------------------------------------------------------------------------------------------------------------------------
 
-local float = require("scripts/float")
+local float = require("scripts.float")
 
 -- Most workspace_swipe_* options removed in 0.55 — no equivalent in new gesture system
 -- workspace_swipe_distance, workspace_swipe_invert, workspace_swipe_min_speed_to_force,
