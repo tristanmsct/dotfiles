@@ -93,14 +93,14 @@ local function current_profile()
 end
 
 local function apply(profile)
-    if state.get("monitor", "applied") ~= profile then
-        state.set("monitor", "settle", true)
-    end
     state.set("monitor", "applied", profile)
     setup_workspaces(profile)
 end
 
-apply(current_profile())
+local prev = state.get("monitor", "applied")
+local profile = current_profile()
+if profile ~= prev then state.set("monitor", "settle", true) end
+apply(profile)
 
 hl.on("monitor.layout_changed", function()
     local profile = current_profile()

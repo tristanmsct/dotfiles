@@ -36,3 +36,15 @@ fdxdg() {
 zf () {
     z $(zoxide query --score --list | fzf --filter "$*" 2>/dev/null | sort -nr -k1,1 | head -1 | awk '{ $1=""; sub(/^ /,""); print }')
 }
+
+batjq () {
+    if [ $# -eq 0 ]; then
+        echo "No argument passed"
+    elif [ $# -eq 1 ]; then
+        jq . "$1" | bat --language=json
+    elif [ $# -eq 2 ]; then
+        jq "$1" "$2" | bat --language=json
+    else
+        echo "Too many arguments"
+    fi
+}
