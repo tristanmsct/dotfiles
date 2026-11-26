@@ -49,15 +49,17 @@ function M.settings_for(monitor)
 end
 
 -- Pure function: takes a list of monitors, returns a profile name.
-function M.detect(monitors)
-    local has_internal, has_external = false, false
+function M.detect(active, all)
+    for _, m in ipairs(active) do
+        if m.name == "FALLBACK" then return "fallback" end
+    end
 
-    for _, m in ipairs(monitors) do
-        if m.name == "FALLBACK" then
-            return "fallback"
-        elseif m.name == M.MONITORS.internal.name then
-            has_internal = true
-        else
+    local has_internal, has_external = false, false
+    for _, m in ipairs(active) do
+        if m.name == M.MONITORS.internal.name then has_internal = true end
+    end
+    for _, m in ipairs(all) do
+        if m.name ~= M.MONITORS.internal.name and m.name ~= "FALLBACK" then
             has_external = true
         end
     end
@@ -69,11 +71,11 @@ function M.detect(monitors)
 end
 
 function M.resolve(hw, pref)
-    if hw == "laptop" or hw == "fallback" then return hw end -- no external, pref moot
+    if hw == "laptop" or hw == "fallback" then return hw end
     if pref == "mirror"   then return "mirror" end
     if pref == "external" then return "external_only" end
     if pref == "extend"   then return "docked" end
-    return hw -- auto or unknown value
+    return hw
 end
 
 function M.close_lid()

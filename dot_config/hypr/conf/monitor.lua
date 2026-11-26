@@ -51,30 +51,22 @@ local function setup_monitors(profile)
         max_workspaces["eDP-1"] = 3
     end
 
-    for _, mon in ipairs(hl.get_monitors()) do
+    for _, mon in ipairs(hl.get_monitors({ all = true })) do
         if mon.name ~= "eDP-1" then
-            local s = profiles.settings_for(mon)
-            local opts = {
-                output              = mon.name,
-                mode                = s.mode,
-                scale               = s.scale,
-                position            = s.position,
-                supports_wide_color = -1,
-            }
-
-            if external_only then
-                opts.position = "auto"
-            end
-
-            if not mirror then
+            if mirror then
+                hl.monitor({ output = mon.name, mirror = "eDP-1" })
+            else
+                local s = profiles.settings_for(mon)
+                local opts = {
+                    output              = mon.name,
+                    mode                = s.mode,
+                    scale               = s.scale,
+                    position            = external_only and "auto" or s.position,
+                    supports_wide_color = -1,
+                }
                 table.insert(priority, mon.name)
                 max_workspaces[mon.name] = 3
                 hl.monitor(opts)
-            else
-                -- hl.monitor({
-                --     output = mon.name,
-                --     mirror = "eDP-1"
-                -- })
             end
         end
     end
@@ -89,17 +81,21 @@ end
 local function setup_workspaces(profile)
     if profile == "fallback" then
         set_integrated_monitor()
+        state.set("monitor", "pref", "extend")
     else
         setup_monitors(profile)
     end
 end
 
 local function current_profile()
-    local hw = profiles.detect(hl.get_monitors())
-    return profiles.resolve(hw, state.get("monitor", "applied") or "auto")
+    local hw = profiles.detect(hl.get_monitors(), hl.get_monitors({ all = true }))
+    return profiles.resolve(hw, state.get("monitor", "pref") or "auto")
 end
 
 local function apply(profile)
+    if state.get("monitor", "applied") ~= profile then
+        state.set("monitor", "settle", true)
+    end
     state.set("monitor", "applied", profile)
     setup_workspaces(profile)
 end
@@ -110,6 +106,9 @@ hl.on("monitor.layout_changed", function()
     local profile = current_profile()
     if profile ~= state.get("monitor", "applied") then
         apply(profile)
+        hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
+    elseif state.get("monitor", "settle") then
+        state.set("monitor", "settle", nil)
         hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
     end
 end)

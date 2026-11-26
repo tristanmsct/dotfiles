@@ -22,7 +22,7 @@ monitor_cmd() {
 }
 
 # need at least one non-internal monitor
-if ! hyprctl monitors -j | jq -e 'any(.[]; .name != "eDP-1")' >/dev/null; then
+if ! hyprctl monitors all -j | jq -e 'any(.[]; .name != "eDP-1")' >/dev/null; then
     dunstify "No external monitor connected."
     exit 0
 fi
@@ -30,10 +30,9 @@ fi
 selected="$(echo -e "$extend\n$external\n$mirror" | monitor_cmd)"
 
 case "$selected" in
-    "$extend")   state_set ".monitor.pref" "extend" ;;
+    "$extend") state_set ".monitor.pref" "extend" ;;
     "$external") state_set ".monitor.pref" "external" ;;
-    # "$mirror")   state_set ".monitor.pref" "mirror" ;;
-    "$mirror")   dunstify "Not implemented" ;;
+    "$mirror") state_set ".monitor.pref" "mirror" ;;
     *)           exit 0 ;;
 esac
 
