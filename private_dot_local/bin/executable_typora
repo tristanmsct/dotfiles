@@ -7,6 +7,7 @@
 #      |___/|_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091,SC2097
 
 # Get XDG variables and create the fake home if it does not exists.
 source "$DESKTOP_SCRIPTS/system/setup-fake-home.sh"
@@ -16,5 +17,5 @@ HOME="$FAKE_HOME" exec /usr/bin/typora \
     --ozone-platform=wayland \
     --enable-wayland-ime \
     --wayland-text-input-version=3 \
-    --user-data-dir="${XDG_DATA_HOME:-$HOME/.local/share}/typora-data" \
+    --user-data-dir="${XDG_DATA_HOME:-$FAKE_HOME/.local/share}/typora-data" \
     "$@"

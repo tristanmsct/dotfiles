@@ -7,6 +7,7 @@
 #                |___/                             |___/ |___/
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 WAYBAR_STATUS=$(state_get ".waybar.enabled")

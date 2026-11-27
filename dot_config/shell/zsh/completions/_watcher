@@ -1,4 +1,5 @@
 #compdef watcher
+# shellcheck disable=SC2148,SC2034,SC2168,SC2206,SC2296,SC2154
 # Only one file, otherwise side loading them can go wrong
 # Main issue is when opening a new terminal if writting a whole command instead of using auto-complete then the
 # auto-complete scripts might not be loaded at all.

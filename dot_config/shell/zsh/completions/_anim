@@ -1,4 +1,5 @@
 #compdef anim
+# shellcheck disable=SC2148
 
 _anim-aqua() {
     local -a options

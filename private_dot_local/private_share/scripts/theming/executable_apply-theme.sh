@@ -9,6 +9,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 # Change the color of the terminal based on the main colors of the wallpaper.
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091
 
 # The script can run with or without arguments. Without arguments, the first color in the theme will be used unless it is too grey.
 # See python script for more details.

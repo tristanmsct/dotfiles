@@ -8,6 +8,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 # /!\ This file is very specific about the order of the instructions.
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC2148,SC1091,SC2034,SC2206
 
 # -----------------------------------------------------
 # oh-myzsh plugins
@@ -26,14 +27,15 @@ plugins=(
 # -----------------------------------------------------
 # Other plugins
 # -----------------------------------------------------
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-# Initialize completion system
+# Initialize completion system.
 # /!\ Moving these instructions down can break the config /!\
+# fpath should not be double quoted, it gives a weird error.
 fpath=("$XDG_CONFIG_HOME/shell/zsh/completions" $fpath)
 autoload -Uz compinit && compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
@@ -55,5 +57,5 @@ eval "$(uvx --generate-shell-completion zsh)"
 # -----------------------------------------------------
 # Terminal Keybinds
 # -----------------------------------------------------
-bindkey "^?" backward-delete-char    # Backspace deletes a single character
-bindkey "^W" backward-kill-word      # Ctrl + W (or remapped Ctrl + Backspace) deletes a word
+bindkey "^?" backward-delete-char    # Backspace deletes a single character.
+bindkey "^W" backward-kill-word      # Ctrl + W (or remapped Ctrl + Backspace) deletes a word.

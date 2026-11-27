@@ -6,6 +6,7 @@
 # |___/\__\___|\__,_|_| |_| |_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091
 
 # Get XDG variables and create the fake home if it does not exists.
 source "$DESKTOP_SCRIPTS/system/setup-fake-home.sh"

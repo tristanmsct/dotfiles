@@ -10,6 +10,7 @@
 # System Information Collector Script
 # Creates a directory with various system information files
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091,SC2059
 
 # --- Base set up -----------------------------------------------------------------------
 

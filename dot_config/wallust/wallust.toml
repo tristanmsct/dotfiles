@@ -55,3 +55,4 @@ qml = { template = 'Colors.qml', target = "$XDG_CONFIG_HOME/quickshell/Colors.qm
 [hooks]
 # Run commands when wallust is invoked. Useful to avoid scripting.
 turbo_cava = "$XDG_CONFIG_HOME/wallust/scripts/add-diverse-colors"
+hyprlock_target = "$XDG_CONFIG_HOME/wallust/scripts/change-hyprlock-target"

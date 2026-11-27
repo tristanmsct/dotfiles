@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 #               _
 # __      _____| |__
 # \ \ /\ / / _ \ '_ \
@@ -7,50 +7,50 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
 
-# define search engine URLS
-typeset -A urls
+# Define search engine URLs.
+declare -A urls
 urls=(
-    google          "https://www.google.com/search?q="
-    bing            "https://www.bing.com/search?q="
-    brave           "https://search.brave.com/search?q="
-    yahoo           "https://search.yahoo.com/search?p="
-    duckduckgo      "https://www.duckduckgo.com/?q="
-    startpage       "https://www.startpage.com/do/search?q="
-    yandex          "https://yandex.ru/yandsearch?text="
-    github          "https://github.com/search?q="
-    baidu           "https://www.baidu.com/s?wd="
-    ecosia          "https://www.ecosia.org/search?q="
-    goodreads       "https://www.goodreads.com/search?q="
-    qwant           "https://www.qwant.com/?q="
-    givero          "https://www.givero.com/search?q="
-    stackoverflow   "https://stackoverflow.com/search?q="
-    wolframalpha    "https://www.wolframalpha.com/input/?i="
-    archive         "https://web.archive.org/web/*/"
-    scholar         "https://scholar.google.com/scholar?q="
-    ask             "https://www.ask.com/web?q="
-    youtube         "https://www.youtube.com/results?search_query="
-    deepl           "https://www.deepl.com/translator#auto/auto/"
-    dockerhub       "https://hub.docker.com/search?q="
-    npmpkg          "https://www.npmjs.com/search?q="
-    packagist       "https://packagist.org/?query="
-    gopkg           "https://pkg.go.dev/search?m=package&q="
-    chatgpt         "https://chatgpt.com/?q="
-    reddit          "https://www.reddit.com/search/?q="
+    [google]="https://www.google.com/search?q="
+    [bing]="https://www.bing.com/search?q="
+    [brave]="https://search.brave.com/search?q="
+    [yahoo]="https://search.yahoo.com/search?p="
+    [duckduckgo]="https://www.duckduckgo.com/?q="
+    [startpage]="https://www.startpage.com/do/search?q="
+    [yandex]="https://yandex.ru/yandsearch?text="
+    [github]="https://github.com/search?q="
+    [baidu]="https://www.baidu.com/s?wd="
+    [ecosia]="https://www.ecosia.org/search?q="
+    [goodreads]="https://www.goodreads.com/search?q="
+    [qwant]="https://www.qwant.com/?q="
+    [givero]="https://www.givero.com/search?q="
+    [stackoverflow]="https://stackoverflow.com/search?q="
+    [wolframalpha]="https://www.wolframalpha.com/input/?i="
+    [archive]="https://web.archive.org/web/*/"
+    [scholar]="https://scholar.google.com/scholar?q="
+    [ask]="https://www.ask.com/web?q="
+    [youtube]="https://www.youtube.com/results?search_query="
+    [deepl]="https://www.deepl.com/translator#auto/auto/"
+    [dockerhub]="https://hub.docker.com/search?q="
+    [npmpkg]="https://www.npmjs.com/search?q="
+    [packagist]="https://www.packagist.org/?query="
+    [gopkg]="https://pkg.go.dev/search?m=package&q="
+    [chatgpt]="https://chatgpt.com/?q="
+    [reddit]="https://www.reddit.com/search/?q="
 )
 
-search_engine="$urls[$1]"
+search_engine="${urls[${1:-}]:-}"
 
-# Default to brave.
+# Default to Brave.
 if [[ -z "$search_engine" ]]; then
     search_engine="https://search.brave.com/search?q="
 else
     shift
 fi
 
-# search or go to main page depending on number of arguments passed.
+# Search or open search engine main page.
 query=""
-while [ $# -gt 0 ]; do
-    query+="+"$1
+while [[ $# -gt 0 ]]; do
+    query+="+$1"
     shift
 done
 url="$search_engine$query"

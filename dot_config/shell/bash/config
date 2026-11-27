@@ -6,6 +6,7 @@
 #                                                |___/
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC2148,SC1091
 
 # -----------------------------------------------------
 # Tools
@@ -18,4 +19,4 @@ eval "$(thefuck --alias)"
 # -----------------------------------------------------
 # Completion Scripts
 # -----------------------------------------------------
-[[ -f $HOME/.config/shell/bash/completion ]] && source $HOME/.config/shell/bash/completion
+[[ -f $HOME/.config/shell/bash/completion ]] && source "$HOME/.config/shell/bash/completion"

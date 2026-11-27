@@ -35,7 +35,6 @@ run_rofi() {
 # Filename creation
 time_stamp=$(date +%Y-%m-%d-%H-%M-%S)
 # For full screenshot geometry we use hyprctl via wlr-randr if needed
-geometry=$(wlr-randr | grep 'current' | head -n1 | cut -d',' -f2 | tr -d '[:blank:],current')
 dir="$(xdg-user-dir PICTURES)/Screenshots"
 file="Screenshot_${time_stamp}.png"
 

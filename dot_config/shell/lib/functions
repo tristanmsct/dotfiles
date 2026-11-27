@@ -5,6 +5,7 @@
 # |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC2148
 
 # Python docstring generation function.
 docpy() {
@@ -30,11 +31,11 @@ show-colors() {
 }
 
 fdxdg() {
-    fd --exact-depth=1 $1 $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME $XDG_STATE_HOME
+    fd --exact-depth=1 "$1" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME" "$XDG_STATE_HOME"
 }
 
 zf () {
-    z $(zoxide query --score --list | fzf --filter "$*" 2>/dev/null | sort -nr -k1,1 | head -1 | awk '{ $1=""; sub(/^ /,""); print }')
+    z "$(zoxide query --score --list | fzf --filter "$*" 2>/dev/null | sort -nr -k1,1 | head -1 | awk '{ $1=""; sub(/^ /,""); print }')"
 }
 
 batjq () {

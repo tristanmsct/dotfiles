@@ -7,6 +7,7 @@
 #       |_|   |_|      |___/
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC2016
 
 apply_accent_colors () {
 
@@ -196,6 +197,7 @@ apply_sddm_theme () {
 
     export CURRENTWALLPAPER="current_wallpaper.$extension"
     export ACCENTCOLOR="$ACCENT_COLOR"
+    # Can't use double here or the substitution does not work.
     envsubst '${CURRENTWALLPAPER} ${ACCENTCOLOR}' \
     < "$XDG_CONFIG_HOME/sddm-themes/theme-eucalyptus-drop.envsubst" \
     | sudo tee /usr/share/sddm/themes/$sddm_theme_name/theme.conf > /dev/null

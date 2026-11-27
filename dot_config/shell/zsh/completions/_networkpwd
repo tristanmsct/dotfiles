@@ -1,4 +1,5 @@
 #compdef networkpwd
+# shellcheck disable=SC2148,SC2034,SC2206,SC2296
 
 _networkpwd() {
     local -a ssids

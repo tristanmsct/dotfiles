@@ -7,6 +7,7 @@
 #        |___/|_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091
 
 HYPRSUNSET_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DESKTOP_SCRIPTS="${DESKTOP_SCRIPTS:-$(cd -- "$HYPRSUNSET_DIR/.." && pwd)}"

@@ -5,6 +5,7 @@
 # |_.__/ \__,_|___/_| |_|_|  \___|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091,SC2148
 
 source "$HOME/.config/shell/env"
 source "$BASHDIR/config"
@@ -16,5 +17,5 @@ if [[ $(tty) == *"pts"* ]]; then
   # Themes are installed at /usr/share/oh-my-posh/themes.
   eval "$(oh-my-posh init bash --config spaceship)"
 else
-  eval "$(oh-my-posh init bash --config $XDG_CONFIG_HOME/ohmyposh/zen.toml)"
+  eval "$(oh-my-posh init bash --config "$XDG_CONFIG_HOME/ohmyposh/zen.toml")"
 fi

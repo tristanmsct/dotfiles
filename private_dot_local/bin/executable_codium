@@ -8,6 +8,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 # > [!Important] VScodium is an Electron app, it needs to use brave's fake home otherwise it creates a $HOME/.pki directory.
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091
 
 # Get XDG variables and create the fake home if it does not exists.
 source "$DESKTOP_SCRIPTS/system/setup-fake-home.sh"

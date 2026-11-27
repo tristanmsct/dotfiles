@@ -5,6 +5,7 @@
 # |_|  \___/|_|  |_| |_| |_|\__,_|\__|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC2148,SC2034
 
 # Guard against double-sourcing
 [[ -n "$_PRETTY_LOADED" ]] && return
@@ -17,7 +18,7 @@ if [[ -t 1 ]]; then
     PURPLE="\033[38;2;150;85;166m"
     CYAN="\033[38;2;105;230;245m"
     GREEN="\033[38;2;125;235;103m"
-    RED="\033[38;2;225;20;20m"
+    RED="\033[38;2;225;20;20m"  # need to be exported
     BOLD="\033[1m"
     DIM="\033[2m"
     RESET="\033[0m"
@@ -31,9 +32,23 @@ if [[ -t 1 ]]; then
     COLOR_TERM_7="\033[36m"
     COLOR_TERM_8="\033[37m"
 else
-    ORANGE="" BLUE="" PURPLE="" CYAN="" GREEN="" BOLD="" DIM="" RESET=""
+    ORANGE=""
+    BLUE=""
+    PURPLE=""
+    CYAN=""
+    GREEN=""
+    BOLD=""
+    DIM=""
+    RESET=""
 
-    COLOR_TERM_1="" COLOR_TERM_2="" COLOR_TERM_3="" COLOR_TERM_4="" COLOR_TERM_5="" COLOR_TERM_6="" COLOR_TERM_7="" COLOR_TERM_8=""
+    COLOR_TERM_1=""
+    COLOR_TERM_2=""
+    COLOR_TERM_3=""
+    COLOR_TERM_4=""
+    COLOR_TERM_5=""
+    COLOR_TERM_6=""
+    COLOR_TERM_7=""
+    COLOR_TERM_8=""
 fi
 
 section()  { echo -e "${BOLD}${GREEN}=== $1 ===${RESET}"; }

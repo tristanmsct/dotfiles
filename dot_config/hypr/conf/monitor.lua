@@ -97,6 +97,9 @@ local function apply(profile)
     setup_workspaces(profile)
 end
 
+-- --------------------------------------------------------------------------------------
+-- Monitor setup
+-- --------------------------------------------------------------------------------------
 local prev = state.get("monitor", "applied")
 local profile = current_profile()
 if profile ~= prev then state.set("monitor", "settle", true) end
@@ -111,6 +114,7 @@ hl.on("monitor.layout_changed", function()
         state.set("monitor", "settle", nil)
         hl.dispatch(hl.dsp.exec_cmd("hyprctl reload"))
     end
+    hl.dispatch(hl.dsp.exec_cmd(os.getenv("XDG_CONFIG_HOME") .. "/wallust/scripts/change-hyprlock-target"))
 end)
 
 -- So new monitor get the new wallpaper. No need to do it on remove.

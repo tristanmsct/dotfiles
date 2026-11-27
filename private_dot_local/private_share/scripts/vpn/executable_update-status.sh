@@ -7,6 +7,7 @@
 #       |_|                 |_|
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091
 
 source "$DESKTOP_SCRIPTS/system/state-utils"
 INTERFACE=$(ip link show type wireguard up | awk -F': ' '{print $2}' | cut -d'@' -f1)

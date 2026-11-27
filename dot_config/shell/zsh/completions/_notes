@@ -1,4 +1,5 @@
 #compdef notes
+# shellcheck disable=SC2148,SC2034,SC2168
 
 local -a options
 options=(

@@ -1,4 +1,5 @@
 #compdef jaccuse
+# shellcheck disable=SC2148,SC2154,SC2034,SC2206,SC2296
 
 _jaccuse() {
 

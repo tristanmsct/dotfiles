@@ -9,6 +9,7 @@
 # -----------------------------------------------------------------------------------------------------------------------------------------
 # Open a directory (via zoxide + fzf) in the specified application
 # -----------------------------------------------------------------------------------------------------------------------------------------
+# shellcheck disable=SC1091,SC2059
 
 # --- Base set up -----------------------------------------------------------------------
 
@@ -50,8 +51,7 @@ if [[ $# -eq 0 ]]; then
 else
     # Try a simple zoxide query first. If it reports "no match found", fall
     # back to the more complex fzf-based lookup that uses scores.
-    zout=$(zoxide query "$*" 2>&1)
-    if [[ $? -eq 0 ]]; then
+    if zout=$(zoxide query "$*" 2>&1); then
         target="$zout"
     elif grep -q "zoxide: no match found" <<<"$zout"; then
         # zoxide --score outputs two columns: score and path. Let fzf filter,

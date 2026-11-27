@@ -12,6 +12,8 @@ Created on 2026-09-05.
 @email: tristan.muscat@pm.me
 """
 
+# TODO : if main ?
+
 import os
 import subprocess
 import sys
@@ -28,25 +30,26 @@ common_dirs = {
     "AUR custom scripts": f"{HOME_DIR}/.local/share/aur",
 }
 
-try:
-    gum_result = subprocess.run(
-        ["gum", "filter", "--no-show-help", "--no-strict", "--header=Open a directory in codium",
-        "--placeholder=Search...",  "--padding=1 1", *common_dirs.keys()],
-        stdout=subprocess.PIPE,
-        text=True,
-        check=True,
-    )
-except subprocess.CalledProcessError:
-    # gum returns non-zero when exit is pressed, quit gracefully.
-    sys.exit(0)
+if __name__ == "__main__":
+    try:
+        gum_result = subprocess.run(
+            ["gum", "filter", "--no-show-help", "--no-strict", "--header=Open a directory in codium",
+            "--placeholder=Search...",  "--padding=1 1", *common_dirs.keys()],
+            stdout=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+    except subprocess.CalledProcessError:
+        # gum returns non-zero when exit is pressed, quit gracefully.
+        sys.exit(0)
 
-choice = gum_result.stdout.strip()
-path = common_dirs.get(choice)
+    choice = gum_result.stdout.strip()
+    path = common_dirs.get(choice)
 
-if not path:
-    subprocess.run(["zodium", choice], check=True)
-else:
-    subprocess.run(["codium", path], check=True)
+    if not path:
+        subprocess.run(["zodium", choice], check=True)
+    else:
+        subprocess.run(["codium", path], check=True)
 
-# Otherwise codium sometimes does not have time to load.
-time.sleep(0.2)
+    # Otherwise codium sometimes does not have time to load.
+    time.sleep(0.2)
